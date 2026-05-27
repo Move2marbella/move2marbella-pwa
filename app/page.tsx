@@ -4,6 +4,7 @@ import {
   fetchProperties,
   fetchPropertyTypes,
   getGeneralWhatsAppUrl,
+  getPropertyTypeFilterIds,
   getWhatsAppUrl,
   languages,
   quickFilters,
@@ -19,12 +20,14 @@ type HomeProps = {
 
 export default async function Home({ searchParams }: HomeProps) {
   const { property_type: selectedPropertyType = "" } = await searchParams;
-  const [properties, propertyTypes] = await Promise.all([
-    fetchProperties(9, {
-      propertyType: selectedPropertyType,
-    }),
-    fetchPropertyTypes(),
-  ]);
+  const propertyTypes = await fetchPropertyTypes();
+  const propertyTypeFilterIds = getPropertyTypeFilterIds(
+    selectedPropertyType,
+    propertyTypes,
+  );
+  const properties = await fetchProperties(9, {
+    propertyTypes: propertyTypeFilterIds,
+  });
   const selectedTypeName = propertyTypes.find(
     (propertyType) => String(propertyType.id) === selectedPropertyType,
   )?.name;

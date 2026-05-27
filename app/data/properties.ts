@@ -91,7 +91,7 @@ export type PropertyTypeOption = {
 };
 
 type PropertyFilters = {
-  propertyType?: string;
+  propertyTypes?: string[];
 };
 
 export const languages = [
@@ -194,8 +194,8 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     order: "desc",
   });
 
-  if (filters.propertyType) {
-    params.set("property_type", filters.propertyType);
+  if (filters.propertyTypes?.length) {
+    params.set("property_type", filters.propertyTypes.join(","));
   }
 
   const response = await fetch(
@@ -269,6 +269,32 @@ export async function fetchPropertyTypes() {
   const terms = (await response.json()) as WordPressTerm[];
 
   return orderTermsByHierarchy(terms);
+}
+
+export function getPropertyTypeFilterIds(
+  selectedTypeId: string,
+  propertyTypes: PropertyTypeOption[],
+) {
+  if (!selectedTypeId) {
+    return [];
+  }
+
+  const selectedId = Number(selectedTypeId);
+  const ids = new Set<number>([selectedId]);
+  let changed = true;
+
+  while (changed) {
+    changed = false;
+
+    for (const propertyType of propertyTypes) {
+      if (ids.has(propertyType.parent) && !ids.has(propertyType.id)) {
+        ids.add(propertyType.id);
+        changed = true;
+      }
+    }
+  }
+
+  return Array.from(ids).map(String);
 }
 
 export async function getPropertyByRef(ref: string) {
