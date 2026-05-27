@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PropertyGallery } from "../../components/property-gallery";
@@ -56,11 +57,15 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
     <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
       <header className="sticky top-0 z-20 border-b border-black/10 bg-[#f7f2ea]/95 px-5 py-3 backdrop-blur sm:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
-          <Link href="/" className="leading-tight">
-            <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-[#9a7a3a]">
-              Move2Marbella
-            </span>
-            <span className="text-base font-semibold">Property details</span>
+          <Link
+            href="/"
+            className="rounded-[6px] bg-[#0f253d] px-3 py-2"
+          >
+            <img
+              src="/m2m_logo_white_web.png"
+              alt="Move2Marbella"
+              className="h-auto w-40 sm:w-52"
+            />
           </Link>
           <Link
             href="/"

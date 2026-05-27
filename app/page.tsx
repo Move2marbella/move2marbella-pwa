@@ -74,10 +74,11 @@ export default async function Home({ searchParams }: HomeProps) {
         <div className="relative mx-auto flex min-h-[92vh] w-full max-w-6xl flex-col px-5 pb-6 pt-5 sm:px-8 lg:min-h-[86vh]">
           <header className="flex items-center justify-between gap-4">
             <Link href="/" className="leading-tight">
-              <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-[#ba9456]">
-                Move2Marbella
-              </span>
-              <span className="text-lg font-semibold">Costa del Sol homes</span>
+              <img
+                src="/m2m_logo_white_web.png"
+                alt="Move2Marbella"
+                className="h-auto w-44 sm:w-56"
+              />
             </Link>
             <a
               href={getGeneralWhatsAppUrl()}
