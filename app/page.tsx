@@ -2,6 +2,7 @@
 import Link from "next/link";
 import {
   fetchProperties,
+  fetchPropertyTypes,
   getGeneralWhatsAppUrl,
   getWhatsAppUrl,
   languages,
@@ -11,7 +12,10 @@ import {
 export const revalidate = 300;
 
 export default async function Home() {
-  const properties = await fetchProperties(9);
+  const [properties, propertyTypes] = await Promise.all([
+    fetchProperties(9),
+    fetchPropertyTypes(),
+  ]);
 
   return (
     <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
@@ -71,9 +75,13 @@ export default async function Home() {
                 </span>
                 <select className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none">
                   <option>Any property</option>
-                  <option>Villa</option>
-                  <option>Apartment</option>
-                  <option>Penthouse</option>
+                  {propertyTypes.map((propertyType) => (
+                    <option key={propertyType.id} value={propertyType.slug}>
+                      {propertyType.depth > 0 ? "- " : ""}
+                      {propertyType.name}
+                      {propertyType.count > 0 ? ` (${propertyType.count})` : ""}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className="grid gap-1">

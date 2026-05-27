@@ -51,6 +51,14 @@ type WordPressProperty = {
   };
 };
 
+type WordPressTerm = {
+  id: number;
+  name: string;
+  slug: string;
+  parent: number;
+  count: number;
+};
+
 export type Property = {
   id: number;
   ref: string;
@@ -71,6 +79,15 @@ export type Property = {
   images: string[];
   featureGroups: ResalesFeatureGroup[];
   wordpressUrl: string;
+};
+
+export type PropertyTypeOption = {
+  id: number;
+  name: string;
+  slug: string;
+  parent: number;
+  count: number;
+  depth: number;
 };
 
 export const languages = [
@@ -94,6 +111,8 @@ export const quickFilters = [
 
 const WORDPRESS_PROPERTIES_URL =
   "https://move2marbella.com/wp-json/wp/v2/properties";
+const WORDPRESS_PROPERTY_TYPES_URL =
+  "https://move2marbella.com/wp-json/wp/v2/property_type";
 
 function formatPrice(currency: string, price: string) {
   return new Intl.NumberFormat("en-GB", {
@@ -183,6 +202,59 @@ export async function fetchProperties(limit = 9) {
   return posts
     .map(normalizeProperty)
     .filter((property): property is Property => Boolean(property));
+}
+
+function orderTermsByHierarchy(terms: WordPressTerm[]) {
+  const childrenByParent = new Map<number, WordPressTerm[]>();
+
+  for (const term of terms) {
+    const children = childrenByParent.get(term.parent) ?? [];
+    children.push(term);
+    childrenByParent.set(term.parent, children);
+  }
+
+  for (const children of childrenByParent.values()) {
+    children.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  const ordered: PropertyTypeOption[] = [];
+
+  function walk(parentId: number, depth: number) {
+    for (const term of childrenByParent.get(parentId) ?? []) {
+      ordered.push({
+        id: term.id,
+        name: term.name,
+        slug: term.slug,
+        parent: term.parent,
+        count: term.count,
+        depth,
+      });
+      walk(term.id, depth + 1);
+    }
+  }
+
+  walk(0, 0);
+
+  return ordered;
+}
+
+export async function fetchPropertyTypes() {
+  const response = await fetch(
+    `${WORDPRESS_PROPERTY_TYPES_URL}?per_page=100&orderby=name&order=asc`,
+    {
+      next: {
+        revalidate: 300,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Could not fetch Move2Marbella property types");
+  }
+
+  const terms = (await response.json()) as WordPressTerm[];
+
+  return orderTermsByHierarchy(terms);
 }
 
 export async function getPropertyByRef(ref: string) {
