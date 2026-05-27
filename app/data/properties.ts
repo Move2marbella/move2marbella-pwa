@@ -127,6 +127,7 @@ const WORDPRESS_PROPERTY_CITIES_URL =
   "https://move2marbella.com/wp-json/wp/v2/property_city";
 const WORDPRESS_PROPERTY_TYPES_URL =
   "https://move2marbella.com/wp-json/wp/v2/property_type";
+const WORDPRESS_PROPERTY_FIELDS = "id,link,slug,title,property_meta";
 
 function formatPrice(currency: string, price: string) {
   return new Intl.NumberFormat("en-GB", {
@@ -205,6 +206,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     page: String(usesClientSideFilters ? 1 : (filters.page ?? 1)),
     orderby: "date",
     order: "desc",
+    _fields: WORDPRESS_PROPERTY_FIELDS,
   });
 
   if (filters.propertyTypes?.length) {
@@ -261,7 +263,10 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
 }
 
 async function fetchPropertyByWordPressId(id: string) {
-  const response = await fetch(`${WORDPRESS_PROPERTIES_URL}/${id}`, {
+  const params = new URLSearchParams({
+    _fields: WORDPRESS_PROPERTY_FIELDS,
+  });
+  const response = await fetch(`${WORDPRESS_PROPERTIES_URL}/${id}?${params}`, {
     next: {
       revalidate: 300,
     },
