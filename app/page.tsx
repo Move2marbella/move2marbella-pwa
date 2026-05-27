@@ -116,7 +116,7 @@ export default function Home() {
                 </h2>
               </div>
               <span className="text-sm font-medium text-[#66716b]">
-                Demo data
+                Resales API sample
               </span>
             </div>
 
@@ -151,8 +151,10 @@ export default function Home() {
                       <span>{property.size}</span>
                       <span>{property.ref}</span>
                     </div>
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-lg font-bold">{property.price}</p>
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <p className="min-w-full text-lg font-bold sm:min-w-0">
+                        {property.price}
+                      </p>
                       <Link
                         href={`/properties/${property.ref}`}
                         className="rounded-full border border-[#10231f] px-4 py-2 text-sm font-semibold text-[#10231f]"

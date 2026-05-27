@@ -138,7 +138,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             <div className="rounded-[8px] bg-[#f5f4ef] p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#66716b]">
-                Status
+                API Status
               </p>
               <p className="mt-1 font-semibold">{property.status}</p>
             </div>
@@ -159,15 +159,27 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
         <aside className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#997b35]">
-            Key features
+            Resales Online features
           </p>
-          <ul className="mt-4 space-y-3 text-sm leading-6 text-[#4d5a54]">
-            {property.features.map((feature) => (
-              <li key={feature} className="border-b border-[#ebe5d7] pb-3">
-                {feature}
-              </li>
+          <div className="mt-4 space-y-4">
+            {property.featureGroups.map((group) => (
+              <section key={group.Type} className="border-b border-[#ebe5d7] pb-4">
+                <h3 className="text-sm font-bold text-[#26332e]">
+                  {group.Type}
+                </h3>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {group.Value.map((value) => (
+                    <span
+                      key={value}
+                      className="rounded-full bg-[#f5f4ef] px-3 py-1 text-xs font-semibold text-[#4d5a54]"
+                    >
+                      {value}
+                    </span>
+                  ))}
+                </div>
+              </section>
             ))}
-          </ul>
+          </div>
         </aside>
       </section>
     </main>
