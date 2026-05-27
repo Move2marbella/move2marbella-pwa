@@ -11,11 +11,23 @@ import {
 
 export const revalidate = 300;
 
-export default async function Home() {
+type HomeProps = {
+  searchParams: Promise<{
+    property_type?: string;
+  }>;
+};
+
+export default async function Home({ searchParams }: HomeProps) {
+  const { property_type: selectedPropertyType = "" } = await searchParams;
   const [properties, propertyTypes] = await Promise.all([
-    fetchProperties(9),
+    fetchProperties(9, {
+      propertyType: selectedPropertyType,
+    }),
     fetchPropertyTypes(),
   ]);
+  const selectedTypeName = propertyTypes.find(
+    (propertyType) => String(propertyType.id) === selectedPropertyType,
+  )?.name;
 
   return (
     <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
@@ -57,7 +69,10 @@ export default async function Home() {
               </p>
             </div>
 
-            <form className="grid gap-3 rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25 sm:grid-cols-4">
+            <form
+              action="/"
+              className="grid gap-3 rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25 sm:grid-cols-4"
+            >
               <label className="grid gap-1">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                   Location
@@ -73,10 +88,14 @@ export default async function Home() {
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                   Type
                 </span>
-                <select className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none">
-                  <option>Any property</option>
+                <select
+                  name="property_type"
+                  defaultValue={selectedPropertyType}
+                  className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
+                >
+                  <option value="">Any property</option>
                   {propertyTypes.map((propertyType) => (
-                    <option key={propertyType.id} value={propertyType.slug}>
+                    <option key={propertyType.id} value={propertyType.id}>
                       {propertyType.depth > 0 ? "- " : ""}
                       {propertyType.name}
                       {propertyType.count > 0 ? ` (${propertyType.count})` : ""}
@@ -125,16 +144,16 @@ export default async function Home() {
                   Live search preview
                 </p>
                 <h2 className="mt-1 text-2xl font-semibold">
-                  Featured properties
+                  {selectedTypeName ?? "Featured properties"}
                 </h2>
               </div>
               <span className="text-sm font-medium text-[#6f6a61]">
-                Live WordPress feed
+                {properties.length} results
               </span>
             </div>
 
             <div className="grid gap-4">
-              {properties.map((property) => (
+              {properties.length > 0 ? properties.map((property) => (
                 <article
                   key={property.ref}
                   className="overflow-hidden rounded-[8px] bg-white shadow-sm ring-1 ring-black/5 sm:grid sm:grid-cols-[220px_1fr]"
@@ -183,7 +202,11 @@ export default async function Home() {
                     </div>
                   </div>
                 </article>
-              ))}
+              )) : (
+                <div className="rounded-[8px] bg-white p-6 text-[#55514a] shadow-sm ring-1 ring-black/5">
+                  No properties found for this type.
+                </div>
+              )}
             </div>
           </div>
         </div>

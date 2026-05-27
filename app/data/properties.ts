@@ -90,6 +90,10 @@ export type PropertyTypeOption = {
   depth: number;
 };
 
+type PropertyFilters = {
+  propertyType?: string;
+};
+
 export const languages = [
   { code: "EN", label: "English" },
   { code: "ES", label: "Espanol" },
@@ -183,9 +187,19 @@ function normalizeProperty(post: WordPressProperty): Property | null {
   }
 }
 
-export async function fetchProperties(limit = 9) {
+export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
+  const params = new URLSearchParams({
+    per_page: String(limit),
+    orderby: "date",
+    order: "desc",
+  });
+
+  if (filters.propertyType) {
+    params.set("property_type", filters.propertyType);
+  }
+
   const response = await fetch(
-    `${WORDPRESS_PROPERTIES_URL}?per_page=${limit}&orderby=date&order=desc`,
+    `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
     {
       next: {
         revalidate: 300,
