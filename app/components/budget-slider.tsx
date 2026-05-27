@@ -25,7 +25,7 @@ export function BudgetSlider({
   const label = useMemo(() => formatter.format(value), [value]);
 
   return (
-    <label className="grid min-w-0 gap-1 md:col-span-4">
+    <label className="grid min-w-0 gap-1 md:col-span-2">
       <span className="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
         <span>Max price</span>
         <span className="whitespace-nowrap text-[#0f253d]">{label}</span>

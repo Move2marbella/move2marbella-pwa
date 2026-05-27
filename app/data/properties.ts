@@ -95,6 +95,7 @@ export type PropertyTypeOption = TaxonomyOption;
 export type PropertyCityOption = TaxonomyOption;
 
 type PropertyFilters = {
+  bedrooms?: number;
   maxPrice?: number;
   propertyCities?: string[];
   propertyTypes?: string[];
@@ -117,6 +118,8 @@ export const quickFilters = [
   { label: "Nueva Andalucia", cityName: "Nueva Andalucia" },
   { label: "Puerto Banus", cityName: "Puerto Banus" },
 ];
+
+export const bedroomOptions = [1, 2, 3, 4, 5, 6];
 
 const WORDPRESS_PROPERTIES_URL =
   "https://move2marbella.com/wp-json/wp/v2/properties";
@@ -196,9 +199,10 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 }
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
+  const usesClientSideFilters = Boolean(filters.maxPrice || filters.bedrooms);
   const params = new URLSearchParams({
-    per_page: String(filters.maxPrice ? 100 : limit),
-    page: String(filters.maxPrice ? 1 : (filters.page ?? 1)),
+    per_page: String(usesClientSideFilters ? 100 : limit),
+    page: String(usesClientSideFilters ? 1 : (filters.page ?? 1)),
     orderby: "date",
     order: "desc",
   });
@@ -229,15 +233,21 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
   const normalizedProperties = posts
     .map(normalizeProperty)
     .filter((property): property is Property => Boolean(property));
-  const filteredProperties = filters.maxPrice
-    ? normalizedProperties.filter(
-        (property) => property.rawPrice <= filters.maxPrice!,
-      )
-    : normalizedProperties;
-  const properties = filters.maxPrice
+  const filteredProperties = normalizedProperties.filter((property) => {
+    if (filters.maxPrice && property.rawPrice > filters.maxPrice) {
+      return false;
+    }
+
+    if (filters.bedrooms && Number(property.beds) < filters.bedrooms) {
+      return false;
+    }
+
+    return true;
+  });
+  const properties = usesClientSideFilters
     ? filteredProperties.slice((page - 1) * limit, page * limit)
     : filteredProperties;
-  const total = filters.maxPrice
+  const total = usesClientSideFilters
     ? filteredProperties.length
     : Number(response.headers.get("X-WP-Total") ?? posts.length);
   const totalPages = Math.max(1, Math.ceil(total / limit));

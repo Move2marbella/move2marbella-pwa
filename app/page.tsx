@@ -6,6 +6,7 @@ import {
   fetchProperties,
   fetchPropertyCities,
   fetchPropertyTypes,
+  bedroomOptions,
   getGeneralWhatsAppUrl,
   getPropertyCityFilterIds,
   getPropertyTypeFilterIds,
@@ -18,6 +19,7 @@ export const revalidate = 300;
 
 type HomeProps = {
   searchParams: Promise<{
+    bedrooms?: string;
     max_price?: string;
     page?: string;
     property_city?: string;
@@ -27,6 +29,7 @@ type HomeProps = {
 
 export default async function Home({ searchParams }: HomeProps) {
   const {
+    bedrooms = "",
     max_price = "20000000",
     page = "1",
     property_city: selectedPropertyCity = "",
@@ -34,6 +37,7 @@ export default async function Home({ searchParams }: HomeProps) {
   } = await searchParams;
   const currentPage = Math.max(Number(page) || 1, 1);
   const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
+  const selectedBedrooms = Number(bedrooms) || undefined;
   const selectedMaxPrice = Math.min(
     Math.max(Number(max_price) || 20000000, 250000),
     20000000,
@@ -51,6 +55,7 @@ export default async function Home({ searchParams }: HomeProps) {
     propertyTypes,
   );
   const result = await fetchProperties(9, {
+    bedrooms: selectedBedrooms,
     maxPrice: hasMaxPriceFilter ? selectedMaxPrice : undefined,
     page: currentPage,
     propertyCities: propertyCityFilterIds,
@@ -74,6 +79,10 @@ export default async function Home({ searchParams }: HomeProps) {
 
   if (selectedPropertyType) {
     paginationBaseParams.set("property_type", selectedPropertyType);
+  }
+
+  if (selectedBedrooms) {
+    paginationBaseParams.set("bedrooms", String(selectedBedrooms));
   }
 
   if (hasMaxPriceFilter) {
@@ -202,6 +211,23 @@ export default async function Home({ searchParams }: HomeProps) {
                       {propertyType.depth > 0 ? "- " : ""}
                       {propertyType.name}
                       {propertyType.count > 0 ? ` (${propertyType.count})` : ""}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="grid gap-1 md:col-span-2">
+                <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                  Bedrooms
+                </span>
+                <select
+                  name="bedrooms"
+                  defaultValue={bedrooms}
+                  className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
+                >
+                  <option value="">Any</option>
+                  {bedroomOptions.map((bedroomCount) => (
+                    <option key={bedroomCount} value={bedroomCount}>
+                      {bedroomCount}+
                     </option>
                   ))}
                 </select>
