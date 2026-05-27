@@ -1,54 +1,25 @@
-type ResalesFeatureCategory = {
+type FeatureGroup = {
   Type: string;
   Value: string[];
 };
 
-type ResalesProperty = {
-  Reference: string;
-  AgencyRef: string;
-  Country: string;
-  Province: string;
-  Area: string;
-  Location: string;
-  SubLocation: string;
-  PropertyType: {
-    NameType: string;
-    Type: string;
-    TypeId: string;
-    Subtype1: string;
-    SubtypeId1: string;
-  };
-  Status: {
-    system: string;
-    en: string;
-  };
-  Bedrooms: string;
-  Bathrooms: string;
-  Currency: string;
-  Price: string;
-  OriginalPrice: number;
-  Dimensions: string;
-  Built: number;
-  Terrace: number;
-  GardenPlot: number;
-  CO2Rated: string;
-  EnergyRated: string;
-  OwnProperty: string;
-  Pool: number;
-  Parking: number;
-  Garden: number;
-  Description: string;
-  PropertyFeatures: {
-    Category: ResalesFeatureCategory[];
-  };
-  Pictures: {
-    Count: number;
-    Picture: {
-      Id: number;
-      PictureURL: string;
-      PictureCaption: string;
-    }[];
-  };
+type SampleProperty = {
+  ref: string;
+  title: string;
+  location: string;
+  city: string;
+  price: string;
+  beds: string;
+  baths: string;
+  size: string;
+  plot: string;
+  terrace: string;
+  tag: string;
+  type: string;
+  status: string;
+  description: string;
+  images: string[];
+  featureGroups: FeatureGroup[];
 };
 
 export const languages = [
@@ -62,37 +33,24 @@ export const languages = [
 ];
 
 export const quickFilters = [
-  "Manilva",
-  "Penthouse",
-  "Apartment",
-  "Sea views",
-  "New construction",
-  "Communal pool",
+  "Nueva Andalucia",
+  "Marbella",
+  "Estepona",
+  "Puerto Banus",
+  "Beachfront",
+  "Hot offer",
 ];
 
-const description =
-  "A design horizon facing the sea. This residential complex presents a residential building of 44 exclusive homes, integrated into a unique natural environment, characterized by its excellent geographical position in terms of landscape and sea views. A contemporary architectural style residential with qualities of excellence in a magnificent location facing the Mediterranean. Apartments with 2 and 3 bedrooms, 2 bathrooms, spacious rooms and wonderful terraces with open access from the living room and bedroom. The complex includes landscaped recreation areas with a swimming pool and private parking spaces, located in one of the most distinguished residential areas of Manilva, close to El Castillo Beach and La Duquesa Beach.";
+const gallery = [
+  "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=80",
+  "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+];
 
-const sharedFeatureGroups: ResalesFeatureCategory[] = [
+const featureGroups: FeatureGroup[] = [
   {
     Type: "Setting",
     Value: ["Close To Shops", "Close To Town", "Close To Schools"],
-  },
-  {
-    Type: "Orientation",
-    Value: ["South"],
-  },
-  {
-    Type: "Condition",
-    Value: ["Excellent", "New Construction"],
-  },
-  {
-    Type: "Pool",
-    Value: ["Communal"],
-  },
-  {
-    Type: "Climate Control",
-    Value: ["Air Conditioning", "U/F Heating"],
   },
   {
     Type: "Views",
@@ -100,247 +58,219 @@ const sharedFeatureGroups: ResalesFeatureCategory[] = [
   },
   {
     Type: "Features",
-    Value: [
-      "Covered Terrace",
-      "Lift",
-      "Fitted Wardrobes",
-      "Near Transport",
-      "Private Terrace",
-      "Utility Room",
-      "Ensuite Bathroom",
-      "Double Glazing",
-    ],
-  },
-  {
-    Type: "Furniture",
-    Value: ["Not Furnished", "Optional"],
-  },
-  {
-    Type: "Kitchen",
-    Value: ["Fully Fitted"],
-  },
-  {
-    Type: "Garden",
-    Value: ["Communal"],
-  },
-  {
-    Type: "Security",
-    Value: ["Entry Phone", "24 Hour Security"],
+    Value: ["Covered Terrace", "Lift", "Private Terrace", "Double Glazing"],
   },
   {
     Type: "Parking",
     Value: ["Private"],
   },
-  {
-    Type: "Category",
-    Value: ["Luxury"],
-  },
 ];
 
-export const resalesApiProperties: ResalesProperty[] = [
+const descriptions = {
+  luxury:
+    "A prime Move2Marbella listing for buyers looking for a refined Costa del Sol lifestyle. The property combines a strong location, comfortable interior spaces and easy access to beaches, restaurants, golf and daily services.",
+  apartment:
+    "A practical and well-located apartment option with a clear lifestyle focus. This sample listing is structured from the Move2Marbella properties page and is ready to be replaced by live Resales Online API data.",
+  development:
+    "A new development opportunity with modern layouts, outdoor living and strong buyer appeal. This sample keeps the core public listing data while the API integration is prepared.",
+};
+
+export const properties: SampleProperty[] = [
   {
-    Reference: "R4205452",
-    AgencyRef: "R4205452",
-    Country: "Spain",
-    Province: "Malaga",
-    Area: "Costa del Sol",
-    Location: "Manilva",
-    SubLocation: "",
-    PropertyType: {
-      NameType: "Penthouse",
-      Type: "Apartment",
-      TypeId: "1-1",
-      Subtype1: "Penthouse",
-      SubtypeId1: "1-6",
-    },
-    Status: {
-      system: "Available",
-      en: "Available",
-    },
-    Bedrooms: "3",
-    Bathrooms: "2",
-    Currency: "EUR",
-    Price: "261500",
-    OriginalPrice: 261500,
-    Dimensions: "Metres",
-    Built: 94,
-    Terrace: 9,
-    GardenPlot: 0,
-    CO2Rated: "",
-    EnergyRated: "",
-    OwnProperty: "1",
-    Pool: 1,
-    Parking: 1,
-    Garden: 1,
-    Description: description,
-    PropertyFeatures: {
-      Category: sharedFeatureGroups,
-    },
-    Pictures: {
-      Count: 10,
-      Picture: [
-        {
-          Id: 1,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/bf41233f7fb511ed98460217bc231ef4/w1200/1-7980e48d732b6fc85c14b43b94d2aa54.jpg?v=1676910382",
-          PictureCaption: "",
-        },
-        {
-          Id: 2,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/bf41233f7fb511ed98460217bc231ef4/w1200/2-5bd7b9d04b45e33852eaf0ec6670150d.jpg?v=1676910382",
-          PictureCaption: "",
-        },
-        {
-          Id: 3,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/bf41233f7fb511ed98460217bc231ef4/w1200/3-e898b2bb2a2fdfd06d2c39894dce8316.jpg?v=1676910382",
-          PictureCaption: "",
-        },
-        {
-          Id: 4,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/bf41233f7fb511ed98460217bc231ef4/w1200/4-c23c0f86247804fa50226aecd8b0b2c8.jpg?v=1676910382",
-          PictureCaption: "",
-        },
-        {
-          Id: 5,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/bf41233f7fb511ed98460217bc231ef4/w1200/5-3595ad71cbd87be6c3643a4285ef4791.jpg?v=1676910382",
-          PictureCaption: "",
-        },
-        {
-          Id: 6,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/bf41233f7fb511ed98460217bc231ef4/w1200/6-241328e1bcc9c0d8ce1222beb6c967a8.jpg?v=1676910382",
-          PictureCaption: "",
-        },
-      ],
-    },
+    ref: "R5238238",
+    title: "New Development in Nueva Andalucia",
+    location: "Nueva Andalucia, Costa del Sol",
+    city: "Nueva Andalucia",
+    price: "EUR 3,800,000",
+    beds: "3",
+    baths: "4",
+    size: "268 m2",
+    plot: "400 m2",
+    terrace: "Private terraces",
+    tag: "Prime Listing",
+    type: "New Development",
+    status: "Available, For Sale",
+    description: descriptions.development,
+    images: gallery,
+    featureGroups,
   },
   {
-    Reference: "R4204873",
-    AgencyRef: "R4204873",
-    Country: "Spain",
-    Province: "Malaga",
-    Area: "Costa del Sol",
-    Location: "Manilva",
-    SubLocation: "",
-    PropertyType: {
-      NameType: "Middle Floor Apartment",
-      Type: "Apartment",
-      TypeId: "1-1",
-      Subtype1: "Middle Floor Apartment",
-      SubtypeId1: "1-4",
-    },
-    Status: {
-      system: "Available",
-      en: "Available",
-    },
-    Bedrooms: "2",
-    Bathrooms: "2",
-    Currency: "EUR",
-    Price: "291000",
-    OriginalPrice: 291000,
-    Dimensions: "Metres",
-    Built: 79,
-    Terrace: 24,
-    GardenPlot: 0,
-    CO2Rated: "",
-    EnergyRated: "",
-    OwnProperty: "1",
-    Pool: 1,
-    Parking: 1,
-    Garden: 1,
-    Description: description,
-    PropertyFeatures: {
-      Category: sharedFeatureGroups,
-    },
-    Pictures: {
-      Count: 10,
-      Picture: [
-        {
-          Id: 1,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/8a24df547f9f11ed98460217bc231ef4/w1200/1-7980e48d732b6fc85c14b43b94d2aa54.jpg?v=1676910380",
-          PictureCaption: "",
-        },
-        {
-          Id: 2,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/8a24df547f9f11ed98460217bc231ef4/w1200/2-5bd7b9d04b45e33852eaf0ec6670150d.jpg?v=1676910380",
-          PictureCaption: "",
-        },
-        {
-          Id: 3,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/8a24df547f9f11ed98460217bc231ef4/w1200/3-e898b2bb2a2fdfd06d2c39894dce8316.jpg?v=1676910380",
-          PictureCaption: "",
-        },
-        {
-          Id: 4,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/8a24df547f9f11ed98460217bc231ef4/w1200/4-c23c0f86247804fa50226aecd8b0b2c8.jpg?v=1676910380",
-          PictureCaption: "",
-        },
-        {
-          Id: 5,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/8a24df547f9f11ed98460217bc231ef4/w1200/5-3595ad71cbd87be6c3643a4285ef4791.jpg?v=1676910380",
-          PictureCaption: "",
-        },
-        {
-          Id: 6,
-          PictureURL:
-            "https://cdn.resales-online.com/public/2clagkpr0e/properties/8a24df547f9f11ed98460217bc231ef4/w1200/6-241328e1bcc9c0d8ce1222beb6c967a8.jpg?v=1676910380",
-          PictureCaption: "",
-        },
-      ],
-    },
+    ref: "R5270242",
+    title: "Middle Floor Apartment in Marbella",
+    location: "Marbella, Costa del Sol",
+    city: "Marbella",
+    price: "EUR 399,000",
+    beds: "1",
+    baths: "1",
+    size: "57 m2",
+    plot: "Community",
+    terrace: "Private terrace",
+    tag: "Beachfront",
+    type: "Middle Floor Apartment",
+    status: "Available, For Sale",
+    description: descriptions.apartment,
+    images: [
+      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?auto=format&fit=crop&w=1200&q=80",
+    ],
+    featureGroups,
+  },
+  {
+    ref: "R5163850",
+    title: "Detached Villa in Costalita",
+    location: "Costalita, Costa del Sol",
+    city: "Costalita",
+    price: "EUR 900,000",
+    beds: "4",
+    baths: "4",
+    size: "194 m2",
+    plot: "Private plot",
+    terrace: "Covered terrace",
+    tag: "Hot Offer",
+    type: "Detached Villa",
+    status: "Available, For Sale",
+    description: descriptions.luxury,
+    images: [
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+    ],
+    featureGroups,
+  },
+  {
+    ref: "R5289715",
+    title: "Top Floor Apartment in Estepona",
+    location: "Estepona, Costa del Sol",
+    city: "Estepona",
+    price: "EUR 450,000",
+    beds: "2",
+    baths: "2",
+    size: "86 m2",
+    plot: "Community",
+    terrace: "Private terrace",
+    tag: "Hot Offer",
+    type: "Top Floor Apartment",
+    status: "Available, For Sale",
+    description: descriptions.apartment,
+    images: [
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566752447-f4c40cb35944?auto=format&fit=crop&w=1200&q=80",
+    ],
+    featureGroups,
+  },
+  {
+    ref: "R5216425",
+    title: "Middle Floor Apartment in Estepona",
+    location: "Estepona, Costa del Sol",
+    city: "Estepona",
+    price: "EUR 2,395,000",
+    beds: "3",
+    baths: "2",
+    size: "134 m2",
+    plot: "Community",
+    terrace: "Sea-facing terrace",
+    tag: "Prime Listing",
+    type: "Middle Floor Apartment",
+    status: "Available, For Sale",
+    description: descriptions.luxury,
+    images: [
+      "https://images.unsplash.com/photo-1600210491369-e753d80a41f3?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600607688066-890987f18a86?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687644-c7171b42498b?auto=format&fit=crop&w=1200&q=80",
+    ],
+    featureGroups,
+  },
+  {
+    ref: "R5109505",
+    title: "Ground Floor Apartment in Estepona",
+    location: "Estepona, Costa del Sol",
+    city: "Estepona",
+    price: "EUR 2,350,000",
+    beds: "3",
+    baths: "2",
+    size: "130 m2",
+    plot: "Garden access",
+    terrace: "Private terrace",
+    tag: "Prime Listing",
+    type: "Ground Floor Apartment",
+    status: "Available, For Sale",
+    description: descriptions.luxury,
+    images: [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600566752229-250ed79470e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607688960-e095ff83135c?auto=format&fit=crop&w=1200&q=80",
+    ],
+    featureGroups,
+  },
+  {
+    ref: "R2998166",
+    title: "Middle Floor Apartment in Puerto Banus",
+    location: "Puerto Banus, Costa del Sol",
+    city: "Puerto Banus",
+    price: "EUR 830,000",
+    beds: "2",
+    baths: "2",
+    size: "121 m2",
+    plot: "Community",
+    terrace: "Private terrace",
+    tag: "Prime Listing",
+    type: "Middle Floor Apartment",
+    status: "Available, For Sale",
+    description: descriptions.apartment,
+    images: [
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+    ],
+    featureGroups,
+  },
+  {
+    ref: "R5074729",
+    title: "New Development in Estepona",
+    location: "Estepona, Costa del Sol",
+    city: "Estepona",
+    price: "From EUR 259,000",
+    beds: "1 - 3",
+    baths: "1 - 2",
+    size: "65 - 138 m2",
+    plot: "Community",
+    terrace: "Private terraces",
+    tag: "New Development",
+    type: "New Development",
+    status: "Available, For Sale",
+    description: descriptions.development,
+    images: [
+      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?auto=format&fit=crop&w=1200&q=80",
+    ],
+    featureGroups,
+  },
+  {
+    ref: "R4624858",
+    title: "Penthouse in Bahia de Marbella",
+    location: "Bahia de Marbella, Costa del Sol",
+    city: "Bahia de Marbella",
+    price: "EUR 860,000",
+    beds: "4",
+    baths: "2",
+    size: "230 m2",
+    plot: "Community",
+    terrace: "Large terrace",
+    tag: "Under Offer",
+    type: "Penthouse",
+    status: "Under Offer",
+    description: descriptions.luxury,
+    images: [
+      "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600566753151-384129cf4e3e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585153490-76fb20a32601?auto=format&fit=crop&w=1200&q=80",
+    ],
+    featureGroups,
   },
 ];
-
-function formatPrice(currency: string, price: string) {
-  return new Intl.NumberFormat("en-GB", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(Number(price));
-}
-
-function normalizeProperty(property: ResalesProperty) {
-  const subLocation = property.SubLocation ? `, ${property.SubLocation}` : "";
-  const location = `${property.Location}${subLocation}, ${property.Area}`;
-  const views = property.PropertyFeatures.Category.find(
-    (category) => category.Type === "Views",
-  )?.Value;
-
-  return {
-    ref: property.Reference,
-    agencyRef: property.AgencyRef,
-    title: `${property.PropertyType.NameType} in ${property.Location}`,
-    location,
-    price: formatPrice(property.Currency, property.Price),
-    rawPrice: Number(property.Price),
-    beds: Number(property.Bedrooms),
-    baths: Number(property.Bathrooms),
-    size: `${property.Built} m2`,
-    plot: property.GardenPlot ? `${property.GardenPlot} m2` : "Community",
-    terrace: `${property.Terrace} m2`,
-    tag: views?.includes("Sea") ? "Sea views" : property.Status.en,
-    type: property.PropertyType.NameType,
-    status: property.Status.en,
-    description: property.Description,
-    images: property.Pictures.Picture.map((picture) => picture.PictureURL),
-    featureGroups: property.PropertyFeatures.Category,
-    features: property.PropertyFeatures.Category.flatMap((category) =>
-      category.Value.map((value) => `${category.Type}: ${value}`),
-    ).slice(0, 8),
-    raw: property,
-  };
-}
-
-export const properties = resalesApiProperties.map(normalizeProperty);
 
 export type Property = (typeof properties)[number];
 
@@ -351,5 +281,5 @@ export function getPropertyByRef(ref: string) {
 }
 
 export function getWhatsAppUrl(ref: string) {
-  return `https://wa.me/34600000000?text=Hi%20Move2Marbella%2C%20I%20am%20interested%20in%20${ref}.`;
+  return `https://wa.me/34650059356?text=Hola%2C%20need%20more%20info%20%5B${ref}%5D`;
 }

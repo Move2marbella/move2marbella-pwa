@@ -51,18 +51,18 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   ];
 
   return (
-    <main className="min-h-screen bg-[#f5f4ef] text-[#18201d]">
-      <header className="sticky top-0 z-20 border-b border-black/10 bg-[#f5f4ef]/95 px-5 py-3 backdrop-blur sm:px-8">
+    <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
+      <header className="sticky top-0 z-20 border-b border-black/10 bg-[#f7f2ea]/95 px-5 py-3 backdrop-blur sm:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
           <Link href="/" className="leading-tight">
-            <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-[#997b35]">
+            <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-[#9a7a3a]">
               Move2Marbella
             </span>
             <span className="text-base font-semibold">Property details</span>
           </Link>
           <Link
             href="/"
-            className="rounded-full border border-[#d2cbb9] bg-white px-4 py-2 text-sm font-semibold text-[#26332e]"
+            className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#242424]"
           >
             Back
           </Link>
@@ -90,15 +90,15 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           </div>
         </div>
 
-        <aside className="h-fit rounded-[8px] bg-[#10231f] p-5 text-white shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#d7b56d]">
+        <aside className="h-fit rounded-[8px] bg-[#0b0b0b] p-5 text-white shadow-sm">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#c6a15b]">
             {property.ref}
           </p>
           <h1 className="mt-2 text-3xl font-semibold leading-tight">
             {property.title}
           </h1>
           <p className="mt-2 text-sm text-white/72">{property.location}</p>
-          <p className="mt-5 text-2xl font-bold text-[#f5f4ef]">
+          <p className="mt-5 text-2xl font-bold text-[#f7f2ea]">
             {property.price}
           </p>
 
@@ -118,7 +118,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
           <a
             href={getWhatsAppUrl(property.ref)}
-            className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#d7b56d] px-5 text-base font-bold text-[#10231f]"
+            className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#c6a15b] px-5 text-base font-bold text-[#0b0b0b]"
           >
             Ask about this property
           </a>
@@ -127,29 +127,29 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
       <section className="mx-auto grid max-w-6xl gap-5 px-5 pb-10 sm:px-8 lg:grid-cols-[1fr_340px]">
         <article className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#997b35]">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
             Overview
           </p>
           <h2 className="mt-2 text-2xl font-semibold">{property.type}</h2>
-          <p className="mt-4 text-base leading-8 text-[#4d5a54]">
+          <p className="mt-4 text-base leading-8 text-[#55514a]">
             {property.description}
           </p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-[8px] bg-[#f5f4ef] p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#66716b]">
+            <div className="rounded-[8px] bg-[#f7f2ea] p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                 API Status
               </p>
               <p className="mt-1 font-semibold">{property.status}</p>
             </div>
-            <div className="rounded-[8px] bg-[#f5f4ef] p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#66716b]">
+            <div className="rounded-[8px] bg-[#f7f2ea] p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                 Plot
               </p>
               <p className="mt-1 font-semibold">{property.plot}</p>
             </div>
-            <div className="rounded-[8px] bg-[#f5f4ef] p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#66716b]">
+            <div className="rounded-[8px] bg-[#f7f2ea] p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                 Area
               </p>
               <p className="mt-1 font-semibold">{property.location}</p>
@@ -158,20 +158,20 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
         </article>
 
         <aside className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#997b35]">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
             Resales Online features
           </p>
           <div className="mt-4 space-y-4">
             {property.featureGroups.map((group) => (
-              <section key={group.Type} className="border-b border-[#ebe5d7] pb-4">
-                <h3 className="text-sm font-bold text-[#26332e]">
+              <section key={group.Type} className="border-b border-[#ece3d4] pb-4">
+                <h3 className="text-sm font-bold text-[#242424]">
                   {group.Type}
                 </h3>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {group.Value.map((value) => (
                     <span
                       key={value}
-                      className="rounded-full bg-[#f5f4ef] px-3 py-1 text-xs font-semibold text-[#4d5a54]"
+                      className="rounded-full bg-[#f7f2ea] px-3 py-1 text-xs font-semibold text-[#55514a]"
                     >
                       {value}
                     </span>

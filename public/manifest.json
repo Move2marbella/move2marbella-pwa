@@ -4,8 +4,8 @@
   "description": "Mobile property search for Marbella and the Costa del Sol.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f5f4ef",
-  "theme_color": "#10231f",
+  "background_color": "#f7f2ea",
+  "theme_color": "#0b0b0b",
   "orientation": "portrait-primary",
   "icons": [
     {
