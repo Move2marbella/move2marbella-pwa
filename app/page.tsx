@@ -19,25 +19,25 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
-      <section className="relative overflow-hidden bg-[#0b0b0b] text-white">
+      <section className="relative overflow-hidden bg-[#0f253d] text-white">
         <img
           src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=80"
           alt="Mediterranean resort pool and palm trees"
           className="absolute inset-0 h-full w-full object-cover opacity-38"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0b0b0b]/40 via-[#0b0b0b]/72 to-[#0b0b0b]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0f253d]/40 via-[#0f253d]/72 to-[#0f253d]" />
 
         <div className="relative mx-auto flex min-h-[92vh] w-full max-w-6xl flex-col px-5 pb-6 pt-5 sm:px-8 lg:min-h-[86vh]">
           <header className="flex items-center justify-between gap-4">
             <Link href="/" className="leading-tight">
-              <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-[#c6a15b]">
+              <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-[#ba9456]">
                 Move2Marbella
               </span>
               <span className="text-lg font-semibold">Costa del Sol homes</span>
             </Link>
             <a
               href={getGeneralWhatsAppUrl()}
-              className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0b0b0b] shadow-sm"
+              className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f253d] shadow-sm"
             >
               WhatsApp
             </a>
@@ -45,7 +45,7 @@ export default async function Home() {
 
           <div className="flex flex-1 flex-col justify-end gap-6 py-10">
             <div className="max-w-2xl">
-              <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-[#c6a15b]">
+              <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-[#ba9456]">
                 Marbella property search
               </p>
               <h1 className="text-4xl font-semibold leading-tight text-white sm:text-6xl">
@@ -95,7 +95,7 @@ export default async function Home() {
                   <option>EUR 2m+</option>
                 </select>
               </label>
-              <button className="h-12 self-end rounded-[6px] bg-[#c6a15b] px-5 text-base font-bold text-[#0b0b0b]">
+              <button className="h-12 self-end rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]">
                 Search
               </button>
             </form>
@@ -145,7 +145,7 @@ export default async function Home() {
                       alt={property.title}
                       className="h-full w-full object-cover"
                     />
-                    <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-xs font-bold text-[#0b0b0b]">
+                    <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-xs font-bold text-[#0f253d]">
                       {property.tag}
                     </span>
                   </div>
@@ -170,13 +170,13 @@ export default async function Home() {
                       </p>
                       <Link
                         href={`/properties/${property.ref}`}
-                        className="rounded-full border border-[#0b0b0b] px-4 py-2 text-sm font-semibold text-[#0b0b0b]"
+                        className="rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold text-[#0f253d]"
                       >
                         Details
                       </Link>
                       <a
                         href={getWhatsAppUrl(property.ref)}
-                        className="rounded-full bg-[#0b0b0b] px-4 py-2 text-sm font-semibold text-white"
+                        className="rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold text-white"
                       >
                         Enquire
                       </a>
@@ -189,8 +189,8 @@ export default async function Home() {
         </div>
 
         <aside className="space-y-4">
-          <div className="rounded-[8px] bg-[#0b0b0b] p-5 text-white">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#c6a15b]">
+          <div className="rounded-[8px] bg-[#0f253d] p-5 text-white">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ba9456]">
               MVP roadmap
             </p>
             <h2 className="mt-2 text-2xl font-semibold">Next build steps</h2>

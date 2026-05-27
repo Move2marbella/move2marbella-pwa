@@ -74,8 +74,8 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
       <section className="mx-auto grid max-w-6xl gap-5 px-5 py-5 sm:px-8 lg:grid-cols-[1.35fr_0.65fr]">
         <PropertyGallery images={property.images} title={property.title} />
 
-        <aside className="h-fit rounded-[8px] bg-[#0b0b0b] p-5 text-white shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#c6a15b]">
+        <aside className="h-fit rounded-[8px] bg-[#0f253d] p-5 text-white shadow-sm">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ba9456]">
             {property.ref}
           </p>
           <h1 className="mt-2 text-3xl font-semibold leading-tight">
@@ -102,7 +102,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
           <a
             href={getWhatsAppUrl(property.ref)}
-            className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#c6a15b] px-5 text-base font-bold text-[#0b0b0b]"
+            className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]"
           >
             Ask about this property
           </a>

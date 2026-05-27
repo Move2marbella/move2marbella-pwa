@@ -44,7 +44,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
           <button
             type="button"
             onClick={() => setShowAll((value) => !value)}
-            className="rounded-full border border-[#0b0b0b] px-5 py-2 text-sm font-semibold text-[#0b0b0b]"
+            className="rounded-full border border-[#0f253d] px-5 py-2 text-sm font-semibold text-[#0f253d]"
           >
             {showAll ? "Show less" : `More (${remainingCount})`}
           </button>
