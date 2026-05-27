@@ -9,6 +9,7 @@ import {
   getPropertyByRef,
   getWhatsAppUrl,
 } from "../../data/properties";
+import { Locale, getLocaleBasePath, getTranslations } from "../../i18n/translations";
 
 type PropertyPageProps = {
   params: Promise<{
@@ -17,6 +18,10 @@ type PropertyPageProps = {
   searchParams: Promise<{
     wp_id?: string;
   }>;
+};
+
+type PropertyDetailContentProps = PropertyPageProps & {
+  locale?: Locale;
 };
 
 export function generateStaticParams() {
@@ -51,6 +56,44 @@ export default async function PropertyPage({
   params,
   searchParams,
 }: PropertyPageProps) {
+  return (
+    <PropertyDetailContent
+      locale="en"
+      params={params}
+      searchParams={searchParams}
+    />
+  );
+}
+
+export async function PropertyDetailContent({
+  locale = "en",
+  params,
+  searchParams,
+}: PropertyDetailContentProps) {
+  const t = getTranslations(locale);
+  const basePath = getLocaleBasePath(locale);
+  const favouriteLabels = {
+    clear: t.clear,
+    favourite: t.favourite,
+    favourites: t.favourites,
+    moreSaved: t.moreSaved,
+    saved: t.saved,
+    saveHint: t.saveHint,
+  };
+  const toggleLabels = {
+    favourite: t.favourite,
+    saved: t.saved,
+  };
+  const leadLabels = {
+    email: t.email,
+    leadDefaultMessage: t.leadDefaultMessage,
+    leadForm: t.leadForm,
+    message: t.message,
+    name: t.name,
+    phone: t.phone,
+    requestDetails: t.requestDetails,
+    sendEnquiry: t.sendEnquiry,
+  };
   const { ref } = await params;
   const { wp_id: wordpressId } = await searchParams;
   const property = await getPropertyByRef(ref, wordpressId);
@@ -60,19 +103,19 @@ export default async function PropertyPage({
   }
 
   const stats = [
-    { label: "Bedrooms", value: property.beds },
-    { label: "Bathrooms", value: property.baths },
-    { label: "Built", value: property.size },
-    { label: "Terrace", value: property.terrace },
+    { label: t.bedrooms, value: property.beds },
+    { label: t.bathrooms, value: property.baths },
+    { label: t.built, value: property.size },
+    { label: t.terrace, value: property.terrace },
   ];
-  const propertyHref = `/properties/${property.ref}?wp_id=${property.id}`;
+  const propertyHref = `${basePath}/properties/${property.ref}?wp_id=${property.id}`;
 
   return (
     <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
       <header className="sticky top-0 z-20 border-b border-black/10 bg-[#f7f2ea]/95 px-5 py-3 backdrop-blur sm:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
           <Link
-            href="/"
+            href={basePath}
             className="rounded-[6px] bg-[#0f253d] px-3 py-2"
           >
             <img
@@ -82,10 +125,10 @@ export default async function PropertyPage({
             />
           </Link>
           <Link
-            href="/"
+            href={basePath}
             className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#242424]"
           >
-            Back
+            {t.back}
           </Link>
         </div>
       </header>
@@ -123,7 +166,7 @@ export default async function PropertyPage({
             href={getWhatsAppUrl(property.ref)}
             className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]"
           >
-            Ask about this property
+            {t.askAboutProperty}
           </a>
 
           <FavouriteToggle
@@ -136,6 +179,7 @@ export default async function PropertyPage({
               href: propertyHref,
             }}
             className="mt-3 flex h-12 w-full items-center justify-center"
+            labels={toggleLabels}
           />
         </aside>
       </section>
@@ -143,7 +187,7 @@ export default async function PropertyPage({
       <section className="mx-auto grid max-w-6xl gap-5 px-5 pb-10 sm:px-8 lg:grid-cols-[1fr_340px]">
         <article className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
-            Overview
+            {t.overview}
           </p>
           <h2 className="mt-2 text-2xl font-semibold">{property.type}</h2>
           <p className="mt-4 text-base leading-8 text-[#55514a]">
@@ -153,19 +197,19 @@ export default async function PropertyPage({
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             <div className="rounded-[8px] bg-[#f7f2ea] p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                API Status
+                {t.apiStatus}
               </p>
               <p className="mt-1 font-semibold">{property.status}</p>
             </div>
             <div className="rounded-[8px] bg-[#f7f2ea] p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                Plot
+                {t.plot}
               </p>
               <p className="mt-1 font-semibold">{property.plot}</p>
             </div>
             <div className="rounded-[8px] bg-[#f7f2ea] p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                Area
+                {t.area}
               </p>
               <p className="mt-1 font-semibold">{property.location}</p>
             </div>
@@ -179,13 +223,14 @@ export default async function PropertyPage({
             propertyPrice={property.price}
             propertyLocation={property.location}
             whatsappUrl={getWhatsAppUrl(property.ref)}
+            labels={leadLabels}
           />
 
-          <FavouritesPanel />
+          <FavouritesPanel labels={favouriteLabels} />
 
           <section className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
-              Resales Online features
+              {t.resalesFeatures}
             </p>
             <div className="mt-4 space-y-4">
               {property.featureGroups.map((group) => (

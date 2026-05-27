@@ -11,23 +11,55 @@ import {
   getPropertyCityFilterIds,
   getPropertyTypeFilterIds,
   getWhatsAppUrl,
-  languages,
   quickFilters,
 } from "./data/properties";
+import {
+  Locale,
+  getLocaleBasePath,
+  getTranslations,
+  locales,
+} from "./i18n/translations";
 
 export const revalidate = 300;
 
-type HomeProps = {
-  searchParams: Promise<{
-    bedrooms?: string;
-    max_price?: string;
-    page?: string;
-    property_city?: string;
-    property_type?: string;
-  }>;
+export type HomeSearchParams = {
+  bedrooms?: string;
+  max_price?: string;
+  page?: string;
+  property_city?: string;
+  property_type?: string;
 };
 
-export default async function Home({ searchParams }: HomeProps) {
+type HomeProps = {
+  searchParams: Promise<HomeSearchParams>;
+};
+
+type HomeContentProps = HomeProps & {
+  locale?: Locale;
+};
+
+export default function Home(props: HomeProps) {
+  return <HomeContent {...props} locale="en" />;
+}
+
+export async function HomeContent({
+  locale = "en",
+  searchParams,
+}: HomeContentProps) {
+  const t = getTranslations(locale);
+  const basePath = getLocaleBasePath(locale);
+  const favouriteLabels = {
+    clear: t.clear,
+    favourite: t.favourite,
+    favourites: t.favourites,
+    moreSaved: t.moreSaved,
+    saved: t.saved,
+    saveHint: t.saveHint,
+  };
+  const toggleLabels = {
+    favourite: t.favourite,
+    saved: t.saved,
+  };
   const {
     bedrooms = "",
     max_price = "20000000",
@@ -70,7 +102,7 @@ export default async function Home({ searchParams }: HomeProps) {
   )?.name;
   const resultTitle =
     [selectedCityName, selectedTypeName].filter(Boolean).join(" - ") ||
-    "Featured properties";
+    t.featuredProperties;
   const paginationBaseParams = new URLSearchParams();
 
   if (selectedPropertyCity) {
@@ -93,7 +125,7 @@ export default async function Home({ searchParams }: HomeProps) {
     const params = new URLSearchParams(paginationBaseParams);
     params.set("page", String(pageNumber));
 
-    return `/?${params.toString()}`;
+    return `${basePath}?${params.toString()}`;
   }
 
   function normalizeFilterName(value: string) {
@@ -116,7 +148,14 @@ export default async function Home({ searchParams }: HomeProps) {
       params.set("property_city", String(matchedCity.id));
     }
 
-    return `/?${params.toString()}`;
+    return `${basePath}?${params.toString()}`;
+  }
+
+  function getLanguageHref(targetLocale: Locale) {
+    const params = new URLSearchParams(paginationBaseParams);
+    params.set("page", String(currentPage));
+
+    return `${getLocaleBasePath(targetLocale)}?${params.toString()}`;
   }
 
   const pageNumbers = Array.from(
@@ -143,7 +182,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
         <div className="relative mx-auto flex min-h-[92vh] w-full max-w-6xl flex-col px-5 pb-6 pt-5 sm:px-8 lg:min-h-[86vh]">
           <header className="flex items-center justify-between gap-4">
-            <Link href="/" className="leading-tight">
+            <Link href={basePath} className="leading-tight">
               <img
                 src="/m2m_logo_white_web.png"
                 alt="Move2Marbella"
@@ -161,32 +200,31 @@ export default async function Home({ searchParams }: HomeProps) {
           <div className="flex flex-1 flex-col justify-end gap-6 py-10">
             <div className="max-w-2xl">
               <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-[#ba9456]">
-                Marbella property search
+                {t.heroEyebrow}
               </p>
               <h1 className="text-4xl font-semibold leading-tight text-white sm:text-6xl">
-                Find your next home on the Costa del Sol
+                {t.heroTitle}
               </h1>
               <p className="mt-4 max-w-xl text-base leading-7 text-white/82 sm:text-lg">
-                Search live Move2Marbella listings imported from Resales
-                Online, then contact the team directly from your phone.
+                {t.heroText}
               </p>
             </div>
 
             <form
-              action="/"
+              action={basePath}
               className="grid gap-3 rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25 md:grid-cols-12"
             >
               <input type="hidden" name="page" value="1" />
               <label className="grid gap-1 md:col-span-3">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                  Location
+                  {t.location}
                 </span>
                 <select
                   name="property_city"
                   defaultValue={selectedPropertyCity}
                   className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
                 >
-                  <option value="">Costa del Sol</option>
+                  <option value="">{t.costaDelSol}</option>
                   {propertyCities.map((propertyCity) => (
                     <option key={propertyCity.id} value={propertyCity.id}>
                       {propertyCity.depth > 0 ? "- " : ""}
@@ -198,14 +236,14 @@ export default async function Home({ searchParams }: HomeProps) {
               </label>
               <label className="grid gap-1 md:col-span-3">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                  Type
+                  {t.type}
                 </span>
                 <select
                   name="property_type"
                   defaultValue={selectedPropertyType}
                   className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
                 >
-                  <option value="">Any property</option>
+                  <option value="">{t.anyProperty}</option>
                   {propertyTypes.map((propertyType) => (
                     <option key={propertyType.id} value={propertyType.id}>
                       {propertyType.depth > 0 ? "- " : ""}
@@ -217,14 +255,14 @@ export default async function Home({ searchParams }: HomeProps) {
               </label>
               <label className="grid gap-1 md:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                  Bedrooms
+                  {t.bedrooms}
                 </span>
                 <select
                   name="bedrooms"
                   defaultValue={bedrooms}
                   className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
                 >
-                  <option value="">Any</option>
+                  <option value="">{t.any}</option>
                   {bedroomOptions.map((bedroomCount) => (
                     <option key={bedroomCount} value={bedroomCount}>
                       {bedroomCount}+
@@ -234,12 +272,13 @@ export default async function Home({ searchParams }: HomeProps) {
               </label>
               <BudgetSlider
                 defaultValue={selectedMaxPrice}
+                label={t.maxPrice}
                 max={20000000}
                 min={250000}
                 step={250000}
               />
               <button className="h-12 self-end rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d] md:col-span-2">
-                Search
+                {t.search}
               </button>
             </form>
           </div>
@@ -249,15 +288,15 @@ export default async function Home({ searchParams }: HomeProps) {
       <section className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[1fr_340px]">
         <div className="space-y-6">
           <div className="flex gap-2 overflow-x-auto pb-1">
-            {languages.map((language) => (
-              <a
-                key={language.code}
-                href={`/${language.code.toLowerCase()}`}
-                aria-label={language.label}
+            {locales.map((languageLocale) => (
+              <Link
+                key={languageLocale}
+                href={getLanguageHref(languageLocale)}
+                aria-label={languageLocale.toUpperCase()}
                 className="shrink-0 rounded-full border border-[#ded4c2] bg-white px-3 py-2 text-sm font-semibold text-[#242424]"
               >
-                {language.code}
-              </a>
+                {languageLocale.toUpperCase()}
+              </Link>
             ))}
           </div>
 
@@ -265,7 +304,7 @@ export default async function Home({ searchParams }: HomeProps) {
             <div className="mb-4 flex items-end justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
-                  Live search preview
+                  {t.liveSearchPreview}
                 </p>
                 <h2 className="mt-1 text-2xl font-semibold">
                   {resultTitle}
@@ -278,7 +317,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
             <div className="grid gap-4">
               {properties.length > 0 ? properties.map((property) => {
-                const propertyHref = `/properties/${property.ref}?wp_id=${property.id}`;
+                const propertyHref = `${basePath}/properties/${property.ref}?wp_id=${property.id}`;
 
                 return (
                   <article
@@ -305,8 +344,8 @@ export default async function Home({ searchParams }: HomeProps) {
                         </h3>
                       </div>
                       <div className="flex flex-wrap gap-2 text-sm font-semibold text-[#242424]">
-                        <span>{property.beds} beds</span>
-                        <span>{property.baths} baths</span>
+                        <span>{property.beds} {t.bedrooms.toLowerCase()}</span>
+                        <span>{property.baths} {t.bathrooms.toLowerCase()}</span>
                         <span>{property.size}</span>
                         <span>{property.ref}</span>
                       </div>
@@ -323,18 +362,19 @@ export default async function Home({ searchParams }: HomeProps) {
                             image: property.images[0],
                             href: propertyHref,
                           }}
+                          labels={toggleLabels}
                         />
                         <Link
                           href={propertyHref}
                           className="rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold text-[#0f253d]"
                         >
-                          Details
+                          {t.details}
                         </Link>
                         <a
                           href={getWhatsAppUrl(property.ref)}
                           className="rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold text-white"
                         >
-                          Enquire
+                          {t.enquire}
                         </a>
                       </div>
                     </div>
@@ -342,7 +382,7 @@ export default async function Home({ searchParams }: HomeProps) {
                 );
               }) : (
                 <div className="rounded-[8px] bg-white p-6 text-[#55514a] shadow-sm ring-1 ring-black/5">
-                  No properties found for these filters.
+                  {t.noPropertiesFound}
                 </div>
               )}
             </div>
@@ -357,7 +397,7 @@ export default async function Home({ searchParams }: HomeProps) {
                     href={getPageHref(currentPage - 1)}
                     className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#0f253d]"
                   >
-                    Previous
+                    {t.previous}
                   </Link>
                 ) : null}
 
@@ -383,7 +423,7 @@ export default async function Home({ searchParams }: HomeProps) {
                     href={getPageHref(currentPage + 1)}
                     className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#0f253d]"
                   >
-                    Next
+                    {t.next}
                   </Link>
                 ) : null}
               </nav>
@@ -392,24 +432,11 @@ export default async function Home({ searchParams }: HomeProps) {
         </div>
 
         <aside className="space-y-4">
-          <FavouritesPanel />
-
-          <div className="rounded-[8px] bg-[#0f253d] p-5 text-white">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ba9456]">
-              MVP roadmap
-            </p>
-            <h2 className="mt-2 text-2xl font-semibold">Next build steps</h2>
-            <ul className="mt-4 space-y-3 text-sm leading-6 text-white/82">
-              <li>Connect Resales Online through a secure backend API.</li>
-              <li>Add real multilingual routes for EN, ES, FR, DE, RU, PL, HU.</li>
-              <li>Create property detail pages with gallery and lead form.</li>
-              <li>Save favourites on the phone before adding user accounts.</li>
-            </ul>
-          </div>
+          <FavouritesPanel labels={favouriteLabels} />
 
           <div className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
-              Quick filters
+              {t.quickFilters}
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {quickFilters.map((filter) => (

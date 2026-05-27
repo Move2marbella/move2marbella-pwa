@@ -16,6 +16,20 @@ type FavouriteProperty = {
 type FavouriteToggleProps = {
   property: FavouriteProperty;
   className?: string;
+  labels?: {
+    favourite: string;
+    saved: string;
+  };
+};
+
+type FavouritesPanelProps = {
+  labels?: {
+    clear: string;
+    favourites: string;
+    moreSaved: string;
+    saved: string;
+    saveHint: string;
+  };
 };
 
 const FAVOURITES_STORAGE_KEY = "move2marbella:favourites";
@@ -45,6 +59,10 @@ function saveFavourites(favourites: FavouriteProperty[]) {
 export function FavouriteToggle({
   property,
   className = "",
+  labels = {
+    favourite: "Favourite",
+    saved: "Saved",
+  },
 }: FavouriteToggleProps) {
   const [isFavourite, setIsFavourite] = useState(false);
 
@@ -89,12 +107,20 @@ export function FavouriteToggle({
       }`}
     >
       <span aria-hidden="true">{isFavourite ? "♥" : "♡"}</span>{" "}
-      {isFavourite ? "Saved" : "Favourite"}
+      {isFavourite ? labels.saved : labels.favourite}
     </button>
   );
 }
 
-export function FavouritesPanel() {
+export function FavouritesPanel({
+  labels = {
+    clear: "Clear",
+    favourites: "Favourites",
+    moreSaved: "more saved on this device.",
+    saved: "saved",
+    saveHint: "Tap Favourite on any property to keep it saved on this device.",
+  },
+}: FavouritesPanelProps) {
   const [favourites, setFavourites] = useState<FavouriteProperty[]>([]);
 
   useEffect(() => {
@@ -121,10 +147,10 @@ export function FavouritesPanel() {
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
-            Favourites
+            {labels.favourites}
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-[#171717]">
-            {favourites.length} saved
+            {favourites.length} {labels.saved.toLowerCase()}
           </h2>
         </div>
         {favourites.length > 0 ? (
@@ -133,7 +159,7 @@ export function FavouritesPanel() {
             onClick={clearFavourites}
             className="rounded-full border border-[#ded4c2] px-3 py-2 text-xs font-semibold text-[#55514a]"
           >
-            Clear
+            {labels.clear}
           </button>
         ) : null}
       </div>
@@ -167,13 +193,13 @@ export function FavouritesPanel() {
 
           {favourites.length > 4 ? (
             <p className="text-xs font-semibold text-[#6f6a61]">
-              {favourites.length - 4} more saved on this device.
+              {favourites.length - 4} {labels.moreSaved}
             </p>
           ) : null}
         </div>
       ) : (
         <p className="mt-4 text-sm leading-6 text-[#55514a]">
-          Tap Favourite on any property to keep it saved on this device.
+          {labels.saveHint}
         </p>
       )}
     </section>
