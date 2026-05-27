@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FavouritesPanel, FavouriteToggle } from "../../components/favourite-toggle";
+import { LeadForm } from "../../components/lead-form";
 import { PropertyGallery } from "../../components/property-gallery";
 import {
   fetchProperties,
@@ -172,6 +173,14 @@ export default async function PropertyPage({
         </article>
 
         <aside className="space-y-5">
+          <LeadForm
+            propertyRef={property.ref}
+            propertyTitle={property.title}
+            propertyPrice={property.price}
+            propertyLocation={property.location}
+            whatsappUrl={getWhatsAppUrl(property.ref)}
+          />
+
           <FavouritesPanel />
 
           <section className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
