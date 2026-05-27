@@ -92,6 +92,7 @@ export type PropertyTypeOption = {
 
 type PropertyFilters = {
   propertyTypes?: string[];
+  page?: number;
 };
 
 export const languages = [
@@ -190,6 +191,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   const params = new URLSearchParams({
     per_page: String(limit),
+    page: String(filters.page ?? 1),
     orderby: "date",
     order: "desc",
   });
@@ -212,10 +214,18 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
   }
 
   const posts = (await response.json()) as WordPressProperty[];
+  const total = Number(response.headers.get("X-WP-Total") ?? posts.length);
+  const totalPages = Number(response.headers.get("X-WP-TotalPages") ?? 1);
+  const page = filters.page ?? 1;
 
-  return posts
-    .map(normalizeProperty)
-    .filter((property): property is Property => Boolean(property));
+  return {
+    page,
+    total,
+    totalPages,
+    properties: posts
+      .map(normalizeProperty)
+      .filter((property): property is Property => Boolean(property)),
+  };
 }
 
 function orderTermsByHierarchy(terms: WordPressTerm[]) {
@@ -298,9 +308,9 @@ export function getPropertyTypeFilterIds(
 }
 
 export async function getPropertyByRef(ref: string) {
-  const properties = await fetchProperties(9);
+  const result = await fetchProperties(9);
 
-  return properties.find(
+  return result.properties.find(
     (property) => property.ref.toLowerCase() === ref.toLowerCase(),
   );
 }

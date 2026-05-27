@@ -14,23 +14,52 @@ export const revalidate = 300;
 
 type HomeProps = {
   searchParams: Promise<{
+    page?: string;
     property_type?: string;
   }>;
 };
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { property_type: selectedPropertyType = "" } = await searchParams;
+  const { page = "1", property_type: selectedPropertyType = "" } =
+    await searchParams;
+  const currentPage = Math.max(Number(page) || 1, 1);
   const propertyTypes = await fetchPropertyTypes();
   const propertyTypeFilterIds = getPropertyTypeFilterIds(
     selectedPropertyType,
     propertyTypes,
   );
-  const properties = await fetchProperties(9, {
+  const result = await fetchProperties(9, {
+    page: currentPage,
     propertyTypes: propertyTypeFilterIds,
   });
+  const { properties, total, totalPages } = result;
   const selectedTypeName = propertyTypes.find(
     (propertyType) => String(propertyType.id) === selectedPropertyType,
   )?.name;
+  const paginationBaseParams = new URLSearchParams();
+
+  if (selectedPropertyType) {
+    paginationBaseParams.set("property_type", selectedPropertyType);
+  }
+
+  function getPageHref(pageNumber: number) {
+    const params = new URLSearchParams(paginationBaseParams);
+    params.set("page", String(pageNumber));
+
+    return `/?${params.toString()}`;
+  }
+
+  const pageNumbers = Array.from(
+    { length: Math.min(totalPages, 5) },
+    (_, index) => {
+      const start = Math.min(
+        Math.max(currentPage - 2, 1),
+        Math.max(totalPages - 4, 1),
+      );
+
+      return start + index;
+    },
+  ).filter((pageNumber) => pageNumber <= totalPages);
 
   return (
     <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
@@ -76,6 +105,7 @@ export default async function Home({ searchParams }: HomeProps) {
               action="/"
               className="grid gap-3 rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25 sm:grid-cols-4"
             >
+              <input type="hidden" name="page" value="1" />
               <label className="grid gap-1">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                   Location
@@ -151,7 +181,7 @@ export default async function Home({ searchParams }: HomeProps) {
                 </h2>
               </div>
               <span className="text-sm font-medium text-[#6f6a61]">
-                {properties.length} results
+                {total} results
               </span>
             </div>
 
@@ -211,6 +241,48 @@ export default async function Home({ searchParams }: HomeProps) {
                 </div>
               )}
             </div>
+
+            {totalPages > 1 ? (
+              <nav
+                aria-label="Property results pagination"
+                className="mt-6 flex flex-wrap items-center justify-center gap-2"
+              >
+                {currentPage > 1 ? (
+                  <Link
+                    href={getPageHref(currentPage - 1)}
+                    className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#0f253d]"
+                  >
+                    Previous
+                  </Link>
+                ) : null}
+
+                {pageNumbers.map((pageNumber) => (
+                  <Link
+                    key={pageNumber}
+                    href={getPageHref(pageNumber)}
+                    aria-current={
+                      pageNumber === currentPage ? "page" : undefined
+                    }
+                    className={
+                      pageNumber === currentPage
+                        ? "rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold text-white"
+                        : "rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#0f253d]"
+                    }
+                  >
+                    {pageNumber}
+                  </Link>
+                ))}
+
+                {currentPage < totalPages ? (
+                  <Link
+                    href={getPageHref(currentPage + 1)}
+                    className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#0f253d]"
+                  >
+                    Next
+                  </Link>
+                ) : null}
+              </nav>
+            ) : null}
           </div>
         </div>
 

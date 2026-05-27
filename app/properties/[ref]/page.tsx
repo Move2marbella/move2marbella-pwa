@@ -14,8 +14,8 @@ type PropertyPageProps = {
 };
 
 export function generateStaticParams() {
-  return fetchProperties(9).then((properties) =>
-    properties.map((property) => ({
+  return fetchProperties(9).then((result) =>
+    result.properties.map((property) => ({
       ref: property.ref,
     })),
   );
