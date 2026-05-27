@@ -2,6 +2,7 @@
 import Link from "next/link";
 import {
   fetchProperties,
+  getGeneralWhatsAppUrl,
   getWhatsAppUrl,
   languages,
   quickFilters,
@@ -31,7 +32,7 @@ export default async function Home() {
               <span className="text-lg font-semibold">Costa del Sol homes</span>
             </Link>
             <a
-              href="https://wa.me/34600000000?text=Hi%20Move2Marbella%2C%20I%20am%20looking%20for%20a%20property."
+              href={getGeneralWhatsAppUrl()}
               className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0b0b0b] shadow-sm"
             >
               WhatsApp

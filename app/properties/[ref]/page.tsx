@@ -1,6 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PropertyGallery } from "../../components/property-gallery";
 import {
   fetchProperties,
   getPropertyByRef,
@@ -72,25 +72,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
       </header>
 
       <section className="mx-auto grid max-w-6xl gap-5 px-5 py-5 sm:px-8 lg:grid-cols-[1.35fr_0.65fr]">
-        <div className="overflow-hidden rounded-[8px] bg-white shadow-sm ring-1 ring-black/5">
-          <div className="grid gap-1 sm:grid-cols-[1.5fr_0.75fr]">
-            <img
-              src={property.images[0]}
-              alt={property.title}
-              className="h-[340px] w-full object-cover sm:h-[520px]"
-            />
-            <div className="grid grid-cols-2 gap-1 sm:grid-cols-1">
-              {property.images.slice(1).map((image) => (
-                <img
-                  key={image}
-                  src={image}
-                  alt={property.title}
-                  className="h-40 w-full object-cover sm:h-full"
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+        <PropertyGallery images={property.images} title={property.title} />
 
         <aside className="h-fit rounded-[8px] bg-[#0b0b0b] p-5 text-white shadow-sm">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#c6a15b]">
