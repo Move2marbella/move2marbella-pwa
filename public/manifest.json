@@ -1,0 +1,17 @@
+{
+  "name": "Move2Marbella Property App",
+  "short_name": "Move2Marbella",
+  "description": "Mobile property search for Marbella and the Costa del Sol.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f4ef",
+  "theme_color": "#10231f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
