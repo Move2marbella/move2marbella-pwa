@@ -1,13 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import {
+  fetchProperties,
   getWhatsAppUrl,
   languages,
-  properties,
   quickFilters,
 } from "./data/properties";
 
-export default function Home() {
+export const revalidate = 300;
+
+export default async function Home() {
+  const properties = await fetchProperties(9);
+
   return (
     <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
       <section className="relative overflow-hidden bg-[#0b0b0b] text-white">
@@ -43,8 +47,8 @@ export default function Home() {
                 Find your next home on the Costa del Sol
               </h1>
               <p className="mt-4 max-w-xl text-base leading-7 text-white/82 sm:text-lg">
-                Search villas, apartments and new developments from Resales
-                Online, then contact Move2Marbella directly from your phone.
+                Search live Move2Marbella listings imported from Resales
+                Online, then contact the team directly from your phone.
               </p>
             </div>
 
@@ -116,7 +120,7 @@ export default function Home() {
                 </h2>
               </div>
               <span className="text-sm font-medium text-[#6f6a61]">
-                Resales API sample
+                Live WordPress feed
               </span>
             </div>
 

@@ -2,9 +2,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+  fetchProperties,
   getPropertyByRef,
   getWhatsAppUrl,
-  properties,
 } from "../../data/properties";
 
 type PropertyPageProps = {
@@ -14,14 +14,16 @@ type PropertyPageProps = {
 };
 
 export function generateStaticParams() {
-  return properties.map((property) => ({
-    ref: property.ref,
-  }));
+  return fetchProperties(9).then((properties) =>
+    properties.map((property) => ({
+      ref: property.ref,
+    })),
+  );
 }
 
 export async function generateMetadata({ params }: PropertyPageProps) {
   const { ref } = await params;
-  const property = getPropertyByRef(ref);
+  const property = await getPropertyByRef(ref);
 
   if (!property) {
     return {
@@ -37,7 +39,7 @@ export async function generateMetadata({ params }: PropertyPageProps) {
 
 export default async function PropertyPage({ params }: PropertyPageProps) {
   const { ref } = await params;
-  const property = getPropertyByRef(ref);
+  const property = await getPropertyByRef(ref);
 
   if (!property) {
     notFound();
@@ -185,3 +187,5 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
     </main>
   );
 }
+
+export const revalidate = 300;
