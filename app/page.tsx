@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
+import { BudgetSlider } from "./components/budget-slider";
 import {
   fetchProperties,
   fetchPropertyTypes,
@@ -14,21 +15,30 @@ export const revalidate = 300;
 
 type HomeProps = {
   searchParams: Promise<{
+    max_price?: string;
     page?: string;
     property_type?: string;
   }>;
 };
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { page = "1", property_type: selectedPropertyType = "" } =
-    await searchParams;
+  const {
+    max_price = "20000000",
+    page = "1",
+    property_type: selectedPropertyType = "",
+  } = await searchParams;
   const currentPage = Math.max(Number(page) || 1, 1);
+  const selectedMaxPrice = Math.min(
+    Math.max(Number(max_price) || 20000000, 250000),
+    20000000,
+  );
   const propertyTypes = await fetchPropertyTypes();
   const propertyTypeFilterIds = getPropertyTypeFilterIds(
     selectedPropertyType,
     propertyTypes,
   );
   const result = await fetchProperties(9, {
+    maxPrice: selectedMaxPrice < 20000000 ? selectedMaxPrice : undefined,
     page: currentPage,
     propertyTypes: propertyTypeFilterIds,
   });
@@ -40,6 +50,10 @@ export default async function Home({ searchParams }: HomeProps) {
 
   if (selectedPropertyType) {
     paginationBaseParams.set("property_type", selectedPropertyType);
+  }
+
+  if (selectedMaxPrice < 20000000) {
+    paginationBaseParams.set("max_price", String(selectedMaxPrice));
   }
 
   function getPageHref(pageNumber: number) {
@@ -137,17 +151,12 @@ export default async function Home({ searchParams }: HomeProps) {
                   ))}
                 </select>
               </label>
-              <label className="grid gap-1">
-                <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                  Budget
-                </span>
-                <select className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none">
-                  <option>Any price</option>
-                  <option>EUR 500k+</option>
-                  <option>EUR 1m+</option>
-                  <option>EUR 2m+</option>
-                </select>
-              </label>
+              <BudgetSlider
+                defaultValue={selectedMaxPrice}
+                max={20000000}
+                min={250000}
+                step={250000}
+              />
               <button className="h-12 self-end rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]">
                 Search
               </button>

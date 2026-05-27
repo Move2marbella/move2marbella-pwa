@@ -67,6 +67,7 @@ export type Property = {
   location: string;
   city: string;
   price: string;
+  rawPrice: number;
   beds: string;
   baths: string;
   size: string;
@@ -91,6 +92,7 @@ export type PropertyTypeOption = {
 };
 
 type PropertyFilters = {
+  maxPrice?: number;
   propertyTypes?: string[];
   page?: number;
 };
@@ -170,6 +172,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       location,
       city: property.Location,
       price: formatPrice(property.Currency, property.Price),
+      rawPrice: Number(property.Price),
       beds: property.Bedrooms,
       baths: property.Bathrooms,
       size: `${property.Built} m2`,
@@ -190,8 +193,8 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   const params = new URLSearchParams({
-    per_page: String(limit),
-    page: String(filters.page ?? 1),
+    per_page: String(filters.maxPrice ? 100 : limit),
+    page: String(filters.maxPrice ? 1 : (filters.page ?? 1)),
     orderby: "date",
     order: "desc",
   });
@@ -214,17 +217,26 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
   }
 
   const posts = (await response.json()) as WordPressProperty[];
-  const total = Number(response.headers.get("X-WP-Total") ?? posts.length);
-  const totalPages = Number(response.headers.get("X-WP-TotalPages") ?? 1);
   const page = filters.page ?? 1;
+  const normalizedProperties = posts
+    .map(normalizeProperty)
+    .filter((property): property is Property => Boolean(property));
+  const filteredProperties = filters.maxPrice
+    ? normalizedProperties.filter((property) => property.rawPrice <= filters.maxPrice!)
+    : normalizedProperties;
+  const properties = filters.maxPrice
+    ? filteredProperties.slice((page - 1) * limit, page * limit)
+    : filteredProperties;
+  const total = filters.maxPrice
+    ? filteredProperties.length
+    : Number(response.headers.get("X-WP-Total") ?? posts.length);
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return {
     page,
     total,
     totalPages,
-    properties: posts
-      .map(normalizeProperty)
-      .filter((property): property is Property => Boolean(property)),
+    properties,
   };
 }
 
