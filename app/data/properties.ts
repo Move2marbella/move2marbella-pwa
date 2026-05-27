@@ -222,7 +222,9 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     .map(normalizeProperty)
     .filter((property): property is Property => Boolean(property));
   const filteredProperties = filters.maxPrice
-    ? normalizedProperties.filter((property) => property.rawPrice <= filters.maxPrice!)
+    ? normalizedProperties.filter(
+        (property) => property.rawPrice <= filters.maxPrice!,
+      )
     : normalizedProperties;
   const properties = filters.maxPrice
     ? filteredProperties.slice((page - 1) * limit, page * limit)

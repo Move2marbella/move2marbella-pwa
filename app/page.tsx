@@ -28,6 +28,7 @@ export default async function Home({ searchParams }: HomeProps) {
     property_type: selectedPropertyType = "",
   } = await searchParams;
   const currentPage = Math.max(Number(page) || 1, 1);
+  const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
   const selectedMaxPrice = Math.min(
     Math.max(Number(max_price) || 20000000, 250000),
     20000000,
@@ -38,7 +39,7 @@ export default async function Home({ searchParams }: HomeProps) {
     propertyTypes,
   );
   const result = await fetchProperties(9, {
-    maxPrice: selectedMaxPrice < 20000000 ? selectedMaxPrice : undefined,
+    maxPrice: hasMaxPriceFilter ? selectedMaxPrice : undefined,
     page: currentPage,
     propertyTypes: propertyTypeFilterIds,
   });
@@ -52,7 +53,7 @@ export default async function Home({ searchParams }: HomeProps) {
     paginationBaseParams.set("property_type", selectedPropertyType);
   }
 
-  if (selectedMaxPrice < 20000000) {
+  if (hasMaxPriceFilter) {
     paginationBaseParams.set("max_price", String(selectedMaxPrice));
   }
 
@@ -118,10 +119,10 @@ export default async function Home({ searchParams }: HomeProps) {
 
             <form
               action="/"
-              className="grid gap-3 rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25 sm:grid-cols-4"
+              className="grid gap-3 rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25 md:grid-cols-12"
             >
               <input type="hidden" name="page" value="1" />
-              <label className="grid gap-1">
+              <label className="grid gap-1 md:col-span-3">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                   Location
                 </span>
@@ -132,7 +133,7 @@ export default async function Home({ searchParams }: HomeProps) {
                   <option>Fuengirola</option>
                 </select>
               </label>
-              <label className="grid gap-1">
+              <label className="grid gap-1 md:col-span-3">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                   Type
                 </span>
@@ -157,7 +158,7 @@ export default async function Home({ searchParams }: HomeProps) {
                 min={250000}
                 step={250000}
               />
-              <button className="h-12 self-end rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]">
+              <button className="h-12 self-end rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d] md:col-span-2">
                 Search
               </button>
             </form>
