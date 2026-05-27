@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FavouritesPanel, FavouriteToggle } from "../../components/favourite-toggle";
 import { PropertyGallery } from "../../components/property-gallery";
 import {
   fetchProperties,
@@ -63,6 +64,7 @@ export default async function PropertyPage({
     { label: "Built", value: property.size },
     { label: "Terrace", value: property.terrace },
   ];
+  const propertyHref = `/properties/${property.ref}?wp_id=${property.id}`;
 
   return (
     <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
@@ -122,6 +124,18 @@ export default async function PropertyPage({
           >
             Ask about this property
           </a>
+
+          <FavouriteToggle
+            property={{
+              ref: property.ref,
+              title: property.title,
+              price: property.price,
+              location: property.location,
+              image: property.images[0],
+              href: propertyHref,
+            }}
+            className="mt-3 flex h-12 w-full items-center justify-center"
+          />
         </aside>
       </section>
 
@@ -157,29 +171,36 @@ export default async function PropertyPage({
           </div>
         </article>
 
-        <aside className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
-            Resales Online features
-          </p>
-          <div className="mt-4 space-y-4">
-            {property.featureGroups.map((group) => (
-              <section key={group.Type} className="border-b border-[#ece3d4] pb-4">
-                <h3 className="text-sm font-bold text-[#242424]">
-                  {group.Type}
-                </h3>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {group.Value.map((value) => (
-                    <span
-                      key={value}
-                      className="rounded-full bg-[#f7f2ea] px-3 py-1 text-xs font-semibold text-[#55514a]"
-                    >
-                      {value}
-                    </span>
-                  ))}
-                </div>
-              </section>
-            ))}
-          </div>
+        <aside className="space-y-5">
+          <FavouritesPanel />
+
+          <section className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
+              Resales Online features
+            </p>
+            <div className="mt-4 space-y-4">
+              {property.featureGroups.map((group) => (
+                <section
+                  key={group.Type}
+                  className="border-b border-[#ece3d4] pb-4"
+                >
+                  <h3 className="text-sm font-bold text-[#242424]">
+                    {group.Type}
+                  </h3>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {group.Value.map((value) => (
+                      <span
+                        key={value}
+                        className="rounded-full bg-[#f7f2ea] px-3 py-1 text-xs font-semibold text-[#55514a]"
+                      >
+                        {value}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          </section>
         </aside>
       </section>
     </main>

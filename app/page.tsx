@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { BudgetSlider } from "./components/budget-slider";
+import { FavouritesPanel, FavouriteToggle } from "./components/favourite-toggle";
 import {
   fetchProperties,
   fetchPropertyCities,
@@ -227,56 +228,70 @@ export default async function Home({ searchParams }: HomeProps) {
             </div>
 
             <div className="grid gap-4">
-              {properties.length > 0 ? properties.map((property) => (
-                <article
-                  key={property.ref}
-                  className="overflow-hidden rounded-[8px] bg-white shadow-sm ring-1 ring-black/5 sm:grid sm:grid-cols-[220px_1fr]"
-                >
-                  <div className="relative h-56 sm:h-full">
-                    <img
-                      src={property.images[0]}
-                      alt={property.title}
-                      className="h-full w-full object-cover"
-                    />
-                    <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-xs font-bold text-[#0f253d]">
-                      {property.tag}
-                    </span>
-                  </div>
-                  <div className="grid gap-4 p-4">
-                    <div>
-                      <p className="text-sm font-medium text-[#6f6a61]">
-                        {property.location}
-                      </p>
-                      <h3 className="mt-1 text-xl font-semibold">
-                        {property.title}
-                      </h3>
+              {properties.length > 0 ? properties.map((property) => {
+                const propertyHref = `/properties/${property.ref}?wp_id=${property.id}`;
+
+                return (
+                  <article
+                    key={property.ref}
+                    className="overflow-hidden rounded-[8px] bg-white shadow-sm ring-1 ring-black/5 sm:grid sm:grid-cols-[220px_1fr]"
+                  >
+                    <div className="relative h-56 sm:h-full">
+                      <img
+                        src={property.images[0]}
+                        alt={property.title}
+                        className="h-full w-full object-cover"
+                      />
+                      <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-xs font-bold text-[#0f253d]">
+                        {property.tag}
+                      </span>
                     </div>
-                    <div className="flex flex-wrap gap-2 text-sm font-semibold text-[#242424]">
-                      <span>{property.beds} beds</span>
-                      <span>{property.baths} baths</span>
-                      <span>{property.size}</span>
-                      <span>{property.ref}</span>
+                    <div className="grid gap-4 p-4">
+                      <div>
+                        <p className="text-sm font-medium text-[#6f6a61]">
+                          {property.location}
+                        </p>
+                        <h3 className="mt-1 text-xl font-semibold">
+                          {property.title}
+                        </h3>
+                      </div>
+                      <div className="flex flex-wrap gap-2 text-sm font-semibold text-[#242424]">
+                        <span>{property.beds} beds</span>
+                        <span>{property.baths} baths</span>
+                        <span>{property.size}</span>
+                        <span>{property.ref}</span>
+                      </div>
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <p className="min-w-full text-lg font-bold sm:min-w-0">
+                          {property.price}
+                        </p>
+                        <FavouriteToggle
+                          property={{
+                            ref: property.ref,
+                            title: property.title,
+                            price: property.price,
+                            location: property.location,
+                            image: property.images[0],
+                            href: propertyHref,
+                          }}
+                        />
+                        <Link
+                          href={propertyHref}
+                          className="rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold text-[#0f253d]"
+                        >
+                          Details
+                        </Link>
+                        <a
+                          href={getWhatsAppUrl(property.ref)}
+                          className="rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold text-white"
+                        >
+                          Enquire
+                        </a>
+                      </div>
                     </div>
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <p className="min-w-full text-lg font-bold sm:min-w-0">
-                        {property.price}
-                      </p>
-                      <Link
-                        href={`/properties/${property.ref}?wp_id=${property.id}`}
-                        className="rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold text-[#0f253d]"
-                      >
-                        Details
-                      </Link>
-                      <a
-                        href={getWhatsAppUrl(property.ref)}
-                        className="rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold text-white"
-                      >
-                        Enquire
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              )) : (
+                  </article>
+                );
+              }) : (
                 <div className="rounded-[8px] bg-white p-6 text-[#55514a] shadow-sm ring-1 ring-black/5">
                   No properties found for these filters.
                 </div>
@@ -328,6 +343,8 @@ export default async function Home({ searchParams }: HomeProps) {
         </div>
 
         <aside className="space-y-4">
+          <FavouritesPanel />
+
           <div className="rounded-[8px] bg-[#0f253d] p-5 text-white">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ba9456]">
               MVP roadmap
