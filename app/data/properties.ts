@@ -138,7 +138,7 @@ function formatPrice(currency: string, price: string) {
 }
 
 function stripHtml(value: string) {
-  return value
+  return decodeUnicodeArtifacts(value)
     .replace(/<[^>]*>/g, "")
     .replace(/&#8211;/g, "-")
     .replace(/&amp;/g, "&")
@@ -146,10 +146,20 @@ function stripHtml(value: string) {
 }
 
 function cleanDescription(value: string) {
-  return value
+  return decodeUnicodeArtifacts(value)
     .replace(/\\r\\n|\\n|\\r/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function decodeUnicodeArtifacts(value?: string) {
+  if (!value) {
+    return "";
+  }
+
+  return value.replace(/u([0-9a-fA-F]{4})/g, (_, codePoint: string) =>
+    String.fromCharCode(parseInt(codePoint, 16)),
+  );
 }
 
 function normalizeProperty(post: WordPressProperty): Property | null {
@@ -161,10 +171,14 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 
   try {
     const property = JSON.parse(importData) as ResalesProperty;
-    const subLocation = property.SubLocation ? `, ${property.SubLocation}` : "";
-    const location = `${property.Location}${subLocation}, ${
-      property.Area ?? "Costa del Sol"
-    }`;
+    const propertyLocation = decodeUnicodeArtifacts(property.Location);
+    const propertySubLocation = decodeUnicodeArtifacts(property.SubLocation);
+    const propertyArea =
+      decodeUnicodeArtifacts(property.Area) || "Costa del Sol";
+    const propertyType = decodeUnicodeArtifacts(property.PropertyType.NameType);
+    const propertyStatus = decodeUnicodeArtifacts(property.Status.en);
+    const subLocation = propertySubLocation ? `, ${propertySubLocation}` : "";
+    const location = `${propertyLocation}${subLocation}, ${propertyArea}`;
     const views = property.PropertyFeatures.Category.find(
       (category) => category.Type === "Views",
     )?.Value;
@@ -178,7 +192,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       agencyRef: property.AgencyRef ?? property.Reference,
       title: stripHtml(post.title.rendered),
       location,
-      city: property.Location,
+      city: propertyLocation,
       price: formatPrice(property.Currency, property.Price),
       rawPrice: Number(property.Price),
       beds: property.Bedrooms,
@@ -186,12 +200,15 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       size: `${property.Built} m2`,
       plot: property.GardenPlot ? `${property.GardenPlot} m2` : "Community",
       terrace: `${property.Terrace} m2`,
-      tag: views?.includes("Sea") ? "Sea views" : property.Status.en,
-      type: property.PropertyType.NameType,
-      status: property.Status.en,
+      tag: views?.includes("Sea") ? "Sea views" : propertyStatus,
+      type: propertyType,
+      status: propertyStatus,
       description: cleanDescription(property.Description),
       images,
-      featureGroups: property.PropertyFeatures.Category,
+      featureGroups: property.PropertyFeatures.Category.map((group) => ({
+        Type: decodeUnicodeArtifacts(group.Type),
+        Value: group.Value.map((value) => decodeUnicodeArtifacts(value)),
+      })),
       wordpressUrl: post.link,
     };
   } catch {
