@@ -1,63 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-
-const languages = [
-  { code: "EN", label: "English" },
-  { code: "ES", label: "Espanol" },
-  { code: "FR", label: "Francais" },
-  { code: "DE", label: "Deutsch" },
-  { code: "RU", label: "Russian" },
-  { code: "PL", label: "Polski" },
-  { code: "HU", label: "Magyar" },
-];
-
-const quickFilters = [
-  "Marbella",
-  "Estepona",
-  "Benahavis",
-  "Nueva Andalucia",
-  "Beachfront",
-  "New builds",
-];
-
-const properties = [
-  {
-    ref: "R482101",
-    title: "Modern villa in Nueva Andalucia",
-    location: "Nueva Andalucia, Marbella",
-    price: "EUR 2,450,000",
-    beds: 5,
-    baths: 5,
-    size: "420 m2",
-    tag: "Featured",
-    image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    ref: "R481774",
-    title: "Beachside apartment near Puerto Banus",
-    location: "Puerto Banus, Marbella",
-    price: "EUR 695,000",
-    beds: 2,
-    baths: 2,
-    size: "118 m2",
-    tag: "Beachside",
-    image:
-      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    ref: "R480933",
-    title: "Penthouse with sea views",
-    location: "Estepona, Costa del Sol",
-    price: "EUR 1,150,000",
-    beds: 3,
-    baths: 3,
-    size: "185 m2",
-    tag: "Sea views",
-    image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
-  },
-];
+import {
+  getWhatsAppUrl,
+  languages,
+  properties,
+  quickFilters,
+} from "./data/properties";
 
 export default function Home() {
   return (
@@ -180,7 +128,7 @@ export default function Home() {
                 >
                   <div className="relative h-56 sm:h-full">
                     <img
-                      src={property.image}
+                      src={property.images[0]}
                       alt={property.title}
                       className="h-full w-full object-cover"
                     />
@@ -205,8 +153,14 @@ export default function Home() {
                     </div>
                     <div className="flex items-center justify-between gap-3">
                       <p className="text-lg font-bold">{property.price}</p>
+                      <Link
+                        href={`/properties/${property.ref}`}
+                        className="rounded-full border border-[#10231f] px-4 py-2 text-sm font-semibold text-[#10231f]"
+                      >
+                        Details
+                      </Link>
                       <a
-                        href={`https://wa.me/34600000000?text=Hi%20Move2Marbella%2C%20I%20am%20interested%20in%20${property.ref}.`}
+                        href={getWhatsAppUrl(property.ref)}
                         className="rounded-full bg-[#10231f] px-4 py-2 text-sm font-semibold text-white"
                       >
                         Enquire
