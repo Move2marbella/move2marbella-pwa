@@ -112,12 +112,10 @@ export const languages = [
 ];
 
 export const quickFilters = [
-  "Marbella",
-  "Estepona",
-  "Nueva Andalucia",
-  "Puerto Banus",
-  "Beachfront",
-  "Hot offer",
+  { label: "Marbella", cityName: "Marbella" },
+  { label: "Estepona", cityName: "Estepona" },
+  { label: "Nueva Andalucia", cityName: "Nueva Andalucia" },
+  { label: "Puerto Banus", cityName: "Puerto Banus" },
 ];
 
 const WORDPRESS_PROPERTIES_URL =

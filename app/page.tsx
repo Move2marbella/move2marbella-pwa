@@ -87,6 +87,29 @@ export default async function Home({ searchParams }: HomeProps) {
     return `/?${params.toString()}`;
   }
 
+  function normalizeFilterName(value: string) {
+    return value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  }
+
+  function getQuickFilterHref(cityName: string) {
+    const matchedCity = propertyCities.find(
+      (propertyCity) =>
+        normalizeFilterName(propertyCity.name) === normalizeFilterName(cityName),
+    );
+    const params = new URLSearchParams(paginationBaseParams);
+
+    params.set("page", "1");
+
+    if (matchedCity) {
+      params.set("property_city", String(matchedCity.id));
+    }
+
+    return `/?${params.toString()}`;
+  }
+
   const pageNumbers = Array.from(
     { length: Math.min(totalPages, 5) },
     (_, index) => {
@@ -364,12 +387,19 @@ export default async function Home({ searchParams }: HomeProps) {
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {quickFilters.map((filter) => (
-                <button
-                  key={filter}
-                  className="rounded-full border border-[#ded4c2] px-3 py-2 text-sm font-semibold text-[#242424]"
+                <Link
+                  key={filter.label}
+                  href={getQuickFilterHref(filter.cityName)}
+                  className={
+                    selectedCityName &&
+                    normalizeFilterName(selectedCityName) ===
+                      normalizeFilterName(filter.cityName)
+                      ? "rounded-full bg-[#0f253d] px-3 py-2 text-sm font-semibold text-white"
+                      : "rounded-full border border-[#ded4c2] px-3 py-2 text-sm font-semibold text-[#242424]"
+                  }
                 >
-                  {filter}
-                </button>
+                  {filter.label}
+                </Link>
               ))}
             </div>
           </div>
