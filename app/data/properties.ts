@@ -82,7 +82,7 @@ export type Property = {
   wordpressUrl: string;
 };
 
-export type PropertyTypeOption = {
+type TaxonomyOption = {
   id: number;
   name: string;
   slug: string;
@@ -91,8 +91,12 @@ export type PropertyTypeOption = {
   depth: number;
 };
 
+export type PropertyTypeOption = TaxonomyOption;
+export type PropertyCityOption = TaxonomyOption;
+
 type PropertyFilters = {
   maxPrice?: number;
+  propertyCities?: string[];
   propertyTypes?: string[];
   page?: number;
 };
@@ -118,6 +122,8 @@ export const quickFilters = [
 
 const WORDPRESS_PROPERTIES_URL =
   "https://move2marbella.com/wp-json/wp/v2/properties";
+const WORDPRESS_PROPERTY_CITIES_URL =
+  "https://move2marbella.com/wp-json/wp/v2/property_city";
 const WORDPRESS_PROPERTY_TYPES_URL =
   "https://move2marbella.com/wp-json/wp/v2/property_type";
 
@@ -203,6 +209,10 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     params.set("property_type", filters.propertyTypes.join(","));
   }
 
+  if (filters.propertyCities?.length) {
+    params.set("property_city", filters.propertyCities.join(","));
+  }
+
   const response = await fetch(
     `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
     {
@@ -278,6 +288,51 @@ async function findPropertyByReference(ref: string) {
   return null;
 }
 
+async function fetchTaxonomyTerms(url: string, errorMessage: string) {
+  const baseParams = new URLSearchParams({
+    per_page: "100",
+    orderby: "name",
+    order: "asc",
+  });
+  const firstResponse = await fetch(`${url}?${baseParams.toString()}`, {
+    next: {
+      revalidate: 300,
+    },
+  });
+
+  if (!firstResponse.ok) {
+    throw new Error(errorMessage);
+  }
+
+  const firstPage = (await firstResponse.json()) as WordPressTerm[];
+  const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages") ?? 1);
+
+  if (totalPages <= 1) {
+    return firstPage;
+  }
+
+  const restPages = await Promise.all(
+    Array.from({ length: totalPages - 1 }, async (_, index) => {
+      const params = new URLSearchParams(baseParams);
+      params.set("page", String(index + 2));
+
+      const response = await fetch(`${url}?${params.toString()}`, {
+        next: {
+          revalidate: 300,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(errorMessage);
+      }
+
+      return (await response.json()) as WordPressTerm[];
+    }),
+  );
+
+  return firstPage.concat(...restPages);
+}
+
 function orderTermsByHierarchy(terms: WordPressTerm[]) {
   const childrenByParent = new Map<number, WordPressTerm[]>();
 
@@ -291,7 +346,7 @@ function orderTermsByHierarchy(terms: WordPressTerm[]) {
     children.sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  const ordered: PropertyTypeOption[] = [];
+  const ordered: TaxonomyOption[] = [];
 
   function walk(parentId: number, depth: number) {
     for (const term of childrenByParent.get(parentId) ?? []) {
@@ -313,48 +368,61 @@ function orderTermsByHierarchy(terms: WordPressTerm[]) {
 }
 
 export async function fetchPropertyTypes() {
-  const response = await fetch(
-    `${WORDPRESS_PROPERTY_TYPES_URL}?per_page=100&orderby=name&order=asc`,
-    {
-      next: {
-        revalidate: 300,
-      },
-    },
+  const terms = await fetchTaxonomyTerms(
+    WORDPRESS_PROPERTY_TYPES_URL,
+    "Could not fetch Move2Marbella property types",
   );
-
-  if (!response.ok) {
-    throw new Error("Could not fetch Move2Marbella property types");
-  }
-
-  const terms = (await response.json()) as WordPressTerm[];
 
   return orderTermsByHierarchy(terms);
 }
 
-export function getPropertyTypeFilterIds(
-  selectedTypeId: string,
-  propertyTypes: PropertyTypeOption[],
+export async function fetchPropertyCities() {
+  const terms = await fetchTaxonomyTerms(
+    WORDPRESS_PROPERTY_CITIES_URL,
+    "Could not fetch Move2Marbella property cities",
+  );
+
+  return orderTermsByHierarchy(terms);
+}
+
+function getTaxonomyFilterIds(
+  selectedTermId: string,
+  terms: TaxonomyOption[],
 ) {
-  if (!selectedTypeId) {
+  if (!selectedTermId) {
     return [];
   }
 
-  const selectedId = Number(selectedTypeId);
+  const selectedId = Number(selectedTermId);
   const ids = new Set<number>([selectedId]);
   let changed = true;
 
   while (changed) {
     changed = false;
 
-    for (const propertyType of propertyTypes) {
-      if (ids.has(propertyType.parent) && !ids.has(propertyType.id)) {
-        ids.add(propertyType.id);
+    for (const term of terms) {
+      if (ids.has(term.parent) && !ids.has(term.id)) {
+        ids.add(term.id);
         changed = true;
       }
     }
   }
 
   return Array.from(ids).map(String);
+}
+
+export function getPropertyTypeFilterIds(
+  selectedTypeId: string,
+  propertyTypes: PropertyTypeOption[],
+) {
+  return getTaxonomyFilterIds(selectedTypeId, propertyTypes);
+}
+
+export function getPropertyCityFilterIds(
+  selectedCityId: string,
+  propertyCities: PropertyCityOption[],
+) {
+  return getTaxonomyFilterIds(selectedCityId, propertyCities);
 }
 
 export async function getPropertyByRef(ref: string, wordpressId?: string) {

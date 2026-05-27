@@ -3,8 +3,10 @@ import Link from "next/link";
 import { BudgetSlider } from "./components/budget-slider";
 import {
   fetchProperties,
+  fetchPropertyCities,
   fetchPropertyTypes,
   getGeneralWhatsAppUrl,
+  getPropertyCityFilterIds,
   getPropertyTypeFilterIds,
   getWhatsAppUrl,
   languages,
@@ -17,6 +19,7 @@ type HomeProps = {
   searchParams: Promise<{
     max_price?: string;
     page?: string;
+    property_city?: string;
     property_type?: string;
   }>;
 };
@@ -25,6 +28,7 @@ export default async function Home({ searchParams }: HomeProps) {
   const {
     max_price = "20000000",
     page = "1",
+    property_city: selectedPropertyCity = "",
     property_type: selectedPropertyType = "",
   } = await searchParams;
   const currentPage = Math.max(Number(page) || 1, 1);
@@ -33,7 +37,14 @@ export default async function Home({ searchParams }: HomeProps) {
     Math.max(Number(max_price) || 20000000, 250000),
     20000000,
   );
-  const propertyTypes = await fetchPropertyTypes();
+  const [propertyCities, propertyTypes] = await Promise.all([
+    fetchPropertyCities(),
+    fetchPropertyTypes(),
+  ]);
+  const propertyCityFilterIds = getPropertyCityFilterIds(
+    selectedPropertyCity,
+    propertyCities,
+  );
   const propertyTypeFilterIds = getPropertyTypeFilterIds(
     selectedPropertyType,
     propertyTypes,
@@ -41,13 +52,24 @@ export default async function Home({ searchParams }: HomeProps) {
   const result = await fetchProperties(9, {
     maxPrice: hasMaxPriceFilter ? selectedMaxPrice : undefined,
     page: currentPage,
+    propertyCities: propertyCityFilterIds,
     propertyTypes: propertyTypeFilterIds,
   });
   const { properties, total, totalPages } = result;
+  const selectedCityName = propertyCities.find(
+    (propertyCity) => String(propertyCity.id) === selectedPropertyCity,
+  )?.name;
   const selectedTypeName = propertyTypes.find(
     (propertyType) => String(propertyType.id) === selectedPropertyType,
   )?.name;
+  const resultTitle =
+    [selectedCityName, selectedTypeName].filter(Boolean).join(" - ") ||
+    "Featured properties";
   const paginationBaseParams = new URLSearchParams();
+
+  if (selectedPropertyCity) {
+    paginationBaseParams.set("property_city", selectedPropertyCity);
+  }
 
   if (selectedPropertyType) {
     paginationBaseParams.set("property_type", selectedPropertyType);
@@ -126,11 +148,19 @@ export default async function Home({ searchParams }: HomeProps) {
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                   Location
                 </span>
-                <select className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none">
-                  <option>Marbella</option>
-                  <option>Estepona</option>
-                  <option>Benahavis</option>
-                  <option>Fuengirola</option>
+                <select
+                  name="property_city"
+                  defaultValue={selectedPropertyCity}
+                  className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
+                >
+                  <option value="">Costa del Sol</option>
+                  {propertyCities.map((propertyCity) => (
+                    <option key={propertyCity.id} value={propertyCity.id}>
+                      {propertyCity.depth > 0 ? "- " : ""}
+                      {propertyCity.name}
+                      {propertyCity.count > 0 ? ` (${propertyCity.count})` : ""}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className="grid gap-1 md:col-span-3">
@@ -188,7 +218,7 @@ export default async function Home({ searchParams }: HomeProps) {
                   Live search preview
                 </p>
                 <h2 className="mt-1 text-2xl font-semibold">
-                  {selectedTypeName ?? "Featured properties"}
+                  {resultTitle}
                 </h2>
               </div>
               <span className="text-sm font-medium text-[#6f6a61]">
@@ -248,7 +278,7 @@ export default async function Home({ searchParams }: HomeProps) {
                 </article>
               )) : (
                 <div className="rounded-[8px] bg-white p-6 text-[#55514a] shadow-sm ring-1 ring-black/5">
-                  No properties found for this type.
+                  No properties found for these filters.
                 </div>
               )}
             </div>
