@@ -12,6 +12,9 @@ type PropertyPageProps = {
   params: Promise<{
     ref: string;
   }>;
+  searchParams: Promise<{
+    wp_id?: string;
+  }>;
 };
 
 export function generateStaticParams() {
@@ -22,9 +25,13 @@ export function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({ params }: PropertyPageProps) {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: PropertyPageProps) {
   const { ref } = await params;
-  const property = await getPropertyByRef(ref);
+  const { wp_id: wordpressId } = await searchParams;
+  const property = await getPropertyByRef(ref, wordpressId);
 
   if (!property) {
     return {
@@ -38,9 +45,13 @@ export async function generateMetadata({ params }: PropertyPageProps) {
   };
 }
 
-export default async function PropertyPage({ params }: PropertyPageProps) {
+export default async function PropertyPage({
+  params,
+  searchParams,
+}: PropertyPageProps) {
   const { ref } = await params;
-  const property = await getPropertyByRef(ref);
+  const { wp_id: wordpressId } = await searchParams;
+  const property = await getPropertyByRef(ref, wordpressId);
 
   if (!property) {
     notFound();

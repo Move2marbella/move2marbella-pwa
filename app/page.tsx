@@ -232,7 +232,7 @@ export default async function Home({ searchParams }: HomeProps) {
                         {property.price}
                       </p>
                       <Link
-                        href={`/properties/${property.ref}`}
+                        href={`/properties/${property.ref}?wp_id=${property.id}`}
                         className="rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold text-[#0f253d]"
                       >
                         Details

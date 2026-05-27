@@ -242,6 +242,42 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
   };
 }
 
+async function fetchPropertyByWordPressId(id: string) {
+  const response = await fetch(`${WORDPRESS_PROPERTIES_URL}/${id}`, {
+    next: {
+      revalidate: 300,
+    },
+  });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  return normalizeProperty((await response.json()) as WordPressProperty);
+}
+
+async function findPropertyByReference(ref: string) {
+  const pageSize = 20;
+  const maxPagesToScan = 25;
+
+  for (let page = 1; page <= maxPagesToScan; page += 1) {
+    const result = await fetchProperties(pageSize, { page });
+    const property = result.properties.find(
+      (item) => item.ref.toLowerCase() === ref.toLowerCase(),
+    );
+
+    if (property) {
+      return property;
+    }
+
+    if (page >= result.totalPages) {
+      break;
+    }
+  }
+
+  return null;
+}
+
 function orderTermsByHierarchy(terms: WordPressTerm[]) {
   const childrenByParent = new Map<number, WordPressTerm[]>();
 
@@ -321,12 +357,16 @@ export function getPropertyTypeFilterIds(
   return Array.from(ids).map(String);
 }
 
-export async function getPropertyByRef(ref: string) {
-  const result = await fetchProperties(9);
+export async function getPropertyByRef(ref: string, wordpressId?: string) {
+  if (wordpressId) {
+    const property = await fetchPropertyByWordPressId(wordpressId);
 
-  return result.properties.find(
-    (property) => property.ref.toLowerCase() === ref.toLowerCase(),
-  );
+    if (property?.ref.toLowerCase() === ref.toLowerCase()) {
+      return property;
+    }
+  }
+
+  return findPropertyByReference(ref);
 }
 
 export function getWhatsAppUrl(ref: string) {
