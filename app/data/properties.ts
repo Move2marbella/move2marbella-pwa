@@ -85,6 +85,7 @@ export type Property = {
   coordinates: {
     latitude: number;
     longitude: number;
+    postalCode: string;
     source: string;
   } | null;
 };
