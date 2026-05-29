@@ -109,8 +109,16 @@ export async function PropertyDetailContent({
     { label: t.terrace, value: property.terrace },
   ];
   const propertyHref = `${basePath}/properties/${property.ref}?wp_id=${property.id}`;
-  const mapUrl = property.coordinates
-    ? `https://www.google.com/maps/search/?api=1&query=${property.coordinates.latitude},${property.coordinates.longitude}`
+  const mapZoneQuery = property.coordinates?.postalCode
+    ? `${property.coordinates.postalCode} Spain`
+    : null;
+  const mapUrl = mapZoneQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapZoneQuery)}`
+    : property.coordinates
+      ? `https://www.google.com/maps/search/?api=1&query=${property.coordinates.latitude},${property.coordinates.longitude}`
+      : null;
+  const mapEmbedUrl = mapZoneQuery
+    ? `https://www.google.com/maps?q=${encodeURIComponent(mapZoneQuery)}&output=embed`
     : null;
 
   return (
@@ -246,6 +254,36 @@ export async function PropertyDetailContent({
               </div>
             ) : null}
           </div>
+
+          {mapEmbedUrl && property.coordinates?.postalCode ? (
+            <section className="mt-6 overflow-hidden rounded-[8px] bg-[#0f253d] shadow-sm">
+              <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-white">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#ba9456]">
+                    {t.mapZone}
+                  </p>
+                  <h3 className="mt-1 text-lg font-semibold">
+                    ZIP {property.coordinates.postalCode}
+                  </h3>
+                </div>
+                <a
+                  href={mapUrl ?? "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full border border-white/20 px-4 py-2 text-sm font-semibold text-white transition hover:border-[#ba9456]"
+                >
+                  {t.openInMaps}
+                </a>
+              </div>
+              <iframe
+                title={`ZIP ${property.coordinates.postalCode} map zone`}
+                src={mapEmbedUrl}
+                className="h-[320px] w-full border-0 sm:h-[420px]"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </section>
+          ) : null}
         </article>
 
         <aside className="space-y-5">
