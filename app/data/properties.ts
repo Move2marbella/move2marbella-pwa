@@ -1,3 +1,5 @@
+import { getLocationCoordinate } from "./location-coordinates";
+
 type ResalesFeatureGroup = {
   Type: string;
   Value: string[];
@@ -80,6 +82,11 @@ export type Property = {
   images: string[];
   featureGroups: ResalesFeatureGroup[];
   wordpressUrl: string;
+  coordinates: {
+    latitude: number;
+    longitude: number;
+    source: string;
+  } | null;
 };
 
 type TaxonomyOption = {
@@ -177,6 +184,10 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       decodeUnicodeArtifacts(property.Area) || "Costa del Sol";
     const propertyType = decodeUnicodeArtifacts(property.PropertyType.NameType);
     const propertyStatus = decodeUnicodeArtifacts(property.Status.en);
+    const coordinates = getLocationCoordinate(
+      propertySubLocation,
+      propertyLocation,
+    );
     const subLocation = propertySubLocation ? `, ${propertySubLocation}` : "";
     const location = `${propertyLocation}${subLocation}, ${propertyArea}`;
     const views = property.PropertyFeatures.Category.find(
@@ -210,6 +221,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
         Value: group.Value.map((value) => decodeUnicodeArtifacts(value)),
       })),
       wordpressUrl: post.link,
+      coordinates,
     };
   } catch {
     return null;
