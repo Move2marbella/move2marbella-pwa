@@ -173,25 +173,6 @@ export async function PropertyDetailContent({
             ))}
           </div>
 
-          {property.coordinates?.postalCode ? (
-            <a
-              href={mapUrl ?? "#"}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-3 block rounded-[6px] border border-white/15 bg-white/8 p-3 transition hover:border-[#ba9456]/70"
-            >
-              <p className="text-xs font-semibold uppercase tracking-wide text-white/55">
-                {t.mapZone}
-              </p>
-              <p className="mt-1 text-lg font-semibold">
-                ZIP {property.coordinates.postalCode}
-              </p>
-              <p className="mt-1 text-xs font-semibold text-[#ba9456]">
-                {t.openInMaps}
-              </p>
-            </a>
-          ) : null}
-
           <a
             href={getWhatsAppUrl(property.ref)}
             className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]"
@@ -243,16 +224,6 @@ export async function PropertyDetailContent({
               </p>
               <p className="mt-1 font-semibold">{property.location}</p>
             </div>
-            {property.coordinates?.postalCode ? (
-              <div className="rounded-[8px] bg-[#f7f2ea] p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                  {t.mapZone}
-                </p>
-                <p className="mt-1 font-semibold">
-                  {property.coordinates.postalCode}
-                </p>
-              </div>
-            ) : null}
           </div>
 
           {mapEmbedUrl && property.coordinates?.postalCode ? (
