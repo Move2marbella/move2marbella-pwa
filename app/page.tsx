@@ -304,7 +304,7 @@ export async function HomeContent({
                 <input
                   name="reference"
                   defaultValue={selectedReference}
-                  placeholder="R5394643"
+                  placeholder={t.anyReference}
                   className="h-12 min-w-0 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base uppercase outline-none"
                 />
               </label>

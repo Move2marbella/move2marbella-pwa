@@ -5,6 +5,7 @@ export type Locale = (typeof locales)[number];
 type Translation = {
   any: string;
   anyProperty: string;
+  anyReference: string;
   apiStatus: string;
   area: string;
   askAboutProperty: string;
@@ -55,6 +56,7 @@ export const translations: Record<Locale, Translation> = {
   en: {
     any: "Any",
     anyProperty: "Any property",
+    anyReference: "Any reference",
     apiStatus: "API Status",
     area: "Area",
     askAboutProperty: "Ask about this property",
@@ -104,6 +106,7 @@ export const translations: Record<Locale, Translation> = {
   es: {
     any: "Cualquiera",
     anyProperty: "Cualquier propiedad",
+    anyReference: "Cualquier referencia",
     apiStatus: "Estado API",
     area: "Zona",
     askAboutProperty: "Preguntar por esta propiedad",
@@ -153,6 +156,7 @@ export const translations: Record<Locale, Translation> = {
   fr: {
     any: "Tous",
     anyProperty: "Tout bien",
+    anyReference: "Toute référence",
     apiStatus: "Statut API",
     area: "Zone",
     askAboutProperty: "Demander ce bien",
@@ -202,6 +206,7 @@ export const translations: Record<Locale, Translation> = {
   de: {
     any: "Alle",
     anyProperty: "Jede Immobilie",
+    anyReference: "Jede Referenz",
     apiStatus: "API Status",
     area: "Gebiet",
     askAboutProperty: "Diese Immobilie anfragen",
@@ -251,6 +256,7 @@ export const translations: Record<Locale, Translation> = {
   ru: {
     any: "Любой",
     anyProperty: "Любая недвижимость",
+    anyReference: "Любая референция",
     apiStatus: "Статус API",
     area: "Район",
     askAboutProperty: "Спросить об объекте",
@@ -300,6 +306,7 @@ export const translations: Record<Locale, Translation> = {
   pl: {
     any: "Dowolne",
     anyProperty: "Dowolna nieruchomość",
+    anyReference: "Dowolny numer",
     apiStatus: "Status API",
     area: "Obszar",
     askAboutProperty: "Zapytaj o tę nieruchomość",
@@ -349,6 +356,7 @@ export const translations: Record<Locale, Translation> = {
   hu: {
     any: "Bármelyik",
     anyProperty: "Bármilyen ingatlan",
+    anyReference: "Bármely referencia",
     apiStatus: "API státusz",
     area: "Terület",
     askAboutProperty: "Érdeklődés az ingatlanról",

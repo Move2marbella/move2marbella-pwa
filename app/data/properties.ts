@@ -54,6 +54,8 @@ type WordPressProperty = {
     _imported_ref?: string[];
     _property_import_data?: string[];
     fave_property_id?: string[];
+    fave_property_bedrooms?: string[];
+    fave_property_price?: string[];
   };
   property_type?: number[];
 };
@@ -117,6 +119,15 @@ type PropertyFilters = {
   reference?: string;
   propertyTypes?: string[];
   page?: number;
+};
+
+type PropertySearchIndexEntry = {
+  bedrooms: number;
+  cityIds: number[];
+  id: number;
+  price: number;
+  ref: string;
+  typeIds: number[];
 };
 
 export const languages = [
@@ -247,17 +258,54 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     filters.maxPrice || filters.bedrooms || filters.reference,
   );
 
-  if (filters.reference) {
-    const property = await fetchPropertyByExactReference(filters.reference);
-    const filteredProperties = propertyMatchesFilters(property ? [property] : [], filters);
+  if (usesClientSideFilters) {
+    const index = await fetchPropertySearchIndex();
+    const filteredEntries = index.filter((property) => {
+      if (
+        filters.reference &&
+        property.ref.toUpperCase() !== filters.reference.trim().toUpperCase()
+      ) {
+        return false;
+      }
+
+      if (filters.maxPrice && property.price > filters.maxPrice) {
+        return false;
+      }
+
+      if (filters.bedrooms && property.bedrooms < filters.bedrooms) {
+        return false;
+      }
+
+      if (
+        filters.propertyCities?.length &&
+        !filters.propertyCities.some((id) => property.cityIds.includes(Number(id)))
+      ) {
+        return false;
+      }
+
+      if (
+        filters.propertyTypes?.length &&
+        !filters.propertyTypes.some((id) => property.typeIds.includes(Number(id)))
+      ) {
+        return false;
+      }
+
+      return true;
+    });
     const page = filters.page ?? 1;
-    const total = filteredProperties.length;
+    const total = filteredEntries.length;
+    const entries = filteredEntries.slice((page - 1) * limit, page * limit);
+    const properties = (
+      await Promise.all(
+        entries.map((property) => fetchPropertyByWordPressId(String(property.id))),
+      )
+    ).filter((property): property is Property => Boolean(property));
 
     return {
       page,
       total,
-      totalPages: 1,
-      properties: filteredProperties.slice((page - 1) * limit, page * limit),
+      totalPages: Math.max(1, Math.ceil(total / limit)),
+      properties,
     };
   }
 
@@ -296,12 +344,8 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     .map(normalizeProperty)
     .filter((property): property is Property => Boolean(property));
   const filteredProperties = propertyMatchesFilters(normalizedProperties, filters);
-  const properties = usesClientSideFilters
-    ? filteredProperties.slice((page - 1) * limit, page * limit)
-    : filteredProperties;
-  const total = usesClientSideFilters
-    ? filteredProperties.length
-    : Number(response.headers.get("X-WP-Total") ?? posts.length);
+  const properties = filteredProperties;
+  const total = Number(response.headers.get("X-WP-Total") ?? posts.length);
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return {
@@ -310,6 +354,55 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     totalPages,
     properties,
   };
+}
+
+async function fetchPropertySearchIndex() {
+  const baseParams = new URLSearchParams({
+    per_page: "100",
+    page: "1",
+    orderby: "modified",
+    order: "desc",
+    _fields:
+      "id,property_city,property_type,property_meta._imported_ref,property_meta.fave_property_id,property_meta.fave_property_price,property_meta.fave_property_bedrooms",
+  });
+  const firstResponse = await fetch(
+    `${WORDPRESS_PROPERTIES_URL}?${baseParams.toString()}`,
+    {
+      next: {
+        revalidate: 3600,
+      },
+    },
+  );
+
+  if (!firstResponse.ok) {
+    throw new Error("Could not fetch Move2Marbella property search index");
+  }
+
+  const firstPage = (await firstResponse.json()) as WordPressProperty[];
+  const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages") ?? 1);
+  const restPages = await fetchWordPressPropertyPages(baseParams, totalPages, 3600);
+  const propertiesByReference = new Map<string, PropertySearchIndexEntry>();
+
+  for (const post of firstPage.concat(...restPages)) {
+    const ref =
+      post.property_meta?._imported_ref?.[0]?.trim() ||
+      post.property_meta?.fave_property_id?.[0]?.trim();
+
+    if (!ref || propertiesByReference.has(ref.toUpperCase())) {
+      continue;
+    }
+
+    propertiesByReference.set(ref.toUpperCase(), {
+      bedrooms: Number(post.property_meta?.fave_property_bedrooms?.[0] ?? 0),
+      cityIds: post.property_city ?? [],
+      id: post.id,
+      price: Number(post.property_meta?.fave_property_price?.[0] ?? 0),
+      ref,
+      typeIds: post.property_type ?? [],
+    });
+  }
+
+  return Array.from(propertiesByReference.values());
 }
 
 function propertyMatchesFilters(properties: Property[], filters: PropertyFilters) {
@@ -364,41 +457,7 @@ export async function fetchPropertySitemapEntries() {
 
   const firstPage = (await firstResponse.json()) as WordPressProperty[];
   const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages") ?? 1);
-  const restPages: WordPressProperty[][] = [];
-  const batchSize = 5;
-
-  for (
-    let firstPageInBatch = 2;
-    firstPageInBatch <= totalPages;
-    firstPageInBatch += batchSize
-  ) {
-    const pagesInBatch = Array.from(
-      { length: Math.min(batchSize, totalPages - firstPageInBatch + 1) },
-      (_, index) => firstPageInBatch + index,
-    );
-    const batch = await Promise.all(
-      pagesInBatch.map(async (page) => {
-        const params = new URLSearchParams(baseParams);
-        params.set("page", String(page));
-        const response = await fetch(
-          `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
-          {
-            next: {
-              revalidate: 3600,
-            },
-          },
-        );
-
-        if (!response.ok) {
-          throw new Error("Could not fetch Move2Marbella property sitemap");
-        }
-
-        return (await response.json()) as WordPressProperty[];
-      }),
-    );
-
-    restPages.push(...batch);
-  }
+  const restPages = await fetchWordPressPropertyPages(baseParams, totalPages, 3600);
   const propertiesByReference = new Map<
     string,
     { id: number; ref: string; modified: Date }
@@ -423,6 +482,50 @@ export async function fetchPropertySitemapEntries() {
   return Array.from(propertiesByReference.values());
 }
 
+async function fetchWordPressPropertyPages(
+  baseParams: URLSearchParams,
+  totalPages: number,
+  revalidate: number,
+) {
+  const restPages: WordPressProperty[][] = [];
+  const batchSize = 5;
+
+  for (
+    let firstPageInBatch = 2;
+    firstPageInBatch <= totalPages;
+    firstPageInBatch += batchSize
+  ) {
+    const pagesInBatch = Array.from(
+      { length: Math.min(batchSize, totalPages - firstPageInBatch + 1) },
+      (_, index) => firstPageInBatch + index,
+    );
+    const batch = await Promise.all(
+      pagesInBatch.map(async (page) => {
+        const params = new URLSearchParams(baseParams);
+        params.set("page", String(page));
+        const response = await fetch(
+          `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
+          {
+            next: {
+              revalidate,
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error("Could not fetch Move2Marbella properties");
+        }
+
+        return (await response.json()) as WordPressProperty[];
+      }),
+    );
+
+    restPages.push(...batch);
+  }
+
+  return restPages;
+}
+
 async function fetchPropertyByExactReference(ref: string) {
   const normalizedReference = ref.trim().toUpperCase();
 
@@ -430,7 +533,7 @@ async function fetchPropertyByExactReference(ref: string) {
     return null;
   }
 
-  const entries = await fetchPropertySitemapEntries();
+  const entries = await fetchPropertySearchIndex();
   const entry = entries.find(
     (property) => property.ref.toUpperCase() === normalizedReference,
   );
