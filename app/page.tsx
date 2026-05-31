@@ -235,9 +235,6 @@ export async function HomeContent({
               <h1 className="text-4xl font-semibold leading-tight text-white sm:text-6xl">
                 {t.heroTitle}
               </h1>
-              <p className="mt-4 max-w-xl text-base leading-7 text-white/82 sm:text-lg">
-                {t.heroText}
-              </p>
             </div>
 
             <form

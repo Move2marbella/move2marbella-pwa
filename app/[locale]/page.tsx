@@ -30,19 +30,19 @@ export async function generateMetadata({
 
   return {
     title: t.heroTitle,
-    description: t.heroText,
+    description: t.seoDescription,
     alternates: {
       canonical,
       languages: getLanguageAlternates(),
     },
     openGraph: {
       title: t.heroTitle,
-      description: t.heroText,
+      description: t.seoDescription,
       url: canonical,
     },
     twitter: {
       title: t.heroTitle,
-      description: t.heroText,
+      description: t.seoDescription,
     },
     robots: getPageRobots(),
   };

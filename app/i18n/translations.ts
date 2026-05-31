@@ -47,7 +47,7 @@ type Translation = {
   type: string;
   heroEyebrow: string;
   heroTitle: string;
-  heroText: string;
+  seoDescription: string;
   leadDefaultMessage: string;
 };
 
@@ -97,8 +97,8 @@ export const translations: Record<Locale, Translation> = {
     type: "Type",
     heroEyebrow: "Marbella property search",
     heroTitle: "Find your next home on the Costa del Sol",
-    heroText:
-      "Search live Move2Marbella listings, then contact the team directly from your phone.",
+    seoDescription:
+      "Search properties for sale in Marbella and across the Costa del Sol with Move2Marbella.",
     leadDefaultMessage: "I would like more information about this property.",
   },
   es: {
@@ -146,8 +146,8 @@ export const translations: Record<Locale, Translation> = {
     type: "Tipo",
     heroEyebrow: "Búsqueda de propiedades en Marbella",
     heroTitle: "Encuentra tu próxima casa en la Costa del Sol",
-    heroText:
-      "Busca propiedades Move2Marbella y contacta directamente con el equipo desde tu teléfono.",
+    seoDescription:
+      "Busca propiedades en venta en Marbella y la Costa del Sol con Move2Marbella.",
     leadDefaultMessage: "Me gustaría recibir más información sobre esta propiedad.",
   },
   fr: {
@@ -195,8 +195,8 @@ export const translations: Record<Locale, Translation> = {
     type: "Type",
     heroEyebrow: "Recherche immobilière à Marbella",
     heroTitle: "Trouvez votre prochaine maison sur la Costa del Sol",
-    heroText:
-      "Recherchez les biens Move2Marbella, puis contactez directement l'équipe depuis votre téléphone.",
+    seoDescription:
+      "Recherchez des biens à vendre à Marbella et sur la Costa del Sol avec Move2Marbella.",
     leadDefaultMessage: "Je souhaite recevoir plus d'informations sur ce bien.",
   },
   de: {
@@ -244,8 +244,8 @@ export const translations: Record<Locale, Translation> = {
     type: "Typ",
     heroEyebrow: "Immobiliensuche Marbella",
     heroTitle: "Finden Sie Ihr neues Zuhause an der Costa del Sol",
-    heroText:
-      "Suchen Sie Move2Marbella-Angebote und kontaktieren Sie das Team direkt von Ihrem Telefon.",
+    seoDescription:
+      "Suchen Sie Immobilien zum Verkauf in Marbella und an der Costa del Sol mit Move2Marbella.",
     leadDefaultMessage: "Ich möchte mehr Informationen zu dieser Immobilie erhalten.",
   },
   ru: {
@@ -293,8 +293,8 @@ export const translations: Record<Locale, Translation> = {
     type: "Тип",
     heroEyebrow: "Поиск недвижимости в Марбелье",
     heroTitle: "Найдите свой новый дом на Costa del Sol",
-    heroText:
-      "Ищите предложения Move2Marbella и связывайтесь с командой прямо с телефона.",
+    seoDescription:
+      "Найдите недвижимость на продажу в Марбелье и на Costa del Sol с Move2Marbella.",
     leadDefaultMessage: "Я хотел бы получить больше информации об этом объекте.",
   },
   pl: {
@@ -342,8 +342,8 @@ export const translations: Record<Locale, Translation> = {
     type: "Typ",
     heroEyebrow: "Wyszukiwarka nieruchomości Marbella",
     heroTitle: "Znajdź swój następny dom na Costa del Sol",
-    heroText:
-      "Przeglądaj oferty Move2Marbella i skontaktuj się z zespołem bezpośrednio z telefonu.",
+    seoDescription:
+      "Znajdź nieruchomości na sprzedaż w Marbelli i na Costa del Sol z Move2Marbella.",
     leadDefaultMessage: "Chciałbym otrzymać więcej informacji o tej nieruchomości.",
   },
   hu: {
@@ -391,8 +391,8 @@ export const translations: Record<Locale, Translation> = {
     type: "Típus",
     heroEyebrow: "Marbella ingatlankeresés",
     heroTitle: "Találd meg következő otthonod a Costa del Solon",
-    heroText:
-      "Keress élő Move2Marbella ingatlanokat, majd vedd fel közvetlenül a kapcsolatot a csapattal telefonról.",
+    seoDescription:
+      "Keress eladó ingatlanokat Marbellán és a Costa del Sol térségében a Move2Marbella segítségével.",
     leadDefaultMessage: "Szeretnék további információt kérni erről az ingatlanról.",
   },
 };
