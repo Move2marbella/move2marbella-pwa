@@ -174,8 +174,8 @@ export async function HomeContent({
     <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
       <section className="relative overflow-hidden bg-[#0f253d] text-white">
         <img
-          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=80"
-          alt="Mediterranean resort pool and palm trees"
+          src="/move2marbella-panorama.jpg"
+          alt="Aerial panorama of Marbella and the Costa del Sol"
           className="absolute inset-0 h-full w-full object-cover opacity-38"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0f253d]/40 via-[#0f253d]/72 to-[#0f253d]" />
