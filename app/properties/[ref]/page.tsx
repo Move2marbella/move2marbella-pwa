@@ -158,6 +158,15 @@ export async function PropertyDetailContent({
     locale,
     `/properties/${property.ref}`,
   )}`;
+  const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(
+    [
+      `🏡 *${property.title.replace(" - ", " – ")}*`,
+      `💰 ${property.price}`,
+      `🛏 ${property.beds} bed | ${property.baths} bath | ${property.size}`,
+      "🔎 View property",
+      canonicalPropertyUrl,
+    ].join("\n"),
+  )}`;
   const mapZoneQuery = property.coordinates?.postalCode
     ? `${property.coordinates.postalCode} Spain`
     : null;
@@ -283,6 +292,15 @@ export async function PropertyDetailContent({
             className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]"
           >
             {t.askAboutProperty}
+          </a>
+
+          <a
+            href={whatsappShareUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 flex h-12 items-center justify-center rounded-[6px] border border-white/35 px-5 text-base font-bold text-white transition hover:border-[#ba9456]"
+          >
+            {t.shareOnWhatsApp}
           </a>
 
           <FavouriteToggle

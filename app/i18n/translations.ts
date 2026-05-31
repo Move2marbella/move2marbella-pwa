@@ -44,6 +44,7 @@ type Translation = {
   saveHint: string;
   search: string;
   sendEnquiry: string;
+  shareOnWhatsApp: string;
   terrace: string;
   type: string;
   heroEyebrow: string;
@@ -95,6 +96,7 @@ export const translations: Record<Locale, Translation> = {
     saveHint: "Tap Favourite on any property to keep it saved on this device.",
     search: "Search",
     sendEnquiry: "Send enquiry",
+    shareOnWhatsApp: "Share on WhatsApp",
     terrace: "Terrace",
     type: "Type",
     heroEyebrow: "Marbella property search",
@@ -145,6 +147,7 @@ export const translations: Record<Locale, Translation> = {
     saveHint: "Toca Favorito para guardar propiedades en este dispositivo.",
     search: "Buscar",
     sendEnquiry: "Enviar consulta",
+    shareOnWhatsApp: "Compartir en WhatsApp",
     terrace: "Terraza",
     type: "Tipo",
     heroEyebrow: "Búsqueda de propiedades en Marbella",
@@ -195,6 +198,7 @@ export const translations: Record<Locale, Translation> = {
     saveHint: "Touchez Favori pour garder un bien sur cet appareil.",
     search: "Rechercher",
     sendEnquiry: "Envoyer la demande",
+    shareOnWhatsApp: "Partager sur WhatsApp",
     terrace: "Terrasse",
     type: "Type",
     heroEyebrow: "Recherche immobilière à Marbella",
@@ -245,6 +249,7 @@ export const translations: Record<Locale, Translation> = {
     saveHint: "Tippen Sie auf Favorit, um Immobilien auf diesem Gerät zu speichern.",
     search: "Suchen",
     sendEnquiry: "Anfrage senden",
+    shareOnWhatsApp: "Auf WhatsApp teilen",
     terrace: "Terrasse",
     type: "Typ",
     heroEyebrow: "Immobiliensuche Marbella",
@@ -295,6 +300,7 @@ export const translations: Record<Locale, Translation> = {
     saveHint: "Нажмите В избранное, чтобы сохранить объект на этом устройстве.",
     search: "Поиск",
     sendEnquiry: "Отправить запрос",
+    shareOnWhatsApp: "Поделиться в WhatsApp",
     terrace: "Терраса",
     type: "Тип",
     heroEyebrow: "Поиск недвижимости в Марбелье",
@@ -345,6 +351,7 @@ export const translations: Record<Locale, Translation> = {
     saveHint: "Dotknij Ulubione, aby zapisać nieruchomość na tym urządzeniu.",
     search: "Szukaj",
     sendEnquiry: "Wyślij zapytanie",
+    shareOnWhatsApp: "Udostępnij na WhatsApp",
     terrace: "Taras",
     type: "Typ",
     heroEyebrow: "Wyszukiwarka nieruchomości Marbella",
@@ -395,6 +402,7 @@ export const translations: Record<Locale, Translation> = {
     saveHint: "Koppints a Kedvenc gombra, hogy elmentsd az ingatlant ezen az eszközön.",
     search: "Keresés",
     sendEnquiry: "Érdeklődés küldése",
+    shareOnWhatsApp: "Megosztás WhatsAppon",
     terrace: "Terasz",
     type: "Típus",
     heroEyebrow: "Marbella ingatlankeresés",
