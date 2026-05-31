@@ -37,7 +37,7 @@ type Translation = {
   previous: string;
   quickFilters: string;
   requestDetails: string;
-  resalesFeatures: string;
+  features: string;
   saved: string;
   saveHint: string;
   search: string;
@@ -86,7 +86,7 @@ export const translations: Record<Locale, Translation> = {
     previous: "Previous",
     quickFilters: "Quick filters",
     requestDetails: "Request details",
-    resalesFeatures: "Resales Online features",
+    features: "Features",
     saved: "Saved",
     saveHint: "Tap Favourite on any property to keep it saved on this device.",
     search: "Search",
@@ -134,7 +134,7 @@ export const translations: Record<Locale, Translation> = {
     previous: "Anterior",
     quickFilters: "Filtros rápidos",
     requestDetails: "Solicitar detalles",
-    resalesFeatures: "Características",
+    features: "Características",
     saved: "Guardado",
     saveHint: "Toca Favorito para guardar propiedades en este dispositivo.",
     search: "Buscar",
@@ -144,7 +144,7 @@ export const translations: Record<Locale, Translation> = {
     heroEyebrow: "Búsqueda de propiedades en Marbella",
     heroTitle: "Encuentra tu próxima casa en la Costa del Sol",
     heroText:
-      "Busca propiedades Move2Marbella importadas desde Resales Online y contacta directamente desde tu teléfono.",
+      "Busca propiedades Move2Marbella y contacta directamente con el equipo desde tu teléfono.",
     leadDefaultMessage: "Me gustaría recibir más información sobre esta propiedad.",
   },
   fr: {
@@ -182,7 +182,7 @@ export const translations: Record<Locale, Translation> = {
     previous: "Précédent",
     quickFilters: "Filtres rapides",
     requestDetails: "Demander des détails",
-    resalesFeatures: "Caractéristiques",
+    features: "Caractéristiques",
     saved: "Enregistré",
     saveHint: "Touchez Favori pour garder un bien sur cet appareil.",
     search: "Rechercher",
@@ -192,7 +192,7 @@ export const translations: Record<Locale, Translation> = {
     heroEyebrow: "Recherche immobilière à Marbella",
     heroTitle: "Trouvez votre prochaine maison sur la Costa del Sol",
     heroText:
-      "Recherchez les biens Move2Marbella importés depuis Resales Online puis contactez l'équipe depuis votre téléphone.",
+      "Recherchez les biens Move2Marbella, puis contactez directement l'équipe depuis votre téléphone.",
     leadDefaultMessage: "Je souhaite recevoir plus d'informations sur ce bien.",
   },
   de: {
@@ -230,7 +230,7 @@ export const translations: Record<Locale, Translation> = {
     previous: "Zurück",
     quickFilters: "Schnellfilter",
     requestDetails: "Details anfragen",
-    resalesFeatures: "Ausstattung",
+    features: "Ausstattung",
     saved: "Gespeichert",
     saveHint: "Tippen Sie auf Favorit, um Immobilien auf diesem Gerät zu speichern.",
     search: "Suchen",
@@ -240,7 +240,7 @@ export const translations: Record<Locale, Translation> = {
     heroEyebrow: "Immobiliensuche Marbella",
     heroTitle: "Finden Sie Ihr neues Zuhause an der Costa del Sol",
     heroText:
-      "Suchen Sie live Move2Marbella Angebote aus Resales Online und kontaktieren Sie das Team direkt vom Telefon.",
+      "Suchen Sie Move2Marbella-Angebote und kontaktieren Sie das Team direkt von Ihrem Telefon.",
     leadDefaultMessage: "Ich möchte mehr Informationen zu dieser Immobilie erhalten.",
   },
   ru: {
@@ -278,7 +278,7 @@ export const translations: Record<Locale, Translation> = {
     previous: "Назад",
     quickFilters: "Быстрые фильтры",
     requestDetails: "Запросить детали",
-    resalesFeatures: "Характеристики",
+    features: "Характеристики",
     saved: "Сохранено",
     saveHint: "Нажмите В избранное, чтобы сохранить объект на этом устройстве.",
     search: "Поиск",
@@ -288,7 +288,7 @@ export const translations: Record<Locale, Translation> = {
     heroEyebrow: "Поиск недвижимости в Марбелье",
     heroTitle: "Найдите свой новый дом на Costa del Sol",
     heroText:
-      "Ищите предложения Move2Marbella из Resales Online и связывайтесь с командой прямо с телефона.",
+      "Ищите предложения Move2Marbella и связывайтесь с командой прямо с телефона.",
     leadDefaultMessage: "Я хотел бы получить больше информации об этом объекте.",
   },
   pl: {
@@ -326,7 +326,7 @@ export const translations: Record<Locale, Translation> = {
     previous: "Wstecz",
     quickFilters: "Szybkie filtry",
     requestDetails: "Poproś o szczegóły",
-    resalesFeatures: "Cechy",
+    features: "Cechy",
     saved: "Zapisano",
     saveHint: "Dotknij Ulubione, aby zapisać nieruchomość na tym urządzeniu.",
     search: "Szukaj",
@@ -336,7 +336,7 @@ export const translations: Record<Locale, Translation> = {
     heroEyebrow: "Wyszukiwarka nieruchomości Marbella",
     heroTitle: "Znajdź swój następny dom na Costa del Sol",
     heroText:
-      "Przeglądaj oferty Move2Marbella z Resales Online i skontaktuj się z zespołem z telefonu.",
+      "Przeglądaj oferty Move2Marbella i skontaktuj się z zespołem bezpośrednio z telefonu.",
     leadDefaultMessage: "Chciałbym otrzymać więcej informacji o tej nieruchomości.",
   },
   hu: {
@@ -374,7 +374,7 @@ export const translations: Record<Locale, Translation> = {
     previous: "Előző",
     quickFilters: "Gyors szűrők",
     requestDetails: "Részletek kérése",
-    resalesFeatures: "Jellemzők",
+    features: "Jellemzők",
     saved: "Mentve",
     saveHint: "Koppints a Kedvenc gombra, hogy elmentsd az ingatlant ezen az eszközön.",
     search: "Keresés",
@@ -384,7 +384,7 @@ export const translations: Record<Locale, Translation> = {
     heroEyebrow: "Marbella ingatlankeresés",
     heroTitle: "Találd meg következő otthonod a Costa del Solon",
     heroText:
-      "Keress élő Move2Marbella ingatlanokat a Resales Online adatbázisból, majd vedd fel a kapcsolatot telefonról.",
+      "Keress élő Move2Marbella ingatlanokat, majd vedd fel közvetlenül a kapcsolatot a csapattal telefonról.",
     leadDefaultMessage: "Szeretnék további információt kérni erről az ingatlanról.",
   },
 };

@@ -271,7 +271,7 @@ export async function PropertyDetailContent({
 
           <section className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
-              {t.resalesFeatures}
+              {t.features}
             </p>
             <div className="mt-4 space-y-4">
               {property.featureGroups.map((group) => (
