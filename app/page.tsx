@@ -29,6 +29,7 @@ export type HomeSearchParams = {
   max_price?: string;
   page?: string;
   property_city?: string;
+  reference?: string;
   property_type?: string;
 };
 
@@ -67,8 +68,10 @@ export async function HomeContent({
     max_price = "20000000",
     page = "1",
     property_city: selectedPropertyCity = "",
+    reference = "",
     property_type: selectedPropertyType = "",
   } = await searchParams;
+  const selectedReference = reference.trim().toUpperCase();
   const currentPage = Math.max(Number(page) || 1, 1);
   const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
   const selectedBedrooms = Number(bedrooms) || undefined;
@@ -93,6 +96,7 @@ export async function HomeContent({
     maxPrice: hasMaxPriceFilter ? selectedMaxPrice : undefined,
     page: currentPage,
     propertyCities: propertyCityFilterIds,
+    reference: selectedReference || undefined,
     propertyTypes: propertyTypeFilterIds,
   });
   const { properties, total, totalPages } = result;
@@ -103,7 +107,9 @@ export async function HomeContent({
     (propertyType) => String(propertyType.id) === selectedPropertyType,
   )?.name;
   const resultTitle =
-    [selectedCityName, selectedTypeName].filter(Boolean).join(" - ") ||
+    [selectedReference, selectedCityName, selectedTypeName]
+      .filter(Boolean)
+      .join(" - ") ||
     t.featuredProperties;
   const paginationBaseParams = new URLSearchParams();
 
@@ -113,6 +119,10 @@ export async function HomeContent({
 
   if (selectedPropertyType) {
     paginationBaseParams.set("property_type", selectedPropertyType);
+  }
+
+  if (selectedReference) {
+    paginationBaseParams.set("reference", selectedReference);
   }
 
   if (selectedBedrooms) {
@@ -235,7 +245,7 @@ export async function HomeContent({
               className="grid gap-3 rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25 md:grid-cols-12"
             >
               <input type="hidden" name="page" value="1" />
-              <label className="grid gap-1 md:col-span-3">
+              <label className="grid gap-1 md:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                   {t.location}
                 </span>
@@ -254,7 +264,7 @@ export async function HomeContent({
                   ))}
                 </select>
               </label>
-              <label className="grid gap-1 md:col-span-3">
+              <label className="grid gap-1 md:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                   {t.type}
                 </span>
@@ -289,6 +299,17 @@ export async function HomeContent({
                     </option>
                   ))}
                 </select>
+              </label>
+              <label className="grid gap-1 md:col-span-2">
+                <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                  {t.reference}
+                </span>
+                <input
+                  name="reference"
+                  defaultValue={selectedReference}
+                  placeholder="R5394643"
+                  className="h-12 min-w-0 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base uppercase outline-none"
+                />
               </label>
               <BudgetSlider
                 defaultValue={selectedMaxPrice}

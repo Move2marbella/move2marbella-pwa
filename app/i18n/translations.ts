@@ -36,6 +36,7 @@ type Translation = {
   plot: string;
   previous: string;
   quickFilters: string;
+  reference: string;
   requestDetails: string;
   features: string;
   saved: string;
@@ -85,6 +86,7 @@ export const translations: Record<Locale, Translation> = {
     plot: "Plot",
     previous: "Previous",
     quickFilters: "Quick filters",
+    reference: "Reference",
     requestDetails: "Request details",
     features: "Features",
     saved: "Saved",
@@ -133,6 +135,7 @@ export const translations: Record<Locale, Translation> = {
     plot: "Parcela",
     previous: "Anterior",
     quickFilters: "Filtros rápidos",
+    reference: "Referencia",
     requestDetails: "Solicitar detalles",
     features: "Características",
     saved: "Guardado",
@@ -181,6 +184,7 @@ export const translations: Record<Locale, Translation> = {
     plot: "Terrain",
     previous: "Précédent",
     quickFilters: "Filtres rapides",
+    reference: "Référence",
     requestDetails: "Demander des détails",
     features: "Caractéristiques",
     saved: "Enregistré",
@@ -229,6 +233,7 @@ export const translations: Record<Locale, Translation> = {
     plot: "Grundstück",
     previous: "Zurück",
     quickFilters: "Schnellfilter",
+    reference: "Referenz",
     requestDetails: "Details anfragen",
     features: "Ausstattung",
     saved: "Gespeichert",
@@ -277,6 +282,7 @@ export const translations: Record<Locale, Translation> = {
     plot: "Участок",
     previous: "Назад",
     quickFilters: "Быстрые фильтры",
+    reference: "Референция",
     requestDetails: "Запросить детали",
     features: "Характеристики",
     saved: "Сохранено",
@@ -325,6 +331,7 @@ export const translations: Record<Locale, Translation> = {
     plot: "Działka",
     previous: "Wstecz",
     quickFilters: "Szybkie filtry",
+    reference: "Numer referencyjny",
     requestDetails: "Poproś o szczegóły",
     features: "Cechy",
     saved: "Zapisano",
@@ -373,6 +380,7 @@ export const translations: Record<Locale, Translation> = {
     plot: "Telek",
     previous: "Előző",
     quickFilters: "Gyors szűrők",
+    reference: "Referencia",
     requestDetails: "Részletek kérése",
     features: "Jellemzők",
     saved: "Mentve",

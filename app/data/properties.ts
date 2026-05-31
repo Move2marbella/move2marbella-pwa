@@ -45,6 +45,7 @@ type WordPressProperty = {
   id: number;
   link: string;
   modified_gmt?: string;
+  property_city?: number[];
   slug: string;
   title: {
     rendered: string;
@@ -54,6 +55,7 @@ type WordPressProperty = {
     _property_import_data?: string[];
     fave_property_id?: string[];
   };
+  property_type?: number[];
 };
 
 type WordPressTerm = {
@@ -71,6 +73,7 @@ export type Property = {
   title: string;
   location: string;
   city: string;
+  cityIds: number[];
   currency: string;
   price: string;
   rawPrice: number;
@@ -81,6 +84,7 @@ export type Property = {
   terrace: string;
   tag: string;
   type: string;
+  typeIds: number[];
   status: string;
   description: string;
   images: string[];
@@ -110,6 +114,7 @@ type PropertyFilters = {
   bedrooms?: number;
   maxPrice?: number;
   propertyCities?: string[];
+  reference?: string;
   propertyTypes?: string[];
   page?: number;
 };
@@ -139,7 +144,8 @@ const WORDPRESS_PROPERTY_CITIES_URL =
   "https://move2marbella.com/wp-json/wp/v2/property_city";
 const WORDPRESS_PROPERTY_TYPES_URL =
   "https://move2marbella.com/wp-json/wp/v2/property_type";
-const WORDPRESS_PROPERTY_FIELDS = "id,link,slug,title,property_meta";
+const WORDPRESS_PROPERTY_FIELDS =
+  "id,link,slug,title,property_city,property_type,property_meta";
 
 function formatPrice(currency: string, price: string) {
   return new Intl.NumberFormat("en-GB", {
@@ -209,6 +215,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       title: stripHtml(post.title.rendered),
       location,
       city: propertyLocation,
+      cityIds: post.property_city ?? [],
       currency: property.Currency,
       price: formatPrice(property.Currency, property.Price),
       rawPrice: Number(property.Price),
@@ -219,6 +226,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       terrace: `${property.Terrace} m2`,
       tag: views?.includes("Sea") ? "Sea views" : propertyStatus,
       type: propertyType,
+      typeIds: post.property_type ?? [],
       status: propertyStatus,
       description: cleanDescription(property.Description),
       images,
@@ -235,7 +243,24 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 }
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
-  const usesClientSideFilters = Boolean(filters.maxPrice || filters.bedrooms);
+  const usesClientSideFilters = Boolean(
+    filters.maxPrice || filters.bedrooms || filters.reference,
+  );
+
+  if (filters.reference) {
+    const property = await fetchPropertyByExactReference(filters.reference);
+    const filteredProperties = propertyMatchesFilters(property ? [property] : [], filters);
+    const page = filters.page ?? 1;
+    const total = filteredProperties.length;
+
+    return {
+      page,
+      total,
+      totalPages: 1,
+      properties: filteredProperties.slice((page - 1) * limit, page * limit),
+    };
+  }
+
   const params = new URLSearchParams({
     per_page: String(usesClientSideFilters ? 100 : limit),
     page: String(usesClientSideFilters ? 1 : (filters.page ?? 1)),
@@ -270,17 +295,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
   const normalizedProperties = posts
     .map(normalizeProperty)
     .filter((property): property is Property => Boolean(property));
-  const filteredProperties = normalizedProperties.filter((property) => {
-    if (filters.maxPrice && property.rawPrice > filters.maxPrice) {
-      return false;
-    }
-
-    if (filters.bedrooms && Number(property.beds) < filters.bedrooms) {
-      return false;
-    }
-
-    return true;
-  });
+  const filteredProperties = propertyMatchesFilters(normalizedProperties, filters);
   const properties = usesClientSideFilters
     ? filteredProperties.slice((page - 1) * limit, page * limit)
     : filteredProperties;
@@ -295,6 +310,34 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     totalPages,
     properties,
   };
+}
+
+function propertyMatchesFilters(properties: Property[], filters: PropertyFilters) {
+  return properties.filter((property) => {
+    if (filters.maxPrice && property.rawPrice > filters.maxPrice) {
+      return false;
+    }
+
+    if (filters.bedrooms && Number(property.beds) < filters.bedrooms) {
+      return false;
+    }
+
+    if (
+      filters.propertyCities?.length &&
+      !filters.propertyCities.some((id) => property.cityIds.includes(Number(id)))
+    ) {
+      return false;
+    }
+
+    if (
+      filters.propertyTypes?.length &&
+      !filters.propertyTypes.some((id) => property.typeIds.includes(Number(id)))
+    ) {
+      return false;
+    }
+
+    return true;
+  });
 }
 
 export async function fetchPropertySitemapEntries() {
@@ -358,7 +401,7 @@ export async function fetchPropertySitemapEntries() {
   }
   const propertiesByReference = new Map<
     string,
-    { ref: string; modified: Date }
+    { id: number; ref: string; modified: Date }
   >();
 
   for (const post of firstPage.concat(...restPages)) {
@@ -371,12 +414,28 @@ export async function fetchPropertySitemapEntries() {
     }
 
     propertiesByReference.set(ref.toUpperCase(), {
+      id: post.id,
       ref,
       modified: post.modified_gmt ? new Date(`${post.modified_gmt}Z`) : new Date(),
     });
   }
 
   return Array.from(propertiesByReference.values());
+}
+
+async function fetchPropertyByExactReference(ref: string) {
+  const normalizedReference = ref.trim().toUpperCase();
+
+  if (!normalizedReference) {
+    return null;
+  }
+
+  const entries = await fetchPropertySitemapEntries();
+  const entry = entries.find(
+    (property) => property.ref.toUpperCase() === normalizedReference,
+  );
+
+  return entry ? fetchPropertyByWordPressId(String(entry.id)) : null;
 }
 
 async function fetchPropertyByWordPressId(id: string) {
@@ -397,25 +456,7 @@ async function fetchPropertyByWordPressId(id: string) {
 }
 
 async function findPropertyByReference(ref: string) {
-  const pageSize = 20;
-  const maxPagesToScan = 25;
-
-  for (let page = 1; page <= maxPagesToScan; page += 1) {
-    const result = await fetchProperties(pageSize, { page });
-    const property = result.properties.find(
-      (item) => item.ref.toLowerCase() === ref.toLowerCase(),
-    );
-
-    if (property) {
-      return property;
-    }
-
-    if (page >= result.totalPages) {
-      break;
-    }
-  }
-
-  return null;
+  return fetchPropertyByExactReference(ref);
 }
 
 async function fetchTaxonomyTerms(url: string, errorMessage: string) {
