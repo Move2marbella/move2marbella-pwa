@@ -96,7 +96,7 @@ export const translations: Record<Locale, Translation> = {
     heroEyebrow: "Marbella property search",
     heroTitle: "Find your next home on the Costa del Sol",
     heroText:
-      "Search live Move2Marbella listings imported from Resales Online, then contact the team directly from your phone.",
+      "Search live Move2Marbella listings, then contact the team directly from your phone.",
     leadDefaultMessage: "I would like more information about this property.",
   },
   es: {
