@@ -1,7 +1,7 @@
 import {
   PropertyDetailContent,
-  generateMetadata as generateBaseMetadata,
   generateStaticParams as generateBaseStaticParams,
+  getPropertyMetadata,
 } from "../../../properties/[ref]/page";
 import { getLocale, locales } from "../../../i18n/translations";
 
@@ -36,12 +36,10 @@ export async function generateMetadata({
   params,
   searchParams,
 }: LocalizedPropertyPageProps) {
-  const { ref } = await params;
+  const { locale, ref } = await params;
+  const { wp_id: wordpressId } = await searchParams;
 
-  return generateBaseMetadata({
-    params: Promise.resolve({ ref }),
-    searchParams,
-  });
+  return getPropertyMetadata(getLocale(locale), ref, wordpressId);
 }
 
 export default async function LocalizedPropertyPage({

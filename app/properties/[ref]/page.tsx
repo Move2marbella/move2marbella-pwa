@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FavouritesPanel, FavouriteToggle } from "../../components/favourite-toggle";
+import { JsonLd } from "../../components/json-ld";
 import { LeadForm } from "../../components/lead-form";
 import { PropertyGallery } from "../../components/property-gallery";
 import {
@@ -10,6 +12,12 @@ import {
   getWhatsAppUrl,
 } from "../../data/properties";
 import { Locale, getLocaleBasePath, getTranslations } from "../../i18n/translations";
+import {
+  SITE_URL,
+  getLanguageAlternates,
+  getLocalizedPath,
+  getPageRobots,
+} from "../../lib/seo";
 
 type PropertyPageProps = {
   params: Promise<{
@@ -35,9 +43,18 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
   searchParams,
-}: PropertyPageProps) {
+}: PropertyPageProps): Promise<Metadata> {
   const { ref } = await params;
   const { wp_id: wordpressId } = await searchParams;
+
+  return getPropertyMetadata("en", ref, wordpressId);
+}
+
+export async function getPropertyMetadata(
+  locale: Locale,
+  ref: string,
+  wordpressId?: string,
+): Promise<Metadata> {
   const property = await getPropertyByRef(ref, wordpressId);
 
   if (!property) {
@@ -46,9 +63,37 @@ export async function generateMetadata({
     };
   }
 
+  const canonical = getLocalizedPath(locale, `/properties/${property.ref}`);
+  const description = `${property.type} for sale in ${property.location}. ${property.beds} bedrooms, ${property.baths} bathrooms. Reference ${property.ref}.`;
+
   return {
-    title: `${property.title} | Move2Marbella`,
-    description: `${property.price} property in ${property.location}. Reference ${property.ref}.`,
+    title: property.title,
+    description,
+    alternates: {
+      canonical,
+      languages: getLanguageAlternates(`/properties/${property.ref}`),
+    },
+    openGraph: {
+      type: "website",
+      title: property.title,
+      description,
+      url: canonical,
+      images: property.images[0]
+        ? [
+            {
+              url: property.images[0],
+              alt: property.title,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: property.title,
+      description,
+      images: property.images[0] ? [property.images[0]] : undefined,
+    },
+    robots: getPageRobots(),
   };
 }
 
@@ -109,6 +154,10 @@ export async function PropertyDetailContent({
     { label: t.terrace, value: property.terrace },
   ];
   const propertyHref = `${basePath}/properties/${property.ref}?wp_id=${property.id}`;
+  const canonicalPropertyUrl = `${SITE_URL}${getLocalizedPath(
+    locale,
+    `/properties/${property.ref}`,
+  )}`;
   const mapZoneQuery = property.coordinates?.postalCode
     ? `${property.coordinates.postalCode} Spain`
     : null;
@@ -122,7 +171,63 @@ export async function PropertyDetailContent({
     : null;
 
   return (
-    <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
+    <main lang={locale} className="min-h-screen bg-[#f7f2ea] text-[#171717]">
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "RealEstateListing",
+            name: property.title,
+            description: property.description,
+            url: canonicalPropertyUrl,
+            image: property.images,
+            identifier: property.ref,
+            datePosted: undefined,
+            offers: {
+              "@type": "Offer",
+              price: property.rawPrice,
+              priceCurrency: property.currency,
+              availability: "https://schema.org/InStock",
+              url: canonicalPropertyUrl,
+            },
+            itemOffered: {
+              "@type": "Residence",
+              name: property.title,
+              numberOfBedrooms: Number(property.beds),
+              numberOfBathroomsTotal: Number(property.baths),
+              floorSize: {
+                "@type": "QuantitativeValue",
+                value: Number.parseFloat(property.size),
+                unitCode: "MTK",
+              },
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: property.city,
+                addressRegion: "Málaga",
+                postalCode: property.coordinates?.postalCode || undefined,
+                addressCountry: "ES",
+              },
+            },
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Move2Marbella",
+                item: `${SITE_URL}${basePath}`,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: property.title,
+              },
+            ],
+          },
+        ]}
+      />
       <header className="sticky top-0 z-20 border-b border-black/10 bg-[#f7f2ea]/95 px-5 py-3 backdrop-blur sm:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
           <Link

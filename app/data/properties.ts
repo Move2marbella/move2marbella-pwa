@@ -44,12 +44,15 @@ type ResalesProperty = {
 type WordPressProperty = {
   id: number;
   link: string;
+  modified_gmt?: string;
   slug: string;
   title: {
     rendered: string;
   };
   property_meta?: {
+    _imported_ref?: string[];
     _property_import_data?: string[];
+    fave_property_id?: string[];
   };
 };
 
@@ -68,6 +71,7 @@ export type Property = {
   title: string;
   location: string;
   city: string;
+  currency: string;
   price: string;
   rawPrice: number;
   beds: string;
@@ -205,6 +209,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       title: stripHtml(post.title.rendered),
       location,
       city: propertyLocation,
+      currency: property.Currency,
       price: formatPrice(property.Currency, property.Price),
       rawPrice: Number(property.Price),
       beds: property.Bedrooms,
@@ -290,6 +295,88 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     totalPages,
     properties,
   };
+}
+
+export async function fetchPropertySitemapEntries() {
+  const baseParams = new URLSearchParams({
+    per_page: "100",
+    page: "1",
+    orderby: "modified",
+    order: "desc",
+    _fields:
+      "id,modified_gmt,property_meta._imported_ref,property_meta.fave_property_id",
+  });
+  const firstResponse = await fetch(
+    `${WORDPRESS_PROPERTIES_URL}?${baseParams.toString()}`,
+    {
+      next: {
+        revalidate: 3600,
+      },
+    },
+  );
+
+  if (!firstResponse.ok) {
+    throw new Error("Could not fetch Move2Marbella property sitemap");
+  }
+
+  const firstPage = (await firstResponse.json()) as WordPressProperty[];
+  const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages") ?? 1);
+  const restPages: WordPressProperty[][] = [];
+  const batchSize = 5;
+
+  for (
+    let firstPageInBatch = 2;
+    firstPageInBatch <= totalPages;
+    firstPageInBatch += batchSize
+  ) {
+    const pagesInBatch = Array.from(
+      { length: Math.min(batchSize, totalPages - firstPageInBatch + 1) },
+      (_, index) => firstPageInBatch + index,
+    );
+    const batch = await Promise.all(
+      pagesInBatch.map(async (page) => {
+        const params = new URLSearchParams(baseParams);
+        params.set("page", String(page));
+        const response = await fetch(
+          `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
+          {
+            next: {
+              revalidate: 3600,
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error("Could not fetch Move2Marbella property sitemap");
+        }
+
+        return (await response.json()) as WordPressProperty[];
+      }),
+    );
+
+    restPages.push(...batch);
+  }
+  const propertiesByReference = new Map<
+    string,
+    { ref: string; modified: Date }
+  >();
+
+  for (const post of firstPage.concat(...restPages)) {
+    const ref =
+      post.property_meta?._imported_ref?.[0]?.trim() ||
+      post.property_meta?.fave_property_id?.[0]?.trim();
+
+    if (!ref || propertiesByReference.has(ref.toUpperCase())) {
+      continue;
+    }
+
+    propertiesByReference.set(ref.toUpperCase(), {
+      ref,
+      modified: post.modified_gmt ? new Date(`${post.modified_gmt}Z`) : new Date(),
+    });
+  }
+
+  return Array.from(propertiesByReference.values());
 }
 
 async function fetchPropertyByWordPressId(id: string) {

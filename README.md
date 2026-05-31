@@ -35,3 +35,16 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # move2marbella-pwa
+
+## SEO launch configuration
+
+The Vercel staging URL is intentionally protected with `noindex`. When the
+Next.js frontend is ready to serve the production domain, set this environment
+variable in Vercel:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://move2marbella.com
+```
+
+This enables search indexing, the public sitemap and crawler access in
+`robots.txt`.

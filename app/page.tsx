@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { BudgetSlider } from "./components/budget-slider";
 import { FavouritesPanel, FavouriteToggle } from "./components/favourite-toggle";
+import { JsonLd } from "./components/json-ld";
 import {
   fetchProperties,
   fetchPropertyCities,
@@ -19,6 +20,7 @@ import {
   getTranslations,
   locales,
 } from "./i18n/translations";
+import { SITE_URL } from "./lib/seo";
 
 export const revalidate = 300;
 
@@ -171,7 +173,25 @@ export async function HomeContent({
   ).filter((pageNumber) => pageNumber <= totalPages);
 
   return (
-    <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
+    <main lang={locale} className="min-h-screen bg-[#f7f2ea] text-[#171717]">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": ["RealEstateAgent", "Organization"],
+          name: "Move2Marbella",
+          url: SITE_URL,
+          logo: `${SITE_URL}/m2m_logo_white_web.png`,
+          image: `${SITE_URL}/move2marbella-panorama.jpg`,
+          telephone: "+34650059356",
+          areaServed: "Costa del Sol",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Marbella",
+            addressRegion: "Málaga",
+            addressCountry: "ES",
+          },
+        }}
+      />
       <section className="relative overflow-hidden bg-[#0f253d] text-white">
         <img
           src="/move2marbella-panorama.jpg"

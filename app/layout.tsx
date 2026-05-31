@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import {
+  SITE_URL,
+  getLanguageAlternates,
+  getLocalizedPath,
+  getPageRobots,
+} from "./lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,9 +19,42 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Move2Marbella Property App",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Move2Marbella | Costa del Sol Property Search",
+    template: "%s | Move2Marbella",
+  },
   description:
-    "Mobile-first property search for Marbella, Estepona and the Costa del Sol.",
+    "Search properties for sale in Marbella, Estepona and across the Costa del Sol with Move2Marbella.",
+  applicationName: "Move2Marbella",
+  alternates: {
+    canonical: getLocalizedPath("en"),
+    languages: getLanguageAlternates(),
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Move2Marbella",
+    title: "Move2Marbella | Costa del Sol Property Search",
+    description:
+      "Search properties for sale in Marbella, Estepona and across the Costa del Sol.",
+    url: getLocalizedPath("en"),
+    images: [
+      {
+        url: "/move2marbella-panorama.jpg",
+        width: 1200,
+        height: 675,
+        alt: "Aerial panorama of Marbella and the Costa del Sol",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Move2Marbella | Costa del Sol Property Search",
+    description:
+      "Search properties for sale in Marbella, Estepona and across the Costa del Sol.",
+    images: ["/move2marbella-panorama.jpg"],
+  },
+  robots: getPageRobots(),
   manifest: "/manifest.json",
 };
 
