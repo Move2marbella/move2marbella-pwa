@@ -11,6 +11,10 @@ import {
   getPropertyByRef,
   getWhatsAppUrl,
 } from "../../data/properties";
+import {
+  fetchNearbyPlaces,
+  groupNearbyPlaces,
+} from "../../data/nearby-places";
 import { Locale, getLocaleBasePath, getTranslations } from "../../i18n/translations";
 import {
   SITE_URL,
@@ -146,6 +150,11 @@ export async function PropertyDetailContent({
   if (!property) {
     notFound();
   }
+
+  const nearbyPlaces = await fetchNearbyPlaces(
+    property.coordinates?.postalCode,
+  );
+  const nearbyGroups = groupNearbyPlaces(nearbyPlaces, locale);
 
   const stats = [
     { label: t.bedrooms, value: property.beds },
@@ -376,6 +385,54 @@ export async function PropertyDetailContent({
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
+            </section>
+          ) : null}
+
+          {nearbyGroups.length > 0 ? (
+            <section className="mt-6 rounded-[8px] border border-[#ece3d4] bg-[#fbf8f3] p-4 sm:p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
+                ZIP {property.coordinates?.postalCode}
+              </p>
+              <h3 className="mt-1 text-xl font-semibold">{t.nearbyPlaces}</h3>
+              <p className="mt-1 text-sm leading-6 text-[#6f6a61]">
+                {t.nearbyAreaHint}
+              </p>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                {nearbyGroups.map((group) => (
+                  <section
+                    key={group.category}
+                    className="rounded-[6px] bg-white p-4 ring-1 ring-black/5"
+                  >
+                    <h4 className="text-sm font-bold text-[#0f253d]">
+                      {group.label}
+                    </h4>
+                    <ul className="mt-2 space-y-2">
+                      {group.places.map((place) => (
+                        <li
+                          key={place.id}
+                          className="text-sm leading-5 text-[#55514a]"
+                        >
+                          {place.website ? (
+                            <a
+                              href={place.website}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="font-semibold text-[#0f253d] underline decoration-[#ba9456] underline-offset-2"
+                            >
+                              {place.name}
+                            </a>
+                          ) : (
+                            place.name
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ))}
+              </div>
+              <p className="mt-4 text-xs leading-5 text-[#777168]">
+                {t.nearbyAttribution}
+              </p>
             </section>
           ) : null}
         </article>

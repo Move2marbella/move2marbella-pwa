@@ -29,6 +29,9 @@ type Translation = {
   mapZone: string;
   moreSaved: string;
   name: string;
+  nearbyAreaHint: string;
+  nearbyAttribution: string;
+  nearbyPlaces: string;
   next: string;
   noPropertiesFound: string;
   overview: string;
@@ -81,6 +84,9 @@ export const translations: Record<Locale, Translation> = {
     mapZone: "Map zone",
     moreSaved: "more saved on this device.",
     name: "Name",
+    nearbyAreaHint: "Places within the displayed ZIP zone.",
+    nearbyAttribution: "Nearby place data: © OpenStreetMap contributors",
+    nearbyPlaces: "Nearby places in the area",
     next: "Next",
     noPropertiesFound: "No properties found for these filters.",
     overview: "Overview",
@@ -132,6 +138,9 @@ export const translations: Record<Locale, Translation> = {
     mapZone: "Zona del mapa",
     moreSaved: "más guardadas en este dispositivo.",
     name: "Nombre",
+    nearbyAreaHint: "Lugares dentro de la zona postal mostrada.",
+    nearbyAttribution: "Datos de lugares cercanos: © colaboradores de OpenStreetMap",
+    nearbyPlaces: "Lugares cercanos en la zona",
     next: "Siguiente",
     noPropertiesFound: "No se encontraron propiedades con estos filtros.",
     overview: "Resumen",
@@ -183,6 +192,9 @@ export const translations: Record<Locale, Translation> = {
     mapZone: "Zone carte",
     moreSaved: "autres enregistrés sur cet appareil.",
     name: "Nom",
+    nearbyAreaHint: "Lieux situés dans la zone postale affichée.",
+    nearbyAttribution: "Données des lieux à proximité : © contributeurs OpenStreetMap",
+    nearbyPlaces: "Lieux à proximité dans la zone",
     next: "Suivant",
     noPropertiesFound: "Aucun bien trouvé avec ces filtres.",
     overview: "Aperçu",
@@ -234,6 +246,9 @@ export const translations: Record<Locale, Translation> = {
     mapZone: "Kartenzone",
     moreSaved: "weitere auf diesem Gerät gespeichert.",
     name: "Name",
+    nearbyAreaHint: "Orte innerhalb der angezeigten Postleitzone.",
+    nearbyAttribution: "Daten zu Orten in der Nähe: © OpenStreetMap-Mitwirkende",
+    nearbyPlaces: "Orte in der Nähe",
     next: "Weiter",
     noPropertiesFound: "Keine Immobilien für diese Filter gefunden.",
     overview: "Überblick",
@@ -285,6 +300,9 @@ export const translations: Record<Locale, Translation> = {
     mapZone: "Зона на карте",
     moreSaved: "ещё сохранено на этом устройстве.",
     name: "Имя",
+    nearbyAreaHint: "Места в пределах указанной почтовой зоны.",
+    nearbyAttribution: "Данные о ближайших местах: © участники OpenStreetMap",
+    nearbyPlaces: "Места поблизости",
     next: "Далее",
     noPropertiesFound: "По этим фильтрам объекты не найдены.",
     overview: "Обзор",
@@ -336,6 +354,9 @@ export const translations: Record<Locale, Translation> = {
     mapZone: "Strefa mapy",
     moreSaved: "więcej zapisanych na tym urządzeniu.",
     name: "Imię",
+    nearbyAreaHint: "Miejsca w obrębie wyświetlonej strefy kodu pocztowego.",
+    nearbyAttribution: "Dane o pobliskich miejscach: © autorzy OpenStreetMap",
+    nearbyPlaces: "Miejsca w pobliżu",
     next: "Dalej",
     noPropertiesFound: "Nie znaleziono nieruchomości dla tych filtrów.",
     overview: "Opis",
@@ -387,6 +408,9 @@ export const translations: Record<Locale, Translation> = {
     mapZone: "Térkép zóna",
     moreSaved: "további mentve ezen az eszközön.",
     name: "Név",
+    nearbyAreaHint: "A megjelenített irányítószám-zónán belüli helyek.",
+    nearbyAttribution: "Nearby helyadatok: © OpenStreetMap közreműködők",
+    nearbyPlaces: "Közeli helyek a környéken",
     next: "Következő",
     noPropertiesFound: "Nincs találat ezekkel a szűrőkkel.",
     overview: "Áttekintés",
