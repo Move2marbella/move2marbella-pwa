@@ -28,9 +28,63 @@ export type NearbyPlacesGroup = {
 
 const WORDPRESS_NEARBY_URL =
   "https://move2marbella.com/wp-json/m2m/v1/nearby";
-const NEARBY_DATA_VERSION = "1";
+const NEARBY_DATA_VERSION = "2";
 
 const categoryLabels: Record<string, Record<Locale, string>> = {
+  "Beach club": {
+    en: "Beach clubs",
+    es: "Clubes de playa",
+    fr: "Clubs de plage",
+    de: "Beachclubs",
+    ru: "Пляжные клубы",
+    pl: "Kluby plażowe",
+    hu: "Beach clubok",
+  },
+  "Featured restaurant": {
+    en: "Featured restaurants",
+    es: "Restaurantes destacados",
+    fr: "Restaurants incontournables",
+    de: "Ausgewählte Restaurants",
+    ru: "Избранные рестораны",
+    pl: "Polecane restauracje",
+    hu: "Kiemelt éttermek",
+  },
+  Nightlife: {
+    en: "Nightlife",
+    es: "Vida nocturna",
+    fr: "Vie nocturne",
+    de: "Nachtleben",
+    ru: "Ночная жизнь",
+    pl: "Życie nocne",
+    hu: "Éjszakai élet",
+  },
+  "Private school": {
+    en: "Private schools",
+    es: "Colegios privados",
+    fr: "Écoles privées",
+    de: "Privatschulen",
+    ru: "Частные школы",
+    pl: "Szkoły prywatne",
+    hu: "Magániskolák",
+  },
+  "Padel club": {
+    en: "Padel clubs",
+    es: "Clubes de pádel",
+    fr: "Clubs de padel",
+    de: "Padel-Clubs",
+    ru: "Падел-клубы",
+    pl: "Kluby padla",
+    hu: "Padel klubok",
+  },
+  Gym: {
+    en: "Gyms",
+    es: "Gimnasios",
+    fr: "Salles de sport",
+    de: "Fitnessstudios",
+    ru: "Фитнес-клубы",
+    pl: "Siłownie",
+    hu: "Edzőtermek",
+  },
   Airport: {
     en: "Airport",
     es: "Aeropuerto",
@@ -123,6 +177,25 @@ const categoryLabels: Record<string, Record<Locale, string>> = {
   },
 };
 
+const categoryOrder = [
+  "Beach club",
+  "Featured restaurant",
+  "Nightlife",
+  "Private school",
+  "Padel club",
+  "Gym",
+  "Golf",
+  "Beach",
+  "Restaurant",
+  "Shopping",
+  "Attraction",
+  "Sports",
+  "Hospital",
+  "School",
+  "Train station",
+  "Airport",
+];
+
 export async function fetchNearbyPlaces(postalCode?: string) {
   if (!postalCode) {
     return [];
@@ -163,5 +236,22 @@ export function groupNearbyPlaces(
       label: categoryLabels[category]?.[locale] ?? category,
       places: categoryPlaces,
     }))
-    .sort((a, b) => a.label.localeCompare(b.label, locale));
+    .sort((a, b) => {
+      const aPriority = categoryOrder.indexOf(a.category);
+      const bPriority = categoryOrder.indexOf(b.category);
+
+      if (aPriority === bPriority) {
+        return a.label.localeCompare(b.label, locale);
+      }
+
+      if (aPriority === -1) {
+        return 1;
+      }
+
+      if (bPriority === -1) {
+        return -1;
+      }
+
+      return aPriority - bPriority;
+    });
 }
