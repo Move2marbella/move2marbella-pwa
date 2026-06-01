@@ -28,7 +28,7 @@ export type NearbyPlacesGroup = {
 
 const WORDPRESS_NEARBY_URL =
   "https://move2marbella.com/wp-json/m2m/v1/nearby";
-const NEARBY_DATA_VERSION = "2";
+const NEARBY_DATA_VERSION = "3";
 
 const categoryLabels: Record<string, Record<Locale, string>> = {
   "Beach club": {
@@ -234,7 +234,7 @@ export function groupNearbyPlaces(
     .map(([category, categoryPlaces]) => ({
       category,
       label: categoryLabels[category]?.[locale] ?? category,
-      places: categoryPlaces,
+      places: categoryPlaces.slice(0, 3),
     }))
     .sort((a, b) => {
       const aPriority = categoryOrder.indexOf(a.category);
