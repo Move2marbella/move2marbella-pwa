@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "../lib/analytics";
 
@@ -187,9 +188,13 @@ export function InstallAppPrompt() {
   return (
     <aside className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-md rounded-[8px] border border-white/10 bg-[#0f253d] p-4 text-white shadow-2xl shadow-black/30">
       <div className="flex gap-3">
-        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[6px] bg-[#ba9456] text-lg font-bold text-[#0f253d]">
-          M2M
-        </div>
+        <Image
+          src="/icon-192.png"
+          alt=""
+          height={40}
+          width={40}
+          className="h-10 w-10 shrink-0 rounded-[6px]"
+        />
         <div>
           <p className="font-bold">{text.title}</p>
           <p className="mt-1 text-sm leading-5 text-white/75">{text.text}</p>
