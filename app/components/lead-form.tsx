@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { trackEvent } from "../lib/analytics";
 
 type LeadFormProps = {
   labels?: {
@@ -59,6 +60,13 @@ export function LeadForm({
     const url = new URL(whatsappUrl);
 
     url.searchParams.set("text", text);
+    trackEvent("lead_form_submitted", {
+      property_reference: propertyRef,
+    });
+    trackEvent("whatsapp_click", {
+      property_reference: propertyRef,
+      source: "lead_form",
+    });
     window.open(url.toString(), "_blank", "noopener,noreferrer");
   }
 

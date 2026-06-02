@@ -36,6 +36,28 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # move2marbella-pwa
 
+## Analytics
+
+Create a GA4 web data stream for the production domain and add its measurement
+ID to Vercel as:
+
+```bash
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+The app tracks these custom events:
+
+- `app_open`
+- `favourite_added`
+- `favourite_removed`
+- `favourites_cleared`
+- `lead_form_submitted`
+- `whatsapp_click`
+- `pwa_install_prompt_shown`
+- `pwa_install_clicked`
+- `pwa_install_accepted`
+- `pwa_install_dismissed`
+
 ## SEO launch configuration
 
 The Vercel staging URL is intentionally protected with `noindex`. When the

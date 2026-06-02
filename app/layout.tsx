@@ -7,6 +7,9 @@ import {
   getLocalizedPath,
   getPageRobots,
 } from "./lib/seo";
+import { Analytics } from "./components/analytics";
+import { InstallAppPrompt } from "./components/install-app-prompt";
+import { ServiceWorkerRegistration } from "./components/service-worker-registration";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,6 +59,9 @@ export const metadata: Metadata = {
   },
   robots: getPageRobots(),
   manifest: "/manifest.json",
+  icons: {
+    apple: "/icon-192.png",
+  },
 };
 
 export default function RootLayout({
@@ -68,7 +74,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+        <ServiceWorkerRegistration />
+        <InstallAppPrompt />
+      </body>
     </html>
   );
 }

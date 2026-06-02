@@ -6,6 +6,7 @@ import { FavouritesPanel, FavouriteToggle } from "../../components/favourite-tog
 import { JsonLd } from "../../components/json-ld";
 import { LeadForm } from "../../components/lead-form";
 import { PropertyGallery } from "../../components/property-gallery";
+import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import {
   fetchProperties,
   getPropertyByRef,
@@ -296,21 +297,25 @@ export async function PropertyDetailContent({
             ))}
           </div>
 
-          <a
+          <TrackedWhatsAppLink
             href={getWhatsAppUrl(property.ref)}
+            propertyRef={property.ref}
+            source="property_detail_enquiry"
             className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]"
           >
             {t.askAboutProperty}
-          </a>
+          </TrackedWhatsAppLink>
 
-          <a
+          <TrackedWhatsAppLink
             href={whatsappShareUrl}
+            propertyRef={property.ref}
+            source="property_detail_share"
             target="_blank"
             rel="noreferrer"
             className="mt-3 flex h-12 items-center justify-center rounded-[6px] border border-white/35 px-5 text-base font-bold text-white transition hover:border-[#ba9456]"
           >
             {t.shareOnWhatsApp}
-          </a>
+          </TrackedWhatsAppLink>
 
           <FavouriteToggle
             property={{

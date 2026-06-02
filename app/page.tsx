@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BudgetSlider } from "./components/budget-slider";
 import { FavouritesPanel, FavouriteToggle } from "./components/favourite-toggle";
 import { JsonLd } from "./components/json-ld";
+import { TrackedWhatsAppLink } from "./components/tracked-whatsapp-link";
 import {
   fetchProperties,
   fetchPropertyCities,
@@ -219,12 +220,13 @@ export async function HomeContent({
                 className="h-auto w-44 sm:w-56"
               />
             </Link>
-            <a
+            <TrackedWhatsAppLink
               href={getGeneralWhatsAppUrl()}
+              source="home_header"
               className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f253d] shadow-sm"
             >
               WhatsApp
-            </a>
+            </TrackedWhatsAppLink>
           </header>
 
           <div className="flex flex-1 flex-col justify-end gap-6 py-10">
@@ -408,12 +410,14 @@ export async function HomeContent({
                         >
                           {t.details}
                         </Link>
-                        <a
+                        <TrackedWhatsAppLink
                           href={getWhatsAppUrl(property.ref)}
+                          propertyRef={property.ref}
+                          source="property_card"
                           className="rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold text-white"
                         >
                           {t.enquire}
-                        </a>
+                        </TrackedWhatsAppLink>
                       </div>
                     </div>
                   </article>

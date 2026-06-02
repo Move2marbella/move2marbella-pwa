@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { trackEvent } from "../lib/analytics";
 
 type FavouriteProperty = {
   ref: string;
@@ -93,6 +94,9 @@ export function FavouriteToggle({
         ];
 
     saveFavourites(nextFavourites);
+    trackEvent(isFavourite ? "favourite_removed" : "favourite_added", {
+      property_reference: property.ref,
+    });
   }
 
   return (
@@ -139,6 +143,9 @@ export function FavouritesPanel({
   }, []);
 
   function clearFavourites() {
+    trackEvent("favourites_cleared", {
+      saved_count: favourites.length,
+    });
     saveFavourites([]);
   }
 
