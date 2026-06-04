@@ -258,7 +258,6 @@ export async function HomeContent({
                     <option key={propertyCity.id} value={propertyCity.id}>
                       {propertyCity.depth > 0 ? "- " : ""}
                       {propertyCity.name}
-                      {propertyCity.count > 0 ? ` (${propertyCity.count})` : ""}
                     </option>
                   ))}
                 </select>
@@ -277,7 +276,6 @@ export async function HomeContent({
                     <option key={propertyType.id} value={propertyType.id}>
                       {propertyType.depth > 0 ? "- " : ""}
                       {propertyType.name}
-                      {propertyType.count > 0 ? ` (${propertyType.count})` : ""}
                     </option>
                   ))}
                 </select>
