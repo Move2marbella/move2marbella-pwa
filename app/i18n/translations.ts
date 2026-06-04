@@ -7,6 +7,7 @@ type Translation = {
   anyProperty: string;
   anyReference: string;
   apiStatus: string;
+  apply: string;
   area: string;
   askAboutProperty: string;
   back: string;
@@ -39,6 +40,8 @@ type Translation = {
   phone: string;
   plot: string;
   previous: string;
+  priceHighToLow: string;
+  priceLowToHigh: string;
   quickFilters: string;
   reference: string;
   requestDetails: string;
@@ -48,6 +51,7 @@ type Translation = {
   search: string;
   sendEnquiry: string;
   shareOnWhatsApp: string;
+  sortByPrice: string;
   terrace: string;
   type: string;
   heroEyebrow: string;
@@ -62,6 +66,7 @@ export const translations: Record<Locale, Translation> = {
     anyProperty: "Any property",
     anyReference: "Any reference",
     apiStatus: "API Status",
+    apply: "Apply",
     area: "Area",
     askAboutProperty: "Ask about this property",
     back: "Back",
@@ -94,6 +99,8 @@ export const translations: Record<Locale, Translation> = {
     phone: "Phone",
     plot: "Plot",
     previous: "Previous",
+    priceHighToLow: "High to low",
+    priceLowToHigh: "Low to high",
     quickFilters: "Quick filters",
     reference: "Reference",
     requestDetails: "Request details",
@@ -103,6 +110,7 @@ export const translations: Record<Locale, Translation> = {
     search: "Search",
     sendEnquiry: "Send enquiry",
     shareOnWhatsApp: "Share on WhatsApp",
+    sortByPrice: "Sort by price",
     terrace: "Terrace",
     type: "Type",
     heroEyebrow: "Marbella property search",
@@ -116,6 +124,7 @@ export const translations: Record<Locale, Translation> = {
     anyProperty: "Cualquier propiedad",
     anyReference: "Cualquier referencia",
     apiStatus: "Estado API",
+    apply: "Aplicar",
     area: "Zona",
     askAboutProperty: "Preguntar por esta propiedad",
     back: "Volver",
@@ -148,6 +157,8 @@ export const translations: Record<Locale, Translation> = {
     phone: "Teléfono",
     plot: "Parcela",
     previous: "Anterior",
+    priceHighToLow: "De mayor a menor",
+    priceLowToHigh: "De menor a mayor",
     quickFilters: "Filtros rápidos",
     reference: "Referencia",
     requestDetails: "Solicitar detalles",
@@ -157,6 +168,7 @@ export const translations: Record<Locale, Translation> = {
     search: "Buscar",
     sendEnquiry: "Enviar consulta",
     shareOnWhatsApp: "Compartir en WhatsApp",
+    sortByPrice: "Ordenar por precio",
     terrace: "Terraza",
     type: "Tipo",
     heroEyebrow: "Búsqueda de propiedades en Marbella",
@@ -170,6 +182,7 @@ export const translations: Record<Locale, Translation> = {
     anyProperty: "Tout bien",
     anyReference: "Toute référence",
     apiStatus: "Statut API",
+    apply: "Appliquer",
     area: "Zone",
     askAboutProperty: "Demander ce bien",
     back: "Retour",
@@ -202,6 +215,8 @@ export const translations: Record<Locale, Translation> = {
     phone: "Téléphone",
     plot: "Terrain",
     previous: "Précédent",
+    priceHighToLow: "Du plus élevé au plus bas",
+    priceLowToHigh: "Du plus bas au plus élevé",
     quickFilters: "Filtres rapides",
     reference: "Référence",
     requestDetails: "Demander des détails",
@@ -211,6 +226,7 @@ export const translations: Record<Locale, Translation> = {
     search: "Rechercher",
     sendEnquiry: "Envoyer la demande",
     shareOnWhatsApp: "Partager sur WhatsApp",
+    sortByPrice: "Trier par prix",
     terrace: "Terrasse",
     type: "Type",
     heroEyebrow: "Recherche immobilière à Marbella",
@@ -224,6 +240,7 @@ export const translations: Record<Locale, Translation> = {
     anyProperty: "Jede Immobilie",
     anyReference: "Jede Referenz",
     apiStatus: "API Status",
+    apply: "Anwenden",
     area: "Gebiet",
     askAboutProperty: "Diese Immobilie anfragen",
     back: "Zurück",
@@ -256,6 +273,8 @@ export const translations: Record<Locale, Translation> = {
     phone: "Telefon",
     plot: "Grundstück",
     previous: "Zurück",
+    priceHighToLow: "Hoch bis niedrig",
+    priceLowToHigh: "Niedrig bis hoch",
     quickFilters: "Schnellfilter",
     reference: "Referenz",
     requestDetails: "Details anfragen",
@@ -265,6 +284,7 @@ export const translations: Record<Locale, Translation> = {
     search: "Suchen",
     sendEnquiry: "Anfrage senden",
     shareOnWhatsApp: "Auf WhatsApp teilen",
+    sortByPrice: "Nach Preis sortieren",
     terrace: "Terrasse",
     type: "Typ",
     heroEyebrow: "Immobiliensuche Marbella",
@@ -278,6 +298,7 @@ export const translations: Record<Locale, Translation> = {
     anyProperty: "Любая недвижимость",
     anyReference: "Любая референция",
     apiStatus: "Статус API",
+    apply: "Применить",
     area: "Район",
     askAboutProperty: "Спросить об объекте",
     back: "Назад",
@@ -310,6 +331,8 @@ export const translations: Record<Locale, Translation> = {
     phone: "Телефон",
     plot: "Участок",
     previous: "Назад",
+    priceHighToLow: "По убыванию",
+    priceLowToHigh: "По возрастанию",
     quickFilters: "Быстрые фильтры",
     reference: "Референция",
     requestDetails: "Запросить детали",
@@ -319,6 +342,7 @@ export const translations: Record<Locale, Translation> = {
     search: "Поиск",
     sendEnquiry: "Отправить запрос",
     shareOnWhatsApp: "Поделиться в WhatsApp",
+    sortByPrice: "Сортировать по цене",
     terrace: "Терраса",
     type: "Тип",
     heroEyebrow: "Поиск недвижимости в Марбелье",
@@ -332,6 +356,7 @@ export const translations: Record<Locale, Translation> = {
     anyProperty: "Dowolna nieruchomość",
     anyReference: "Dowolny numer",
     apiStatus: "Status API",
+    apply: "Zastosuj",
     area: "Obszar",
     askAboutProperty: "Zapytaj o tę nieruchomość",
     back: "Wstecz",
@@ -364,6 +389,8 @@ export const translations: Record<Locale, Translation> = {
     phone: "Telefon",
     plot: "Działka",
     previous: "Wstecz",
+    priceHighToLow: "Od najwyższej",
+    priceLowToHigh: "Od najniższej",
     quickFilters: "Szybkie filtry",
     reference: "Numer referencyjny",
     requestDetails: "Poproś o szczegóły",
@@ -373,6 +400,7 @@ export const translations: Record<Locale, Translation> = {
     search: "Szukaj",
     sendEnquiry: "Wyślij zapytanie",
     shareOnWhatsApp: "Udostępnij na WhatsApp",
+    sortByPrice: "Sortuj wg ceny",
     terrace: "Taras",
     type: "Typ",
     heroEyebrow: "Wyszukiwarka nieruchomości Marbella",
@@ -386,6 +414,7 @@ export const translations: Record<Locale, Translation> = {
     anyProperty: "Bármilyen ingatlan",
     anyReference: "Bármely referencia",
     apiStatus: "API státusz",
+    apply: "Alkalmaz",
     area: "Terület",
     askAboutProperty: "Érdeklődés az ingatlanról",
     back: "Vissza",
@@ -418,6 +447,8 @@ export const translations: Record<Locale, Translation> = {
     phone: "Telefon",
     plot: "Telek",
     previous: "Előző",
+    priceHighToLow: "Magastól alacsonyig",
+    priceLowToHigh: "Alacsonytól magasig",
     quickFilters: "Gyors szűrők",
     reference: "Referencia",
     requestDetails: "Részletek kérése",
@@ -427,6 +458,7 @@ export const translations: Record<Locale, Translation> = {
     search: "Keresés",
     sendEnquiry: "Érdeklődés küldése",
     shareOnWhatsApp: "Megosztás WhatsAppon",
+    sortByPrice: "Rendezés ár szerint",
     terrace: "Terasz",
     type: "Típus",
     heroEyebrow: "Marbella ingatlankeresés",

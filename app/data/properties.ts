@@ -119,7 +119,10 @@ type PropertyFilters = {
   reference?: string;
   propertyTypes?: string[];
   page?: number;
+  sort?: PropertySortOrder;
 };
+
+export type PropertySortOrder = "price_asc" | "price_desc";
 
 type PropertySearchIndexEntry = {
   bedrooms: number;
@@ -255,7 +258,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   const usesClientSideFilters = Boolean(
-    filters.maxPrice || filters.bedrooms || filters.reference,
+    filters.maxPrice || filters.bedrooms || filters.reference || filters.sort,
   );
 
   if (usesClientSideFilters) {
@@ -292,9 +295,13 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
 
       return true;
     });
+    const sortedEntries = sortPropertySearchEntries(
+      filteredEntries,
+      filters.sort ?? "price_desc",
+    );
     const page = filters.page ?? 1;
-    const total = filteredEntries.length;
-    const entries = filteredEntries.slice((page - 1) * limit, page * limit);
+    const total = sortedEntries.length;
+    const entries = sortedEntries.slice((page - 1) * limit, page * limit);
     const properties = (
       await Promise.all(
         entries.map((property) => fetchPropertyByWordPressId(String(property.id))),
@@ -344,7 +351,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     .map(normalizeProperty)
     .filter((property): property is Property => Boolean(property));
   const filteredProperties = propertyMatchesFilters(normalizedProperties, filters);
-  const properties = filteredProperties;
+  const properties = sortProperties(filteredProperties, filters.sort ?? "price_desc");
   const total = Number(response.headers.get("X-WP-Total") ?? posts.length);
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
@@ -354,6 +361,25 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     totalPages,
     properties,
   };
+}
+
+function sortPropertySearchEntries(
+  properties: PropertySearchIndexEntry[],
+  sort: PropertySortOrder,
+) {
+  return [...properties].sort((left, right) => {
+    const direction = sort === "price_asc" ? 1 : -1;
+
+    return (left.price - right.price) * direction;
+  });
+}
+
+function sortProperties(properties: Property[], sort: PropertySortOrder) {
+  return [...properties].sort((left, right) => {
+    const direction = sort === "price_asc" ? 1 : -1;
+
+    return (left.rawPrice - right.rawPrice) * direction;
+  });
 }
 
 async function fetchPropertySearchIndex() {

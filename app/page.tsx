@@ -14,6 +14,7 @@ import {
   getPropertyTypeFilterIds,
   getWhatsAppUrl,
   quickFilters,
+  type PropertySortOrder,
 } from "./data/properties";
 import {
   Locale,
@@ -32,6 +33,7 @@ export type HomeSearchParams = {
   property_city?: string;
   reference?: string;
   property_type?: string;
+  sort?: string;
 };
 
 type HomeProps = {
@@ -71,8 +73,11 @@ export async function HomeContent({
     property_city: selectedPropertyCity = "",
     reference = "",
     property_type: selectedPropertyType = "",
+    sort = "price_desc",
   } = await searchParams;
   const selectedReference = reference.trim().toUpperCase();
+  const selectedSort: PropertySortOrder =
+    sort === "price_asc" ? "price_asc" : "price_desc";
   const currentPage = Math.max(Number(page) || 1, 1);
   const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
   const selectedBedrooms = Number(bedrooms) || undefined;
@@ -99,6 +104,7 @@ export async function HomeContent({
     propertyCities: propertyCityFilterIds,
     reference: selectedReference || undefined,
     propertyTypes: propertyTypeFilterIds,
+    sort: selectedSort,
   });
   const { properties, total, totalPages } = result;
   const selectedCityName = propertyCities.find(
@@ -133,6 +139,8 @@ export async function HomeContent({
   if (hasMaxPriceFilter) {
     paginationBaseParams.set("max_price", String(selectedMaxPrice));
   }
+
+  paginationBaseParams.set("sort", selectedSort);
 
   function getPageHref(pageNumber: number) {
     const params = new URLSearchParams(paginationBaseParams);
@@ -244,6 +252,7 @@ export async function HomeContent({
               className="grid gap-3 rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25 md:grid-cols-12"
             >
               <input type="hidden" name="page" value="1" />
+              <input type="hidden" name="sort" value={selectedSort} />
               <label className="grid gap-1 md:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                   {t.location}
@@ -336,7 +345,7 @@ export async function HomeContent({
           </div>
 
           <div>
-            <div className="mb-4 flex items-end justify-between gap-4">
+            <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
                   {t.liveSearchPreview}
@@ -345,9 +354,63 @@ export async function HomeContent({
                   {resultTitle}
                 </h2>
               </div>
-              <span className="text-sm font-medium text-[#6f6a61]">
-                {total} results
-              </span>
+              <div className="flex flex-col gap-2 sm:items-end">
+                <span className="text-sm font-medium text-[#6f6a61]">
+                  {total} results
+                </span>
+                <form action={basePath} className="flex items-center gap-2">
+                  {selectedPropertyCity ? (
+                    <input
+                      type="hidden"
+                      name="property_city"
+                      value={selectedPropertyCity}
+                    />
+                  ) : null}
+                  {selectedPropertyType ? (
+                    <input
+                      type="hidden"
+                      name="property_type"
+                      value={selectedPropertyType}
+                    />
+                  ) : null}
+                  {selectedBedrooms ? (
+                    <input
+                      type="hidden"
+                      name="bedrooms"
+                      value={selectedBedrooms}
+                    />
+                  ) : null}
+                  {selectedReference ? (
+                    <input
+                      type="hidden"
+                      name="reference"
+                      value={selectedReference}
+                    />
+                  ) : null}
+                  {hasMaxPriceFilter ? (
+                    <input
+                      type="hidden"
+                      name="max_price"
+                      value={selectedMaxPrice}
+                    />
+                  ) : null}
+                  <input type="hidden" name="page" value="1" />
+                  <label className="flex items-center gap-2 text-sm font-semibold text-[#0f253d]">
+                    <span>{t.sortByPrice}</span>
+                    <select
+                      name="sort"
+                      defaultValue={selectedSort}
+                      className="h-10 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-sm outline-none"
+                    >
+                      <option value="price_desc">{t.priceHighToLow}</option>
+                      <option value="price_asc">{t.priceLowToHigh}</option>
+                    </select>
+                  </label>
+                  <button className="h-10 rounded-[6px] bg-[#0f253d] px-3 text-sm font-semibold text-white">
+                    {t.apply}
+                  </button>
+                </form>
+              </div>
             </div>
 
             <div className="grid gap-4">
