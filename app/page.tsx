@@ -77,7 +77,7 @@ export async function HomeContent({
   const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
   const selectedBedrooms = Number(bedrooms) || undefined;
   const selectedMaxPrice = Math.min(
-    Math.max(Number(max_price) || 20000000, 250000),
+    Math.max(Number(max_price) || 20000000, 200000),
     20000000,
   );
   const [propertyCities, propertyTypes] = await Promise.all([
@@ -311,9 +311,6 @@ export async function HomeContent({
               <BudgetSlider
                 defaultValue={selectedMaxPrice}
                 label={t.maxPrice}
-                max={20000000}
-                min={250000}
-                step={250000}
               />
               <button className="h-12 self-end rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d] md:col-span-2">
                 {t.search}

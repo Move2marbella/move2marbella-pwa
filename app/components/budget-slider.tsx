@@ -5,9 +5,6 @@ import { useMemo, useState } from "react";
 type BudgetSliderProps = {
   defaultValue: number;
   label?: string;
-  max: number;
-  min: number;
-  step: number;
 };
 
 const formatter = new Intl.NumberFormat("en-GB", {
@@ -16,14 +13,29 @@ const formatter = new Intl.NumberFormat("en-GB", {
   style: "currency",
 });
 
+const budgetSteps = [
+  ...Array.from({ length: 9 }, (_, index) => 200000 + index * 100000),
+  ...Array.from({ length: 5 }, (_, index) => 1200000 + index * 200000),
+  ...Array.from({ length: 37 }, (_, index) => 2500000 + index * 500000),
+];
+
+function getClosestStepIndex(value: number) {
+  return budgetSteps.reduce((closestIndex, stepValue, index) => {
+    const currentDistance = Math.abs(stepValue - value);
+    const closestDistance = Math.abs(budgetSteps[closestIndex] - value);
+
+    return currentDistance < closestDistance ? index : closestIndex;
+  }, 0);
+}
+
 export function BudgetSlider({
   defaultValue,
   label = "Max price",
-  max,
-  min,
-  step,
 }: BudgetSliderProps) {
-  const [value, setValue] = useState(defaultValue);
+  const [stepIndex, setStepIndex] = useState(() =>
+    getClosestStepIndex(defaultValue),
+  );
+  const value = budgetSteps[stepIndex];
   const priceLabel = useMemo(() => formatter.format(value), [value]);
 
   return (
@@ -36,12 +48,12 @@ export function BudgetSlider({
       <input
         aria-label="Maximum property price"
         className="budget-slider h-12 w-full min-w-0"
-        max={max}
-        min={min}
-        onChange={(event) => setValue(Number(event.target.value))}
-        step={step}
+        max={budgetSteps.length - 1}
+        min={0}
+        onChange={(event) => setStepIndex(Number(event.target.value))}
+        step={1}
         type="range"
-        value={value}
+        value={stepIndex}
       />
     </label>
   );
