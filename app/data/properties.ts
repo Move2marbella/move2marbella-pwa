@@ -112,6 +112,11 @@ type TaxonomyOption = {
 export type PropertyTypeOption = TaxonomyOption;
 export type PropertyCityOption = TaxonomyOption;
 
+export type SearchOption = {
+  label: string;
+  value: string;
+};
+
 type PropertyFilters = {
   bedrooms?: number;
   maxPrice?: number;
@@ -685,6 +690,64 @@ export async function fetchPropertyCities() {
   return orderTermsByHierarchy(terms);
 }
 
+const PROPERTY_CITY_SEARCH_OPTIONS = [
+  { label: "Marbella East", slug: "marbella-east" },
+  { label: "Marbella", slug: "marbella-golden-mile" },
+  { label: "Marbella West", slug: "marbella-west" },
+  { label: "Benahavís", slug: "benahavis-area" },
+  { label: "Estepona", slug: "estepona-area" },
+  { label: "Mijas Costa", slug: "mijas-area" },
+  { label: "Benalmádena", slug: "benalmadena-area" },
+  { label: "Fuengirola", slug: "fuengirola-area" },
+  { label: "Inland", slug: "inland" },
+  { label: "Málaga", slug: "malaga" },
+];
+
+const PROPERTY_TYPE_SEARCH_OPTIONS = [
+  { label: "Apartment", slug: "apartment" },
+  { label: "House", slug: "house" },
+  { label: "Plot", slug: "plot" },
+  { label: "Commercial", slug: "commercial" },
+  { label: "Penthouse", slug: "penthouse" },
+  { label: "Townhouse", slug: "townhouse" },
+];
+
+const PROPERTY_TYPE_FILTER_SLUGS: Record<string, string[]> = {
+  penthouse: ["penthouse", "penthouse-duplex"],
+};
+
+export function getSimplifiedPropertyCityOptions(
+  propertyCities: PropertyCityOption[],
+) {
+  return getSearchOptions(PROPERTY_CITY_SEARCH_OPTIONS, propertyCities);
+}
+
+export function getSimplifiedPropertyTypeOptions(
+  propertyTypes: PropertyTypeOption[],
+) {
+  return getSearchOptions(PROPERTY_TYPE_SEARCH_OPTIONS, propertyTypes);
+}
+
+function getSearchOptions(
+  options: { label: string; slug: string }[],
+  terms: TaxonomyOption[],
+) {
+  return options
+    .map((option) => {
+      const term = terms.find((term) => term.slug === option.slug);
+
+      if (!term) {
+        return null;
+      }
+
+      return {
+        label: option.label,
+        value: option.slug,
+      };
+    })
+    .filter((option): option is SearchOption => Boolean(option));
+}
+
 function getTaxonomyFilterIds(
   selectedTermId: string,
   terms: TaxonomyOption[],
@@ -693,7 +756,15 @@ function getTaxonomyFilterIds(
     return [];
   }
 
-  const selectedId = Number(selectedTermId);
+  const selectedTerm =
+    terms.find((term) => term.slug === selectedTermId) ??
+    terms.find((term) => String(term.id) === selectedTermId);
+
+  if (!selectedTerm) {
+    return [];
+  }
+
+  const selectedId = selectedTerm.id;
   const ids = new Set<number>([selectedId]);
   let changed = true;
 
@@ -715,7 +786,18 @@ export function getPropertyTypeFilterIds(
   selectedTypeId: string,
   propertyTypes: PropertyTypeOption[],
 ) {
-  return getTaxonomyFilterIds(selectedTypeId, propertyTypes);
+  const selectedSlugs = PROPERTY_TYPE_FILTER_SLUGS[selectedTypeId] ?? [
+    selectedTypeId,
+  ];
+  const ids = new Set<string>();
+
+  for (const selectedSlug of selectedSlugs) {
+    for (const id of getTaxonomyFilterIds(selectedSlug, propertyTypes)) {
+      ids.add(id);
+    }
+  }
+
+  return Array.from(ids);
 }
 
 export function getPropertyCityFilterIds(

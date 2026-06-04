@@ -12,6 +12,8 @@ import {
   getGeneralWhatsAppUrl,
   getPropertyCityFilterIds,
   getPropertyTypeFilterIds,
+  getSimplifiedPropertyCityOptions,
+  getSimplifiedPropertyTypeOptions,
   getWhatsAppUrl,
   quickFilters,
   type PropertySortOrder,
@@ -89,6 +91,8 @@ export async function HomeContent({
     fetchPropertyCities(),
     fetchPropertyTypes(),
   ]);
+  const propertyCityOptions = getSimplifiedPropertyCityOptions(propertyCities);
+  const propertyTypeOptions = getSimplifiedPropertyTypeOptions(propertyTypes);
   const propertyCityFilterIds = getPropertyCityFilterIds(
     selectedPropertyCity,
     propertyCities,
@@ -107,12 +111,18 @@ export async function HomeContent({
     sort: selectedSort,
   });
   const { properties, total, totalPages } = result;
-  const selectedCityName = propertyCities.find(
-    (propertyCity) => String(propertyCity.id) === selectedPropertyCity,
-  )?.name;
-  const selectedTypeName = propertyTypes.find(
-    (propertyType) => String(propertyType.id) === selectedPropertyType,
-  )?.name;
+  const selectedCityName =
+    propertyCityOptions.find((option) => option.value === selectedPropertyCity)
+      ?.label ??
+    propertyCities.find(
+      (propertyCity) => String(propertyCity.id) === selectedPropertyCity,
+    )?.name;
+  const selectedTypeName =
+    propertyTypeOptions.find((option) => option.value === selectedPropertyType)
+      ?.label ??
+    propertyTypes.find(
+      (propertyType) => String(propertyType.id) === selectedPropertyType,
+    )?.name;
   const resultTitle =
     [selectedReference, selectedCityName, selectedTypeName]
       .filter(Boolean)
@@ -263,10 +273,9 @@ export async function HomeContent({
                   className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
                 >
                   <option value="">{t.costaDelSol}</option>
-                  {propertyCities.map((propertyCity) => (
-                    <option key={propertyCity.id} value={propertyCity.id}>
-                      {propertyCity.depth > 0 ? "- " : ""}
-                      {propertyCity.name}
+                  {propertyCityOptions.map((propertyCity) => (
+                    <option key={propertyCity.value} value={propertyCity.value}>
+                      {propertyCity.label}
                     </option>
                   ))}
                 </select>
@@ -281,10 +290,9 @@ export async function HomeContent({
                   className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
                 >
                   <option value="">{t.anyProperty}</option>
-                  {propertyTypes.map((propertyType) => (
-                    <option key={propertyType.id} value={propertyType.id}>
-                      {propertyType.depth > 0 ? "- " : ""}
-                      {propertyType.name}
+                  {propertyTypeOptions.map((propertyType) => (
+                    <option key={propertyType.value} value={propertyType.value}>
+                      {propertyType.label}
                     </option>
                   ))}
                 </select>
