@@ -38,3 +38,47 @@ select {
 button {
   cursor: pointer;
 }
+
+.budget-slider {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+.budget-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #d7d2c4;
+}
+
+.budget-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 32px;
+  height: 32px;
+  margin-top: -12px;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  background: #ba9456;
+  box-shadow: 0 3px 10px rgba(15, 37, 61, 0.28);
+}
+
+.budget-slider::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #d7d2c4;
+}
+
+.budget-slider::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  background: #ba9456;
+  box-shadow: 0 3px 10px rgba(15, 37, 61, 0.28);
+}
+
+.budget-slider:focus-visible {
+  outline: 3px solid rgba(186, 148, 86, 0.35);
+  outline-offset: 4px;
+}

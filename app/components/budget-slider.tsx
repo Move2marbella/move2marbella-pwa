@@ -35,7 +35,7 @@ export function BudgetSlider({
       <input type="hidden" name="max_price" value={value} />
       <input
         aria-label="Maximum property price"
-        className="h-12 w-full min-w-0 accent-[#ba9456]"
+        className="budget-slider h-12 w-full min-w-0"
         max={max}
         min={min}
         onChange={(event) => setValue(Number(event.target.value))}
