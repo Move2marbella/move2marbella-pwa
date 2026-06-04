@@ -81,6 +81,8 @@ export type Property = {
   rawPrice: number;
   beds: string;
   baths: string;
+  builtArea: number;
+  plotArea: number;
   size: string;
   plot: string;
   terrace: string;
@@ -240,6 +242,8 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       rawPrice: Number(property.Price),
       beds: property.Bedrooms,
       baths: property.Bathrooms,
+      builtArea: property.Built,
+      plotArea: property.GardenPlot,
       size: `${property.Built} m2`,
       plot: property.GardenPlot ? `${property.GardenPlot} m2` : "Community",
       terrace: `${property.Terrace} m2`,

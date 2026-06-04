@@ -40,6 +40,7 @@ type Translation = {
   phone: string;
   plot: string;
   previous: string;
+  pricePerSquareMetre: string;
   priceHighToLow: string;
   priceLowToHigh: string;
   quickFilters: string;
@@ -99,6 +100,7 @@ export const translations: Record<Locale, Translation> = {
     phone: "Phone",
     plot: "Plot",
     previous: "Previous",
+    pricePerSquareMetre: "Price / m²",
     priceHighToLow: "High to low",
     priceLowToHigh: "Low to high",
     quickFilters: "Quick filters",
@@ -157,6 +159,7 @@ export const translations: Record<Locale, Translation> = {
     phone: "Teléfono",
     plot: "Parcela",
     previous: "Anterior",
+    pricePerSquareMetre: "Precio / m²",
     priceHighToLow: "De mayor a menor",
     priceLowToHigh: "De menor a mayor",
     quickFilters: "Filtros rápidos",
@@ -215,6 +218,7 @@ export const translations: Record<Locale, Translation> = {
     phone: "Téléphone",
     plot: "Terrain",
     previous: "Précédent",
+    pricePerSquareMetre: "Prix / m²",
     priceHighToLow: "Du plus élevé au plus bas",
     priceLowToHigh: "Du plus bas au plus élevé",
     quickFilters: "Filtres rapides",
@@ -273,6 +277,7 @@ export const translations: Record<Locale, Translation> = {
     phone: "Telefon",
     plot: "Grundstück",
     previous: "Zurück",
+    pricePerSquareMetre: "Preis / m²",
     priceHighToLow: "Hoch bis niedrig",
     priceLowToHigh: "Niedrig bis hoch",
     quickFilters: "Schnellfilter",
@@ -331,6 +336,7 @@ export const translations: Record<Locale, Translation> = {
     phone: "Телефон",
     plot: "Участок",
     previous: "Назад",
+    pricePerSquareMetre: "Цена / м²",
     priceHighToLow: "По убыванию",
     priceLowToHigh: "По возрастанию",
     quickFilters: "Быстрые фильтры",
@@ -389,6 +395,7 @@ export const translations: Record<Locale, Translation> = {
     phone: "Telefon",
     plot: "Działka",
     previous: "Wstecz",
+    pricePerSquareMetre: "Cena / m²",
     priceHighToLow: "Od najwyższej",
     priceLowToHigh: "Od najniższej",
     quickFilters: "Szybkie filtry",
@@ -447,6 +454,7 @@ export const translations: Record<Locale, Translation> = {
     phone: "Telefon",
     plot: "Telek",
     previous: "Előző",
+    pricePerSquareMetre: "Ár / m²",
     priceHighToLow: "Magastól alacsonyig",
     priceLowToHigh: "Alacsonytól magasig",
     quickFilters: "Gyors szűrők",

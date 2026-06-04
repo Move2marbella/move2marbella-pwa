@@ -11,6 +11,7 @@ import {
   fetchProperties,
   getPropertyByRef,
   getWhatsAppUrl,
+  type Property,
 } from "../../data/properties";
 import {
   fetchNearbyPlaces,
@@ -102,6 +103,23 @@ export async function getPropertyMetadata(
   };
 }
 
+function formatPricePerSquareMetre(property: Property) {
+  const isPlot = /plot|land/i.test(property.type);
+  const area = isPlot ? property.plotArea : property.builtArea;
+
+  if (!area || !property.rawPrice) {
+    return null;
+  }
+
+  const formattedPrice = new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: property.currency,
+    maximumFractionDigits: 0,
+  }).format(property.rawPrice / area);
+
+  return `${formattedPrice}/m²`;
+}
+
 export default async function PropertyPage({
   params,
   searchParams,
@@ -156,6 +174,7 @@ export async function PropertyDetailContent({
     property.coordinates?.postalCode,
   );
   const nearbyGroups = groupNearbyPlaces(nearbyPlaces, locale);
+  const pricePerSquareMetre = formatPricePerSquareMetre(property);
 
   const stats = [
     { label: t.bedrooms, value: property.beds },
@@ -342,7 +361,7 @@ export async function PropertyDetailContent({
             {property.description}
           </p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:grid-cols-4">
             <div className="rounded-[8px] bg-[#f7f2ea] p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                 {t.apiStatus}
@@ -355,6 +374,14 @@ export async function PropertyDetailContent({
               </p>
               <p className="mt-1 font-semibold">{property.plot}</p>
             </div>
+            {pricePerSquareMetre ? (
+              <div className="rounded-[8px] bg-[#f7f2ea] p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                  {t.pricePerSquareMetre}
+                </p>
+                <p className="mt-1 font-semibold">{pricePerSquareMetre}</p>
+              </div>
+            ) : null}
             <div className="rounded-[8px] bg-[#f7f2ea] p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                 {t.area}
