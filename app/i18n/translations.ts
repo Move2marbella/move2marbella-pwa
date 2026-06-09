@@ -83,6 +83,10 @@ type Translation = {
     formParking: string;
     formPostalCode: string;
     formPropertyType: string;
+    geographyMunicipality: string;
+    geographyNearestMunicipality: string;
+    geographyNearestPostalCode: string;
+    geographyPostalCode: string;
     heroBody: string;
     heroEyebrow: string;
     heroTitle: string;
@@ -202,6 +206,10 @@ export const translations: Record<Locale, Translation> = {
       formParking: "Parking",
       formPostalCode: "Postal code",
       formPropertyType: "Property type",
+      geographyMunicipality: "municipality",
+      geographyNearestMunicipality: "nearest municipality",
+      geographyNearestPostalCode: "nearest postal code",
+      geographyPostalCode: "postal code",
       heroBody:
         "Combine Move2Marbella active listing comparables with public Notariado transaction benchmarks to estimate a realistic asking range before speaking with an owner.",
       heroEyebrow: "Seller intelligence",
@@ -323,6 +331,10 @@ export const translations: Record<Locale, Translation> = {
       formParking: "Aparcamiento",
       formPostalCode: "Código postal",
       formPropertyType: "Tipo de propiedad",
+      geographyMunicipality: "municipio",
+      geographyNearestMunicipality: "municipio más cercano",
+      geographyNearestPostalCode: "código postal más cercano",
+      geographyPostalCode: "código postal",
       heroBody:
         "Combina comparables activos de Move2Marbella con datos públicos de transacciones del Notariado para estimar un rango de precio realista antes de hablar con un propietario.",
       heroEyebrow: "Inteligencia para vendedores",
@@ -444,6 +456,10 @@ export const translations: Record<Locale, Translation> = {
       formParking: "Parking",
       formPostalCode: "Code postal",
       formPropertyType: "Type de bien",
+      geographyMunicipality: "municipalité",
+      geographyNearestMunicipality: "municipalité la plus proche",
+      geographyNearestPostalCode: "code postal le plus proche",
+      geographyPostalCode: "code postal",
       heroBody:
         "Combine les biens comparables actifs de Move2Marbella avec les benchmarks publics du Notariado pour estimer une fourchette de prix réaliste avant d'échanger avec un propriétaire.",
       heroEyebrow: "Intelligence vendeur",
@@ -565,6 +581,10 @@ export const translations: Record<Locale, Translation> = {
       formParking: "Parken",
       formPostalCode: "Postleitzahl",
       formPropertyType: "Immobilientyp",
+      geographyMunicipality: "Gemeinde",
+      geographyNearestMunicipality: "nächste Gemeinde",
+      geographyNearestPostalCode: "nächste Postleitzahl",
+      geographyPostalCode: "Postleitzahl",
       heroBody:
         "Kombiniert aktive Move2Marbella-Vergleichsangebote mit öffentlichen Notariado-Transaktionsbenchmarks, um vor dem Eigentümergespräch eine realistische Preisrange zu schätzen.",
       heroEyebrow: "Verkäufer-Intelligenz",
@@ -686,6 +706,10 @@ export const translations: Record<Locale, Translation> = {
       formParking: "Парковка",
       formPostalCode: "Почтовый индекс",
       formPropertyType: "Тип недвижимости",
+      geographyMunicipality: "муниципалитет",
+      geographyNearestMunicipality: "ближайший муниципалитет",
+      geographyNearestPostalCode: "ближайший почтовый индекс",
+      geographyPostalCode: "почтовый индекс",
       heroBody:
         "Сравниваем активные объявления Move2Marbella с публичными транзакционными benchmark-данными Notariado, чтобы оценить реалистичный диапазон цены перед разговором с собственником.",
       heroEyebrow: "Данные для продавцов",
@@ -807,6 +831,10 @@ export const translations: Record<Locale, Translation> = {
       formParking: "Parking",
       formPostalCode: "Kod pocztowy",
       formPropertyType: "Typ nieruchomości",
+      geographyMunicipality: "gmina",
+      geographyNearestMunicipality: "najbliższa gmina",
+      geographyNearestPostalCode: "najbliższy kod pocztowy",
+      geographyPostalCode: "kod pocztowy",
       heroBody:
         "Łączy aktywne oferty porównawcze Move2Marbella z publicznymi benchmarkami transakcyjnymi Notariado, aby oszacować realistyczny zakres ceny przed rozmową z właścicielem.",
       heroEyebrow: "Dane dla sprzedających",
@@ -928,6 +956,10 @@ export const translations: Record<Locale, Translation> = {
       formParking: "Parkolás",
       formPostalCode: "Irányítószám",
       formPropertyType: "Ingatlan típusa",
+      geographyMunicipality: "település",
+      geographyNearestMunicipality: "legközelebbi település",
+      geographyNearestPostalCode: "legközelebbi irányítószám",
+      geographyPostalCode: "irányítószám",
       heroBody:
         "A Move2Marbella aktív összehasonlító hirdetéseit és a publikus Notariado tranzakciós benchmarkokat kombináljuk, hogy reális ársávot adjunk tulajdonosi beszélgetés előtt.",
       heroEyebrow: "Eladói intelligencia",

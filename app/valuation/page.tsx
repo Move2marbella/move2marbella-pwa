@@ -392,6 +392,25 @@ function formatWeight(weight: number) {
   return `${Math.round(weight * 100)}%`;
 }
 
+function getNotariadoGeographyLabel(
+  geography: string,
+  labels: {
+    geographyMunicipality: string;
+    geographyNearestMunicipality: string;
+    geographyNearestPostalCode: string;
+    geographyPostalCode: string;
+  },
+) {
+  const geographyLabels: Record<string, string> = {
+    municipality: labels.geographyMunicipality,
+    nearestMunicipality: labels.geographyNearestMunicipality,
+    nearestPostalCode: labels.geographyNearestPostalCode,
+    postalCode: labels.geographyPostalCode,
+  };
+
+  return geographyLabels[geography] ?? geography;
+}
+
 function interpolate(value: string, replacements: Record<string, string>) {
   return Object.entries(replacements).reduce(
     (text, [key, replacement]) => text.replace(`{${key}}`, replacement),
@@ -735,7 +754,10 @@ export async function ValuationContent({
                       label={v.notariadoArea}
                       value={
                         valuation.sources.notariado.benchmark
-                          ? `${valuation.sources.notariado.benchmark.label} (${valuation.sources.notariado.benchmark.geography})`
+                          ? `${valuation.sources.notariado.benchmark.label} (${getNotariadoGeographyLabel(
+                              valuation.sources.notariado.benchmark.geography,
+                              v,
+                            )})`
                           : v.noPublicMatch
                       }
                     />

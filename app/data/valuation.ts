@@ -97,6 +97,8 @@ type ArcGisQueryResponse = {
   features?: ArcGisFeature[];
 };
 
+type ArcGisFeatureRow = ArcGisFeature["attributes"];
+
 function normalize(value: string) {
   return value
     .normalize("NFD")
@@ -107,6 +109,42 @@ function normalize(value: string) {
 
 function escapeSqlLiteral(value: string) {
   return value.replace(/'/g, "''");
+}
+
+function levenshteinDistance(a: string, b: string) {
+  if (a === b) {
+    return 0;
+  }
+
+  if (!a.length) {
+    return b.length;
+  }
+
+  if (!b.length) {
+    return a.length;
+  }
+
+  const previous = Array.from({ length: b.length + 1 }, (_, index) => index);
+  const current = Array.from({ length: b.length + 1 }, () => 0);
+
+  for (let i = 1; i <= a.length; i += 1) {
+    current[0] = i;
+
+    for (let j = 1; j <= b.length; j += 1) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      current[j] = Math.min(
+        previous[j] + 1,
+        current[j - 1] + 1,
+        previous[j - 1] + cost,
+      );
+    }
+
+    for (let j = 0; j <= b.length; j += 1) {
+      previous[j] = current[j];
+    }
+  }
+
+  return previous[b.length];
 }
 
 function getNotariadoMunicipalityName(value: string) {
@@ -185,11 +223,16 @@ function getAdjustmentMultiplier(input: ValuationInput) {
   };
 }
 
-async function queryNotariadoLayer(layer: 3 | 4, where: string) {
+async function queryNotariadoLayer(
+  layer: 3 | 4,
+  where: string,
+  resultRecordCount = 2000,
+) {
   const params = new URLSearchParams({
     f: "json",
     outFields: "*",
     returnGeometry: "false",
+    resultRecordCount: String(resultRecordCount),
     where,
   });
   const response = await fetch(
@@ -234,9 +277,118 @@ function selectBestNotariadoFeature(
   );
 }
 
+function toNotariadoBenchmark(
+  match: ArcGisFeatureRow,
+  geography: string,
+  label: string,
+): NotariadoBenchmark {
+  return {
+    geography,
+    label,
+    pricePerSquareMetre: match.precio_m2 ?? 0,
+    averagePrice: match.precio_medio ?? 0,
+    averageArea: match.superficie_media ?? 0,
+    sales: match.total ?? 0,
+    estimated: Boolean(match.es_estimado),
+  };
+}
+
+async function getNearestPostalCodeBenchmark(
+  postalCode: string,
+  propertyClassId: number,
+) {
+  const prefixes = [postalCode.slice(0, 3), postalCode.slice(0, 2)]
+    .filter((prefix, index, values) => prefix.length >= 2 && values.indexOf(prefix) === index);
+
+  for (const prefix of prefixes) {
+    const features = await queryNotariadoLayer(
+      4,
+      `cp LIKE '${escapeSqlLiteral(prefix)}%'`,
+    );
+    const rowsByPostalCode = new Map<string, ArcGisFeature[]>();
+
+    for (const feature of features) {
+      const cp = feature.attributes.cp;
+
+      if (!cp) {
+        continue;
+      }
+
+      rowsByPostalCode.set(cp, [...(rowsByPostalCode.get(cp) ?? []), feature]);
+    }
+
+    const postalMatches = [...rowsByPostalCode.entries()]
+      .map(([cp, rows]) => ({
+        cp,
+        distance: Math.abs(Number(cp) - Number(postalCode)),
+        match: selectBestNotariadoFeature(rows, propertyClassId),
+      }))
+      .filter((entry): entry is { cp: string; distance: number; match: ArcGisFeatureRow } =>
+        Boolean(entry.match?.precio_m2),
+      )
+      .sort((a, b) => a.distance - b.distance);
+
+    const nearest = postalMatches[0];
+
+    if (nearest) {
+      return toNotariadoBenchmark(nearest.match, "nearestPostalCode", nearest.cp);
+    }
+  }
+
+  return null;
+}
+
+async function getNearestMunicipalityBenchmark(
+  municipality: string,
+  propertyClassId: number,
+) {
+  const features = await queryNotariadoLayer(3, "name_prov='Málaga'");
+  const rowsByMunicipality = new Map<string, ArcGisFeature[]>();
+
+  for (const feature of features) {
+    const name = feature.attributes.name_muni2;
+
+    if (!name) {
+      continue;
+    }
+
+    rowsByMunicipality.set(name, [...(rowsByMunicipality.get(name) ?? []), feature]);
+  }
+
+  const normalizedMunicipality = normalize(municipality);
+  const municipalityMatches = [...rowsByMunicipality.entries()]
+    .map(([name, rows]) => {
+      const normalizedName = normalize(name);
+      const distance =
+        normalizedName.includes(normalizedMunicipality) ||
+        normalizedMunicipality.includes(normalizedName)
+          ? 0
+          : levenshteinDistance(normalizedMunicipality, normalizedName);
+
+      return {
+        distance,
+        match: selectBestNotariadoFeature(rows, propertyClassId),
+        name,
+      };
+    })
+    .filter((entry): entry is { distance: number; match: ArcGisFeatureRow; name: string } =>
+      Boolean(entry.match?.precio_m2),
+    )
+    .sort((a, b) => a.distance - b.distance);
+
+  const nearest = municipalityMatches[0];
+
+  if (!nearest) {
+    return null;
+  }
+
+  return toNotariadoBenchmark(nearest.match, "nearestMunicipality", nearest.name);
+}
+
 async function getNotariadoBenchmark(input: ValuationInput) {
   const propertyClassId = getPropertyClassId(input.propertyType);
   const cleanPostalCode = input.postalCode?.replace(/\D/g, "");
+  const municipality = getNotariadoMunicipalityName(input.municipality.trim());
 
   if (cleanPostalCode?.length === 5) {
     const features = await queryNotariadoLayer(
@@ -246,43 +398,38 @@ async function getNotariadoBenchmark(input: ValuationInput) {
     const match = selectBestNotariadoFeature(features, propertyClassId);
 
     if (match?.precio_m2) {
-      return {
-        geography: "postalCode",
-        label: cleanPostalCode,
-        pricePerSquareMetre: match.precio_m2,
-        averagePrice: match.precio_medio ?? 0,
-        averageArea: match.superficie_media ?? 0,
-        sales: match.total ?? 0,
-        estimated: Boolean(match.es_estimado),
-      };
+      return toNotariadoBenchmark(match, "postalCode", cleanPostalCode);
     }
   }
 
-  const municipality = getNotariadoMunicipalityName(input.municipality.trim());
+  if (cleanPostalCode?.length === 5) {
+    const nearestPostalCodeBenchmark = await getNearestPostalCodeBenchmark(
+      cleanPostalCode,
+      propertyClassId,
+    );
 
-  if (!municipality) {
-    return null;
+    if (nearestPostalCodeBenchmark) {
+      return nearestPostalCodeBenchmark;
+    }
   }
 
-  const features = await queryNotariadoLayer(
-    3,
-    `name_muni2='${escapeSqlLiteral(municipality)}'`,
-  );
-  const match = selectBestNotariadoFeature(features, propertyClassId);
+  if (municipality) {
+    const features = await queryNotariadoLayer(
+      3,
+      `name_muni2='${escapeSqlLiteral(municipality)}'`,
+    );
+    const match = selectBestNotariadoFeature(features, propertyClassId);
 
-  if (!match?.precio_m2) {
-    return null;
+    if (match?.precio_m2) {
+      return toNotariadoBenchmark(match, "municipality", match.name_muni2 ?? municipality);
+    }
   }
 
-  return {
-    geography: "municipality",
-    label: match.name_muni2 ?? municipality,
-    pricePerSquareMetre: match.precio_m2,
-    averagePrice: match.precio_medio ?? 0,
-    averageArea: match.superficie_media ?? 0,
-    sales: match.total ?? 0,
-    estimated: Boolean(match.es_estimado),
-  };
+  if (municipality) {
+    return getNearestMunicipalityBenchmark(municipality, propertyClassId);
+  }
+
+  return null;
 }
 
 function getRealAdvisorBenchmark(input: ValuationInput) {
