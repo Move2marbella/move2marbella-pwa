@@ -10,6 +10,7 @@ export type AnalyticsEventName =
   | "pwa_install_clicked"
   | "pwa_install_dismissed"
   | "pwa_install_prompt_shown"
+  | "valuation_lead_submitted"
   | "whatsapp_click";
 
 type AnalyticsEventParams = Record<

@@ -122,6 +122,7 @@ export type SearchOption = {
 type PropertyFilters = {
   bedrooms?: number;
   maxPrice?: number;
+  noStore?: boolean;
   propertyCities?: string[];
   reference?: string;
   propertyTypes?: string[];
@@ -343,11 +344,15 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
 
   const response = await fetch(
     `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
-    {
-      next: {
-        revalidate: 300,
-      },
-    },
+    filters.noStore
+      ? {
+          cache: "no-store",
+        }
+      : {
+          next: {
+            revalidate: 300,
+          },
+        },
   );
 
   if (!response.ok) {
