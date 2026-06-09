@@ -188,8 +188,7 @@ function getAdjustmentMultiplier(input: ValuationInput) {
 async function queryNotariadoLayer(layer: 3 | 4, where: string) {
   const params = new URLSearchParams({
     f: "json",
-    outFields:
-      "cp,name_muni2,es_estimado,precio_m2,precio_medio,superficie_media,total,tipo_construccion_id,clase_finca_urbana_id",
+    outFields: "*",
     returnGeometry: "false",
     where,
   });
