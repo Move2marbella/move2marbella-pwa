@@ -699,7 +699,7 @@ export async function fetchPropertyCities() {
   return orderTermsByHierarchy(terms);
 }
 
-const PROPERTY_CITY_SEARCH_OPTIONS = [
+export const PROPERTY_CITY_SEARCH_OPTIONS = [
   { label: "Marbella East", slug: "marbella-east" },
   { label: "Marbella", slug: "marbella-golden-mile" },
   { label: "Marbella West", slug: "marbella-west" },
@@ -814,6 +814,24 @@ export function getPropertyCityFilterIds(
   propertyCities: PropertyCityOption[],
 ) {
   return getTaxonomyFilterIds(selectedCityId, propertyCities);
+}
+
+export function getPropertyCityDescendants(
+  selectedCityId: string,
+  propertyCities: PropertyCityOption[],
+) {
+  const ids = getPropertyCityFilterIds(selectedCityId, propertyCities).map(Number);
+  const selectedTerm =
+    propertyCities.find((term) => term.slug === selectedCityId) ??
+    propertyCities.find((term) => String(term.id) === selectedCityId);
+
+  if (!selectedTerm) {
+    return [];
+  }
+
+  return propertyCities.filter(
+    (term) => ids.includes(term.id) && term.id !== selectedTerm.id,
+  );
 }
 
 export async function getPropertyByRef(ref: string, wordpressId?: string) {

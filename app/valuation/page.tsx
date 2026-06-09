@@ -3,7 +3,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd } from "../components/json-ld";
 import { ValuationLeadGate } from "../components/valuation-lead-gate";
+import { ValuationLocationFields } from "../components/valuation-location-fields";
 import { buildValuation, type ValuationInput } from "../data/valuation";
+import { locationCoordinates } from "../data/location-coordinates";
+import {
+  PROPERTY_CITY_SEARCH_OPTIONS,
+  fetchPropertyCities,
+  getPropertyCityDescendants,
+  type PropertyCityOption,
+} from "../data/properties";
 import {
   type Locale,
   getLocaleBasePath,
@@ -31,6 +39,21 @@ export type ValuationSearchParams = {
   property_type?: string;
 };
 
+export type ValuationAreaOption = {
+  label: string;
+  municipality: string;
+  postalCode: string;
+  value: string;
+};
+
+export type ValuationMunicipalityOption = {
+  label: string;
+  municipality: string;
+  postalCode: string;
+  value: string;
+  areas: ValuationAreaOption[];
+};
+
 type ValuationPageProps = {
   locale?: Locale;
   searchParams: Promise<ValuationSearchParams>;
@@ -38,7 +61,18 @@ type ValuationPageProps = {
 
 const propertyTypes = ["Apartment", "Penthouse", "Townhouse", "Villa", "Plot"];
 
-const municipalities = ["Marbella", "Estepona", "Benahavis", "Mijas", "Malaga"];
+const municipalityByMainCitySlug: Record<string, string> = {
+  "benahavis-area": "Benahavís",
+  "benalmadena-area": "Benalmádena",
+  "estepona-area": "Estepona",
+  "fuengirola-area": "Fuengirola",
+  inland: "Málaga",
+  malaga: "Málaga",
+  "marbella-east": "Marbella",
+  "marbella-golden-mile": "Marbella",
+  "marbella-west": "Marbella",
+  "mijas-area": "Mijas",
+};
 
 const valuationOptionLabels: Record<
   Locale,
@@ -264,16 +298,88 @@ function getNumber(value: string | undefined, fallback: number) {
   return Number.isFinite(number) && number > 0 ? number : fallback;
 }
 
-function getInput(searchParams: ValuationSearchParams): ValuationInput {
+function getPostalCode(slug: string, fallback: string) {
+  return (
+    locationCoordinates.find((coordinate) => coordinate.slug === slug)?.postalCode ??
+    fallback
+  );
+}
+
+function buildValuationMunicipalityOptions(
+  propertyCities: PropertyCityOption[],
+) {
+  return PROPERTY_CITY_SEARCH_OPTIONS.map((mainCity) => {
+    const municipality =
+      municipalityByMainCitySlug[mainCity.slug] ?? mainCity.label;
+    const fallbackPostalCode = getPostalCode(mainCity.slug, "29660");
+    const descendants = getPropertyCityDescendants(mainCity.slug, propertyCities);
+    const areas = descendants
+      .filter((city) => city.count > 0)
+      .map((city) => ({
+        label: city.name,
+        municipality,
+        postalCode: getPostalCode(city.slug, fallbackPostalCode),
+        value: city.slug,
+      }));
+
+    return {
+      label: mainCity.label,
+      municipality,
+      postalCode: fallbackPostalCode,
+      value: mainCity.slug,
+      areas: areas.length
+        ? areas
+        : [
+            {
+              label: mainCity.label,
+              municipality,
+              postalCode: fallbackPostalCode,
+              value: mainCity.slug,
+            },
+          ],
+    };
+  });
+}
+
+function getSelectedLocation(
+  searchParams: ValuationSearchParams,
+  options: ValuationMunicipalityOption[],
+) {
+  const selectedMunicipalitySlug =
+    searchParams.municipality && options.some((option) => option.value === searchParams.municipality)
+      ? searchParams.municipality
+      : options[2]?.value ?? options[0]?.value ?? "marbella-west";
+  const selectedMunicipality =
+    options.find((option) => option.value === selectedMunicipalitySlug) ??
+    options[0];
+  const selectedArea =
+    selectedMunicipality.areas.find((area) => area.value === searchParams.area) ??
+    selectedMunicipality.areas[0];
+
   return {
-    area: searchParams.area?.trim() || "Nueva Andalucia",
+    selectedArea,
+    selectedMunicipality,
+  };
+}
+
+function getInput(
+  searchParams: ValuationSearchParams,
+  locationOptions: ValuationMunicipalityOption[],
+): ValuationInput {
+  const { selectedArea, selectedMunicipality } = getSelectedLocation(
+    searchParams,
+    locationOptions,
+  );
+
+  return {
+    area: selectedArea?.label ?? selectedMunicipality.label,
     bedrooms: searchParams.bedrooms ? getNumber(searchParams.bedrooms, 3) : 3,
     builtArea: getNumber(searchParams.built_area, 140),
     condition: searchParams.condition || "good",
-    municipality: searchParams.municipality?.trim() || "Marbella",
+    municipality: selectedArea?.municipality ?? selectedMunicipality.municipality,
     outdoorSpace: searchParams.outdoor_space || "terrace",
     parking: searchParams.parking || "garage",
-    postalCode: searchParams.postal_code?.trim() || "29660",
+    postalCode: selectedArea?.postalCode ?? selectedMunicipality.postalCode,
     propertyType: searchParams.property_type || "Apartment",
   };
 }
@@ -331,20 +437,34 @@ export default async function ValuationPage({
   searchParams,
 }: ValuationPageProps) {
   const params = await searchParams;
-  const input = getInput(params);
+  const propertyCities = await fetchPropertyCities();
+  const locationOptions = buildValuationMunicipalityOptions(propertyCities);
+  const input = getInput(params, locationOptions);
   const shouldShowResult = hasUserInput(params);
   const valuation = shouldShowResult ? await buildValuation(input) : null;
 
-  return <ValuationContent input={input} locale={locale} valuation={valuation} />;
+  return (
+    <ValuationContent
+      input={input}
+      locale={locale}
+      locationOptions={locationOptions}
+      searchParams={params}
+      valuation={valuation}
+    />
+  );
 }
 
 export async function ValuationContent({
   input,
   locale = "en",
+  locationOptions,
+  searchParams,
   valuation,
 }: {
   input: ValuationInput;
   locale?: Locale;
+  locationOptions: ValuationMunicipalityOption[];
+  searchParams: ValuationSearchParams;
   valuation: Awaited<ReturnType<typeof buildValuation>> | null;
 }) {
   const t = getTranslations(locale);
@@ -360,6 +480,10 @@ export async function ValuationContent({
     area: input.area ?? input.municipality,
     type: propertyTypeLabel,
   });
+  const { selectedArea, selectedMunicipality } = getSelectedLocation(
+    searchParams,
+    locationOptions,
+  );
 
   return (
     <main lang={locale} className="min-h-screen bg-[#f7f2ea] text-[#171717]">
@@ -415,24 +539,14 @@ export async function ValuationContent({
               action={`${basePath}/valuation`}
               className="grid gap-4 rounded-lg bg-[#f7f2ea] p-4 text-[#171717] shadow-2xl shadow-black/20 sm:grid-cols-2 sm:p-5"
             >
-              <Field label={v.formMunicipality}>
-                <Select name="municipality" defaultValue={input.municipality}>
-                  {municipalities.map((municipality) => (
-                    <option key={municipality}>{municipality}</option>
-                  ))}
-                </Select>
-              </Field>
-              <Field label={v.formArea}>
-                <Input name="area" defaultValue={input.area} placeholder="Nueva Andalucia" />
-              </Field>
-              <Field label={v.formPostalCode}>
-                <Input
-                  inputMode="numeric"
-                  name="postal_code"
-                  defaultValue={input.postalCode}
-                  placeholder="29660"
-                />
-              </Field>
+              <ValuationLocationFields
+                areaLabel={v.formArea}
+                municipalityLabel={v.formMunicipality}
+                options={locationOptions}
+                postalCode={input.postalCode ?? selectedArea?.postalCode ?? ""}
+                selectedArea={selectedArea?.value ?? ""}
+                selectedMunicipality={selectedMunicipality.value}
+              />
               <Field label={v.formPropertyType}>
                 <Select name="property_type" defaultValue={input.propertyType}>
                   {propertyTypes.map((propertyType) => (
