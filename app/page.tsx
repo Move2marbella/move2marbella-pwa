@@ -238,13 +238,21 @@ export async function HomeContent({
                 className="h-auto w-44 sm:w-56"
               />
             </Link>
-            <TrackedWhatsAppLink
-              href={getGeneralWhatsAppUrl()}
-              source="home_header"
-              className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f253d] shadow-sm"
-            >
-              WhatsApp
-            </TrackedWhatsAppLink>
+            <div className="flex items-center gap-2">
+              <Link
+                href={`${basePath}/valuation`}
+                className="rounded-full bg-[#ba9456] px-4 py-2 text-sm font-semibold text-white shadow-sm"
+              >
+                Valuation
+              </Link>
+              <TrackedWhatsAppLink
+                href={getGeneralWhatsAppUrl()}
+                source="home_header"
+                className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f253d] shadow-sm"
+              >
+                WhatsApp
+              </TrackedWhatsAppLink>
+            </div>
           </header>
 
           <div className="flex flex-1 flex-col justify-end gap-6 py-10">
@@ -255,6 +263,12 @@ export async function HomeContent({
               <h1 className="text-4xl font-semibold leading-tight text-white sm:text-6xl">
                 {t.heroTitle}
               </h1>
+              <Link
+                href={`${basePath}/valuation`}
+                className="mt-6 inline-flex h-12 items-center rounded-[6px] bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43]"
+              >
+                Get a property valuation
+              </Link>
             </div>
 
             <form
