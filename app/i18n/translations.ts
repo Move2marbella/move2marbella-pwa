@@ -59,6 +59,60 @@ type Translation = {
   heroTitle: string;
   seoDescription: string;
   leadDefaultMessage: string;
+  valuation: {
+    adjustments: string;
+    askingRangeHint: string;
+    benchmarkDetails: string;
+    benchmarksAvailable: string;
+    builtArea: string;
+    calculateEstimate: string;
+    comparableActiveListings: string;
+    comparableListings: string;
+    confidence: string;
+    consent: string;
+    detailedReport: string;
+    detailedSourceQuality: string;
+    emailPlaceholder: string;
+    estimateDisclaimer: string;
+    estimateReady: string;
+    firstValuationBody: string;
+    firstValuationTitle: string;
+    formArea: string;
+    formMunicipality: string;
+    formOutdoorSpace: string;
+    formParking: string;
+    formPostalCode: string;
+    formPropertyType: string;
+    heroBody: string;
+    heroEyebrow: string;
+    heroTitle: string;
+    homeCta: string;
+    indicativeRange: string;
+    leadBody: string;
+    leadTitle: string;
+    marketBenchmark: string;
+    midpoint: string;
+    noComparables: string;
+    noMatch: string;
+    noPublicMatch: string;
+    notariadoArea: string;
+    notariadoBenchmark: string;
+    ownListingComps: string;
+    preview: string;
+    property: string;
+    propertyInArea: string;
+    ready: string;
+    report: string;
+    searchProperties: string;
+    showDetailedValuation: string;
+    shortCta: string;
+    sourceBreakdown: string;
+    sourceLogic: string;
+    sourceLogicBody: string;
+    sourceWeights: string;
+    transactions: string;
+    weight: string;
+  };
 };
 
 export const translations: Record<Locale, Translation> = {
@@ -120,6 +174,68 @@ export const translations: Record<Locale, Translation> = {
     seoDescription:
       "Search properties for sale in Marbella and across the Costa del Sol with Move2Marbella.",
     leadDefaultMessage: "I would like more information about this property.",
+    valuation: {
+      adjustments: "Adjustments",
+      askingRangeHint:
+        "Combine Move2Marbella active listing comparables with public Notariado transaction benchmarks to estimate a realistic asking range before speaking with an owner.",
+      benchmarkDetails: "Benchmark details",
+      benchmarksAvailable: "Benchmarks and comparables available",
+      builtArea: "Built area",
+      calculateEstimate: "Calculate estimate",
+      comparableActiveListings: "Comparable active listings",
+      comparableListings: "Comparable listings",
+      confidence: "Confidence",
+      consent:
+        "I am happy for Move2Marbella to contact me about this valuation by email, phone or WhatsApp.",
+      detailedReport: "Detailed report",
+      detailedSourceQuality: "Detailed source quality after contact",
+      emailPlaceholder: "name@example.com",
+      estimateDisclaimer:
+        "This tool is a market estimate for lead qualification and seller conversations. It is not an official bank valuation or a regulated tasacion. Public benchmark use should remain targeted and cached rather than copied as a bulk dataset.",
+      estimateReady: "Ready",
+      firstValuationBody:
+        "Fill in the form above to generate an indicative owner-facing range. The result will show the blend between active Move2Marbella listings, public Notariado transaction data and the external market benchmark slot.",
+      firstValuationTitle: "Ready for the first valuation",
+      formArea: "Area or urbanisation",
+      formMunicipality: "Municipality",
+      formOutdoorSpace: "Outdoor space",
+      formParking: "Parking",
+      formPostalCode: "Postal code",
+      formPropertyType: "Property type",
+      heroBody:
+        "Combine Move2Marbella active listing comparables with public Notariado transaction benchmarks to estimate a realistic asking range before speaking with an owner.",
+      heroEyebrow: "Seller intelligence",
+      heroTitle: "Costa del Sol property valuation",
+      homeCta: "Get a property valuation",
+      indicativeRange: "Indicative range",
+      leadBody:
+        "We will show the source breakdown, Notariado benchmark and comparable Move2Marbella listings after the contact details. No hard sell, just enough information to follow up properly if the estimate is relevant.",
+      leadTitle: "Send me the detailed valuation",
+      marketBenchmark: "Market benchmark",
+      midpoint: "Midpoint",
+      noComparables:
+        "No close active listing comparables were found for this exact area/type/size combination yet. The estimate falls back to public benchmarks until more matching listings are available.",
+      noMatch: "No match",
+      noPublicMatch: "No public match",
+      notariadoArea: "Notariado area",
+      notariadoBenchmark: "Notariado benchmark",
+      ownListingComps: "Own listing comps",
+      preview: "Preview",
+      property: "Property",
+      propertyInArea: "{type} in {area}",
+      ready: "Ready",
+      report: "Report",
+      searchProperties: "Search properties",
+      showDetailedValuation: "Show detailed valuation",
+      shortCta: "Valuation",
+      sourceBreakdown: "Source breakdown",
+      sourceLogic: "Source logic",
+      sourceLogicBody:
+        "Own listings represent active asking prices. Notariado gives a public transaction benchmark by postal code or municipality. The RealAdvisor slot is currently a public market benchmark and can be replaced with an approved data feed later.",
+      sourceWeights: "Source weights",
+      transactions: "Transactions",
+      weight: "Weight",
+    },
   },
   es: {
     any: "Cualquiera",
@@ -179,6 +295,68 @@ export const translations: Record<Locale, Translation> = {
     seoDescription:
       "Busca propiedades en venta en Marbella y la Costa del Sol con Move2Marbella.",
     leadDefaultMessage: "Me gustaría recibir más información sobre esta propiedad.",
+    valuation: {
+      adjustments: "Ajustes",
+      askingRangeHint:
+        "Combina comparables activos de Move2Marbella con datos públicos de transacciones del Notariado para estimar un rango de precio realista antes de hablar con un propietario.",
+      benchmarkDetails: "Detalles del benchmark",
+      benchmarksAvailable: "Benchmarks y comparables disponibles",
+      builtArea: "Superficie construida",
+      calculateEstimate: "Calcular estimación",
+      comparableActiveListings: "Comparables activos",
+      comparableListings: "Inmuebles comparables",
+      confidence: "Confianza",
+      consent:
+        "Acepto que Move2Marbella me contacte sobre esta valoración por email, teléfono o WhatsApp.",
+      detailedReport: "Informe detallado",
+      detailedSourceQuality: "Calidad de fuentes detallada tras el contacto",
+      emailPlaceholder: "nombre@ejemplo.com",
+      estimateDisclaimer:
+        "Esta herramienta ofrece una estimación de mercado para cualificar leads y conversaciones con vendedores. No es una tasación bancaria oficial ni una tasación regulada. El uso de benchmarks públicos debe ser puntual y cacheado, no una copia masiva de datos.",
+      estimateReady: "Listo",
+      firstValuationBody:
+        "Completa el formulario para generar un rango indicativo para propietarios. El resultado mostrará la mezcla entre anuncios activos de Move2Marbella, datos públicos del Notariado y el benchmark externo de mercado.",
+      firstValuationTitle: "Listo para la primera valoración",
+      formArea: "Zona o urbanización",
+      formMunicipality: "Municipio",
+      formOutdoorSpace: "Espacio exterior",
+      formParking: "Aparcamiento",
+      formPostalCode: "Código postal",
+      formPropertyType: "Tipo de propiedad",
+      heroBody:
+        "Combina comparables activos de Move2Marbella con datos públicos de transacciones del Notariado para estimar un rango de precio realista antes de hablar con un propietario.",
+      heroEyebrow: "Inteligencia para vendedores",
+      heroTitle: "Valoración de propiedades en la Costa del Sol",
+      homeCta: "Obtener valoración",
+      indicativeRange: "Rango indicativo",
+      leadBody:
+        "Mostraremos el desglose de fuentes, el benchmark del Notariado y los comparables de Move2Marbella después de los datos de contacto. Sin presión comercial, solo la información necesaria para hacer seguimiento si la estimación encaja.",
+      leadTitle: "Enviarme la valoración detallada",
+      marketBenchmark: "Benchmark de mercado",
+      midpoint: "Punto medio",
+      noComparables:
+        "Aún no se encontraron comparables activos cercanos para esta combinación exacta de zona, tipo y superficie. La estimación usa benchmarks públicos hasta que haya más anuncios similares.",
+      noMatch: "Sin coincidencia",
+      noPublicMatch: "Sin dato público",
+      notariadoArea: "Zona Notariado",
+      notariadoBenchmark: "Benchmark Notariado",
+      ownListingComps: "Comparables propios",
+      preview: "Vista previa",
+      property: "Propiedad",
+      propertyInArea: "{type} en {area}",
+      ready: "Listo",
+      report: "Informe",
+      searchProperties: "Buscar propiedades",
+      showDetailedValuation: "Ver valoración detallada",
+      shortCta: "Valoración",
+      sourceBreakdown: "Desglose de fuentes",
+      sourceLogic: "Lógica de fuentes",
+      sourceLogicBody:
+        "Los anuncios propios representan precios de oferta activos. El Notariado aporta un benchmark público de transacciones por código postal o municipio. El bloque de RealAdvisor es actualmente un benchmark público de mercado y puede sustituirse por un feed aprobado más adelante.",
+      sourceWeights: "Pesos de fuentes",
+      transactions: "Transacciones",
+      weight: "Peso",
+    },
   },
   fr: {
     any: "Tous",
@@ -238,6 +416,68 @@ export const translations: Record<Locale, Translation> = {
     seoDescription:
       "Recherchez des biens à vendre à Marbella et sur la Costa del Sol avec Move2Marbella.",
     leadDefaultMessage: "Je souhaite recevoir plus d'informations sur ce bien.",
+    valuation: {
+      adjustments: "Ajustements",
+      askingRangeHint:
+        "Combine les biens comparables actifs de Move2Marbella avec les benchmarks publics du Notariado pour estimer une fourchette de prix réaliste avant d'échanger avec un propriétaire.",
+      benchmarkDetails: "Détails du benchmark",
+      benchmarksAvailable: "Benchmarks et comparables disponibles",
+      builtArea: "Surface construite",
+      calculateEstimate: "Calculer l'estimation",
+      comparableActiveListings: "Annonces actives comparables",
+      comparableListings: "Biens comparables",
+      confidence: "Confiance",
+      consent:
+        "J'accepte que Move2Marbella me contacte au sujet de cette estimation par email, téléphone ou WhatsApp.",
+      detailedReport: "Rapport détaillé",
+      detailedSourceQuality: "Qualité détaillée des sources après contact",
+      emailPlaceholder: "nom@exemple.com",
+      estimateDisclaimer:
+        "Cet outil est une estimation de marché pour qualifier les leads et préparer les échanges avec les vendeurs. Ce n'est pas une estimation bancaire officielle ni une tasación réglementée. L'utilisation des benchmarks publics doit rester ciblée et mise en cache, sans copie massive des données.",
+      estimateReady: "Prêt",
+      firstValuationBody:
+        "Remplissez le formulaire pour générer une fourchette indicative destinée aux propriétaires. Le résultat montrera la combinaison entre annonces actives Move2Marbella, données publiques du Notariado et benchmark externe de marché.",
+      firstValuationTitle: "Prêt pour la première estimation",
+      formArea: "Zone ou urbanisation",
+      formMunicipality: "Municipalité",
+      formOutdoorSpace: "Espace extérieur",
+      formParking: "Parking",
+      formPostalCode: "Code postal",
+      formPropertyType: "Type de bien",
+      heroBody:
+        "Combine les biens comparables actifs de Move2Marbella avec les benchmarks publics du Notariado pour estimer une fourchette de prix réaliste avant d'échanger avec un propriétaire.",
+      heroEyebrow: "Intelligence vendeur",
+      heroTitle: "Estimation immobilière sur la Costa del Sol",
+      homeCta: "Obtenir une estimation",
+      indicativeRange: "Fourchette indicative",
+      leadBody:
+        "Nous afficherons le détail des sources, le benchmark Notariado et les comparables Move2Marbella après les coordonnées. Pas de vente forcée, seulement les informations nécessaires pour faire un suivi si l'estimation est pertinente.",
+      leadTitle: "M'envoyer l'estimation détaillée",
+      marketBenchmark: "Benchmark marché",
+      midpoint: "Point médian",
+      noComparables:
+        "Aucune annonce comparable proche n'a encore été trouvée pour cette combinaison exacte de zone, type et surface. L'estimation s'appuie sur les benchmarks publics jusqu'à l'arrivée de comparables plus proches.",
+      noMatch: "Aucune correspondance",
+      noPublicMatch: "Aucune donnée publique",
+      notariadoArea: "Zone Notariado",
+      notariadoBenchmark: "Benchmark Notariado",
+      ownListingComps: "Comparables internes",
+      preview: "Aperçu",
+      property: "Bien",
+      propertyInArea: "{type} à {area}",
+      ready: "Prêt",
+      report: "Rapport",
+      searchProperties: "Rechercher des biens",
+      showDetailedValuation: "Voir l'estimation détaillée",
+      shortCta: "Estimation",
+      sourceBreakdown: "Répartition des sources",
+      sourceLogic: "Logique des sources",
+      sourceLogicBody:
+        "Les annonces internes représentent les prix demandés actifs. Le Notariado fournit un benchmark public des transactions par code postal ou municipalité. Le bloc RealAdvisor est actuellement un benchmark public de marché et pourra être remplacé par un flux approuvé plus tard.",
+      sourceWeights: "Poids des sources",
+      transactions: "Transactions",
+      weight: "Poids",
+    },
   },
   de: {
     any: "Alle",
@@ -297,6 +537,68 @@ export const translations: Record<Locale, Translation> = {
     seoDescription:
       "Suchen Sie Immobilien zum Verkauf in Marbella und an der Costa del Sol mit Move2Marbella.",
     leadDefaultMessage: "Ich möchte mehr Informationen zu dieser Immobilie erhalten.",
+    valuation: {
+      adjustments: "Anpassungen",
+      askingRangeHint:
+        "Kombiniert aktive Move2Marbella-Vergleichsangebote mit öffentlichen Notariado-Transaktionsbenchmarks, um vor dem Eigentümergespräch eine realistische Preisrange zu schätzen.",
+      benchmarkDetails: "Benchmark-Details",
+      benchmarksAvailable: "Benchmarks und Vergleichsobjekte verfügbar",
+      builtArea: "Wohnfläche",
+      calculateEstimate: "Schätzung berechnen",
+      comparableActiveListings: "Aktive Vergleichsangebote",
+      comparableListings: "Vergleichsimmobilien",
+      confidence: "Sicherheit",
+      consent:
+        "Ich bin einverstanden, dass Move2Marbella mich zu dieser Bewertung per E-Mail, Telefon oder WhatsApp kontaktiert.",
+      detailedReport: "Detaillierter Bericht",
+      detailedSourceQuality: "Detaillierte Quellenqualität nach Kontaktangabe",
+      emailPlaceholder: "name@beispiel.com",
+      estimateDisclaimer:
+        "Dieses Tool ist eine Marktschätzung zur Lead-Qualifizierung und für Verkäufergespräche. Es ist keine offizielle Bankbewertung und keine regulierte Tasación. Öffentliche Benchmarks sollten gezielt und zwischengespeichert genutzt werden, nicht als Massendatenkopie.",
+      estimateReady: "Bereit",
+      firstValuationBody:
+        "Füllen Sie das Formular aus, um eine indikative Eigentümer-Preisspanne zu erhalten. Das Ergebnis zeigt die Mischung aus aktiven Move2Marbella-Angeboten, öffentlichen Notariado-Transaktionsdaten und externem Marktbenchmark.",
+      firstValuationTitle: "Bereit für die erste Bewertung",
+      formArea: "Gebiet oder Urbanisation",
+      formMunicipality: "Gemeinde",
+      formOutdoorSpace: "Außenbereich",
+      formParking: "Parken",
+      formPostalCode: "Postleitzahl",
+      formPropertyType: "Immobilientyp",
+      heroBody:
+        "Kombiniert aktive Move2Marbella-Vergleichsangebote mit öffentlichen Notariado-Transaktionsbenchmarks, um vor dem Eigentümergespräch eine realistische Preisrange zu schätzen.",
+      heroEyebrow: "Verkäufer-Intelligenz",
+      heroTitle: "Immobilienbewertung an der Costa del Sol",
+      homeCta: "Immobilienbewertung erhalten",
+      indicativeRange: "Indikative Preisspanne",
+      leadBody:
+        "Nach den Kontaktdaten zeigen wir die Quellenaufschlüsselung, den Notariado-Benchmark und vergleichbare Move2Marbella-Angebote. Kein harter Verkauf, nur genug Information für eine sinnvolle Nachverfolgung.",
+      leadTitle: "Detaillierte Bewertung senden",
+      marketBenchmark: "Marktbenchmark",
+      midpoint: "Mittelpunkt",
+      noComparables:
+        "Für diese genaue Kombination aus Gebiet, Typ und Fläche wurden noch keine nahen aktiven Vergleichsangebote gefunden. Die Schätzung nutzt öffentliche Benchmarks, bis mehr passende Angebote verfügbar sind.",
+      noMatch: "Keine Übereinstimmung",
+      noPublicMatch: "Keine öffentlichen Daten",
+      notariadoArea: "Notariado-Gebiet",
+      notariadoBenchmark: "Notariado-Benchmark",
+      ownListingComps: "Eigene Vergleichsangebote",
+      preview: "Vorschau",
+      property: "Immobilie",
+      propertyInArea: "{type} in {area}",
+      ready: "Bereit",
+      report: "Bericht",
+      searchProperties: "Immobilien suchen",
+      showDetailedValuation: "Detaillierte Bewertung anzeigen",
+      shortCta: "Bewertung",
+      sourceBreakdown: "Quellenaufschlüsselung",
+      sourceLogic: "Quellenlogik",
+      sourceLogicBody:
+        "Eigene Angebote stehen für aktive Angebotspreise. Notariado liefert einen öffentlichen Transaktionsbenchmark nach Postleitzahl oder Gemeinde. Der RealAdvisor-Block ist derzeit ein öffentlicher Marktbenchmark und kann später durch einen freigegebenen Feed ersetzt werden.",
+      sourceWeights: "Quellengewichtung",
+      transactions: "Transaktionen",
+      weight: "Gewicht",
+    },
   },
   ru: {
     any: "Любой",
@@ -356,6 +658,68 @@ export const translations: Record<Locale, Translation> = {
     seoDescription:
       "Найдите недвижимость на продажу в Марбелье и на Costa del Sol с Move2Marbella.",
     leadDefaultMessage: "Я хотел бы получить больше информации об этом объекте.",
+    valuation: {
+      adjustments: "Корректировки",
+      askingRangeHint:
+        "Сравниваем активные объявления Move2Marbella с публичными транзакционными benchmark-данными Notariado, чтобы оценить реалистичный диапазон цены перед разговором с собственником.",
+      benchmarkDetails: "Детали benchmark",
+      benchmarksAvailable: "Benchmarks и сравнимые объекты доступны",
+      builtArea: "Площадь",
+      calculateEstimate: "Рассчитать оценку",
+      comparableActiveListings: "Активные сравнимые объявления",
+      comparableListings: "Сравнимые объекты",
+      confidence: "Надежность",
+      consent:
+        "Я согласен, чтобы Move2Marbella связалась со мной по этой оценке по email, телефону или WhatsApp.",
+      detailedReport: "Подробный отчет",
+      detailedSourceQuality: "Детальное качество источников после контакта",
+      emailPlaceholder: "name@example.com",
+      estimateDisclaimer:
+        "Этот инструмент дает рыночную оценку для квалификации лидов и переговоров с продавцами. Это не официальная банковская оценка и не регулируемая tasacion. Публичные benchmarks следует использовать точечно и с кешированием, а не копировать массово.",
+      estimateReady: "Готово",
+      firstValuationBody:
+        "Заполните форму, чтобы получить ориентировочный диапазон для собственника. Результат покажет сочетание активных объявлений Move2Marbella, публичных данных Notariado и внешнего рыночного benchmark.",
+      firstValuationTitle: "Готово к первой оценке",
+      formArea: "Район или урбанизация",
+      formMunicipality: "Муниципалитет",
+      formOutdoorSpace: "Внешняя зона",
+      formParking: "Парковка",
+      formPostalCode: "Почтовый индекс",
+      formPropertyType: "Тип недвижимости",
+      heroBody:
+        "Сравниваем активные объявления Move2Marbella с публичными транзакционными benchmark-данными Notariado, чтобы оценить реалистичный диапазон цены перед разговором с собственником.",
+      heroEyebrow: "Данные для продавцов",
+      heroTitle: "Оценка недвижимости на Costa del Sol",
+      homeCta: "Получить оценку",
+      indicativeRange: "Ориентировочный диапазон",
+      leadBody:
+        "После контактных данных мы покажем разбивку источников, benchmark Notariado и сравнимые объекты Move2Marbella. Без навязчивых продаж, только информация для корректного follow-up.",
+      leadTitle: "Отправить мне подробную оценку",
+      marketBenchmark: "Рыночный benchmark",
+      midpoint: "Средняя точка",
+      noComparables:
+        "Для этой точной комбинации района, типа и площади пока не найдено близких активных comparables. Оценка использует публичные benchmarks, пока не появится больше похожих объектов.",
+      noMatch: "Нет совпадения",
+      noPublicMatch: "Нет публичных данных",
+      notariadoArea: "Зона Notariado",
+      notariadoBenchmark: "Benchmark Notariado",
+      ownListingComps: "Собственные comparables",
+      preview: "Предпросмотр",
+      property: "Объект",
+      propertyInArea: "{type} в {area}",
+      ready: "Готово",
+      report: "Отчет",
+      searchProperties: "Искать недвижимость",
+      showDetailedValuation: "Показать подробную оценку",
+      shortCta: "Оценка",
+      sourceBreakdown: "Разбивка источников",
+      sourceLogic: "Логика источников",
+      sourceLogicBody:
+        "Собственные объявления отражают активные цены предложения. Notariado дает публичный benchmark транзакций по почтовому индексу или муниципалитету. Блок RealAdvisor сейчас является публичным рыночным benchmark и может быть позже заменен одобренным feed.",
+      sourceWeights: "Вес источников",
+      transactions: "Транзакции",
+      weight: "Вес",
+    },
   },
   pl: {
     any: "Dowolne",
@@ -415,6 +779,68 @@ export const translations: Record<Locale, Translation> = {
     seoDescription:
       "Znajdź nieruchomości na sprzedaż w Marbelli i na Costa del Sol z Move2Marbella.",
     leadDefaultMessage: "Chciałbym otrzymać więcej informacji o tej nieruchomości.",
+    valuation: {
+      adjustments: "Korekty",
+      askingRangeHint:
+        "Łączy aktywne oferty porównawcze Move2Marbella z publicznymi benchmarkami transakcyjnymi Notariado, aby oszacować realistyczny zakres ceny przed rozmową z właścicielem.",
+      benchmarkDetails: "Szczegóły benchmarku",
+      benchmarksAvailable: "Benchmarki i porównania dostępne",
+      builtArea: "Powierzchnia",
+      calculateEstimate: "Oblicz wycenę",
+      comparableActiveListings: "Aktywne oferty porównawcze",
+      comparableListings: "Nieruchomości porównawcze",
+      confidence: "Pewność",
+      consent:
+        "Zgadzam się, aby Move2Marbella skontaktowało się ze mną w sprawie tej wyceny emailem, telefonicznie lub przez WhatsApp.",
+      detailedReport: "Szczegółowy raport",
+      detailedSourceQuality: "Szczegółowa jakość źródeł po kontakcie",
+      emailPlaceholder: "imie@example.com",
+      estimateDisclaimer:
+        "To narzędzie jest szacunkiem rynkowym do kwalifikacji leadów i rozmów ze sprzedającymi. Nie jest oficjalną wyceną bankową ani regulowaną tasacion. Publiczne benchmarki powinny być używane punktowo i cache'owane, a nie kopiowane masowo.",
+      estimateReady: "Gotowe",
+      firstValuationBody:
+        "Wypełnij formularz, aby wygenerować orientacyjny zakres dla właściciela. Wynik pokaże połączenie aktywnych ofert Move2Marbella, publicznych danych Notariado i zewnętrznego benchmarku rynkowego.",
+      firstValuationTitle: "Gotowe do pierwszej wyceny",
+      formArea: "Obszar lub urbanizacja",
+      formMunicipality: "Gmina",
+      formOutdoorSpace: "Przestrzeń zewnętrzna",
+      formParking: "Parking",
+      formPostalCode: "Kod pocztowy",
+      formPropertyType: "Typ nieruchomości",
+      heroBody:
+        "Łączy aktywne oferty porównawcze Move2Marbella z publicznymi benchmarkami transakcyjnymi Notariado, aby oszacować realistyczny zakres ceny przed rozmową z właścicielem.",
+      heroEyebrow: "Dane dla sprzedających",
+      heroTitle: "Wycena nieruchomości na Costa del Sol",
+      homeCta: "Uzyskaj wycenę",
+      indicativeRange: "Zakres orientacyjny",
+      leadBody:
+        "Po podaniu danych kontaktowych pokażemy rozbicie źródeł, benchmark Notariado i porównywalne oferty Move2Marbella. Bez agresywnej sprzedaży, tylko informacje potrzebne do sensownego kontaktu.",
+      leadTitle: "Wyślij mi szczegółową wycenę",
+      marketBenchmark: "Benchmark rynkowy",
+      midpoint: "Punkt środkowy",
+      noComparables:
+        "Nie znaleziono jeszcze bliskich aktywnych ofert porównawczych dla tej dokładnej kombinacji obszaru, typu i powierzchni. Wycena opiera się na publicznych benchmarkach, dopóki nie będzie więcej podobnych ofert.",
+      noMatch: "Brak dopasowania",
+      noPublicMatch: "Brak danych publicznych",
+      notariadoArea: "Obszar Notariado",
+      notariadoBenchmark: "Benchmark Notariado",
+      ownListingComps: "Własne comparables",
+      preview: "Podgląd",
+      property: "Nieruchomość",
+      propertyInArea: "{type} w {area}",
+      ready: "Gotowe",
+      report: "Raport",
+      searchProperties: "Szukaj nieruchomości",
+      showDetailedValuation: "Pokaż szczegółową wycenę",
+      shortCta: "Wycena",
+      sourceBreakdown: "Rozbicie źródeł",
+      sourceLogic: "Logika źródeł",
+      sourceLogicBody:
+        "Własne oferty reprezentują aktywne ceny ofertowe. Notariado daje publiczny benchmark transakcji według kodu pocztowego lub gminy. Blok RealAdvisor jest obecnie publicznym benchmarkiem rynkowym i może później zostać zastąpiony zatwierdzonym feedem.",
+      sourceWeights: "Wagi źródeł",
+      transactions: "Transakcje",
+      weight: "Waga",
+    },
   },
   hu: {
     any: "Bármelyik",
@@ -474,6 +900,68 @@ export const translations: Record<Locale, Translation> = {
     seoDescription:
       "Keress eladó ingatlanokat Marbellán és a Costa del Sol térségében a Move2Marbella segítségével.",
     leadDefaultMessage: "Szeretnék további információt kérni erről az ingatlanról.",
+    valuation: {
+      adjustments: "Korrekciók",
+      askingRangeHint:
+        "A Move2Marbella aktív összehasonlító hirdetéseit és a publikus Notariado tranzakciós benchmarkokat kombináljuk, hogy reális ársávot adjunk tulajdonosi beszélgetés előtt.",
+      benchmarkDetails: "Benchmark részletek",
+      benchmarksAvailable: "Benchmarkok és összehasonlítók elérhetők",
+      builtArea: "Alapterület",
+      calculateEstimate: "Becslés kiszámítása",
+      comparableActiveListings: "Aktív összehasonlító hirdetések",
+      comparableListings: "Összehasonlító ingatlanok",
+      confidence: "Megbízhatóság",
+      consent:
+        "Hozzájárulok, hogy a Move2Marbella emailben, telefonon vagy WhatsAppon megkeressen ezzel az értékbecsléssel kapcsolatban.",
+      detailedReport: "Részletes riport",
+      detailedSourceQuality: "Részletes forrásminőség kapcsolatfelvétel után",
+      emailPlaceholder: "nev@example.com",
+      estimateDisclaimer:
+        "Ez az eszköz piaci becslést ad lead-minősítéshez és tulajdonosi beszélgetésekhez. Nem hivatalos banki értékbecslés és nem szabályozott tasacion. A publikus benchmarkokat célzottan és cache-elve érdemes használni, nem tömeges adatmásolatként.",
+      estimateReady: "Kész",
+      firstValuationBody:
+        "Töltsd ki a fenti űrlapot egy tulajdonosnak szóló indikatív ársávhoz. Az eredmény megmutatja a Move2Marbella aktív hirdetései, a publikus Notariado tranzakciós adatok és a külső piaci benchmark kombinációját.",
+      firstValuationTitle: "Készen áll az első értékbecslésre",
+      formArea: "Környék vagy urbanizáció",
+      formMunicipality: "Település",
+      formOutdoorSpace: "Kültéri tér",
+      formParking: "Parkolás",
+      formPostalCode: "Irányítószám",
+      formPropertyType: "Ingatlan típusa",
+      heroBody:
+        "A Move2Marbella aktív összehasonlító hirdetéseit és a publikus Notariado tranzakciós benchmarkokat kombináljuk, hogy reális ársávot adjunk tulajdonosi beszélgetés előtt.",
+      heroEyebrow: "Eladói intelligencia",
+      heroTitle: "Costa del Sol ingatlanérték-becslés",
+      homeCta: "Ingatlanérték-becslés kérése",
+      indicativeRange: "Indikatív ársáv",
+      leadBody:
+        "A kontaktadatok után megmutatjuk a forrásbontást, a Notariado benchmarkot és a Move2Marbella összehasonlító hirdetéseit. Nincs erőszakos értékesítés, csak elég információ a pontos utánkövetéshez.",
+      leadTitle: "Kérem a részletes értékbecslést",
+      marketBenchmark: "Piaci benchmark",
+      midpoint: "Középérték",
+      noComparables:
+        "Ehhez a pontos környék/típus/méret kombinációhoz még nincs közeli aktív összehasonlító hirdetés. A becslés addig publikus benchmarkokra támaszkodik, amíg több hasonló hirdetés elérhető.",
+      noMatch: "Nincs találat",
+      noPublicMatch: "Nincs publikus adat",
+      notariadoArea: "Notariado terület",
+      notariadoBenchmark: "Notariado benchmark",
+      ownListingComps: "Saját összehasonlítók",
+      preview: "Előnézet",
+      property: "Ingatlan",
+      propertyInArea: "{type} itt: {area}",
+      ready: "Kész",
+      report: "Riport",
+      searchProperties: "Ingatlanok keresése",
+      showDetailedValuation: "Részletes értékbecslés megnyitása",
+      shortCta: "Értékbecslés",
+      sourceBreakdown: "Forrásbontás",
+      sourceLogic: "Forráslogika",
+      sourceLogicBody:
+        "A saját hirdetések az aktív kínálati árakat mutatják. A Notariado publikus tranzakciós benchmarkot ad irányítószám vagy település alapján. A RealAdvisor blokk jelenleg publikus piaci benchmark, később jóváhagyott feedre cserélhető.",
+      sourceWeights: "Forrássúlyok",
+      transactions: "Tranzakciók",
+      weight: "Súly",
+    },
   },
 };
 

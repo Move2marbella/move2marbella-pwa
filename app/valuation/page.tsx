@@ -4,6 +4,11 @@ import Link from "next/link";
 import { JsonLd } from "../components/json-ld";
 import { ValuationLeadGate } from "../components/valuation-lead-gate";
 import { buildValuation, type ValuationInput } from "../data/valuation";
+import {
+  type Locale,
+  getLocaleBasePath,
+  getTranslations,
+} from "../i18n/translations";
 import { SITE_URL } from "../lib/seo";
 
 export const revalidate = 300;
@@ -27,18 +32,221 @@ export type ValuationSearchParams = {
 };
 
 type ValuationPageProps = {
+  locale?: Locale;
   searchParams: Promise<ValuationSearchParams>;
 };
 
-const propertyTypes = [
-  "Apartment",
-  "Penthouse",
-  "Townhouse",
-  "Villa",
-  "Plot",
-];
+const propertyTypes = ["Apartment", "Penthouse", "Townhouse", "Villa", "Plot"];
 
 const municipalities = ["Marbella", "Estepona", "Benahavis", "Mijas", "Malaga"];
+
+const valuationOptionLabels: Record<
+  Locale,
+  {
+    confidence: Record<"early" | "standard" | "strong", string>;
+    condition: Record<string, string>;
+    outdoorSpace: Record<string, string>;
+    parking: Record<string, string>;
+    propertyType: Record<string, string>;
+  }
+> = {
+  en: {
+    confidence: { early: "Early signal", standard: "Standard", strong: "Strong" },
+    condition: {
+      renovate: "Needs renovation",
+      good: "Good",
+      excellent: "Excellent",
+      luxury: "Luxury / turnkey",
+    },
+    outdoorSpace: {
+      none: "None",
+      terrace: "Terrace",
+      garden: "Garden",
+      pool: "Private pool",
+    },
+    parking: {
+      none: "No parking",
+      street: "Street parking",
+      garage: "Garage",
+      multiple: "Multiple spaces",
+    },
+    propertyType: {
+      Apartment: "Apartment",
+      Penthouse: "Penthouse",
+      Townhouse: "Townhouse",
+      Villa: "Villa",
+      Plot: "Plot",
+    },
+  },
+  es: {
+    confidence: { early: "Señal inicial", standard: "Estándar", strong: "Alta" },
+    condition: {
+      renovate: "Necesita reforma",
+      good: "Buen estado",
+      excellent: "Excelente",
+      luxury: "Lujo / listo para entrar",
+    },
+    outdoorSpace: {
+      none: "Ninguno",
+      terrace: "Terraza",
+      garden: "Jardín",
+      pool: "Piscina privada",
+    },
+    parking: {
+      none: "Sin parking",
+      street: "Parking en calle",
+      garage: "Garaje",
+      multiple: "Varias plazas",
+    },
+    propertyType: {
+      Apartment: "Apartamento",
+      Penthouse: "Ático",
+      Townhouse: "Adosado",
+      Villa: "Villa",
+      Plot: "Parcela",
+    },
+  },
+  fr: {
+    confidence: { early: "Signal initial", standard: "Standard", strong: "Forte" },
+    condition: {
+      renovate: "À rénover",
+      good: "Bon état",
+      excellent: "Excellent",
+      luxury: "Luxe / clé en main",
+    },
+    outdoorSpace: {
+      none: "Aucun",
+      terrace: "Terrasse",
+      garden: "Jardin",
+      pool: "Piscine privée",
+    },
+    parking: {
+      none: "Sans parking",
+      street: "Parking rue",
+      garage: "Garage",
+      multiple: "Plusieurs places",
+    },
+    propertyType: {
+      Apartment: "Appartement",
+      Penthouse: "Penthouse",
+      Townhouse: "Maison mitoyenne",
+      Villa: "Villa",
+      Plot: "Terrain",
+    },
+  },
+  de: {
+    confidence: { early: "Erstes Signal", standard: "Standard", strong: "Stark" },
+    condition: {
+      renovate: "Renovierungsbedürftig",
+      good: "Gut",
+      excellent: "Ausgezeichnet",
+      luxury: "Luxus / bezugsfertig",
+    },
+    outdoorSpace: {
+      none: "Keiner",
+      terrace: "Terrasse",
+      garden: "Garten",
+      pool: "Privater Pool",
+    },
+    parking: {
+      none: "Kein Parkplatz",
+      street: "Straßenparken",
+      garage: "Garage",
+      multiple: "Mehrere Plätze",
+    },
+    propertyType: {
+      Apartment: "Apartment",
+      Penthouse: "Penthouse",
+      Townhouse: "Reihenhaus",
+      Villa: "Villa",
+      Plot: "Grundstück",
+    },
+  },
+  ru: {
+    confidence: { early: "Первичный сигнал", standard: "Стандарт", strong: "Высокая" },
+    condition: {
+      renovate: "Нужен ремонт",
+      good: "Хорошее",
+      excellent: "Отличное",
+      luxury: "Люкс / готово к въезду",
+    },
+    outdoorSpace: {
+      none: "Нет",
+      terrace: "Терраса",
+      garden: "Сад",
+      pool: "Частный бассейн",
+    },
+    parking: {
+      none: "Без парковки",
+      street: "Парковка на улице",
+      garage: "Гараж",
+      multiple: "Несколько мест",
+    },
+    propertyType: {
+      Apartment: "Апартаменты",
+      Penthouse: "Пентхаус",
+      Townhouse: "Таунхаус",
+      Villa: "Вилла",
+      Plot: "Участок",
+    },
+  },
+  pl: {
+    confidence: { early: "Wstępny sygnał", standard: "Standard", strong: "Mocna" },
+    condition: {
+      renovate: "Do remontu",
+      good: "Dobry",
+      excellent: "Bardzo dobry",
+      luxury: "Luksus / gotowe",
+    },
+    outdoorSpace: {
+      none: "Brak",
+      terrace: "Taras",
+      garden: "Ogród",
+      pool: "Prywatny basen",
+    },
+    parking: {
+      none: "Brak parkingu",
+      street: "Parking uliczny",
+      garage: "Garaż",
+      multiple: "Kilka miejsc",
+    },
+    propertyType: {
+      Apartment: "Apartament",
+      Penthouse: "Penthouse",
+      Townhouse: "Dom szeregowy",
+      Villa: "Willa",
+      Plot: "Działka",
+    },
+  },
+  hu: {
+    confidence: { early: "Korai jelzés", standard: "Standard", strong: "Erős" },
+    condition: {
+      renovate: "Felújítandó",
+      good: "Jó",
+      excellent: "Kiváló",
+      luxury: "Luxus / kulcsrakész",
+    },
+    outdoorSpace: {
+      none: "Nincs",
+      terrace: "Terasz",
+      garden: "Kert",
+      pool: "Privát medence",
+    },
+    parking: {
+      none: "Nincs parkoló",
+      street: "Utcai parkolás",
+      garage: "Garázs",
+      multiple: "Több hely",
+    },
+    propertyType: {
+      Apartment: "Apartman",
+      Penthouse: "Penthouse",
+      Townhouse: "Sorház",
+      Villa: "Villa",
+      Plot: "Telek",
+    },
+  },
+};
 
 const formatEuro = new Intl.NumberFormat("en-GB", {
   currency: "EUR",
@@ -78,16 +286,11 @@ function formatWeight(weight: number) {
   return `${Math.round(weight * 100)}%`;
 }
 
-function getConfidenceLabel(confidence: "early" | "standard" | "strong") {
-  if (confidence === "strong") {
-    return "Strong";
-  }
-
-  if (confidence === "standard") {
-    return "Standard";
-  }
-
-  return "Early signal";
+function interpolate(value: string, replacements: Record<string, string>) {
+  return Object.entries(replacements).reduce(
+    (text, [key, replacement]) => text.replace(`{${key}}`, replacement),
+    value,
+  );
 }
 
 function Field({
@@ -123,29 +326,48 @@ function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
   );
 }
 
-export default async function ValuationPage({ searchParams }: ValuationPageProps) {
+export default async function ValuationPage({
+  locale = "en",
+  searchParams,
+}: ValuationPageProps) {
   const params = await searchParams;
   const input = getInput(params);
   const shouldShowResult = hasUserInput(params);
   const valuation = shouldShowResult ? await buildValuation(input) : null;
 
-  return <ValuationContent input={input} valuation={valuation} />;
+  return <ValuationContent input={input} locale={locale} valuation={valuation} />;
 }
 
 export async function ValuationContent({
   input,
+  locale = "en",
   valuation,
 }: {
   input: ValuationInput;
+  locale?: Locale;
   valuation: Awaited<ReturnType<typeof buildValuation>> | null;
 }) {
+  const t = getTranslations(locale);
+  const v = t.valuation;
+  const options = valuationOptionLabels[locale];
+  const basePath = getLocaleBasePath(locale);
+  const confidenceLabel = valuation
+    ? options.confidence[valuation.estimate.confidence]
+    : "";
+  const propertyTypeLabel =
+    options.propertyType[input.propertyType] ?? input.propertyType;
+  const propertyInArea = interpolate(v.propertyInArea, {
+    area: input.area ?? input.municipality,
+    type: propertyTypeLabel,
+  });
+
   return (
-    <main className="min-h-screen bg-[#f7f2ea] text-[#171717]">
+    <main lang={locale} className="min-h-screen bg-[#f7f2ea] text-[#171717]">
       <JsonLd
         data={{
           "@context": "https://schema.org",
           "@type": "WebApplication",
-          name: "Move2Marbella Property Valuation",
+          name: v.heroTitle,
           applicationCategory: "RealEstateApplication",
           url: `${SITE_URL}/valuation`,
         }}
@@ -161,7 +383,7 @@ export async function ValuationContent({
 
         <div className="relative mx-auto w-full max-w-6xl px-5 py-5 sm:px-8">
           <header className="flex items-center justify-between gap-4">
-            <Link href="/" className="leading-tight">
+            <Link href={basePath} className="leading-tight">
               <img
                 src="/m2m_logo_white_web.png"
                 alt="Move2Marbella"
@@ -169,43 +391,41 @@ export async function ValuationContent({
               />
             </Link>
             <Link
-              href="/"
+              href={basePath}
               className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f253d] shadow-sm"
             >
-              Search properties
+              {v.searchProperties}
             </Link>
           </header>
 
           <div className="grid gap-10 pb-12 pt-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
             <div className="max-w-2xl">
               <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-[#ba9456]">
-                Seller intelligence
+                {v.heroEyebrow}
               </p>
               <h1 className="text-4xl font-semibold leading-tight text-white sm:text-6xl">
-                Costa del Sol property valuation
+                {v.heroTitle}
               </h1>
               <p className="mt-5 max-w-xl text-base leading-7 text-white/78">
-                Combine Move2Marbella active listing comparables with public
-                Notariado transaction benchmarks to estimate a realistic asking
-                range before speaking with an owner.
+                {v.heroBody}
               </p>
             </div>
 
             <form
-              action="/valuation"
+              action={`${basePath}/valuation`}
               className="grid gap-4 rounded-lg bg-[#f7f2ea] p-4 text-[#171717] shadow-2xl shadow-black/20 sm:grid-cols-2 sm:p-5"
             >
-              <Field label="Municipality">
+              <Field label={v.formMunicipality}>
                 <Select name="municipality" defaultValue={input.municipality}>
                   {municipalities.map((municipality) => (
                     <option key={municipality}>{municipality}</option>
                   ))}
                 </Select>
               </Field>
-              <Field label="Area or urbanisation">
+              <Field label={v.formArea}>
                 <Input name="area" defaultValue={input.area} placeholder="Nueva Andalucia" />
               </Field>
-              <Field label="Postal code">
+              <Field label={v.formPostalCode}>
                 <Input
                   inputMode="numeric"
                   name="postal_code"
@@ -213,14 +433,16 @@ export async function ValuationContent({
                   placeholder="29660"
                 />
               </Field>
-              <Field label="Property type">
+              <Field label={v.formPropertyType}>
                 <Select name="property_type" defaultValue={input.propertyType}>
                   {propertyTypes.map((propertyType) => (
-                    <option key={propertyType}>{propertyType}</option>
+                    <option key={propertyType} value={propertyType}>
+                      {options.propertyType[propertyType] ?? propertyType}
+                    </option>
                   ))}
                 </Select>
               </Field>
-              <Field label="Built area">
+              <Field label={v.builtArea}>
                 <Input
                   inputMode="numeric"
                   min={20}
@@ -229,7 +451,7 @@ export async function ValuationContent({
                   defaultValue={input.builtArea}
                 />
               </Field>
-              <Field label="Bedrooms">
+              <Field label={t.bedrooms}>
                 <Input
                   inputMode="numeric"
                   min={0}
@@ -238,33 +460,36 @@ export async function ValuationContent({
                   defaultValue={input.bedrooms}
                 />
               </Field>
-              <Field label="Condition">
+              <Field label={v.adjustments}>
                 <Select name="condition" defaultValue={input.condition}>
-                  <option value="renovate">Needs renovation</option>
-                  <option value="good">Good</option>
-                  <option value="excellent">Excellent</option>
-                  <option value="luxury">Luxury / turnkey</option>
+                  {Object.entries(options.condition).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
                 </Select>
               </Field>
-              <Field label="Outdoor space">
+              <Field label={v.formOutdoorSpace}>
                 <Select name="outdoor_space" defaultValue={input.outdoorSpace}>
-                  <option value="none">None</option>
-                  <option value="terrace">Terrace</option>
-                  <option value="garden">Garden</option>
-                  <option value="pool">Private pool</option>
+                  {Object.entries(options.outdoorSpace).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
                 </Select>
               </Field>
-              <Field label="Parking">
+              <Field label={v.formParking}>
                 <Select name="parking" defaultValue={input.parking}>
-                  <option value="none">No parking</option>
-                  <option value="street">Street parking</option>
-                  <option value="garage">Garage</option>
-                  <option value="multiple">Multiple spaces</option>
+                  {Object.entries(options.parking).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
                 </Select>
               </Field>
               <div className="flex items-end">
                 <button className="h-12 w-full rounded-md bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43]">
-                  Calculate estimate
+                  {v.calculateEstimate}
                 </button>
               </div>
             </form>
@@ -279,118 +504,129 @@ export async function ValuationContent({
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ba9456]">
-                    Indicative range
+                    {v.indicativeRange}
                   </p>
                   <h2 className="mt-2 text-3xl font-semibold text-[#0f253d] sm:text-4xl">
                     {formatEuro.format(valuation.estimate.low)} -{" "}
                     {formatEuro.format(valuation.estimate.high)}
                   </h2>
                   <p className="mt-2 text-sm text-[#5c564d]">
-                    Midpoint {formatEuro.format(valuation.estimate.mid)} at{" "}
+                    {v.midpoint} {formatEuro.format(valuation.estimate.mid)} |{" "}
                     {formatEuro.format(valuation.estimate.pricePerSquareMetre)} / m2
                   </p>
                 </div>
                 <span className="rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold text-white">
-                  {getConfidenceLabel(valuation.estimate.confidence)}
+                  {confidenceLabel}
                 </span>
               </div>
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 <Metric
-                  label="Property"
+                  label={v.property}
                   value={`${input.builtArea} m2`}
-                  detail={`${input.propertyType} in ${input.area}`}
+                  detail={propertyInArea}
                 />
                 <Metric
-                  label="Confidence"
-                  value={getConfidenceLabel(valuation.estimate.confidence)}
-                  detail="Detailed source quality after contact"
+                  label={v.confidence}
+                  value={confidenceLabel}
+                  detail={v.detailedSourceQuality}
                 />
                 <Metric
-                  label="Report"
-                  value="Ready"
-                  detail="Benchmarks and comparables available"
+                  label={v.report}
+                  value={v.ready}
+                  detail={v.benchmarksAvailable}
                 />
               </div>
             </div>
 
             <ValuationLeadGate
               estimateSummary={`${formatEuro.format(valuation.estimate.low)} - ${formatEuro.format(valuation.estimate.high)}`}
-              propertySummary={`${input.propertyType}, ${input.builtArea} m2 in ${input.area}, ${input.municipality}`}
+              labels={{
+                comparableActiveListings: v.comparableActiveListings,
+                consent: v.consent,
+                detailedReport: v.detailedReport,
+                email: t.email,
+                emailPlaceholder: v.emailPlaceholder,
+                leadBody: v.leadBody,
+                leadTitle: v.leadTitle,
+                name: t.name,
+                notariadoBenchmark: v.notariadoBenchmark,
+                phone: t.phone,
+                preview: v.preview,
+                showDetailedValuation: v.showDetailedValuation,
+                sourceWeights: v.sourceWeights,
+              }}
+              propertySummary={`${propertyTypeLabel}, ${input.builtArea} m2 - ${input.area}, ${input.municipality}`}
             >
               <div className="grid gap-8 lg:col-span-2 lg:grid-cols-[1.05fr_0.95fr]">
                 <div className="rounded-lg border border-[#ded6c8] bg-white p-5 shadow-sm sm:p-7">
                   <h2 className="text-2xl font-semibold text-[#0f253d]">
-                    Source breakdown
+                    {v.sourceBreakdown}
                   </h2>
                   <div className="mt-5 grid gap-3 sm:grid-cols-3">
                     <Metric
-                      label="Own listing comps"
+                      label={v.ownListingComps}
                       value={String(valuation.sources.ownListings.count)}
-                      detail={`Weight ${formatWeight(valuation.sources.ownListings.weight)}`}
+                      detail={`${v.weight} ${formatWeight(valuation.sources.ownListings.weight)}`}
                     />
                     <Metric
-                      label="Notariado benchmark"
+                      label={v.notariadoBenchmark}
                       value={
                         valuation.sources.notariado.benchmark
                           ? formatEuro.format(
                               valuation.sources.notariado.benchmark
                                 .pricePerSquareMetre,
                             )
-                          : "No match"
+                          : v.noMatch
                       }
-                      detail={`Weight ${formatWeight(valuation.sources.notariado.weight)}`}
+                      detail={`${v.weight} ${formatWeight(valuation.sources.notariado.weight)}`}
                     />
                     <Metric
-                      label="Market benchmark"
+                      label={v.marketBenchmark}
                       value={
                         valuation.sources.realadvisor.averagePricePerSquareMetre
                           ? formatEuro.format(
                               valuation.sources.realadvisor
                                 .averagePricePerSquareMetre,
                             )
-                          : "Pending"
+                          : v.noMatch
                       }
-                      detail={`Weight ${formatWeight(valuation.sources.realadvisor.weight)}`}
+                      detail={`${v.weight} ${formatWeight(valuation.sources.realadvisor.weight)}`}
                     />
                   </div>
 
                   <div className="mt-7 rounded-lg bg-[#f7f2ea] p-4">
                     <h3 className="text-lg font-semibold text-[#0f253d]">
-                      Source logic
+                      {v.sourceLogic}
                     </h3>
                     <p className="mt-2 text-sm leading-6 text-[#5c564d]">
-                      Own listings represent active asking prices. Notariado
-                      gives a public transaction benchmark by postal code or
-                      municipality. The RealAdvisor slot is currently a public
-                      market benchmark and can be replaced with an approved data
-                      feed later.
+                      {v.sourceLogicBody}
                     </p>
                   </div>
                 </div>
 
                 <aside className="rounded-lg border border-[#ded6c8] bg-white p-5 shadow-sm sm:p-7">
                   <h2 className="text-2xl font-semibold text-[#0f253d]">
-                    Benchmark details
+                    {v.benchmarkDetails}
                   </h2>
                   <dl className="mt-5 grid gap-4 text-sm">
                     <Detail
-                      label="Area"
+                      label={t.area}
                       value={`${input.area}, ${input.municipality}`}
                     />
                     <Detail
-                      label="Property"
-                      value={`${input.propertyType}, ${input.builtArea} m2`}
+                      label={v.property}
+                      value={`${propertyTypeLabel}, ${input.builtArea} m2`}
                     />
                     <Detail
-                      label="Notariado area"
+                      label={v.notariadoArea}
                       value={
                         valuation.sources.notariado.benchmark
                           ? `${valuation.sources.notariado.benchmark.label} (${valuation.sources.notariado.benchmark.geography})`
-                          : "No public match"
+                          : v.noPublicMatch
                       }
                     />
                     <Detail
-                      label="Transactions"
+                      label={v.transactions}
                       value={
                         valuation.sources.notariado.benchmark
                           ? formatNumber.format(
@@ -400,7 +636,7 @@ export async function ValuationContent({
                       }
                     />
                     <Detail
-                      label="Adjustments"
+                      label={v.adjustments}
                       value={`${Math.round(
                         (valuation.adjustments.condition +
                           valuation.adjustments.outdoorSpace +
@@ -414,14 +650,14 @@ export async function ValuationContent({
 
               <div className="lg:col-span-2">
                 <h2 className="text-2xl font-semibold text-[#0f253d]">
-                  Comparable listings
+                  {v.comparableListings}
                 </h2>
                 <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                   {valuation.sources.ownListings.comparables.length ? (
                     valuation.sources.ownListings.comparables.map((property) => (
                       <Link
                         key={property.ref}
-                        href={property.href}
+                        href={`${basePath}${property.href}`}
                         className="rounded-lg border border-[#ded6c8] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                       >
                         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba9456]">
@@ -445,10 +681,7 @@ export async function ValuationContent({
                     ))
                   ) : (
                     <p className="rounded-lg border border-[#ded6c8] bg-white p-5 text-sm text-[#5c564d] md:col-span-2 xl:col-span-4">
-                      No close active listing comparables were found for this
-                      exact area/type/size combination yet. The estimate falls
-                      back to public benchmarks until more matching listings are
-                      available.
+                      {v.noComparables}
                     </p>
                   )}
                 </div>
@@ -458,22 +691,16 @@ export async function ValuationContent({
         ) : (
           <div className="rounded-lg border border-[#ded6c8] bg-white p-6 shadow-sm lg:col-span-2">
             <h2 className="text-2xl font-semibold text-[#0f253d]">
-              Ready for the first valuation
+              {v.firstValuationTitle}
             </h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-[#5c564d]">
-              Fill in the form above to generate an indicative owner-facing
-              range. The result will show the blend between active Move2Marbella
-              listings, public Notariado transaction data and the external market
-              benchmark slot.
+              {v.firstValuationBody}
             </p>
           </div>
         )}
 
         <p className="text-xs leading-5 text-[#6d6559] lg:col-span-2">
-          This tool is a market estimate for lead qualification and seller
-          conversations. It is not an official bank valuation or a regulated
-          tasacion. Public benchmark use should remain targeted and cached rather
-          than copied as a bulk dataset.
+          {v.estimateDisclaimer}
         </p>
       </section>
     </main>

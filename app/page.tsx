@@ -243,7 +243,7 @@ export async function HomeContent({
                 href={`${basePath}/valuation`}
                 className="rounded-full bg-[#ba9456] px-4 py-2 text-sm font-semibold text-white shadow-sm"
               >
-                Valuation
+                {t.valuation.shortCta}
               </Link>
               <TrackedWhatsAppLink
                 href={getGeneralWhatsAppUrl()}
@@ -267,7 +267,7 @@ export async function HomeContent({
                 href={`${basePath}/valuation`}
                 className="mt-6 inline-flex h-12 items-center rounded-[6px] bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43]"
               >
-                Get a property valuation
+                {t.valuation.homeCta}
               </Link>
             </div>
 
