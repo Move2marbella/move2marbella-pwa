@@ -263,12 +263,6 @@ export async function HomeContent({
               <h1 className="text-4xl font-semibold leading-tight text-white sm:text-6xl">
                 {t.heroTitle}
               </h1>
-              <Link
-                href={`${basePath}/valuation`}
-                className="mt-6 inline-flex h-12 items-center rounded-[6px] bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43]"
-              >
-                {t.valuation.homeCta}
-              </Link>
             </div>
 
             <form
@@ -365,6 +359,12 @@ export async function HomeContent({
               </Link>
             ))}
           </div>
+          <Link
+            href={`${basePath}/valuation`}
+            className="inline-flex h-12 items-center rounded-[6px] bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43]"
+          >
+            {t.valuation.homeCta}
+          </Link>
 
           <div>
             <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
