@@ -89,6 +89,33 @@ function formatPercent(value?: number | null) {
   return `${Math.round(value * 100)}%`;
 }
 
+function formatNotariadoGeography(value?: string | number | boolean | null) {
+  const labels: Record<string, string> = {
+    municipality: "municipality",
+    nearestMunicipality: "nearest municipality",
+    nearestPostalCode: "nearest postal code",
+    postalCode: "postal code",
+  };
+
+  if (!value) {
+    return "-";
+  }
+
+  return labels[String(value)] ?? String(value);
+}
+
+function formatNotariadoArea(
+  notariado?: Record<string, number | string | boolean | null> | null,
+) {
+  if (!notariado) {
+    return "-";
+  }
+
+  return `${notariado.label ?? "-"} (${formatNotariadoGeography(
+    notariado.geography,
+  )})`;
+}
+
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -146,7 +173,7 @@ function buildEmail(lead: Required<Pick<LeadRequest, "email" | "name" | "phone">
       formatEuro(sources?.ownListings?.averagePricePerSquareMetre),
     ),
     row("Own listing weight", formatPercent(sources?.ownListings?.weight)),
-    row("Notariado area", notariado ? `${notariado.label} (${notariado.geography})` : "-"),
+    row("Notariado area", formatNotariadoArea(notariado)),
     row("Notariado / m2", formatEuro(Number(notariado?.pricePerSquareMetre))),
     row("Notariado transactions", formatNumber(Number(notariado?.sales))),
     row("Notariado weight", formatPercent(sources?.notariado?.weight)),
@@ -185,7 +212,7 @@ function buildEmail(lead: Required<Pick<LeadRequest, "email" | "name" | "phone">
     htmlRow("Own listing weight", formatPercent(sources?.ownListings?.weight)),
     htmlRow(
       "Notariado area",
-      notariado ? `${notariado.label} (${notariado.geography})` : "-",
+      formatNotariadoArea(notariado),
     ),
     htmlRow("Notariado / m2", formatEuro(Number(notariado?.pricePerSquareMetre))),
     htmlRow("Notariado transactions", formatNumber(Number(notariado?.sales))),
