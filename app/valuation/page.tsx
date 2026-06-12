@@ -673,6 +673,22 @@ export async function ValuationContent({
 
             <ValuationLeadGate
               estimateSummary={`${formatEuro.format(valuation.estimate.low)} - ${formatEuro.format(valuation.estimate.high)}`}
+              leadContext={{
+                adjustments: valuation.adjustments,
+                estimate: valuation.estimate,
+                input: valuation.input,
+                locale,
+                sources: {
+                  notariado: valuation.sources.notariado,
+                  ownListings: {
+                    averagePricePerSquareMetre:
+                      valuation.sources.ownListings.averagePricePerSquareMetre,
+                    count: valuation.sources.ownListings.count,
+                    weight: valuation.sources.ownListings.weight,
+                  },
+                  realadvisor: valuation.sources.realadvisor,
+                },
+              }}
               labels={{
                 comparableActiveListings: v.comparableActiveListings,
                 consent: v.consent,
@@ -680,6 +696,8 @@ export async function ValuationContent({
                 email: t.email,
                 emailPlaceholder: v.emailPlaceholder,
                 leadBody: v.leadBody,
+                leadSubmitError: v.leadSubmitError,
+                leadSubmitting: v.leadSubmitting,
                 leadTitle: v.leadTitle,
                 name: t.name,
                 notariadoBenchmark: v.notariadoBenchmark,

@@ -93,6 +93,8 @@ type Translation = {
     homeCta: string;
     indicativeRange: string;
     leadBody: string;
+    leadSubmitError: string;
+    leadSubmitting: string;
     leadTitle: string;
     marketBenchmark: string;
     midpoint: string;
@@ -218,6 +220,9 @@ export const translations: Record<Locale, Translation> = {
       indicativeRange: "Indicative range",
       leadBody:
         "We will show the source breakdown, Notariado benchmark and comparable Move2Marbella listings after the contact details. No hard sell, just enough information to follow up properly if the estimate is relevant.",
+      leadSubmitError:
+        "We could not send the request right now. Please check the details and try again.",
+      leadSubmitting: "Sending...",
       leadTitle: "Send me the detailed valuation",
       marketBenchmark: "Market benchmark",
       midpoint: "Midpoint",
@@ -343,6 +348,9 @@ export const translations: Record<Locale, Translation> = {
       indicativeRange: "Rango indicativo",
       leadBody:
         "Mostraremos el desglose de fuentes, el benchmark del Notariado y los comparables de Move2Marbella después de los datos de contacto. Sin presión comercial, solo la información necesaria para hacer seguimiento si la estimación encaja.",
+      leadSubmitError:
+        "No hemos podido enviar la solicitud ahora mismo. Revisa los datos e inténtalo de nuevo.",
+      leadSubmitting: "Enviando...",
       leadTitle: "Enviarme la valoración detallada",
       marketBenchmark: "Benchmark de mercado",
       midpoint: "Punto medio",
@@ -468,6 +476,9 @@ export const translations: Record<Locale, Translation> = {
       indicativeRange: "Fourchette indicative",
       leadBody:
         "Nous afficherons le détail des sources, le benchmark Notariado et les comparables Move2Marbella après les coordonnées. Pas de vente forcée, seulement les informations nécessaires pour faire un suivi si l'estimation est pertinente.",
+      leadSubmitError:
+        "Nous n'avons pas pu envoyer la demande pour le moment. Vérifiez les informations et réessayez.",
+      leadSubmitting: "Envoi...",
       leadTitle: "M'envoyer l'estimation détaillée",
       marketBenchmark: "Benchmark marché",
       midpoint: "Point médian",
@@ -593,6 +604,9 @@ export const translations: Record<Locale, Translation> = {
       indicativeRange: "Indikative Preisspanne",
       leadBody:
         "Nach den Kontaktdaten zeigen wir die Quellenaufschlüsselung, den Notariado-Benchmark und vergleichbare Move2Marbella-Angebote. Kein harter Verkauf, nur genug Information für eine sinnvolle Nachverfolgung.",
+      leadSubmitError:
+        "Die Anfrage konnte gerade nicht gesendet werden. Bitte prüfen Sie die Angaben und versuchen Sie es erneut.",
+      leadSubmitting: "Wird gesendet...",
       leadTitle: "Detaillierte Bewertung senden",
       marketBenchmark: "Marktbenchmark",
       midpoint: "Mittelpunkt",
@@ -718,6 +732,9 @@ export const translations: Record<Locale, Translation> = {
       indicativeRange: "Ориентировочный диапазон",
       leadBody:
         "После контактных данных мы покажем разбивку источников, benchmark Notariado и сравнимые объекты Move2Marbella. Без навязчивых продаж, только информация для корректного follow-up.",
+      leadSubmitError:
+        "Сейчас не удалось отправить заявку. Проверьте данные и попробуйте снова.",
+      leadSubmitting: "Отправка...",
       leadTitle: "Отправить мне подробную оценку",
       marketBenchmark: "Рыночный benchmark",
       midpoint: "Средняя точка",
@@ -843,6 +860,9 @@ export const translations: Record<Locale, Translation> = {
       indicativeRange: "Zakres orientacyjny",
       leadBody:
         "Po podaniu danych kontaktowych pokażemy rozbicie źródeł, benchmark Notariado i porównywalne oferty Move2Marbella. Bez agresywnej sprzedaży, tylko informacje potrzebne do sensownego kontaktu.",
+      leadSubmitError:
+        "Nie udało się teraz wysłać zgłoszenia. Sprawdź dane i spróbuj ponownie.",
+      leadSubmitting: "Wysyłanie...",
       leadTitle: "Wyślij mi szczegółową wycenę",
       marketBenchmark: "Benchmark rynkowy",
       midpoint: "Punkt środkowy",
@@ -968,6 +988,9 @@ export const translations: Record<Locale, Translation> = {
       indicativeRange: "Indikatív ársáv",
       leadBody:
         "A kontaktadatok után megmutatjuk a forrásbontást, a Notariado benchmarkot és a Move2Marbella összehasonlító hirdetéseit. Nincs erőszakos értékesítés, csak elég információ a pontos utánkövetéshez.",
+      leadSubmitError:
+        "Most nem sikerült elküldeni a kérést. Ellenőrizd az adatokat, és próbáld újra.",
+      leadSubmitting: "Küldés...",
       leadTitle: "Kérem a részletes értékbecslést",
       marketBenchmark: "Piaci benchmark",
       midpoint: "Középérték",

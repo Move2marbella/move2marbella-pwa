@@ -3,9 +3,32 @@
 import { FormEvent, ReactNode, useState } from "react";
 import { trackEvent } from "../lib/analytics";
 
+type ValuationLeadContext = {
+  adjustments: Record<string, number>;
+  estimate: Record<string, number | string>;
+  input: Record<string, number | string | undefined>;
+  locale: string;
+  sources: {
+    notariado: {
+      benchmark: Record<string, number | string | boolean | null> | null;
+      weight: number;
+    };
+    ownListings: {
+      averagePricePerSquareMetre: number | null;
+      count: number;
+      weight: number;
+    };
+    realadvisor: {
+      averagePricePerSquareMetre: number | null;
+      weight: number;
+    };
+  };
+};
+
 type ValuationLeadGateProps = {
   children: ReactNode;
   estimateSummary: string;
+  leadContext: ValuationLeadContext;
   labels: {
     comparableActiveListings: string;
     consent: string;
@@ -13,6 +36,8 @@ type ValuationLeadGateProps = {
     email: string;
     emailPlaceholder: string;
     leadBody: string;
+    leadSubmitError: string;
+    leadSubmitting: string;
     leadTitle: string;
     name: string;
     notariadoBenchmark: string;
@@ -27,23 +52,56 @@ type ValuationLeadGateProps = {
 export function ValuationLeadGate({
   children,
   estimateSummary,
+  leadContext,
   labels,
   propertySummary,
 }: ValuationLeadGateProps) {
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [whatsappConsent, setWhatsappConsent] = useState(true);
 
-  function submitLead(event: FormEvent<HTMLFormElement>) {
+  async function submitLead(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    trackEvent("valuation_lead_submitted", {
-      has_email: Boolean(email),
-      has_phone: Boolean(phone),
-      whatsapp_consent: whatsappConsent,
-    });
-    setIsUnlocked(true);
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetch("/api/valuation-leads", {
+        body: JSON.stringify({
+          email,
+          estimateSummary,
+          leadContext,
+          name,
+          pageUrl: window.location.href,
+          phone,
+          propertySummary,
+          whatsappConsent,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Could not submit valuation lead");
+      }
+
+      trackEvent("valuation_lead_submitted", {
+        has_email: Boolean(email),
+        has_phone: Boolean(phone),
+        whatsapp_consent: whatsappConsent,
+      });
+      setIsUnlocked(true);
+    } catch {
+      setSubmitError(labels.leadSubmitError);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (isUnlocked) {
@@ -108,8 +166,16 @@ export function ValuationLeadGate({
             />
             <span>{labels.consent}</span>
           </label>
-          <button className="h-12 rounded-md bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43] sm:col-span-2">
-            {labels.showDetailedValuation}
+          {submitError ? (
+            <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700 sm:col-span-2">
+              {submitError}
+            </p>
+          ) : null}
+          <button
+            disabled={isSubmitting}
+            className="h-12 rounded-md bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43] disabled:cursor-wait disabled:bg-[#b8a27b] sm:col-span-2"
+          >
+            {isSubmitting ? labels.leadSubmitting : labels.showDetailedValuation}
           </button>
         </form>
       </div>
