@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import {
   SITE_URL,
@@ -79,6 +80,7 @@ export default function RootLayout({
         {children}
         <Analytics />
         <VercelAnalytics />
+        <SpeedInsights />
         <ServiceWorkerRegistration />
         <InstallAppPrompt />
       </body>
