@@ -1,6 +1,6 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 import { useState } from "react";
 
 type PropertyGalleryProps = {
@@ -34,9 +34,13 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
   return (
     <div className="overflow-hidden rounded-[8px] bg-white shadow-sm ring-1 ring-black/5">
       <div className="relative">
-        <img
+        <Image
           src={activeImage}
           alt={`${title} - photo ${activeIndex + 1} of ${images.length}`}
+          width={1200}
+          height={800}
+          priority={activeIndex === 0}
+          sizes="(min-width: 1024px) 760px, 100vw"
           className="h-[340px] w-full object-cover sm:h-[520px]"
         />
 
@@ -75,9 +79,13 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
               aria-label={`Show property photo ${index + 1}`}
               className="h-24 overflow-hidden sm:h-28"
             >
-              <img
+              <Image
                 src={image}
                 alt={`${title} - photo ${index + 1}`}
+                width={220}
+                height={140}
+                loading="lazy"
+                sizes="(min-width: 640px) 170px, 33vw"
                 className="h-full w-full object-cover transition hover:opacity-85"
               />
             </button>
