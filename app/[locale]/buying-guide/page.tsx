@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { JsonLd } from "../../components/json-ld";
+import { PurchaseCostCalculator } from "../../components/purchase-cost-calculator";
 import { getLocale, locales } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
 
@@ -20,6 +21,8 @@ const content = {
     newBuildTitle: "New-build and off-plan process",
     costsTitle: "Typical extra costs",
     checksTitle: "Lawyer checks before completion",
+    resaleCostsTitle: "Resale property costs",
+    newBuildCostsTitle: "New-build costs",
     steps: [
       {
         title: "Offer accepted",
@@ -52,12 +55,16 @@ const content = {
       "The remaining 70% is paid only when the property is completed and signed at the notary.",
       "Timelines are often 1-2 years, depending on the project.",
     ],
-    costs: [
+    resaleCosts: [
       { label: "Resale transfer tax in Andalucia", value: "7% ITP" },
       { label: "Lawyer fee", value: "approx. 1%" },
       { label: "Notary and land registry", value: "approx. 0.5%" },
       { label: "Typical resale extras", value: "approx. 8.5%" },
+    ],
+    newBuildCosts: [
       { label: "New-build VAT", value: "10% IVA" },
+      { label: "AJD stamp duty", value: "1.2% AJD" },
+      { label: "Lawyer, notary and registry", value: "approx. 1.5%" },
       { label: "Typical new-build extras", value: "approx. 11.5%" },
     ],
     checks: [
@@ -100,6 +107,8 @@ const content = {
     newBuildTitle: "Újépítésű és off-plan ingatlanok",
     costsTitle: "Jellemző extra költségek",
     checksTitle: "Ügyvédi ellenőrzések zárás előtt",
+    resaleCostsTitle: "Használt ingatlan költségei",
+    newBuildCostsTitle: "Újépítésű ingatlan költségei",
     steps: [
       {
         title: "Áralku és megállapodás",
@@ -132,12 +141,16 @@ const content = {
       "A fennmaradó kb. 70% az elkészüléskor, közjegyző előtt fizetendő.",
       "A projekt átadása gyakran 1-2 év, ezért a birtokbaadás is később történik.",
     ],
-    costs: [
+    resaleCosts: [
       { label: "Használt ingatlan illeték Andalúziában", value: "7% ITP" },
       { label: "Ügyvédi díj", value: "kb. 1%" },
       { label: "Közjegyző és földhivatal", value: "kb. 0,5%" },
       { label: "Használt ingatlan teljes extra költség", value: "kb. 8,5%" },
+    ],
+    newBuildCosts: [
       { label: "Újépítésű ingatlan ÁFA", value: "10% IVA" },
+      { label: "AJD okirati illeték", value: "1,2% AJD" },
+      { label: "Ügyvéd, közjegyző és földhivatal", value: "kb. 1,5%" },
       { label: "Újépítésű teljes extra költség", value: "kb. 11,5%" },
     ],
     checks: [
@@ -282,22 +295,45 @@ export default async function BuyingGuidePage({
             {page.costsTitle}
           </p>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {page.costs.map((cost) => (
-            <article
-              key={`${cost.label}-${cost.value}`}
+        <div className="grid gap-5 lg:grid-cols-2">
+          {[
+            {
+              title: page.resaleCostsTitle,
+              items: page.resaleCosts,
+            },
+            {
+              title: page.newBuildCostsTitle,
+              items: page.newBuildCosts,
+            },
+          ].map((group) => (
+            <div
+              key={group.title}
               className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
             >
-              <p className="text-3xl font-semibold text-[#0f253d]">
-                {cost.value}
-              </p>
-              <p className="mt-2 text-base leading-7 text-[#4b4740]">
-                {cost.label}
-              </p>
-            </article>
+              <h2 className="text-2xl font-semibold text-[#171717]">
+                {group.title}
+              </h2>
+              <div className="mt-4 grid gap-3">
+                {group.items.map((cost) => (
+                  <article
+                    key={`${cost.label}-${cost.value}`}
+                    className="rounded-[8px] bg-[#f7f2ea] p-4"
+                  >
+                    <p className="text-3xl font-semibold text-[#0f253d]">
+                      {cost.value}
+                    </p>
+                    <p className="mt-2 text-base leading-7 text-[#4b4740]">
+                      {cost.label}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </section>
+
+      <PurchaseCostCalculator locale={locale} />
 
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
         <div className="mb-6">
