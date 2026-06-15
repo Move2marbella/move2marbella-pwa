@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BudgetSlider } from "./components/budget-slider";
 import { FavouritesPanel, FavouriteToggle } from "./components/favourite-toggle";
 import { JsonLd } from "./components/json-ld";
+import { LanguageSwitcher } from "./components/language-switcher";
 import { MainNav } from "./components/main-nav";
 import { TrackedWhatsAppLink } from "./components/tracked-whatsapp-link";
 import {
@@ -22,7 +23,6 @@ import {
   Locale,
   getLocaleBasePath,
   getTranslations,
-  locales,
 } from "./i18n/translations";
 import { SITE_URL } from "./lib/seo";
 
@@ -182,13 +182,6 @@ export async function HomeContent({
     return `${basePath}?${params.toString()}`;
   }
 
-  function getLanguageHref(targetLocale: Locale) {
-    const params = new URLSearchParams(paginationBaseParams);
-    params.set("page", String(currentPage));
-
-    return `${getLocaleBasePath(targetLocale)}?${params.toString()}`;
-  }
-
   const pageNumbers = Array.from(
     { length: Math.min(totalPages, 5) },
     (_, index) => {
@@ -333,18 +326,13 @@ export async function HomeContent({
 
       <section className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[1fr_340px]">
         <div className="space-y-6">
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {locales.map((languageLocale) => (
-              <Link
-                key={languageLocale}
-                href={getLanguageHref(languageLocale)}
-                aria-label={languageLocale.toUpperCase()}
-                className="shrink-0 rounded-full border border-[#ded4c2] bg-white px-3 py-2 text-sm font-semibold text-[#242424]"
-              >
-                {languageLocale.toUpperCase()}
-              </Link>
-            ))}
-          </div>
+          <LanguageSwitcher
+            currentLocale={locale}
+            query={{
+              ...Object.fromEntries(paginationBaseParams.entries()),
+              page: String(currentPage),
+            }}
+          />
           <Link
             href={`${basePath}/valuation`}
             className="inline-flex h-12 items-center rounded-[6px] bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43]"

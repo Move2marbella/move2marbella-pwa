@@ -3,11 +3,143 @@ import Link from "next/link";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import { getGeneralWhatsAppUrl } from "../../data/properties";
-import { getLocale, locales } from "../../i18n/translations";
+import { getLocale, getLocaleBasePath, locales, type Locale } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
 
 type ContactPageProps = {
   params: Promise<{ locale: string }>;
+};
+
+const contactContent: Record<
+  Locale,
+  {
+    body: string;
+    cards: {
+      emailBody: string;
+      emailEyebrow: string;
+      sellersBody: string;
+      sellersEyebrow: string;
+      sellersTitle: string;
+      whatsappBody: string;
+      whatsappEyebrow: string;
+    };
+    eyebrow: string;
+    metaDescription: string;
+    title: string;
+  }
+> = {
+  en: {
+    body: "Send a short brief and we will help you narrow the search, review areas or check whether a property price makes sense.",
+    cards: {
+      emailBody: "Useful for detailed briefs, documents and relocation questions.",
+      emailEyebrow: "Email",
+      sellersBody: "Estimate a realistic asking range before a seller conversation.",
+      sellersEyebrow: "Sellers",
+      sellersTitle: "Property valuation",
+      whatsappBody: "Send your buying brief, preferred areas or property reference.",
+      whatsappEyebrow: "Fastest",
+    },
+    eyebrow: "Contact",
+    metaDescription:
+      "Contact Move2Marbella for Costa del Sol property search, valuations and buyer advisory.",
+    title: "Tell us what you are looking for",
+  },
+  es: {
+    body: "Envia un breve resumen y te ayudaremos a acotar la busqueda, revisar zonas o comprobar si el precio de una vivienda tiene sentido.",
+    cards: {
+      emailBody: "Util para briefs detallados, documentos y preguntas de relocation.",
+      emailEyebrow: "Email",
+      sellersBody: "Estima un rango realista antes de hablar con un propietario.",
+      sellersEyebrow: "Propietarios",
+      sellersTitle: "Tasacion de vivienda",
+      whatsappBody: "Envia tu brief de compra, zonas preferidas o referencia de propiedad.",
+      whatsappEyebrow: "Mas rapido",
+    },
+    eyebrow: "Contacto",
+    metaDescription:
+      "Contacta con Move2Marbella para busqueda de propiedades, tasaciones y asesoramiento comprador en la Costa del Sol.",
+    title: "Cuentanos que estas buscando",
+  },
+  fr: {
+    body: "Envoyez un bref cahier des charges et nous vous aiderons a affiner la recherche, comparer les secteurs ou verifier si un prix est coherent.",
+    cards: {
+      emailBody: "Utile pour les briefs detailles, documents et questions de relocation.",
+      emailEyebrow: "Email",
+      sellersBody: "Estimez une fourchette realiste avant une discussion avec un vendeur.",
+      sellersEyebrow: "Vendeurs",
+      sellersTitle: "Estimation immobiliere",
+      whatsappBody: "Envoyez votre brief d'achat, vos secteurs preferes ou une reference de bien.",
+      whatsappEyebrow: "Le plus rapide",
+    },
+    eyebrow: "Contact",
+    metaDescription:
+      "Contactez Move2Marbella pour recherche immobiliere, estimation et conseil acheteur sur la Costa del Sol.",
+    title: "Dites-nous ce que vous recherchez",
+  },
+  de: {
+    body: "Senden Sie uns kurz, was Sie suchen. Wir helfen bei der Eingrenzung, Lagebewertung oder Preisprufung einer Immobilie.",
+    cards: {
+      emailBody: "Gut fur detaillierte Suchprofile, Dokumente und Relocation-Fragen.",
+      emailEyebrow: "E-Mail",
+      sellersBody: "Ermitteln Sie eine realistische Preisspanne vor dem Eigentumergesprach.",
+      sellersEyebrow: "Verkaufer",
+      sellersTitle: "Immobilienbewertung",
+      whatsappBody: "Senden Sie Ihr Suchprofil, bevorzugte Lagen oder eine Immobilienreferenz.",
+      whatsappEyebrow: "Am schnellsten",
+    },
+    eyebrow: "Kontakt",
+    metaDescription:
+      "Kontaktieren Sie Move2Marbella fur Immobiliensuche, Bewertung und Kauferberatung an der Costa del Sol.",
+    title: "Sagen Sie uns, wonach Sie suchen",
+  },
+  ru: {
+    body: "Отправьте короткое описание запроса, и мы поможем сузить поиск, сравнить районы или проверить, насколько цена объекта логична.",
+    cards: {
+      emailBody: "Удобно для подробных запросов, документов и вопросов переезда.",
+      emailEyebrow: "Email",
+      sellersBody: "Оцените реалистичный диапазон цены перед разговором с собственником.",
+      sellersEyebrow: "Продавцам",
+      sellersTitle: "Оценка недвижимости",
+      whatsappBody: "Отправьте ваш запрос, желаемые районы или референс объекта.",
+      whatsappEyebrow: "Быстрее всего",
+    },
+    eyebrow: "Контакт",
+    metaDescription:
+      "Свяжитесь с Move2Marbella для поиска недвижимости, оценки и консультации покупателя на Costa del Sol.",
+    title: "Расскажите, что вы ищете",
+  },
+  pl: {
+    body: "Wyslij krotki opis, a pomozemy zawezic poszukiwania, porownac lokalizacje lub sprawdzic, czy cena nieruchomosci ma sens.",
+    cards: {
+      emailBody: "Dobre do szczegolowych briefow, dokumentow i pytan relokacyjnych.",
+      emailEyebrow: "Email",
+      sellersBody: "Oszacuj realistyczny zakres ceny przed rozmowa ze sprzedajacym.",
+      sellersEyebrow: "Sprzedajacy",
+      sellersTitle: "Wycena nieruchomosci",
+      whatsappBody: "Wyslij brief zakupu, preferowane okolice lub numer referencyjny nieruchomosci.",
+      whatsappEyebrow: "Najszybciej",
+    },
+    eyebrow: "Kontakt",
+    metaDescription:
+      "Skontaktuj sie z Move2Marbella w sprawie wyszukiwania nieruchomosci, wyceny i doradztwa kupujacego na Costa del Sol.",
+    title: "Napisz, czego szukasz",
+  },
+  hu: {
+    body: "Ird meg roviden, mit keresel, es segitunk szukiteni a keresest, atnezni a kornyekeket vagy ellenorizni, hogy egy ar realis-e.",
+    cards: {
+      emailBody: "Reszletes keresesi igenyhez, dokumentumokhoz es koltozesi kerdesekhez praktikus.",
+      emailEyebrow: "Email",
+      sellersBody: "Becsulj realis arsavot, mielott tulajdonossal beszelsz.",
+      sellersEyebrow: "Eladok",
+      sellersTitle: "Ingatlan ertekbecsles",
+      whatsappBody: "Kuld el, mit keresel, melyik kornyek erdekel, vagy az ingatlan referenciajat.",
+      whatsappEyebrow: "Leggyorsabb",
+    },
+    eyebrow: "Kapcsolat",
+    metaDescription:
+      "Kapcsolat a Move2Marbella csapataval Costa del Sol ingatlankereseshez, ertekbecsleshez es vevoi tanacsadashoz.",
+    title: "Ird meg, mit keresel",
+  },
 };
 
 export function generateStaticParams() {
@@ -19,11 +151,11 @@ export async function generateMetadata({
 }: ContactPageProps): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = getLocale(localeParam);
+  const page = contactContent[locale];
 
   return {
-    title: "Contact Move2Marbella",
-    description:
-      "Contact Move2Marbella for Costa del Sol property search, valuations and buyer advisory.",
+    title: page.title,
+    description: page.metaDescription,
     alternates: {
       canonical: getLocalizedPath(locale, "/contact"),
       languages: getLanguageAlternates("/contact"),
@@ -35,13 +167,16 @@ export async function generateMetadata({
 export default async function ContactPage({ params }: ContactPageProps) {
   const { locale: localeParam } = await params;
   const locale = getLocale(localeParam);
+  const page = contactContent[locale];
+  const basePath = getLocaleBasePath(locale);
 
   return (
     <ContentPageShell
       locale={locale}
-      eyebrow="Contact"
-      title="Tell us what you are looking for"
-      body="Send a short brief and we will help you narrow the search, review areas or check whether a property price makes sense."
+      languagePath="/contact"
+      eyebrow={page.eyebrow}
+      title={page.title}
+      body={page.body}
     >
       <section className="mx-auto grid max-w-6xl gap-4 px-5 py-10 sm:px-8 md:grid-cols-3">
         <TrackedWhatsAppLink
@@ -50,13 +185,13 @@ export default async function ContactPage({ params }: ContactPageProps) {
           className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
         >
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#9a7a3a]">
-            Fastest
+            {page.cards.whatsappEyebrow}
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-[#171717]">
             WhatsApp
           </h2>
           <p className="mt-3 text-base leading-7 text-[#4b4740]">
-            Send your buying brief, preferred areas or property reference.
+            {page.cards.whatsappBody}
           </p>
         </TrackedWhatsAppLink>
         <a
@@ -64,27 +199,27 @@ export default async function ContactPage({ params }: ContactPageProps) {
           className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
         >
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#9a7a3a]">
-            Email
+            {page.cards.emailEyebrow}
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-[#171717]">
             info@movetomarbella.com
           </h2>
           <p className="mt-3 text-base leading-7 text-[#4b4740]">
-            Useful for detailed briefs, documents and relocation questions.
+            {page.cards.emailBody}
           </p>
         </a>
         <Link
-          href={`/${locale}/valuation`}
+          href={`${basePath}/valuation`}
           className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
         >
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#9a7a3a]">
-            Sellers
+            {page.cards.sellersEyebrow}
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-[#171717]">
-            Property valuation
+            {page.cards.sellersTitle}
           </h2>
           <p className="mt-3 text-base leading-7 text-[#4b4740]">
-            Estimate a realistic asking range before a seller conversation.
+            {page.cards.sellersBody}
           </p>
         </Link>
       </section>

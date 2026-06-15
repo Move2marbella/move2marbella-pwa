@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { JsonLd } from "../../components/json-ld";
 import { PurchaseCostCalculator } from "../../components/purchase-cost-calculator";
-import { getLocale, locales } from "../../i18n/translations";
+import { getLocale, locales, type Locale } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
 
 type BuyingGuidePageProps = {
@@ -23,6 +23,7 @@ const content = {
     checksTitle: "Lawyer checks before completion",
     resaleCostsTitle: "Resale property costs",
     newBuildCostsTitle: "New-build costs",
+    stepLabel: "Step",
     steps: [
       {
         title: "Offer accepted",
@@ -96,6 +97,290 @@ const content = {
       },
     ],
   },
+  es: {
+    body:
+      "Guia practica para comprar en la Costa del Sol: reserva, contrato de arras, comprobaciones legales, firma ante notario y costes reales.",
+    eyebrow: "Guia de compra",
+    metaDescription:
+      "Guia compacta para comprar vivienda de reventa u obra nueva en Marbella y la Costa del Sol: deposito, arras, impuestos, abogado y notaria.",
+    title: "Comprar vivienda en España, sin improvisar",
+    resaleTitle: "Proceso de vivienda de reventa",
+    newBuildTitle: "Obra nueva y compra sobre plano",
+    costsTitle: "Costes extra habituales",
+    checksTitle: "Comprobaciones del abogado antes de firmar",
+    resaleCostsTitle: "Costes de vivienda de reventa",
+    newBuildCostsTitle: "Costes de obra nueva",
+    stepLabel: "Paso",
+    steps: [
+      {
+        title: "Oferta aceptada",
+        text: "Cuando el comprador elige la vivienda, negocia el precio y llega a un acuerdo con el vendedor, empieza la reserva.",
+      },
+      {
+        title: "Deposito inicial",
+        text: "En muchas viviendas de reventa, especialmente por debajo de EUR 500.000, es habitual un deposito de EUR 6.000, normalmente al abogado del comprador.",
+      },
+      {
+        title: "Contrato de arras",
+        text: "Tras el acuerdo inicial suele firmarse el Contrato de Arras. El comprador normalmente completa hasta el 10% del precio.",
+      },
+      {
+        title: "Proteccion legal",
+        text: "Si el vendedor se retira, normalmente devuelve el doble del deposito. Si el comprador se retira sin causa legal, puede perderlo.",
+      },
+      {
+        title: "Condiciones privadas",
+        text: "El contrato privado fija precio, pagos, entrega de posesion y plazo para firmar la escritura ante notario.",
+      },
+      {
+        title: "Firma ante notario",
+        text: "En reventa suele haber alrededor de 60 dias para comprobaciones y cierre. En notaria se paga el saldo y se transmite la propiedad.",
+      },
+    ],
+    newBuild: [
+      "Las reservas suelen estar alrededor de EUR 6.000-11.000.",
+      "Durante la construccion se paga habitualmente alrededor del 30% por fases.",
+      "El 70% restante se paga al completar y firmar ante notario.",
+      "Los plazos suelen ser de 1-2 años, segun el proyecto.",
+    ],
+    resaleCosts: [
+      { label: "Impuesto de transmisiones en Andalucia", value: "7% ITP" },
+      { label: "Honorarios de abogado", value: "aprox. 1%" },
+      { label: "Notaria y registro", value: "aprox. 0,5%" },
+      { label: "Extras habituales en reventa", value: "aprox. 8,5%" },
+    ],
+    newBuildCosts: [
+      { label: "IVA de obra nueva", value: "10% IVA" },
+      { label: "AJD", value: "1,2% AJD" },
+      { label: "Abogado, notaria y registro", value: "aprox. 1,5%" },
+      { label: "Extras habituales en obra nueva", value: "aprox. 11,5%" },
+    ],
+    checks: [
+      "Titularidad y nota simple registral",
+      "Cargas, deudas o hipotecas",
+      "Licencias y situacion legal",
+      "Deudas de suministros, comunidad e impuestos locales",
+    ],
+    faqs: [
+      {
+        question: "Que deposito es habitual en una reventa?",
+        answer:
+          "En muchas operaciones se usa un deposito inicial de EUR 6.000, seguido por un contrato de arras que normalmente eleva el pago al 10% del precio.",
+      },
+      {
+        question: "Cuanto tarda una compra de reventa?",
+        answer:
+          "Una compra de reventa en la Costa del Sol suele cerrarse en unos 60 dias, segun comprobaciones legales, financiacion y acuerdo entre partes.",
+      },
+      {
+        question: "Que costes extra tiene una reventa?",
+        answer:
+          "En Andalucia se suele presupuestar alrededor del 8,5% adicional: 7% ITP, aprox. 1% abogado y aprox. 0,5% notaria y registro.",
+      },
+      {
+        question: "Que cambia en obra nueva?",
+        answer:
+          "La obra nueva suele tener pagos por fases, 10% IVA en lugar de 7% ITP y costes totales cercanos al 11,5% sobre el precio.",
+      },
+    ],
+  },
+  fr: {
+    body:
+      "Guide pratique pour acheter sur la Costa del Sol: reservation, contrat d'arras, verifications juridiques, signature notariale et vrais frais annexes.",
+    eyebrow: "Guide d'achat",
+    metaDescription:
+      "Guide compact pour acheter un bien de revente ou neuf a Marbella et sur la Costa del Sol: depot, arras, taxes, avocat et notaire.",
+    title: "Acheter en Espagne, sans deviner",
+    resaleTitle: "Processus pour un bien de revente",
+    newBuildTitle: "Neuf et achat sur plan",
+    costsTitle: "Frais annexes habituels",
+    checksTitle: "Verifications de l'avocat avant signature",
+    resaleCostsTitle: "Frais pour un bien de revente",
+    newBuildCostsTitle: "Frais pour un bien neuf",
+    stepLabel: "Etape",
+    steps: [
+      { title: "Offre acceptee", text: "Apres le choix du bien, la negociation du prix et l'accord avec le vendeur, la reservation commence." },
+      { title: "Depot initial", text: "Pour de nombreuses reventes, surtout sous EUR 500.000, un depot de EUR 6.000 est courant, souvent verse a l'avocat de l'acheteur." },
+      { title: "Contrat d'arras", text: "Un accord court est souvent suivi du Contrato de Arras. L'acheteur complete generalement jusqu'a 10% du prix." },
+      { title: "Protection juridique", text: "Si le vendeur se retire, il rembourse souvent le double du depot. Si l'acheteur se retire sans raison juridique, il peut le perdre." },
+      { title: "Conditions privees", text: "Le contrat fixe le prix, les paiements, la date de possession et le delai de signature chez le notaire." },
+      { title: "Signature notariale", text: "Une revente laisse souvent environ 60 jours pour les controles et la completion. Le solde est paye chez le notaire." },
+    ],
+    newBuild: [
+      "Les depots de reservation sont souvent autour de EUR 6.000-11.000.",
+      "Pendant la construction, environ 30% est souvent paye par etapes.",
+      "Les 70% restants sont payes a la livraison et signature notariale.",
+      "Les delais sont souvent de 1-2 ans selon le projet.",
+    ],
+    resaleCosts: [
+      { label: "Taxe de transmission en Andalousie", value: "7% ITP" },
+      { label: "Honoraires d'avocat", value: "env. 1%" },
+      { label: "Notaire et registre foncier", value: "env. 0,5%" },
+      { label: "Frais habituels en revente", value: "env. 8,5%" },
+    ],
+    newBuildCosts: [
+      { label: "TVA du neuf", value: "10% IVA" },
+      { label: "Droit AJD", value: "1,2% AJD" },
+      { label: "Avocat, notaire et registre", value: "env. 1,5%" },
+      { label: "Frais habituels du neuf", value: "env. 11,5%" },
+    ],
+    checks: [
+      "Propriete et titre au registre",
+      "Charges, dettes ou hypotheques",
+      "Licences et situation juridique",
+      "Dettes de services, communaute et impots locaux",
+    ],
+    faqs: [
+      { question: "Quel depot pour une revente?", answer: "Un depot initial de EUR 6.000 est courant, puis le contrat d'arras porte souvent le paiement a 10% du prix." },
+      { question: "Combien de temps dure une revente?", answer: "Une revente sur la Costa del Sol se termine souvent en environ 60 jours, selon les controles, le financement et l'accord des parties." },
+      { question: "Quels frais pour une revente?", answer: "En Andalousie, il faut souvent prevoir environ 8,5% en plus: 7% ITP, env. 1% avocat et env. 0,5% notaire/registre." },
+      { question: "Qu'est-ce qui change avec le neuf?", answer: "Le neuf implique souvent des paiements par etapes, 10% IVA au lieu de 7% ITP et environ 11,5% de frais totaux." },
+    ],
+  },
+  de: {
+    body:
+      "Kompakter Leitfaden zum Kauf an der Costa del Sol: Reservierung, Arras-Vertrag, rechtliche Prufungen, Notartermin und reale Nebenkosten.",
+    eyebrow: "Kaufratgeber",
+    metaDescription:
+      "Kompakter Guide zum Kauf von Bestands- und Neubauimmobilien in Marbella und an der Costa del Sol: Anzahlung, Arras, Steuern, Anwalt und Notar.",
+    title: "Immobilienkauf in Spanien, ohne Raten",
+    resaleTitle: "Ablauf bei Bestandsimmobilien",
+    newBuildTitle: "Neubau und Off-Plan",
+    costsTitle: "Typische Nebenkosten",
+    checksTitle: "Anwaltliche Prufungen vor Abschluss",
+    resaleCostsTitle: "Kosten bei Bestandsimmobilien",
+    newBuildCostsTitle: "Kosten bei Neubau",
+    stepLabel: "Schritt",
+    steps: [
+      { title: "Angebot akzeptiert", text: "Nach Auswahl der Immobilie, Preisverhandlung und Einigung mit dem Verkaufer startet die Reservierung." },
+      { title: "Erste Anzahlung", text: "Bei vielen Bestandsimmobilien, besonders unter EUR 500.000, sind EUR 6.000 ublich, meist zuerst an den Anwalt des Kaufers." },
+      { title: "Arras-Vertrag", text: "Kurz darauf folgt haufig der Contrato de Arras. Der Kaufer stockt meist auf 10% des Kaufpreises auf." },
+      { title: "Rechtlicher Schutz", text: "Tritt der Verkaufer zuruck, zahlt er oft das Doppelte zuruck. Tritt der Kaufer ohne Rechtsgrund zuruck, kann er die Anzahlung verlieren." },
+      { title: "Private Kaufbedingungen", text: "Der Vertrag regelt Preis, Zahlungen, Besitzubergabe und Frist fur den Notartermin." },
+      { title: "Notartermin", text: "Bei Bestandsimmobilien sind oft rund 60 Tage fur Prufung und Abschluss vorgesehen. Beim Notar wird der Rest gezahlt." },
+    ],
+    newBuild: [
+      "Reservierungszahlungen liegen oft bei EUR 6.000-11.000.",
+      "Wahrend des Baus werden haufig rund 30% in Etappen gezahlt.",
+      "Die restlichen 70% werden bei Fertigstellung und Notartermin gezahlt.",
+      "Die Laufzeit betragt oft 1-2 Jahre, je nach Projekt.",
+    ],
+    resaleCosts: [
+      { label: "Grunderwerbsteuer in Andalusien", value: "7% ITP" },
+      { label: "Anwaltskosten", value: "ca. 1%" },
+      { label: "Notar und Grundbuch", value: "ca. 0,5%" },
+      { label: "Typische Nebenkosten Bestand", value: "ca. 8,5%" },
+    ],
+    newBuildCosts: [
+      { label: "Mehrwertsteuer Neubau", value: "10% IVA" },
+      { label: "AJD Stempelsteuer", value: "1,2% AJD" },
+      { label: "Anwalt, Notar und Grundbuch", value: "ca. 1,5%" },
+      { label: "Typische Neubau-Nebenkosten", value: "ca. 11,5%" },
+    ],
+    checks: ["Eigentum und Grundbuch", "Lasten, Schulden oder Hypotheken", "Lizenzen und rechtlicher Status", "Versorger-, Gemeinschafts- und lokale Steuerschulden"],
+    faqs: [
+      { question: "Welche Anzahlung ist ublich?", answer: "Haufig sind EUR 6.000 als erste Reservierung ublich, danach bringt der Arras-Vertrag die Zahlung oft auf 10% des Kaufpreises." },
+      { question: "Wie lange dauert ein Kauf?", answer: "Eine Bestandsimmobilie an der Costa del Sol wird oft in rund 60 Tagen abgeschlossen, abhangig von Prufungen und Finanzierung." },
+      { question: "Welche Nebenkosten fallen an?", answer: "In Andalusien sollte man bei Bestand etwa 8,5% zusatzlich rechnen: 7% ITP, ca. 1% Anwalt und ca. 0,5% Notar/Grundbuch." },
+      { question: "Was ist beim Neubau anders?", answer: "Neubau hat meist Etappenzahlungen, 10% IVA statt 7% ITP und insgesamt etwa 11,5% Zusatzkosten." },
+    ],
+  },
+  ru: {
+    body:
+      "Краткий практический гид по покупке на Costa del Sol: резерв, contrato de arras, юридические проверки, нотариус и реальные дополнительные расходы.",
+    eyebrow: "Гид покупателя",
+    metaDescription:
+      "Гид по покупке resale и new-build недвижимости в Marbella и на Costa del Sol: депозит, arras, налоги, юрист, нотариус и расходы.",
+    title: "Покупка недвижимости в Испании без догадок",
+    resaleTitle: "Процесс покупки resale",
+    newBuildTitle: "Новостройка и off-plan",
+    costsTitle: "Типичные дополнительные расходы",
+    checksTitle: "Проверки юриста перед сделкой",
+    resaleCostsTitle: "Расходы при resale",
+    newBuildCostsTitle: "Расходы при новостройке",
+    stepLabel: "Шаг",
+    steps: [
+      { title: "Предложение принято", text: "После выбора объекта, переговоров и согласования цены с продавцом начинается резервирование." },
+      { title: "Первичный депозит", text: "Во многих resale сделках, особенно ниже EUR 500.000, распространен депозит EUR 6.000, обычно сначала юристу покупателя." },
+      { title: "Contrato de Arras", text: "После короткого соглашения часто подписывается официальный Contrato de Arras. Обычно покупатель доплачивает до 10% цены." },
+      { title: "Юридическая защита", text: "Если продавец отказывается, обычно возвращает депозит в двойном размере. Если покупатель уходит без юридической причины, депозит может быть потерян." },
+      { title: "Условия частного договора", text: "Договор фиксирует цену, платежи, дату передачи и срок подписания финального акта у нотариуса." },
+      { title: "Нотариальное завершение", text: "Для resale часто есть около 60 дней на проверки и завершение. У нотариуса оплачивается остаток и переходит право собственности." },
+    ],
+    newBuild: [
+      "Резерв обычно около EUR 6.000-11.000.",
+      "Во время строительства часто оплачивается около 30% по этапам.",
+      "Оставшиеся 70% оплачиваются при завершении и подписании у нотариуса.",
+      "Сроки часто 1-2 года в зависимости от проекта.",
+    ],
+    resaleCosts: [
+      { label: "Налог передачи в Андалусии", value: "7% ITP" },
+      { label: "Юрист", value: "около 1%" },
+      { label: "Нотариус и реестр", value: "около 0,5%" },
+      { label: "Типичные расходы resale", value: "около 8,5%" },
+    ],
+    newBuildCosts: [
+      { label: "НДС на новостройку", value: "10% IVA" },
+      { label: "AJD", value: "1,2% AJD" },
+      { label: "Юрист, нотариус и реестр", value: "около 1,5%" },
+      { label: "Типичные расходы новостройки", value: "около 11,5%" },
+    ],
+    checks: ["Право собственности и реестр", "Обременения, долги или ипотека", "Лицензии и юридический статус", "Долги по коммунальным, сообществу и местным налогам"],
+    faqs: [
+      { question: "Какой депозит обычен для resale?", answer: "Часто используется первичный депозит EUR 6.000, затем contrato de arras обычно доводит платеж до 10% цены." },
+      { question: "Сколько длится resale покупка?", answer: "На Costa del Sol resale сделка часто завершается примерно за 60 дней, в зависимости от проверок, финансирования и договоренностей." },
+      { question: "Какие расходы у resale?", answer: "В Андалусии обычно закладывают около 8,5% сверху: 7% ITP, около 1% юрист и около 0,5% нотариус/реестр." },
+      { question: "Чем отличается новостройка?", answer: "Новостройка обычно имеет этапные платежи, 10% IVA вместо 7% ITP и общие дополнительные расходы около 11,5%." },
+    ],
+  },
+  pl: {
+    body:
+      "Krotki praktyczny przewodnik po zakupie na Costa del Sol: rezerwacja, contrato de arras, kontrole prawne, notariusz i realne koszty dodatkowe.",
+    eyebrow: "Przewodnik zakupu",
+    metaDescription:
+      "Przewodnik po zakupie nieruchomosci resale i new-build w Marbella oraz na Costa del Sol: depozyt, arras, podatki, prawnik i notariusz.",
+    title: "Zakup nieruchomosci w Hiszpanii bez zgadywania",
+    resaleTitle: "Proces zakupu resale",
+    newBuildTitle: "Nowa inwestycja i off-plan",
+    costsTitle: "Typowe koszty dodatkowe",
+    checksTitle: "Kontrole prawnika przed finalizacja",
+    resaleCostsTitle: "Koszty nieruchomosci resale",
+    newBuildCostsTitle: "Koszty nowej inwestycji",
+    stepLabel: "Krok",
+    steps: [
+      { title: "Oferta zaakceptowana", text: "Po wyborze nieruchomosci, negocjacji ceny i zgodzie sprzedajacego rozpoczyna sie proces rezerwacji." },
+      { title: "Depozyt poczatkowy", text: "W wielu transakcjach resale, zwlaszcza ponizej EUR 500.000, typowy jest depozyt EUR 6.000, zwykle najpierw do prawnika kupujacego." },
+      { title: "Contrato de Arras", text: "Po krotkiej umowie czesto podpisuje sie Contrato de Arras. Kupujacy zwykle doplaca do 10% ceny." },
+      { title: "Ochrona prawna", text: "Jesli sprzedajacy sie wycofa, zwykle oddaje podwojny depozyt. Jesli kupujacy rezygnuje bez podstawy prawnej, moze go stracic." },
+      { title: "Warunki prywatne", text: "Umowa okresla cene, platnosci, termin przejecia i deadline podpisania aktu u notariusza." },
+      { title: "Finalizacja u notariusza", text: "Resale czesto daje okolo 60 dni na kontrole i zamkniecie. U notariusza placi sie saldo i przenosi wlasnosc." },
+    ],
+    newBuild: [
+      "Depozyty rezerwacyjne sa czesto okolo EUR 6.000-11.000.",
+      "W trakcie budowy kupujacy zwykle placa okolo 30% etapami.",
+      "Pozostale 70% placone jest po ukonczeniu i podpisaniu u notariusza.",
+      "Terminy czesto wynosza 1-2 lata, zaleznie od projektu.",
+    ],
+    resaleCosts: [
+      { label: "Podatek transferowy w Andaluzji", value: "7% ITP" },
+      { label: "Prawnik", value: "ok. 1%" },
+      { label: "Notariusz i rejestr", value: "ok. 0,5%" },
+      { label: "Typowe koszty resale", value: "ok. 8,5%" },
+    ],
+    newBuildCosts: [
+      { label: "VAT od nowej inwestycji", value: "10% IVA" },
+      { label: "AJD", value: "1,2% AJD" },
+      { label: "Prawnik, notariusz i rejestr", value: "ok. 1,5%" },
+      { label: "Typowe koszty new-build", value: "ok. 11,5%" },
+    ],
+    checks: ["Wlasnosc i ksiega wieczysta", "Obciazenia, dlugi lub hipoteki", "Licencje i status prawny", "Dlugi za media, wspolnote i podatki lokalne"],
+    faqs: [
+      { question: "Jaki depozyt jest typowy przy resale?", answer: "Czesto spotyka sie depozyt EUR 6.000, a potem contrato de arras zwykle podnosi platnosc do 10% ceny." },
+      { question: "Ile trwa zakup resale?", answer: "Na Costa del Sol zakup resale czesto zamyka sie w okolo 60 dni, zaleznie od kontroli, finansowania i ustalen stron." },
+      { question: "Jakie sa koszty resale?", answer: "W Andaluzji zwykle zaklada sie okolo 8,5% dodatkowo: 7% ITP, ok. 1% prawnik i ok. 0,5% notariusz/rejestr." },
+      { question: "Czym rozni sie new-build?", answer: "Nowa inwestycja zwykle ma platnosci etapowe, 10% IVA zamiast 7% ITP i laczne koszty okolo 11,5%." },
+    ],
+  },
   hu: {
     body:
       "Rövid, gyakorlati útmutató a Costa del Sol ingatlanvásárláshoz: foglaló, arras szerződés, ügyvédi ellenőrzés, közjegyzői zárás és várható extra költségek.",
@@ -109,6 +394,7 @@ const content = {
     checksTitle: "Ügyvédi ellenőrzések zárás előtt",
     resaleCostsTitle: "Használt ingatlan költségei",
     newBuildCostsTitle: "Újépítésű ingatlan költségei",
+    stepLabel: "Lépés",
     steps: [
       {
         title: "Áralku és megállapodás",
@@ -184,8 +470,8 @@ const content = {
   },
 };
 
-function getContent(locale: string) {
-  return locale === "hu" ? content.hu : content.en;
+function getContent(locale: Locale) {
+  return content[locale];
 }
 
 export function generateStaticParams() {
@@ -220,6 +506,7 @@ export default async function BuyingGuidePage({
   return (
     <ContentPageShell
       locale={locale}
+      languagePath="/buying-guide"
       eyebrow={page.eyebrow}
       title={page.title}
       body={page.body}
@@ -251,7 +538,7 @@ export default async function BuyingGuidePage({
               className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
             >
               <p className="text-sm font-semibold text-[#9a7a3a]">
-                {locale === "hu" ? "Lépés" : "Step"} {index + 1}
+                {page.stepLabel} {index + 1}
               </p>
               <h2 className="mt-2 text-2xl font-semibold">{step.title}</h2>
               <p className="mt-3 text-base leading-7 text-[#4b4740]">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { JsonLd } from "../../components/json-ld";
+import { LanguageSwitcher } from "../../components/language-switcher";
 import { MainNav } from "../../components/main-nav";
 import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import { getGeneralWhatsAppUrl } from "../../data/properties";
@@ -133,6 +134,10 @@ function Section({
   );
 }
 
+function getMeetMiguelHref(locale: Locale) {
+  return locale === "hu" ? pagePath : `/${locale}/meet-miguel`;
+}
+
 export default async function HorvathZsoltMarbellaPage({
   params,
 }: HorvathZsoltPageProps) {
@@ -227,6 +232,10 @@ export default async function HorvathZsoltMarbellaPage({
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 pt-6 sm:px-8">
+        <LanguageSwitcher currentLocale="hu" getHref={getMeetMiguelHref} />
       </section>
 
       <Section eyebrow="Miért fontos" title="A bizalom itt nem extra, hanem alap">

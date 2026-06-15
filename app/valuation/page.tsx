@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd } from "../components/json-ld";
+import { LanguageSwitcher } from "../components/language-switcher";
 import { MainNav } from "../components/main-nav";
 import { ValuationLeadGate } from "../components/valuation-lead-gate";
 import { ValuationLocationFields } from "../components/valuation-location-fields";
@@ -624,6 +625,14 @@ export async function ValuationContent({
             </form>
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 pt-6 sm:px-8">
+        <LanguageSwitcher
+          currentLocale={locale}
+          path="/valuation"
+          query={searchParams}
+        />
       </section>
 
       <section className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-10 sm:px-8 lg:grid-cols-[1.05fr_0.95fr]">
