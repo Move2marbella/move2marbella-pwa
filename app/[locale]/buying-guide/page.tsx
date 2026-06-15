@@ -23,7 +23,7 @@ const content = {
     steps: [
       {
         title: "Offer accepted",
-        text: "After the buyer chooses the property and agrees the final price with the seller, the reservation process starts.",
+        text: "After the buyer chooses the property, negotiates the price and reaches agreement with the seller, the reservation process starts.",
       },
       {
         title: "Initial deposit",
@@ -31,25 +31,25 @@ const content = {
       },
       {
         title: "Arras contract",
-        text: "The official reservation contract normally increases the payment to 10% of the purchase price. The initial deposit is deducted from this amount.",
+        text: "A short agreement is often followed within about 48 hours by the official Contrato de Arras. The buyer normally tops up the deposit to 10% of the purchase price.",
       },
       {
         title: "Legal protection",
         text: "If the seller withdraws, they generally repay double the deposit. If the buyer withdraws without legal reason, the buyer may lose the deposit.",
       },
       {
-        title: "Due diligence",
-        text: "Most resale transactions allow around 60 days for legal checks, funds, mortgage coordination and notary completion.",
+        title: "Private purchase terms",
+        text: "The private contract records the price, payment terms, possession date and deadline for signing the final deed before the notary.",
       },
       {
         title: "Notary completion",
-        text: "The final deed is signed before a notary, the balance is paid and ownership officially transfers to the buyer.",
+        text: "Most resale purchases allow around 60 days for checks and completion. At the notary, the balance is paid and ownership transfers to the buyer.",
       },
     ],
     newBuild: [
       "Reservation deposits are often around EUR 6,000-11,000.",
       "During construction, buyers commonly pay around 30% in stages.",
-      "The remaining 70% is paid on completion at the notary.",
+      "The remaining 70% is paid only when the property is completed and signed at the notary.",
       "Timelines are often 1-2 years, depending on the project.",
     ],
     costs: [
@@ -80,7 +80,7 @@ const content = {
       {
         question: "What are the typical buying costs for resale property?",
         answer:
-          "In Andalucia, resale buyers usually budget around 8.5% on top of the price: 7% ITP transfer tax, around 1% lawyer fee and around 0.5% notary and registry costs.",
+          "In Andalucia, resale buyers usually budget around 8.5% on top of the price: 7% ITP transfer tax, around 1% lawyer fee and around 0.5% notary and registry costs. ITP is normally paid after notary completion, often within 30-60 days.",
       },
       {
         question: "What is different with new-build property?",
