@@ -238,7 +238,15 @@ export async function HomeContent({
                 className="h-auto w-44 sm:w-56"
               />
             </Link>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              {locale === "hu" ? (
+                <Link
+                  href="/hu/horvath-zsolt-marbella"
+                  className="rounded-full border border-white/25 px-4 py-2 text-sm font-semibold text-white shadow-sm"
+                >
+                  Horváth Zsolt
+                </Link>
+              ) : null}
               <Link
                 href={`${basePath}/valuation`}
                 className="rounded-full bg-[#ba9456] px-4 py-2 text-sm font-semibold text-white shadow-sm"

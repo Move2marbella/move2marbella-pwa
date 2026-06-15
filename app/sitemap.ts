@@ -18,6 +18,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "daily" as const,
     priority: locale === "en" ? 1 : 0.9,
   }));
+  const contentPages = [
+    {
+      url: `${SITE_URL}${getLocalizedPath("hu", "/horvath-zsolt-marbella")}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+  ];
   const propertyPages = properties.map((property) => ({
     url: `${SITE_URL}${getLocalizedPath("en", `/properties/${property.ref}`)}`,
     lastModified: property.modified,
@@ -25,5 +33,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...homePages, ...propertyPages];
+  return [...homePages, ...contentPages, ...propertyPages];
 }
