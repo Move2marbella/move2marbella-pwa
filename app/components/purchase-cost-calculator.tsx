@@ -52,7 +52,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     appraisalFee: "Bewertungsgebühr (€)",
     bankCosts: "Bank- / Hypothekenkosten",
     calculate: "Kosten berechnen",
-    cashOutsideMortgage: "Eigenmittel außerhalb der Hypothek",
+    cashOutsideMortgage: "Restkaufpreis bei Abschluss",
     cashPurchase: "Barkauf",
     deposit: "Anzahlung / Arras",
     depositPercent: "Anzahlung / Arras (%)",
@@ -90,7 +90,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     appraisalFee: "Appraisal / Valuation Fee (€)",
     bankCosts: "Bank / Mortgage Costs",
     calculate: "Calculate costs",
-    cashOutsideMortgage: "Cash outside mortgage",
+    cashOutsideMortgage: "Balance at completion",
     cashPurchase: "Cash purchase",
     deposit: "Deposit / Arras",
     depositPercent: "Deposit / Arras (%)",
@@ -117,7 +117,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     resultCaption: "Estimated total funds needed before and at completion.",
     resultKicker: "Estimated result",
     sectionTitle: "Purchase Cost Calculator",
-    subtitle: "Estimate buyer-side acquisition costs in Andalusia, including taxes, legal fees, notary, registry and mortgage-related upfront costs.",
+    subtitle: "Estimate buyer-side acquisition costs in Andalusia, including taxes, legal fees, notary, registry and admin costs.",
     taxes: "Taxes",
     totalExpenses: "Total expenses",
     validPrice: "Please enter a valid property price.",
@@ -128,7 +128,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     appraisalFee: "Tasación bancaria (€)",
     bankCosts: "Costes bancarios / hipoteca",
     calculate: "Calcular costes",
-    cashOutsideMortgage: "Fondos fuera de hipoteca",
+    cashOutsideMortgage: "Resto del precio en firma",
     cashPurchase: "Compra al contado",
     deposit: "Depósito / Arras",
     depositPercent: "Depósito / Arras (%)",
@@ -155,7 +155,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     resultCaption: "Fondos estimados antes y en la firma.",
     resultKicker: "Resultado estimado",
     sectionTitle: "Calculadora de costes de compra",
-    subtitle: "Calcula costes de comprador en Andalucía: impuestos, abogado, notaría, registro e hipoteca.",
+    subtitle: "Calcula costes de comprador en Andalucía: impuestos, abogado, notaría, registro y administración.",
     taxes: "Impuestos",
     totalExpenses: "Gastos totales",
     validPrice: "Introduce un precio válido.",
@@ -166,7 +166,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     appraisalFee: "Frais d'expertise (€)",
     bankCosts: "Frais banque / prêt",
     calculate: "Calculer",
-    cashOutsideMortgage: "Apport hors prêt",
+    cashOutsideMortgage: "Solde à la signature",
     cashPurchase: "Achat comptant",
     deposit: "Dépôt / Arras",
     depositPercent: "Dépôt / Arras (%)",
@@ -204,7 +204,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     appraisalFee: "Banki értékbecslés (€)",
     bankCosts: "Banki / jelzálog költségek",
     calculate: "Költségek számítása",
-    cashOutsideMortgage: "Jelzálogon kívüli önerő",
+    cashOutsideMortgage: "Fennmaradó vételár záráskor",
     cashPurchase: "Készpénzes vétel",
     deposit: "Foglaló / Arras",
     depositPercent: "Foglaló / Arras (%)",
@@ -231,7 +231,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     resultCaption: "Becsült teljes szükséges forrás a zárás előtt és záráskor.",
     resultKicker: "Becsült eredmény",
     sectionTitle: "Vásárlási költség kalkulátor",
-    subtitle: "Számold ki a fő vevői költségeket Andalúziában: illetékek, ÁFA/AJD, ügyvéd, közjegyző, földhivatal és banki díjak.",
+    subtitle: "Számold ki a fő vevői költségeket Andalúziában: illetékek, ÁFA/AJD, ügyvéd, közjegyző, földhivatal és adminisztráció.",
     taxes: "Adók és illetékek",
     totalExpenses: "Teljes extra költség",
     validPrice: "Adj meg érvényes vételárat.",
@@ -242,7 +242,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     appraisalFee: "Wycena bankowa (€)",
     bankCosts: "Koszty banku / kredytu",
     calculate: "Oblicz koszty",
-    cashOutsideMortgage: "Gotówka poza kredytem",
+    cashOutsideMortgage: "Saldo przy akcie",
     cashPurchase: "Zakup gotówkowy",
     deposit: "Depozyt / Arras",
     depositPercent: "Depozyt / Arras (%)",
@@ -280,7 +280,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     appraisalFee: "Оценка банка (€)",
     bankCosts: "Банк / ипотека",
     calculate: "Рассчитать",
-    cashOutsideMortgage: "Наличные сверх ипотеки",
+    cashOutsideMortgage: "Остаток при завершении",
     cashPurchase: "Покупка без ипотеки",
     deposit: "Депозит / Arras",
     depositPercent: "Депозит / Arras (%)",
@@ -397,11 +397,6 @@ export function PurchaseCostCalculator({ locale }: { locale: Locale }) {
   const [price, setPrice] = useState(550000);
   const [depositPercent, setDepositPercent] = useState(10);
   const [propertyType, setPropertyType] = useState<PropertyType>("resale");
-  const [hasMortgage, setHasMortgage] = useState(true);
-  const [mortgagePercent, setMortgagePercent] = useState(70);
-  const [mortgageFeePercent, setMortgageFeePercent] = useState(0);
-  const [appraisalFee, setAppraisalFee] = useState(450);
-  const [otherBankCosts, setOtherBankCosts] = useState(0);
   const [lawyerFeePercent, setLawyerFeePercent] = useState(1);
   const [lawyerFeeFixed, setLawyerFeeFixed] = useState(0);
   const [notaryPercent, setNotaryPercent] = useState(0.1);
@@ -415,15 +410,7 @@ export function PurchaseCostCalculator({ locale }: { locale: Locale }) {
     }
 
     const deposit = price * (depositPercent / 100);
-    const mortgageAmount = hasMortgage
-      ? Math.min(price * (mortgagePercent / 100), price)
-      : 0;
-    const cashPortion = Math.max(price - mortgageAmount, 0);
-    const mortgageFee = hasMortgage
-      ? mortgageAmount * (mortgageFeePercent / 100)
-      : 0;
-    const buyerAppraisalFee = hasMortgage ? appraisalFee : 0;
-    const buyerBankCosts = hasMortgage ? otherBankCosts : 0;
+    const balanceAtCompletion = Math.max(price - deposit, 0);
     const lawyerFee =
       lawyerFeeFixed > 0 ? lawyerFeeFixed : price * (lawyerFeePercent / 100);
     const notaryFee = Math.max(price * (notaryPercent / 100), 600);
@@ -434,11 +421,9 @@ export function PurchaseCostCalculator({ locale }: { locale: Locale }) {
     const vat = propertyType === "newbuild" ? price * 0.1 : 0;
     const ajd = propertyType === "newbuild" ? price * ajdRate : 0;
     const taxes = transferTax + vat + ajd;
-    const totalBankCosts = mortgageFee + buyerAppraisalFee + buyerBankCosts;
     const totalExpenses =
-      taxes + notaryFee + registryFee + totalBankCosts + lawyerFee + adminCosts;
-    const cashOutsideMortgage = Math.max(cashPortion - deposit, 0);
-    const totalUpfrontFunds = deposit + cashOutsideMortgage + totalExpenses;
+      taxes + notaryFee + registryFee + lawyerFee + adminCosts;
+    const totalUpfrontFunds = deposit + balanceAtCompletion + totalExpenses;
     const notes =
       propertyType === "resale"
         ? [
@@ -459,35 +444,27 @@ export function PurchaseCostCalculator({ locale }: { locale: Locale }) {
       );
     }
 
-    notes.push(`Estimated mortgage amount: ${formatCurrency(mortgageAmount)}.`);
     notes.push(
       `Estimated cash required before / at closing: ${formatCurrency(totalUpfrontFunds)}.`,
     );
 
     return {
-      cashOutsideMortgage,
+      cashOutsideMortgage: balanceAtCompletion,
       deposit,
       lawyerFee,
-      mortgageAmount,
       notes,
       notaryFee,
       registryFee,
       taxes,
-      totalBankCosts,
       totalExpenses,
       totalUpfrontFunds,
     };
   }, [
     adminCosts,
-    appraisalFee,
     depositPercent,
-    hasMortgage,
     lawyerFeeFixed,
     lawyerFeePercent,
-    mortgageFeePercent,
-    mortgagePercent,
     notaryPercent,
-    otherBankCosts,
     price,
     propertyType,
     reducedRate,
@@ -498,11 +475,6 @@ export function PurchaseCostCalculator({ locale }: { locale: Locale }) {
     setPrice(550000);
     setDepositPercent(10);
     setPropertyType("resale");
-    setHasMortgage(true);
-    setMortgagePercent(70);
-    setMortgageFeePercent(0);
-    setAppraisalFee(450);
-    setOtherBankCosts(0);
     setLawyerFeePercent(1);
     setLawyerFeeFixed(0);
     setNotaryPercent(0.1);
@@ -518,7 +490,6 @@ export function PurchaseCostCalculator({ locale }: { locale: Locale }) {
         { label: labels.taxes, value: result.taxes },
         { label: labels.notaryFees, value: result.notaryFee },
         { label: labels.registryFees, value: result.registryFee },
-        { label: labels.bankCosts, value: result.totalBankCosts },
         { label: labels.lawyerFee, value: result.lawyerFee },
         { label: labels.adminCosts, value: adminCosts },
         { label: labels.totalExpenses, value: result.totalExpenses },
@@ -566,50 +537,6 @@ export function PurchaseCostCalculator({ locale }: { locale: Locale }) {
                 {labels.newBuild}
               </ToggleButton>
             </div>
-          </div>
-
-          <div className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
-            <p className="text-lg font-semibold">{labels.mortgage}</p>
-            <p className="mt-2 text-sm leading-6 text-[#6f6a61]">
-              {labels.mortgageCopy}
-            </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <ToggleButton active={hasMortgage} onClick={() => setHasMortgage(true)}>
-                {labels.mortgage}
-              </ToggleButton>
-              <ToggleButton
-                active={!hasMortgage}
-                onClick={() => setHasMortgage(false)}
-              >
-                {labels.cashPurchase}
-              </ToggleButton>
-            </div>
-            {hasMortgage ? (
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <NumberField
-                  label={labels.mortgageAmount}
-                  value={mortgagePercent}
-                  onChange={setMortgagePercent}
-                  step={0.1}
-                />
-                <NumberField
-                  label={labels.mortgageFee}
-                  value={mortgageFeePercent}
-                  onChange={setMortgageFeePercent}
-                />
-                <NumberField
-                  label={labels.appraisalFee}
-                  value={appraisalFee}
-                  onChange={setAppraisalFee}
-                />
-                <NumberField
-                  label={labels.otherBankCosts}
-                  value={otherBankCosts}
-                  onChange={setOtherBankCosts}
-                />
-              </div>
-            ) : null}
-            <p className="mt-3 text-sm leading-6 text-[#6f6a61]">{labels.ajdNote}</p>
           </div>
 
           <div className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5">
