@@ -33,7 +33,7 @@ const navLabels: Record<
     areas: "Areas",
     buyingGuide: "Buying Guide",
     contact: "Contact",
-    meetMiguel: "Meet Miguel",
+    meetMiguel: "Meet Miguel Zsolt",
     menu: "MENU",
     properties: "Properties",
     valuation: "Valuation",
