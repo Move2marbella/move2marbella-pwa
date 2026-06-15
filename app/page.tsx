@@ -3,13 +3,13 @@ import Link from "next/link";
 import { BudgetSlider } from "./components/budget-slider";
 import { FavouritesPanel, FavouriteToggle } from "./components/favourite-toggle";
 import { JsonLd } from "./components/json-ld";
+import { MainNav } from "./components/main-nav";
 import { TrackedWhatsAppLink } from "./components/tracked-whatsapp-link";
 import {
   fetchProperties,
   fetchPropertyCities,
   fetchPropertyTypes,
   bedroomOptions,
-  getGeneralWhatsAppUrl,
   getPropertyCityFilterIds,
   getPropertyTypeFilterIds,
   getSimplifiedPropertyCityOptions,
@@ -238,29 +238,7 @@ export async function HomeContent({
                 className="h-auto w-44 sm:w-56"
               />
             </Link>
-            <div className="flex flex-wrap items-center justify-end gap-2">
-              {locale === "hu" ? (
-                <Link
-                  href="/hu/horvath-zsolt-marbella"
-                  className="rounded-full border border-white/25 px-4 py-2 text-sm font-semibold text-white shadow-sm"
-                >
-                  Horváth Zsolt
-                </Link>
-              ) : null}
-              <Link
-                href={`${basePath}/valuation`}
-                className="rounded-full bg-[#ba9456] px-4 py-2 text-sm font-semibold text-white shadow-sm"
-              >
-                {t.valuation.shortCta}
-              </Link>
-              <TrackedWhatsAppLink
-                href={getGeneralWhatsAppUrl()}
-                source="home_header"
-                className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f253d] shadow-sm"
-              >
-                WhatsApp
-              </TrackedWhatsAppLink>
-            </div>
+            <MainNav locale={locale} tone="light" />
           </header>
 
           <div className="flex flex-1 flex-col justify-end gap-6 py-10">

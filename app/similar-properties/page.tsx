@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FavouriteToggle } from "../components/favourite-toggle";
+import { MainNav } from "../components/main-nav";
 import { TrackedWhatsAppLink } from "../components/tracked-whatsapp-link";
 import {
   fetchProperties,
@@ -293,12 +294,7 @@ export async function SimilarPropertiesContent({
               className="h-auto w-40 sm:w-52"
             />
           </Link>
-          <Link
-            href={basePath}
-            className="rounded-full border border-white/25 px-4 py-2 text-sm font-semibold text-white"
-          >
-            {t.back}
-          </Link>
+          <MainNav locale={locale} tone="light" />
         </div>
         <div className="mx-auto max-w-6xl py-12 sm:py-16">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ba9456]">

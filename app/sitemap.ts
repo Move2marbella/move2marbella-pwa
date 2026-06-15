@@ -19,6 +19,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: locale === "en" ? 1 : 0.9,
   }));
   const contentPages = [
+    ...locales.flatMap((locale) => [
+      {
+        url: `${SITE_URL}${getLocalizedPath(locale, "/areas")}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.65,
+      },
+      {
+        url: `${SITE_URL}${getLocalizedPath(locale, "/buying-guide")}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.65,
+      },
+      {
+        url: `${SITE_URL}${getLocalizedPath(locale, "/contact")}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.55,
+      },
+    ]),
+    ...locales
+      .filter((locale) => locale !== "hu")
+      .map((locale) => ({
+        url: `${SITE_URL}${getLocalizedPath(locale, "/meet-miguel")}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      })),
     {
       url: `${SITE_URL}${getLocalizedPath("hu", "/horvath-zsolt-marbella")}`,
       lastModified: now,

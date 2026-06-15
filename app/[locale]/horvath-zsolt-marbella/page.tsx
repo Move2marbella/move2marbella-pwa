@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { JsonLd } from "../../components/json-ld";
+import { MainNav } from "../../components/main-nav";
 import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import { getGeneralWhatsAppUrl } from "../../data/properties";
 import { getLocale, type Locale } from "../../i18n/translations";
@@ -201,21 +202,7 @@ export default async function HorvathZsoltMarbellaPage({
                 className="h-auto w-44 sm:w-56"
               />
             </Link>
-            <div className="flex items-center gap-2">
-              <Link
-                href="/hu/valuation"
-                className="rounded-full bg-[#ba9456] px-4 py-2 text-sm font-semibold text-white shadow-sm"
-              >
-                Értékbecslés
-              </Link>
-              <TrackedWhatsAppLink
-                href={getGeneralWhatsAppUrl()}
-                source="horvath_zsolt_header"
-                className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f253d] shadow-sm"
-              >
-                WhatsApp
-              </TrackedWhatsAppLink>
-            </div>
+            <MainNav locale="hu" tone="light" />
           </header>
 
           <div className="flex flex-1 flex-col justify-end gap-7 py-12">

@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd } from "../components/json-ld";
+import { MainNav } from "../components/main-nav";
 import { ValuationLeadGate } from "../components/valuation-lead-gate";
 import { ValuationLocationFields } from "../components/valuation-location-fields";
 import { buildValuation, type ValuationInput } from "../data/valuation";
@@ -533,12 +534,7 @@ export async function ValuationContent({
                 className="h-auto w-44 sm:w-56"
               />
             </Link>
-            <Link
-              href={basePath}
-              className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f253d] shadow-sm"
-            >
-              {v.searchProperties}
-            </Link>
+            <MainNav locale={locale} tone="light" />
           </header>
 
           <div className="grid gap-10 pb-12 pt-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
