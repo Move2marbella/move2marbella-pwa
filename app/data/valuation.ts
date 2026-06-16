@@ -14,6 +14,15 @@ const REALADVISOR_MARKET_BENCHMARKS: Record<string, number> = {
   estepona: 3316,
 };
 
+function isNextDynamicServerError(error: unknown) {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    (error as { digest?: unknown }).digest === "DYNAMIC_SERVER_USAGE"
+  );
+}
+
 export type ValuationInput = {
   municipality: string;
   postalCode?: string;
@@ -451,63 +460,73 @@ function getRealAdvisorBenchmark(input: ValuationInput) {
 }
 
 async function getOwnListingComparables(input: ValuationInput) {
-  const [propertyCities] = await Promise.all([fetchPropertyCities()]);
-  const searchTerms = [input.area, input.municipality]
-    .filter((value): value is string => Boolean(value))
-    .map(normalize);
-  const matchedCityIds = new Set<string>();
+  try {
+    const [propertyCities] = await Promise.all([fetchPropertyCities()]);
+    const searchTerms = [input.area, input.municipality]
+      .filter((value): value is string => Boolean(value))
+      .map(normalize);
+    const matchedCityIds = new Set<string>();
 
-  for (const term of searchTerms) {
-    for (const city of propertyCities) {
-      const cityName = normalize(city.name);
-      const citySlug = normalize(city.slug);
+    for (const term of searchTerms) {
+      for (const city of propertyCities) {
+        const cityName = normalize(city.name);
+        const citySlug = normalize(city.slug);
 
-      if (cityName.includes(term) || term.includes(cityName) || citySlug.includes(term)) {
-        for (const id of getPropertyCityFilterIds(city.slug, propertyCities)) {
-          matchedCityIds.add(id);
+        if (cityName.includes(term) || term.includes(cityName) || citySlug.includes(term)) {
+          for (const id of getPropertyCityFilterIds(city.slug, propertyCities)) {
+            matchedCityIds.add(id);
+          }
         }
       }
     }
+
+    const result = await fetchProperties(100, {
+      noStore: true,
+      propertyCities: Array.from(matchedCityIds),
+    });
+    const family = getTypeFamily(input.propertyType);
+    const searchText = searchTerms.join(" ");
+    const minimumArea = input.builtArea * 0.65;
+    const maximumArea = input.builtArea * 1.5;
+    const comparables = result.properties
+      .filter((property) => property.rawPrice > 0 && property.builtArea > 0)
+      .filter((property) => propertyMatchesFamily(property, family))
+      .filter(
+        (property) =>
+          !input.builtArea ||
+          (property.builtArea >= minimumArea && property.builtArea <= maximumArea),
+      )
+      .filter((property) => {
+        if (!searchText) {
+          return true;
+        }
+
+        const propertyLocation = normalize(`${property.city} ${property.location}`);
+
+        return searchTerms.some((term) => propertyLocation.includes(term));
+      })
+      .slice(0, 8)
+      .map((property) => ({
+        ref: property.ref,
+        title: property.title,
+        location: property.location,
+        price: property.price,
+        rawPrice: property.rawPrice,
+        builtArea: property.builtArea,
+        pricePerSquareMetre: property.rawPrice / property.builtArea,
+        href: `/properties/${property.ref}?wp_id=${property.id}`,
+      }));
+
+    return comparables;
+  } catch (error) {
+    if (isNextDynamicServerError(error)) {
+      throw error;
+    }
+
+    console.error("Move2Marbella valuation comparables fetch failed", error);
+
+    return [];
   }
-
-  const result = await fetchProperties(100, {
-    noStore: true,
-    propertyCities: Array.from(matchedCityIds),
-  });
-  const family = getTypeFamily(input.propertyType);
-  const searchText = searchTerms.join(" ");
-  const minimumArea = input.builtArea * 0.65;
-  const maximumArea = input.builtArea * 1.5;
-  const comparables = result.properties
-    .filter((property) => property.rawPrice > 0 && property.builtArea > 0)
-    .filter((property) => propertyMatchesFamily(property, family))
-    .filter(
-      (property) =>
-        !input.builtArea ||
-        (property.builtArea >= minimumArea && property.builtArea <= maximumArea),
-    )
-    .filter((property) => {
-      if (!searchText) {
-        return true;
-      }
-
-      const propertyLocation = normalize(`${property.city} ${property.location}`);
-
-      return searchTerms.some((term) => propertyLocation.includes(term));
-    })
-    .slice(0, 8)
-    .map((property) => ({
-      ref: property.ref,
-      title: property.title,
-      location: property.location,
-      price: property.price,
-      rawPrice: property.rawPrice,
-      builtArea: property.builtArea,
-      pricePerSquareMetre: property.rawPrice / property.builtArea,
-      href: `/properties/${property.ref}?wp_id=${property.id}`,
-    }));
-
-  return comparables;
 }
 
 function weightedAverage(
@@ -546,8 +565,24 @@ function getConfidence(
 
 export async function buildValuation(input: ValuationInput) {
   const [comparables, notariadoBenchmark] = await Promise.all([
-    getOwnListingComparables(input),
-    getNotariadoBenchmark(input),
+    getOwnListingComparables(input).catch((error) => {
+      if (isNextDynamicServerError(error)) {
+        throw error;
+      }
+
+      console.error("Move2Marbella valuation own listings failed", error);
+
+      return [];
+    }),
+    getNotariadoBenchmark(input).catch((error) => {
+      if (isNextDynamicServerError(error)) {
+        throw error;
+      }
+
+      console.error("Move2Marbella valuation Notariado failed", error);
+
+      return null;
+    }),
   ]);
   const ownAverage = comparables.length
     ? comparables.reduce((sum, property) => sum + property.pricePerSquareMetre, 0) /

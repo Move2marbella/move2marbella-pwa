@@ -1,5 +1,14 @@
 import { getLocationCoordinate } from "./location-coordinates";
 
+function isNextDynamicServerError(error: unknown) {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    (error as { digest?: unknown }).digest === "DYNAMIC_SERVER_USAGE"
+  );
+}
+
 type ResalesFeatureGroup = {
   Type: string;
   Value: string[];
@@ -268,121 +277,136 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 }
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
-  const usesClientSideFilters = Boolean(
-    filters.maxPrice ||
-      filters.bedrooms ||
-      filters.reference ||
-      filters.sort ||
-      filters.keywords?.length,
-  );
-
-  if (usesClientSideFilters) {
-    const index = await fetchPropertySearchIndex();
-    const filteredEntries = index.filter((property) => {
-      if (
-        filters.reference &&
-        property.ref.toUpperCase() !== filters.reference.trim().toUpperCase()
-      ) {
-        return false;
-      }
-
-      if (filters.maxPrice && property.price > filters.maxPrice) {
-        return false;
-      }
-
-      if (filters.bedrooms && property.bedrooms < filters.bedrooms) {
-        return false;
-      }
-
-      if (
-        filters.propertyCities?.length &&
-        !filters.propertyCities.some((id) => property.cityIds.includes(Number(id)))
-      ) {
-        return false;
-      }
-
-      if (
-        filters.propertyTypes?.length &&
-        !filters.propertyTypes.some((id) => property.typeIds.includes(Number(id)))
-      ) {
-        return false;
-      }
-
-      return true;
-    });
-    const sortedEntries = sortPropertySearchEntries(
-      filteredEntries,
-      filters.sort ?? "reference_desc",
+  try {
+    const usesClientSideFilters = Boolean(
+      filters.maxPrice ||
+        filters.bedrooms ||
+        filters.reference ||
+        filters.sort ||
+        filters.keywords?.length,
     );
+
+    if (usesClientSideFilters) {
+      const index = await fetchPropertySearchIndex();
+      const filteredEntries = index.filter((property) => {
+        if (
+          filters.reference &&
+          property.ref.toUpperCase() !== filters.reference.trim().toUpperCase()
+        ) {
+          return false;
+        }
+
+        if (filters.maxPrice && property.price > filters.maxPrice) {
+          return false;
+        }
+
+        if (filters.bedrooms && property.bedrooms < filters.bedrooms) {
+          return false;
+        }
+
+        if (
+          filters.propertyCities?.length &&
+          !filters.propertyCities.some((id) => property.cityIds.includes(Number(id)))
+        ) {
+          return false;
+        }
+
+        if (
+          filters.propertyTypes?.length &&
+          !filters.propertyTypes.some((id) => property.typeIds.includes(Number(id)))
+        ) {
+          return false;
+        }
+
+        return true;
+      });
+      const sortedEntries = sortPropertySearchEntries(
+        filteredEntries,
+        filters.sort ?? "reference_desc",
+      );
+      const page = filters.page ?? 1;
+      const candidateLimit = filters.keywords?.length ? 36 : limit;
+      const entries = sortedEntries.slice(0, Math.max(page * limit, candidateLimit));
+      const detailedProperties = (
+        await Promise.all(
+          entries.map((property) => fetchPropertyByWordPressId(String(property.id))),
+        )
+      ).filter((property): property is Property => Boolean(property));
+      const matchingProperties = propertyMatchesFilters(detailedProperties, filters);
+      const properties = matchingProperties.slice((page - 1) * limit, page * limit);
+      const total = filters.keywords?.length ? matchingProperties.length : sortedEntries.length;
+
+      return {
+        page,
+        total,
+        totalPages: Math.max(1, Math.ceil(total / limit)),
+        properties,
+      };
+    }
+
+    const params = new URLSearchParams({
+      per_page: String(usesClientSideFilters ? 100 : limit),
+      page: String(usesClientSideFilters ? 1 : (filters.page ?? 1)),
+      orderby: "date",
+      order: "desc",
+      _fields: WORDPRESS_PROPERTY_FIELDS,
+    });
+
+    if (filters.propertyTypes?.length) {
+      params.set("property_type", filters.propertyTypes.join(","));
+    }
+
+    if (filters.propertyCities?.length) {
+      params.set("property_city", filters.propertyCities.join(","));
+    }
+
+    const response = await fetch(
+      `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
+      filters.noStore
+        ? {
+            cache: "no-store",
+          }
+        : {
+            next: {
+              revalidate: 300,
+            },
+          },
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not fetch Move2Marbella properties");
+    }
+
+    const posts = (await response.json()) as WordPressProperty[];
     const page = filters.page ?? 1;
-    const candidateLimit = filters.keywords?.length ? 36 : limit;
-    const entries = sortedEntries.slice(0, Math.max(page * limit, candidateLimit));
-    const detailedProperties = (
-      await Promise.all(
-        entries.map((property) => fetchPropertyByWordPressId(String(property.id))),
-      )
-    ).filter((property): property is Property => Boolean(property));
-    const matchingProperties = propertyMatchesFilters(detailedProperties, filters);
-    const properties = matchingProperties.slice((page - 1) * limit, page * limit);
-    const total = filters.keywords?.length ? matchingProperties.length : sortedEntries.length;
+    const normalizedProperties = posts
+      .map(normalizeProperty)
+      .filter((property): property is Property => Boolean(property));
+    const filteredProperties = propertyMatchesFilters(normalizedProperties, filters);
+    const properties = sortProperties(filteredProperties, filters.sort ?? "reference_desc");
+    const total = Number(response.headers.get("X-WP-Total") ?? posts.length);
+    const totalPages = Math.max(1, Math.ceil(total / limit));
 
     return {
       page,
       total,
-      totalPages: Math.max(1, Math.ceil(total / limit)),
+      totalPages,
       properties,
     };
+  } catch (error) {
+    if (isNextDynamicServerError(error)) {
+      throw error;
+    }
+
+    console.error("Move2Marbella property fetch failed", error);
+
+    return {
+      page: filters.page ?? 1,
+      total: 0,
+      totalPages: 1,
+      properties: [],
+    };
   }
-
-  const params = new URLSearchParams({
-    per_page: String(usesClientSideFilters ? 100 : limit),
-    page: String(usesClientSideFilters ? 1 : (filters.page ?? 1)),
-    orderby: "date",
-    order: "desc",
-    _fields: WORDPRESS_PROPERTY_FIELDS,
-  });
-
-  if (filters.propertyTypes?.length) {
-    params.set("property_type", filters.propertyTypes.join(","));
-  }
-
-  if (filters.propertyCities?.length) {
-    params.set("property_city", filters.propertyCities.join(","));
-  }
-
-  const response = await fetch(
-    `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
-    filters.noStore
-      ? {
-          cache: "no-store",
-        }
-      : {
-          next: {
-            revalidate: 300,
-          },
-        },
-  );
-
-  if (!response.ok) {
-    throw new Error("Could not fetch Move2Marbella properties");
-  }
-
-  const posts = (await response.json()) as WordPressProperty[];
-  const page = filters.page ?? 1;
-  const normalizedProperties = posts
-    .map(normalizeProperty)
-    .filter((property): property is Property => Boolean(property));
-  const filteredProperties = propertyMatchesFilters(normalizedProperties, filters);
-  const properties = sortProperties(filteredProperties, filters.sort ?? "reference_desc");
-  const total = Number(response.headers.get("X-WP-Total") ?? posts.length);
-  const totalPages = Math.max(1, Math.ceil(total / limit));
-
-  return {
-    page,
-    total,
-    totalPages,
-    properties,
-  };
 }
 
 function sortPropertySearchEntries(
@@ -417,52 +441,62 @@ function getReferenceNumber(ref: string) {
 }
 
 async function fetchPropertySearchIndex() {
-  const baseParams = new URLSearchParams({
-    per_page: "100",
-    page: "1",
-    orderby: "modified",
-    order: "desc",
-    _fields:
-      "id,property_city,property_type,property_meta._imported_ref,property_meta.fave_property_id,property_meta.fave_property_price,property_meta.fave_property_bedrooms",
-  });
-  const firstResponse = await fetch(
-    `${WORDPRESS_PROPERTIES_URL}?${baseParams.toString()}`,
-    {
-      next: {
-        revalidate: 3600,
+  try {
+    const baseParams = new URLSearchParams({
+      per_page: "100",
+      page: "1",
+      orderby: "modified",
+      order: "desc",
+      _fields:
+        "id,property_city,property_type,property_meta._imported_ref,property_meta.fave_property_id,property_meta.fave_property_price,property_meta.fave_property_bedrooms",
+    });
+    const firstResponse = await fetch(
+      `${WORDPRESS_PROPERTIES_URL}?${baseParams.toString()}`,
+      {
+        next: {
+          revalidate: 3600,
+        },
       },
-    },
-  );
+    );
 
-  if (!firstResponse.ok) {
-    throw new Error("Could not fetch Move2Marbella property search index");
-  }
-
-  const firstPage = (await firstResponse.json()) as WordPressProperty[];
-  const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages") ?? 1);
-  const restPages = await fetchWordPressPropertyPages(baseParams, totalPages, 3600);
-  const propertiesByReference = new Map<string, PropertySearchIndexEntry>();
-
-  for (const post of firstPage.concat(...restPages)) {
-    const ref =
-      post.property_meta?._imported_ref?.[0]?.trim() ||
-      post.property_meta?.fave_property_id?.[0]?.trim();
-
-    if (!ref || propertiesByReference.has(ref.toUpperCase())) {
-      continue;
+    if (!firstResponse.ok) {
+      throw new Error("Could not fetch Move2Marbella property search index");
     }
 
-    propertiesByReference.set(ref.toUpperCase(), {
-      bedrooms: Number(post.property_meta?.fave_property_bedrooms?.[0] ?? 0),
-      cityIds: post.property_city ?? [],
-      id: post.id,
-      price: Number(post.property_meta?.fave_property_price?.[0] ?? 0),
-      ref,
-      typeIds: post.property_type ?? [],
-    });
-  }
+    const firstPage = (await firstResponse.json()) as WordPressProperty[];
+    const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages") ?? 1);
+    const restPages = await fetchWordPressPropertyPages(baseParams, totalPages, 3600);
+    const propertiesByReference = new Map<string, PropertySearchIndexEntry>();
 
-  return Array.from(propertiesByReference.values());
+    for (const post of firstPage.concat(...restPages)) {
+      const ref =
+        post.property_meta?._imported_ref?.[0]?.trim() ||
+        post.property_meta?.fave_property_id?.[0]?.trim();
+
+      if (!ref || propertiesByReference.has(ref.toUpperCase())) {
+        continue;
+      }
+
+      propertiesByReference.set(ref.toUpperCase(), {
+        bedrooms: Number(post.property_meta?.fave_property_bedrooms?.[0] ?? 0),
+        cityIds: post.property_city ?? [],
+        id: post.id,
+        price: Number(post.property_meta?.fave_property_price?.[0] ?? 0),
+        ref,
+        typeIds: post.property_type ?? [],
+      });
+    }
+
+    return Array.from(propertiesByReference.values());
+  } catch (error) {
+    if (isNextDynamicServerError(error)) {
+      throw error;
+    }
+
+    console.error("Move2Marbella property search index fetch failed", error);
+
+    return [];
+  }
 }
 
 function propertyMatchesFilters(properties: Property[], filters: PropertyFilters) {
@@ -630,20 +664,31 @@ async function fetchWordPressPropertyPages(
       pagesInBatch.map(async (page) => {
         const params = new URLSearchParams(baseParams);
         params.set("page", String(page));
-        const response = await fetch(
-          `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
-          {
-            next: {
-              revalidate,
+
+        try {
+          const response = await fetch(
+            `${WORDPRESS_PROPERTIES_URL}?${params.toString()}`,
+            {
+              next: {
+                revalidate,
+              },
             },
-          },
-        );
+          );
 
-        if (!response.ok) {
-          throw new Error("Could not fetch Move2Marbella properties");
+          if (!response.ok) {
+            return [];
+          }
+
+          return (await response.json()) as WordPressProperty[];
+        } catch (error) {
+          if (isNextDynamicServerError(error)) {
+            throw error;
+          }
+
+          console.error("Move2Marbella property page fetch failed", error);
+
+          return [];
         }
-
-        return (await response.json()) as WordPressProperty[];
       }),
     );
 
@@ -672,17 +717,28 @@ async function fetchPropertyByWordPressId(id: string) {
   const params = new URLSearchParams({
     _fields: WORDPRESS_PROPERTY_FIELDS,
   });
-  const response = await fetch(`${WORDPRESS_PROPERTIES_URL}/${id}?${params}`, {
-    next: {
-      revalidate: 300,
-    },
-  });
 
-  if (!response.ok) {
+  try {
+    const response = await fetch(`${WORDPRESS_PROPERTIES_URL}/${id}?${params}`, {
+      next: {
+        revalidate: 300,
+      },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    return normalizeProperty((await response.json()) as WordPressProperty);
+  } catch (error) {
+    if (isNextDynamicServerError(error)) {
+      throw error;
+    }
+
+    console.error("Move2Marbella property detail fetch failed", error);
+
     return null;
   }
-
-  return normalizeProperty((await response.json()) as WordPressProperty);
 }
 
 async function findPropertyByReference(ref: string) {
@@ -690,48 +746,58 @@ async function findPropertyByReference(ref: string) {
 }
 
 async function fetchTaxonomyTerms(url: string, errorMessage: string) {
-  const baseParams = new URLSearchParams({
-    per_page: "100",
-    orderby: "name",
-    order: "asc",
-  });
-  const firstResponse = await fetch(`${url}?${baseParams.toString()}`, {
-    next: {
-      revalidate: 300,
-    },
-  });
+  try {
+    const baseParams = new URLSearchParams({
+      per_page: "100",
+      orderby: "name",
+      order: "asc",
+    });
+    const firstResponse = await fetch(`${url}?${baseParams.toString()}`, {
+      next: {
+        revalidate: 300,
+      },
+    });
 
-  if (!firstResponse.ok) {
-    throw new Error(errorMessage);
+    if (!firstResponse.ok) {
+      throw new Error(errorMessage);
+    }
+
+    const firstPage = (await firstResponse.json()) as WordPressTerm[];
+    const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages") ?? 1);
+
+    if (totalPages <= 1) {
+      return firstPage;
+    }
+
+    const restPages = await Promise.all(
+      Array.from({ length: totalPages - 1 }, async (_, index) => {
+        const params = new URLSearchParams(baseParams);
+        params.set("page", String(index + 2));
+
+        const response = await fetch(`${url}?${params.toString()}`, {
+          next: {
+            revalidate: 300,
+          },
+        });
+
+        if (!response.ok) {
+          return [];
+        }
+
+        return (await response.json()) as WordPressTerm[];
+      }),
+    );
+
+    return firstPage.concat(...restPages);
+  } catch (error) {
+    if (isNextDynamicServerError(error)) {
+      throw error;
+    }
+
+    console.error(errorMessage, error);
+
+    return [];
   }
-
-  const firstPage = (await firstResponse.json()) as WordPressTerm[];
-  const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages") ?? 1);
-
-  if (totalPages <= 1) {
-    return firstPage;
-  }
-
-  const restPages = await Promise.all(
-    Array.from({ length: totalPages - 1 }, async (_, index) => {
-      const params = new URLSearchParams(baseParams);
-      params.set("page", String(index + 2));
-
-      const response = await fetch(`${url}?${params.toString()}`, {
-        next: {
-          revalidate: 300,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(errorMessage);
-      }
-
-      return (await response.json()) as WordPressTerm[];
-    }),
-  );
-
-  return firstPage.concat(...restPages);
 }
 
 function orderTermsByHierarchy(terms: WordPressTerm[]) {
