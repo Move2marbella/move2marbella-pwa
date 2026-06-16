@@ -78,11 +78,11 @@ export async function HomeContent({
     q: searchQuery = "",
     reference = "",
     property_type: selectedPropertyType = "",
-    sort = "price_desc",
+    sort = "reference_desc",
   } = await searchParams;
   const selectedReference = reference.trim().toUpperCase();
   const selectedSort: PropertySortOrder =
-    sort === "price_asc" ? "price_asc" : "price_desc";
+    sort === "price_asc" || sort === "price_desc" ? sort : "reference_desc";
   const currentPage = Math.max(Number(page) || 1, 1);
   const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
   const selectedMaxPrice = Math.min(
@@ -468,6 +468,7 @@ export async function HomeContent({
                       defaultValue={selectedSort}
                       className="h-10 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-sm outline-none"
                     >
+                      <option value="reference_desc">{t.defaultSort}</option>
                       <option value="price_desc">{t.priceHighToLow}</option>
                       <option value="price_asc">{t.priceLowToHigh}</option>
                     </select>

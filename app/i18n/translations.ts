@@ -23,6 +23,7 @@ type Translation = {
   favourite: string;
   favourites: string;
   featuredProperties: string;
+  defaultSort: string;
   leadForm: string;
   liveSearchPreview: string;
   location: string;
@@ -147,6 +148,7 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Favourite",
     favourites: "Favourites",
     featuredProperties: "Featured properties",
+    defaultSort: "Newest reference",
     leadForm: "Lead form",
     liveSearchPreview: "Live search preview",
     location: "Location",
@@ -283,6 +285,7 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Favorito",
     favourites: "Favoritos",
     featuredProperties: "Propiedades destacadas",
+    defaultSort: "Referencia más reciente",
     leadForm: "Formulario",
     liveSearchPreview: "Vista de búsqueda",
     location: "Ubicación",
@@ -419,6 +422,7 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Favori",
     favourites: "Favoris",
     featuredProperties: "Biens en vedette",
+    defaultSort: "Référence la plus récente",
     leadForm: "Formulaire",
     liveSearchPreview: "Aperçu de recherche",
     location: "Localisation",
@@ -555,6 +559,7 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Favorit",
     favourites: "Favoriten",
     featuredProperties: "Ausgewählte Immobilien",
+    defaultSort: "Neueste Referenz",
     leadForm: "Kontaktformular",
     liveSearchPreview: "Suchvorschau",
     location: "Lage",
@@ -691,6 +696,7 @@ export const translations: Record<Locale, Translation> = {
     favourite: "В избранное",
     favourites: "Избранное",
     featuredProperties: "Рекомендуемые объекты",
+    defaultSort: "Новый референс",
     leadForm: "Форма заявки",
     liveSearchPreview: "Результаты поиска",
     location: "Локация",
@@ -827,6 +833,7 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Ulubione",
     favourites: "Ulubione",
     featuredProperties: "Polecane nieruchomości",
+    defaultSort: "Najnowsza referencja",
     leadForm: "Formularz",
     liveSearchPreview: "Podgląd wyników",
     location: "Lokalizacja",
@@ -963,6 +970,7 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Kedvenc",
     favourites: "Kedvencek",
     featuredProperties: "Kiemelt ingatlanok",
+    defaultSort: "Legújabb referencia",
     leadForm: "Érdeklődő űrlap",
     liveSearchPreview: "Keresési találatok",
     location: "Lokáció",

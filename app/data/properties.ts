@@ -131,7 +131,7 @@ type PropertyFilters = {
   sort?: PropertySortOrder;
 };
 
-export type PropertySortOrder = "price_asc" | "price_desc";
+export type PropertySortOrder = "price_asc" | "price_desc" | "reference_desc";
 
 type PropertySearchIndexEntry = {
   bedrooms: number;
@@ -312,7 +312,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     });
     const sortedEntries = sortPropertySearchEntries(
       filteredEntries,
-      filters.sort ?? "price_desc",
+      filters.sort ?? "reference_desc",
     );
     const page = filters.page ?? 1;
     const candidateLimit = filters.keywords?.length ? 36 : limit;
@@ -373,7 +373,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     .map(normalizeProperty)
     .filter((property): property is Property => Boolean(property));
   const filteredProperties = propertyMatchesFilters(normalizedProperties, filters);
-  const properties = sortProperties(filteredProperties, filters.sort ?? "price_desc");
+  const properties = sortProperties(filteredProperties, filters.sort ?? "reference_desc");
   const total = Number(response.headers.get("X-WP-Total") ?? posts.length);
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
@@ -390,6 +390,10 @@ function sortPropertySearchEntries(
   sort: PropertySortOrder,
 ) {
   return [...properties].sort((left, right) => {
+    if (sort === "reference_desc") {
+      return getReferenceNumber(right.ref) - getReferenceNumber(left.ref);
+    }
+
     const direction = sort === "price_asc" ? 1 : -1;
 
     return (left.price - right.price) * direction;
@@ -398,10 +402,18 @@ function sortPropertySearchEntries(
 
 function sortProperties(properties: Property[], sort: PropertySortOrder) {
   return [...properties].sort((left, right) => {
+    if (sort === "reference_desc") {
+      return getReferenceNumber(right.ref) - getReferenceNumber(left.ref);
+    }
+
     const direction = sort === "price_asc" ? 1 : -1;
 
     return (left.rawPrice - right.rawPrice) * direction;
   });
+}
+
+function getReferenceNumber(ref: string) {
+  return Number(ref.replace(/\D/g, "")) || 0;
 }
 
 async function fetchPropertySearchIndex() {
