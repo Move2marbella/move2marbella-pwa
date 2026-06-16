@@ -248,7 +248,7 @@ export async function HomeContent({
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0f253d]/40 via-[#0f253d]/72 to-[#0f253d]" />
 
-        <div className="relative mx-auto flex min-h-[auto] w-full max-w-6xl flex-col px-5 pb-6 pt-5 sm:px-8 md:min-h-[76vh] lg:min-h-[86vh]">
+        <div className="relative mx-auto flex min-h-[auto] w-full max-w-6xl flex-col px-5 pb-4 pt-5 sm:px-8 md:min-h-[76vh] md:pb-6 lg:min-h-[86vh]">
           <header className="flex items-center justify-between gap-4">
             <Link href={basePath} className="leading-tight">
               <img
@@ -260,7 +260,7 @@ export async function HomeContent({
             <MainNav locale={locale} tone="light" />
           </header>
 
-          <div className="flex flex-1 flex-col justify-end gap-6 pb-10 pt-20 sm:pt-28 md:py-10">
+          <div className="flex flex-1 flex-col justify-end gap-4 pb-6 pt-12 sm:gap-6 sm:pb-10 sm:pt-28 md:py-10">
             <div className="max-w-2xl">
               <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-[#ba9456]">
                 {t.heroEyebrow}
@@ -285,16 +285,16 @@ export async function HomeContent({
                     name="q"
                     defaultValue={searchQuery}
                     placeholder={t.smartSearchPlaceholder}
-                    className="h-14 min-w-0 rounded-[6px] border border-[#d7d2c4] bg-white px-4 text-base outline-none transition focus:border-[#ba9456] focus:ring-4 focus:ring-[#ba9456]/20"
+                    className="h-12 min-w-0 rounded-[6px] border border-[#d7d2c4] bg-white px-4 text-base outline-none transition focus:border-[#ba9456] focus:ring-4 focus:ring-[#ba9456]/20 md:h-14"
                   />
                 </label>
-                <button className="h-14 rounded-[6px] bg-[#ba9456] px-6 text-base font-bold text-[#0f253d] transition hover:bg-[#c7a469]">
+                <button className="h-12 rounded-[6px] bg-[#ba9456] px-6 text-base font-bold text-[#0f253d] transition hover:bg-[#c7a469] md:h-14">
                   {t.search}
                 </button>
               </div>
 
               <details className="mt-3 rounded-[6px] border border-[#ebe3d5] bg-[#fbf8f2]">
-                <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-[#0f253d]">
+                <summary className="cursor-pointer px-4 py-2.5 text-sm font-bold text-[#0f253d] md:py-3">
                   {t.advancedFilters}
                 </summary>
                 <div className="grid gap-3 border-t border-[#ebe3d5] p-3 md:grid-cols-12">
@@ -371,8 +371,8 @@ export async function HomeContent({
         </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[1fr_340px]">
-        <div className="space-y-6">
+      <section className="mx-auto grid w-full max-w-6xl gap-5 px-5 py-4 sm:gap-8 sm:px-8 sm:py-8 lg:grid-cols-[1fr_340px]">
+        <div className="space-y-4 sm:space-y-6">
           <LanguageSwitcher
             currentLocale={locale}
             query={{
@@ -382,7 +382,7 @@ export async function HomeContent({
           />
           <Link
             href={`${basePath}/valuation`}
-            className="inline-flex h-12 items-center rounded-[6px] bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43]"
+            className="inline-flex h-11 items-center rounded-[6px] bg-[#ba9456] px-5 text-sm font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-[#a37f43] sm:h-12 sm:text-base sm:normal-case sm:tracking-normal"
           >
             {t.valuation.homeCta}
           </Link>
