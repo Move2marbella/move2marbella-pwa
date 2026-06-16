@@ -387,7 +387,7 @@ export async function SimilarPropertiesContent({
                     />
                     <Link
                       href={propertyHref}
-                      className="rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
+                      className="rounded-full border border-[#0f253d] px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-[#0f253d] sm:px-4 sm:text-sm"
                     >
                       {t.details}
                     </Link>
@@ -395,7 +395,7 @@ export async function SimilarPropertiesContent({
                       href={getWhatsAppUrl(property.ref)}
                       propertyRef={property.ref}
                       source="similar_property_card"
-                      className="rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white"
+                      className="rounded-full bg-[#0f253d] px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-white sm:px-4 sm:text-sm"
                     >
                       {t.enquire}
                     </TrackedWhatsAppLink>
