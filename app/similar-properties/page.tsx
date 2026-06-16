@@ -372,8 +372,8 @@ export async function SimilarPropertiesContent({
                     <span>{property.size}</span>
                     <span>{property.ref}</span>
                   </div>
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <p className="min-w-full text-lg font-bold">{property.price}</p>
+                  <div className="grid grid-cols-3 items-center gap-2 sm:flex sm:flex-wrap sm:justify-between sm:gap-3">
+                    <p className="col-span-3 text-lg font-bold">{property.price}</p>
                     <FavouriteToggle
                       property={{
                         ref: property.ref,
@@ -384,10 +384,11 @@ export async function SimilarPropertiesContent({
                         href: propertyHref,
                       }}
                       labels={toggleLabels}
+                      className="w-full justify-center px-2 text-[10px] uppercase tracking-wide sm:w-auto sm:px-4 sm:text-sm"
                     />
                     <Link
                       href={propertyHref}
-                      className="rounded-full border border-[#0f253d] px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-[#0f253d] sm:px-4 sm:text-sm"
+                      className="inline-flex w-full justify-center rounded-full border border-[#0f253d] px-2 py-2 text-[10px] font-semibold uppercase tracking-wide text-[#0f253d] sm:w-auto sm:px-4 sm:text-sm"
                     >
                       {t.details}
                     </Link>
@@ -395,7 +396,7 @@ export async function SimilarPropertiesContent({
                       href={getWhatsAppUrl(property.ref)}
                       propertyRef={property.ref}
                       source="similar_property_card"
-                      className="rounded-full bg-[#0f253d] px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-white sm:px-4 sm:text-sm"
+                      className="inline-flex w-full justify-center rounded-full bg-[#0f253d] px-2 py-2 text-[10px] font-semibold uppercase tracking-wide text-white sm:w-auto sm:px-4 sm:text-sm"
                     >
                       {t.enquire}
                     </TrackedWhatsAppLink>

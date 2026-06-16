@@ -104,7 +104,7 @@ export function FavouriteToggle({
       type="button"
       aria-pressed={isFavourite}
       onClick={toggleFavourite}
-      className={`${className} rounded-full border px-4 py-2 text-sm font-semibold transition ${
+      className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${className} ${
         isFavourite
           ? "border-[#ba9456] bg-[#ba9456] text-white"
           : "border-[#ded4c2] bg-white text-[#0f253d]"
