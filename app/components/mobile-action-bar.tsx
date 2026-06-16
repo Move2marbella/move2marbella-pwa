@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { getGeneralWhatsAppUrl } from "../data/properties";
 import { locales, type Locale, getLocaleBasePath } from "../i18n/translations";
 import { TrackedWhatsAppLink } from "./tracked-whatsapp-link";
@@ -97,6 +98,8 @@ function WhatsAppIcon() {
 
 export function MobileActionBar() {
   const pathname = usePathname();
+  const lastScrollY = useRef(0);
+  const [isVisible, setIsVisible] = useState(true);
   const locale = getLocaleFromPath(pathname);
   const basePath = getLocaleBasePath(locale);
   const copy = labels[locale];
@@ -108,12 +111,39 @@ export function MobileActionBar() {
     pathname.startsWith("/properties");
 
   const linkBase =
-    "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[8px] px-2 py-2 text-[11px] font-semibold leading-none transition";
+    "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[8px] px-2 py-2 text-[10px] font-bold uppercase leading-none tracking-[0.08em] transition";
   const activeClass = "bg-[#0f253d] text-white";
   const inactiveClass = "text-[#0f253d] hover:bg-[#f2eadc]";
 
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+
+    function handleScroll() {
+      const currentScrollY = window.scrollY;
+      const scrollDifference = currentScrollY - lastScrollY.current;
+
+      if (currentScrollY < 80) {
+        setIsVisible(true);
+      } else if (scrollDifference > 8) {
+        setIsVisible(false);
+      } else if (scrollDifference < -8) {
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
+
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[70] border-t border-[#ded4c2] bg-[#fbf8f2]/95 px-3 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 shadow-[0_-10px_30px_rgba(15,37,61,0.14)] backdrop-blur xl:hidden">
+    <div
+      className={`fixed inset-x-0 bottom-0 z-[70] border-t border-[#ded4c2] bg-[#fbf8f2]/95 px-3 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 shadow-[0_-10px_30px_rgba(15,37,61,0.14)] backdrop-blur transition-transform duration-300 ease-out xl:hidden ${
+        isVisible ? "translate-y-0" : "translate-y-full"
+      }`}
+    >
       <nav
         aria-label="Primary mobile actions"
         className="mx-auto flex max-w-md items-center gap-2"
@@ -138,7 +168,7 @@ export function MobileActionBar() {
           href={getGeneralWhatsAppUrl()}
           source="mobile_action_bar"
           aria-label={copy.whatsapp}
-          className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[8px] bg-[#25d366] px-2 py-2 text-[11px] font-semibold leading-none text-white transition hover:bg-[#1fb85a]"
+          className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[8px] bg-[#25d366] px-2 py-2 text-[10px] font-bold uppercase leading-none tracking-[0.08em] text-white transition hover:bg-[#1fb85a]"
         >
           <WhatsAppIcon />
           <span className="truncate">{copy.whatsapp}</span>
