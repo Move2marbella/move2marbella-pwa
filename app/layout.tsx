@@ -11,6 +11,7 @@ import {
 } from "./lib/seo";
 import { Analytics } from "./components/analytics";
 import { InstallAppPrompt } from "./components/install-app-prompt";
+import { MobileActionBar } from "./components/mobile-action-bar";
 import { ServiceWorkerRegistration } from "./components/service-worker-registration";
 
 const geistSans = Geist({
@@ -80,13 +81,14 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col pb-20 xl:pb-0">
         {children}
         <Analytics />
         <VercelAnalytics />
         <SpeedInsights />
         <ServiceWorkerRegistration />
         <InstallAppPrompt />
+        <MobileActionBar />
       </body>
     </html>
   );
