@@ -268,12 +268,9 @@ export async function PropertyDetailContent({
       />
       <header className="sticky top-0 z-20 border-b border-black/10 bg-[#f7f2ea]/95 px-5 py-3 backdrop-blur sm:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
-          <Link
-            href={basePath}
-            className="rounded-[6px] bg-[#0f253d] px-3 py-2"
-          >
+          <Link href={basePath} className="py-2">
             <img
-              src="/m2m_logo_white_web.png"
+              src="/m2m_logo_blue_web.png"
               alt="Move2Marbella"
               className="h-auto w-40 sm:w-52"
             />
