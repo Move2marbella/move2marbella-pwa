@@ -121,6 +121,7 @@ export type SearchOption = {
 
 type PropertyFilters = {
   bedrooms?: number;
+  keywords?: string[];
   maxPrice?: number;
   noStore?: boolean;
   propertyCities?: string[];
@@ -268,7 +269,11 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   const usesClientSideFilters = Boolean(
-    filters.maxPrice || filters.bedrooms || filters.reference || filters.sort,
+    filters.maxPrice ||
+      filters.bedrooms ||
+      filters.reference ||
+      filters.sort ||
+      filters.keywords?.length,
   );
 
   if (usesClientSideFilters) {
@@ -310,13 +315,16 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
       filters.sort ?? "price_desc",
     );
     const page = filters.page ?? 1;
-    const total = sortedEntries.length;
-    const entries = sortedEntries.slice((page - 1) * limit, page * limit);
-    const properties = (
+    const candidateLimit = filters.keywords?.length ? 36 : limit;
+    const entries = sortedEntries.slice(0, Math.max(page * limit, candidateLimit));
+    const detailedProperties = (
       await Promise.all(
         entries.map((property) => fetchPropertyByWordPressId(String(property.id))),
       )
     ).filter((property): property is Property => Boolean(property));
+    const matchingProperties = propertyMatchesFilters(detailedProperties, filters);
+    const properties = matchingProperties.slice((page - 1) * limit, page * limit);
+    const total = filters.keywords?.length ? matchingProperties.length : sortedEntries.length;
 
     return {
       page,
@@ -469,7 +477,74 @@ function propertyMatchesFilters(properties: Property[], filters: PropertyFilters
       return false;
     }
 
+    if (filters.keywords?.length && !propertyMatchesKeywords(property, filters.keywords)) {
+      return false;
+    }
+
     return true;
+  });
+}
+
+function normalizeSearchText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function propertyMatchesKeywords(property: Property, keywords: string[]) {
+  const searchableText = normalizeSearchText(
+    [
+      property.title,
+      property.location,
+      property.type,
+      property.tag,
+      property.status,
+      property.description,
+      ...property.featureGroups.flatMap((group) => [group.Type, ...group.Value]),
+    ].join(" "),
+  );
+
+  return keywords.every((keyword) => {
+    const normalizedKeyword = normalizeSearchText(keyword);
+
+    if (normalizedKeyword === "sea views") {
+      return searchableText.includes("sea") || searchableText.includes("mar");
+    }
+
+    if (normalizedKeyword === "new build") {
+      return (
+        searchableText.includes("new build") ||
+        searchableText.includes("new development") ||
+        searchableText.includes("brand new") ||
+        searchableText.includes("obra nueva")
+      );
+    }
+
+    if (normalizedKeyword === "beachside") {
+      return (
+        searchableText.includes("beachside") ||
+        searchableText.includes("close to beach") ||
+        searchableText.includes("close to the beach") ||
+        searchableText.includes("walking distance to beach") ||
+        searchableText.includes("walk to beach") ||
+        searchableText.includes("near beach")
+      );
+    }
+
+    if (normalizedKeyword === "beachfront") {
+      return (
+        searchableText.includes("beachfront") ||
+        searchableText.includes("frontline beach") ||
+        searchableText.includes("front line beach") ||
+        searchableText.includes("first line beach")
+      );
+    }
+
+    return normalizedKeyword
+      .split(" ")
+      .filter(Boolean)
+      .every((token) => searchableText.includes(token));
   });
 }
 

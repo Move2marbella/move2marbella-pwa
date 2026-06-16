@@ -24,6 +24,7 @@ import {
   getLocaleBasePath,
   getTranslations,
 } from "./i18n/translations";
+import { parsePropertyQuery } from "./lib/property-query-parser";
 import { SITE_URL } from "./lib/seo";
 
 export const revalidate = 300;
@@ -33,6 +34,7 @@ export type HomeSearchParams = {
   max_price?: string;
   page?: string;
   property_city?: string;
+  q?: string;
   reference?: string;
   property_type?: string;
   sort?: string;
@@ -73,6 +75,7 @@ export async function HomeContent({
     max_price = "20000000",
     page = "1",
     property_city: selectedPropertyCity = "",
+    q: searchQuery = "",
     reference = "",
     property_type: selectedPropertyType = "",
     sort = "price_desc",
@@ -82,7 +85,6 @@ export async function HomeContent({
     sort === "price_asc" ? "price_asc" : "price_desc";
   const currentPage = Math.max(Number(page) || 1, 1);
   const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
-  const selectedBedrooms = Number(bedrooms) || undefined;
   const selectedMaxPrice = Math.min(
     Math.max(Number(max_price) || 20000000, 200000),
     20000000,
@@ -93,17 +95,37 @@ export async function HomeContent({
   ]);
   const propertyCityOptions = getSimplifiedPropertyCityOptions(propertyCities);
   const propertyTypeOptions = getSimplifiedPropertyTypeOptions(propertyTypes);
+  const parsedQuery = parsePropertyQuery(
+    searchQuery,
+    propertyCities,
+    propertyTypes,
+  );
+  const effectivePropertyCity =
+    selectedPropertyCity || parsedQuery.propertyCity || "";
+  const effectivePropertyType =
+    selectedPropertyType || parsedQuery.propertyType || "";
+  const effectiveBedrooms =
+    Number(bedrooms) || parsedQuery.bedrooms || undefined;
+  const effectiveMaxPrice =
+    hasMaxPriceFilter && max_price
+      ? selectedMaxPrice
+      : parsedQuery.maxPrice
+        ? Math.min(Math.max(parsedQuery.maxPrice, 200000), 20000000)
+        : selectedMaxPrice;
+  const hasEffectiveMaxPriceFilter =
+    hasMaxPriceFilter || Boolean(parsedQuery.maxPrice);
   const propertyCityFilterIds = getPropertyCityFilterIds(
-    selectedPropertyCity,
+    effectivePropertyCity,
     propertyCities,
   );
   const propertyTypeFilterIds = getPropertyTypeFilterIds(
-    selectedPropertyType,
+    effectivePropertyType,
     propertyTypes,
   );
   const result = await fetchProperties(9, {
-    bedrooms: selectedBedrooms,
-    maxPrice: hasMaxPriceFilter ? selectedMaxPrice : undefined,
+    bedrooms: effectiveBedrooms,
+    keywords: parsedQuery.keywords,
+    maxPrice: hasEffectiveMaxPriceFilter ? effectiveMaxPrice : undefined,
     page: currentPage,
     propertyCities: propertyCityFilterIds,
     reference: selectedReference || undefined,
@@ -112,23 +134,27 @@ export async function HomeContent({
   });
   const { properties, total, totalPages } = result;
   const selectedCityName =
-    propertyCityOptions.find((option) => option.value === selectedPropertyCity)
+    propertyCityOptions.find((option) => option.value === effectivePropertyCity)
       ?.label ??
     propertyCities.find(
-      (propertyCity) => String(propertyCity.id) === selectedPropertyCity,
+      (propertyCity) => String(propertyCity.id) === effectivePropertyCity,
     )?.name;
   const selectedTypeName =
-    propertyTypeOptions.find((option) => option.value === selectedPropertyType)
+    propertyTypeOptions.find((option) => option.value === effectivePropertyType)
       ?.label ??
     propertyTypes.find(
-      (propertyType) => String(propertyType.id) === selectedPropertyType,
+      (propertyType) => String(propertyType.id) === effectivePropertyType,
     )?.name;
   const resultTitle =
-    [selectedReference, selectedCityName, selectedTypeName]
+    [searchQuery.trim() ? `"${searchQuery.trim()}"` : "", selectedReference, selectedCityName, selectedTypeName]
       .filter(Boolean)
       .join(" - ") ||
     t.featuredProperties;
   const paginationBaseParams = new URLSearchParams();
+
+  if (searchQuery.trim()) {
+    paginationBaseParams.set("q", searchQuery.trim());
+  }
 
   if (selectedPropertyCity) {
     paginationBaseParams.set("property_city", selectedPropertyCity);
@@ -142,8 +168,8 @@ export async function HomeContent({
     paginationBaseParams.set("reference", selectedReference);
   }
 
-  if (selectedBedrooms) {
-    paginationBaseParams.set("bedrooms", String(selectedBedrooms));
+  if (bedrooms) {
+    paginationBaseParams.set("bedrooms", bedrooms);
   }
 
   if (hasMaxPriceFilter) {
@@ -246,79 +272,120 @@ export async function HomeContent({
 
             <form
               action={basePath}
-              className="grid gap-3 rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25 md:grid-cols-12"
+              className="rounded-[8px] bg-white p-3 text-[#171717] shadow-2xl shadow-black/25"
             >
               <input type="hidden" name="page" value="1" />
               <input type="hidden" name="sort" value={selectedSort} />
-              <label className="grid gap-1 md:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                  {t.location}
-                </span>
-                <select
-                  name="property_city"
-                  defaultValue={selectedPropertyCity}
-                  className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
-                >
-                  <option value="">{t.costaDelSol}</option>
-                  {propertyCityOptions.map((propertyCity) => (
-                    <option key={propertyCity.value} value={propertyCity.value}>
-                      {propertyCity.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="grid gap-1 md:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                  {t.type}
-                </span>
-                <select
-                  name="property_type"
-                  defaultValue={selectedPropertyType}
-                  className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
-                >
-                  <option value="">{t.anyProperty}</option>
-                  {propertyTypeOptions.map((propertyType) => (
-                    <option key={propertyType.value} value={propertyType.value}>
-                      {propertyType.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="grid gap-1 md:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                  {t.bedrooms}
-                </span>
-                <select
-                  name="bedrooms"
-                  defaultValue={bedrooms}
-                  className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
-                >
-                  <option value="">{t.any}</option>
-                  {bedroomOptions.map((bedroomCount) => (
-                    <option key={bedroomCount} value={bedroomCount}>
-                      {bedroomCount}+
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="grid gap-1 md:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                  {t.reference}
-                </span>
-                <input
-                  name="reference"
-                  defaultValue={selectedReference}
-                  placeholder={t.anyReference}
-                  className="h-12 min-w-0 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base uppercase outline-none"
-                />
-              </label>
-              <BudgetSlider
-                defaultValue={selectedMaxPrice}
-                label={t.maxPrice}
-              />
-              <button className="h-12 self-end rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d] md:col-span-2">
-                {t.search}
-              </button>
+              <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-end">
+                <label className="grid gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                    {t.smartSearchLabel}
+                  </span>
+                  <input
+                    name="q"
+                    defaultValue={searchQuery}
+                    placeholder={t.smartSearchPlaceholder}
+                    className="h-14 min-w-0 rounded-[6px] border border-[#d7d2c4] bg-white px-4 text-base outline-none transition focus:border-[#ba9456] focus:ring-4 focus:ring-[#ba9456]/20"
+                  />
+                </label>
+                <button className="h-14 rounded-[6px] bg-[#ba9456] px-6 text-base font-bold text-[#0f253d] transition hover:bg-[#c7a469]">
+                  {t.search}
+                </button>
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                {t.searchExamples.map((example) => {
+                  const params = new URLSearchParams();
+
+                  params.set("q", example);
+                  params.set("page", "1");
+                  params.set("sort", selectedSort);
+
+                  return (
+                    <Link
+                      key={example}
+                      href={`${basePath}?${params.toString()}`}
+                      className="rounded-full border border-[#ded4c2] px-3 py-2 text-xs font-semibold text-[#0f253d] transition hover:bg-[#f7f2ea]"
+                    >
+                      {example}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              <details className="mt-3 rounded-[6px] border border-[#ebe3d5] bg-[#fbf8f2]">
+                <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-[#0f253d]">
+                  {t.advancedFilters}
+                </summary>
+                <div className="grid gap-3 border-t border-[#ebe3d5] p-3 md:grid-cols-12">
+                  <label className="grid gap-1 md:col-span-2">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                      {t.location}
+                    </span>
+                    <select
+                      name="property_city"
+                      defaultValue={effectivePropertyCity}
+                      className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
+                    >
+                      <option value="">{t.costaDelSol}</option>
+                      {propertyCityOptions.map((propertyCity) => (
+                        <option key={propertyCity.value} value={propertyCity.value}>
+                          {propertyCity.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="grid gap-1 md:col-span-2">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                      {t.type}
+                    </span>
+                    <select
+                      name="property_type"
+                      defaultValue={effectivePropertyType}
+                      className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
+                    >
+                      <option value="">{t.anyProperty}</option>
+                      {propertyTypeOptions.map((propertyType) => (
+                        <option key={propertyType.value} value={propertyType.value}>
+                          {propertyType.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="grid gap-1 md:col-span-2">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                      {t.bedrooms}
+                    </span>
+                    <select
+                      name="bedrooms"
+                      defaultValue={effectiveBedrooms ? String(effectiveBedrooms) : ""}
+                      className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
+                    >
+                      <option value="">{t.any}</option>
+                      {bedroomOptions.map((bedroomCount) => (
+                        <option key={bedroomCount} value={bedroomCount}>
+                          {bedroomCount}+
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="grid gap-1 md:col-span-2">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                      {t.reference}
+                    </span>
+                    <input
+                      name="reference"
+                      defaultValue={selectedReference}
+                      placeholder={t.anyReference}
+                      className="h-12 min-w-0 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base uppercase outline-none"
+                    />
+                  </label>
+                  <BudgetSlider
+                    defaultValue={effectiveMaxPrice}
+                    label={t.maxPrice}
+                  />
+                </div>
+              </details>
             </form>
           </div>
         </div>
@@ -355,6 +422,9 @@ export async function HomeContent({
                   {total} results
                 </span>
                 <form action={basePath} className="flex items-center gap-2">
+                  {searchQuery.trim() ? (
+                    <input type="hidden" name="q" value={searchQuery.trim()} />
+                  ) : null}
                   {selectedPropertyCity ? (
                     <input
                       type="hidden"
@@ -369,11 +439,11 @@ export async function HomeContent({
                       value={selectedPropertyType}
                     />
                   ) : null}
-                  {selectedBedrooms ? (
+                  {bedrooms ? (
                     <input
                       type="hidden"
                       name="bedrooms"
-                      value={selectedBedrooms}
+                      value={bedrooms}
                     />
                   ) : null}
                   {selectedReference ? (

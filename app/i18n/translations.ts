@@ -10,6 +10,7 @@ type Translation = {
   apply: string;
   area: string;
   askAboutProperty: string;
+  advancedFilters: string;
   back: string;
   bathrooms: string;
   bedrooms: string;
@@ -46,6 +47,9 @@ type Translation = {
   quickFilters: string;
   reference: string;
   requestDetails: string;
+  searchExamples: string[];
+  smartSearchLabel: string;
+  smartSearchPlaceholder: string;
   features: string;
   saved: string;
   saveHint: string;
@@ -130,6 +134,7 @@ export const translations: Record<Locale, Translation> = {
     apply: "Apply",
     area: "Area",
     askAboutProperty: "Ask about this property",
+    advancedFilters: "Advanced filters",
     back: "Back",
     bathrooms: "Bathrooms",
     bedrooms: "Bedrooms",
@@ -166,6 +171,13 @@ export const translations: Record<Locale, Translation> = {
     quickFilters: "Quick filters",
     reference: "Reference",
     requestDetails: "Request details",
+    searchExamples: [
+      "sea-view villa in Marbella",
+      "beachside apartment close to the beach",
+      "beachfront penthouse on the Costa del Sol",
+    ],
+    smartSearchLabel: "Describe your ideal property",
+    smartSearchPlaceholder: "sea-view villa in Marbella close to the beach",
     features: "Features",
     saved: "Saved",
     saveHint: "Tap Favourite on any property to keep it saved on this device.",
@@ -258,6 +270,7 @@ export const translations: Record<Locale, Translation> = {
     apply: "Aplicar",
     area: "Zona",
     askAboutProperty: "Preguntar por esta propiedad",
+    advancedFilters: "Filtros avanzados",
     back: "Volver",
     bathrooms: "Baños",
     bedrooms: "Dormitorios",
@@ -294,6 +307,13 @@ export const translations: Record<Locale, Translation> = {
     quickFilters: "Filtros rápidos",
     reference: "Referencia",
     requestDetails: "Solicitar detalles",
+    searchExamples: [
+      "villa con vistas al mar en Marbella",
+      "apartamento beachside cerca de la playa",
+      "ático beachfront en la Costa del Sol",
+    ],
+    smartSearchLabel: "Describe la vivienda que buscas",
+    smartSearchPlaceholder: "villa con vistas al mar en Marbella cerca de la playa",
     features: "Características",
     saved: "Guardado",
     saveHint: "Toca Favorito para guardar propiedades en este dispositivo.",
@@ -386,6 +406,7 @@ export const translations: Record<Locale, Translation> = {
     apply: "Appliquer",
     area: "Zone",
     askAboutProperty: "Demander ce bien",
+    advancedFilters: "Filtres avancés",
     back: "Retour",
     bathrooms: "Salles de bain",
     bedrooms: "Chambres",
@@ -422,6 +443,13 @@ export const translations: Record<Locale, Translation> = {
     quickFilters: "Filtres rapides",
     reference: "Référence",
     requestDetails: "Demander des détails",
+    searchExamples: [
+      "villa vue mer à Marbella",
+      "appartement beachside proche de la plage",
+      "penthouse beachfront sur la Costa del Sol",
+    ],
+    smartSearchLabel: "Décrivez le bien recherché",
+    smartSearchPlaceholder: "villa vue mer à Marbella proche de la plage",
     features: "Caractéristiques",
     saved: "Enregistré",
     saveHint: "Touchez Favori pour garder un bien sur cet appareil.",
@@ -514,6 +542,7 @@ export const translations: Record<Locale, Translation> = {
     apply: "Anwenden",
     area: "Gebiet",
     askAboutProperty: "Diese Immobilie anfragen",
+    advancedFilters: "Erweiterte Filter",
     back: "Zurück",
     bathrooms: "Badezimmer",
     bedrooms: "Schlafzimmer",
@@ -550,6 +579,13 @@ export const translations: Record<Locale, Translation> = {
     quickFilters: "Schnellfilter",
     reference: "Referenz",
     requestDetails: "Details anfragen",
+    searchExamples: [
+      "Villa mit Meerblick in Marbella",
+      "Beachside Apartment nahe am Strand",
+      "Beachfront Penthouse an der Costa del Sol",
+    ],
+    smartSearchLabel: "Beschreiben Sie Ihre Wunschimmobilie",
+    smartSearchPlaceholder: "Villa mit Meerblick in Marbella nahe am Strand",
     features: "Ausstattung",
     saved: "Gespeichert",
     saveHint: "Tippen Sie auf Favorit, um Immobilien auf diesem Gerät zu speichern.",
@@ -642,6 +678,7 @@ export const translations: Record<Locale, Translation> = {
     apply: "Применить",
     area: "Район",
     askAboutProperty: "Спросить об объекте",
+    advancedFilters: "Расширенные фильтры",
     back: "Назад",
     bathrooms: "Ванные",
     bedrooms: "Спальни",
@@ -678,6 +715,13 @@ export const translations: Record<Locale, Translation> = {
     quickFilters: "Быстрые фильтры",
     reference: "Референция",
     requestDetails: "Запросить детали",
+    searchExamples: [
+      "вилла с видом на море в Marbella",
+      "beachside апартаменты рядом с пляжем",
+      "beachfront пентхаус на Costa del Sol",
+    ],
+    smartSearchLabel: "Опишите недвижимость, которую ищете",
+    smartSearchPlaceholder: "вилла с видом на море в Marbella рядом с пляжем",
     features: "Характеристики",
     saved: "Сохранено",
     saveHint: "Нажмите В избранное, чтобы сохранить объект на этом устройстве.",
@@ -770,6 +814,7 @@ export const translations: Record<Locale, Translation> = {
     apply: "Zastosuj",
     area: "Obszar",
     askAboutProperty: "Zapytaj o tę nieruchomość",
+    advancedFilters: "Filtry zaawansowane",
     back: "Wstecz",
     bathrooms: "Łazienki",
     bedrooms: "Sypialnie",
@@ -806,6 +851,13 @@ export const translations: Record<Locale, Translation> = {
     quickFilters: "Szybkie filtry",
     reference: "Numer referencyjny",
     requestDetails: "Poproś o szczegóły",
+    searchExamples: [
+      "willa z widokiem na morze w Marbella",
+      "apartament beachside blisko plaży",
+      "beachfront penthouse na Costa del Sol",
+    ],
+    smartSearchLabel: "Opisz idealną nieruchomość",
+    smartSearchPlaceholder: "willa z widokiem na morze w Marbella blisko plaży",
     features: "Cechy",
     saved: "Zapisano",
     saveHint: "Dotknij Ulubione, aby zapisać nieruchomość na tym urządzeniu.",
@@ -898,6 +950,7 @@ export const translations: Record<Locale, Translation> = {
     apply: "Alkalmaz",
     area: "Terület",
     askAboutProperty: "Érdeklődés az ingatlanról",
+    advancedFilters: "Részletes szűrők",
     back: "Vissza",
     bathrooms: "Fürdőszoba",
     bedrooms: "Hálószoba",
@@ -934,6 +987,13 @@ export const translations: Record<Locale, Translation> = {
     quickFilters: "Gyors szűrők",
     reference: "Referencia",
     requestDetails: "Részletek kérése",
+    searchExamples: [
+      "sea-view villa Marbellában",
+      "beachside apartman közel a strandhoz",
+      "beachfront penthouse a Costa del Solon",
+    ],
+    smartSearchLabel: "Írd le, milyen ingatlant keresel",
+    smartSearchPlaceholder: "sea-view villa Marbellában közel a strandhoz",
     features: "Jellemzők",
     saved: "Mentve",
     saveHint: "Koppints a Kedvenc gombra, hogy elmentsd az ingatlant ezen az eszközön.",
