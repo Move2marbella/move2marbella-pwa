@@ -293,26 +293,6 @@ export async function HomeContent({
                 </button>
               </div>
 
-              <div className="mt-3 flex flex-wrap gap-2">
-                {t.searchExamples.map((example) => {
-                  const params = new URLSearchParams();
-
-                  params.set("q", example);
-                  params.set("page", "1");
-                  params.set("sort", selectedSort);
-
-                  return (
-                    <Link
-                      key={example}
-                      href={`${basePath}?${params.toString()}`}
-                      className="rounded-full border border-[#ded4c2] px-3 py-2 text-xs font-semibold text-[#0f253d] transition hover:bg-[#f7f2ea]"
-                    >
-                      {example}
-                    </Link>
-                  );
-                })}
-              </div>
-
               <details className="mt-3 rounded-[6px] border border-[#ebe3d5] bg-[#fbf8f2]">
                 <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-[#0f253d]">
                   {t.advancedFilters}
