@@ -384,11 +384,12 @@ export async function SimilarPropertiesContent({
                         href: propertyHref,
                       }}
                       labels={toggleLabels}
-                      className="w-full justify-center px-2 text-[10px] uppercase tracking-wide sm:w-auto sm:px-4 sm:text-sm"
+                      iconOnly
+                      className="h-10 w-full px-2 sm:w-12 sm:px-3"
                     />
                     <Link
                       href={propertyHref}
-                      className="inline-flex w-full justify-center rounded-full border border-[#0f253d] px-2 py-2 text-[10px] font-semibold uppercase tracking-wide text-[#0f253d] sm:w-auto sm:px-4 sm:text-sm"
+                      className="inline-flex h-10 w-full items-center justify-center rounded-full border border-[#0f253d] px-2 text-[10px] font-semibold uppercase tracking-wide text-[#0f253d] sm:w-auto sm:px-4 sm:text-sm"
                     >
                       {t.details}
                     </Link>
@@ -396,7 +397,7 @@ export async function SimilarPropertiesContent({
                       href={getWhatsAppUrl(property.ref)}
                       propertyRef={property.ref}
                       source="similar_property_card"
-                      className="inline-flex w-full justify-center rounded-full bg-[#0f253d] px-2 py-2 text-[10px] font-semibold uppercase tracking-wide text-white sm:w-auto sm:px-4 sm:text-sm"
+                      className="inline-flex h-10 w-full items-center justify-center rounded-full bg-[#0f253d] px-2 text-[10px] font-semibold uppercase tracking-wide text-white sm:w-auto sm:px-4 sm:text-sm"
                     >
                       {t.enquire}
                     </TrackedWhatsAppLink>

@@ -17,6 +17,7 @@ type FavouriteProperty = {
 type FavouriteToggleProps = {
   property: FavouriteProperty;
   className?: string;
+  iconOnly?: boolean;
   labels?: {
     favourite: string;
     saved: string;
@@ -60,6 +61,7 @@ function saveFavourites(favourites: FavouriteProperty[]) {
 export function FavouriteToggle({
   property,
   className = "",
+  iconOnly = false,
   labels = {
     favourite: "Favourite",
     saved: "Saved",
@@ -102,16 +104,26 @@ export function FavouriteToggle({
   return (
     <button
       type="button"
+      aria-label={isFavourite ? labels.saved : labels.favourite}
       aria-pressed={isFavourite}
       onClick={toggleFavourite}
-      className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${className} ${
+      className={`inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-semibold transition ${className} ${
         isFavourite
           ? "border-[#ba9456] bg-[#ba9456] text-white"
           : "border-[#ded4c2] bg-white text-[#0f253d]"
       }`}
     >
-      <span aria-hidden="true">{isFavourite ? "♥" : "♡"}</span>{" "}
-      {isFavourite ? labels.saved : labels.favourite}
+      <span aria-hidden="true" className={iconOnly ? "text-2xl leading-none" : undefined}>
+        {isFavourite ? "♥" : "♡"}
+      </span>
+      {iconOnly ? (
+        <span className="sr-only">{isFavourite ? labels.saved : labels.favourite}</span>
+      ) : (
+        <>
+          {" "}
+          {isFavourite ? labels.saved : labels.favourite}
+        </>
+      )}
     </button>
   );
 }
