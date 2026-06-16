@@ -248,7 +248,7 @@ export async function HomeContent({
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0f253d]/40 via-[#0f253d]/72 to-[#0f253d]" />
 
-        <div className="relative mx-auto flex min-h-[92vh] w-full max-w-6xl flex-col px-5 pb-6 pt-5 sm:px-8 lg:min-h-[86vh]">
+        <div className="relative mx-auto flex min-h-[auto] w-full max-w-6xl flex-col px-5 pb-6 pt-5 sm:px-8 md:min-h-[76vh] lg:min-h-[86vh]">
           <header className="flex items-center justify-between gap-4">
             <Link href={basePath} className="leading-tight">
               <img
@@ -260,7 +260,7 @@ export async function HomeContent({
             <MainNav locale={locale} tone="light" />
           </header>
 
-          <div className="flex flex-1 flex-col justify-end gap-6 py-10">
+          <div className="flex flex-1 flex-col justify-end gap-6 pb-10 pt-20 sm:pt-28 md:py-10">
             <div className="max-w-2xl">
               <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-[#ba9456]">
                 {t.heroEyebrow}
