@@ -96,16 +96,16 @@ export function MainNav({ locale, tone = "dark" }: MainNavProps) {
   const labels = navLabels[locale];
   const linkClass =
     tone === "light"
-      ? "rounded-full px-3 py-2 text-sm font-semibold text-white hover:bg-white/10"
-      : "rounded-full px-3 py-2 text-sm font-semibold text-[#0f253d] hover:bg-[#f2eadc]";
+      ? "rounded-full px-3 py-2 text-sm font-semibold uppercase tracking-wide text-white hover:bg-white/10"
+      : "rounded-full px-3 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d] hover:bg-[#f2eadc]";
   const panelClass =
     tone === "light"
       ? "mt-2 grid gap-1 rounded-[8px] bg-[#102b46] p-2 shadow-xl ring-1 ring-white/12"
       : "mt-2 grid gap-1 rounded-[8px] bg-white p-2 shadow-xl ring-1 ring-black/8";
   const menuButtonClass =
     tone === "light"
-      ? "cursor-pointer rounded-full border border-white/25 px-4 py-2 text-sm font-semibold text-white"
-      : "cursor-pointer rounded-full border border-[#d7d2c4] px-4 py-2 text-sm font-semibold text-[#0f253d]";
+      ? "cursor-pointer rounded-full border border-white/25 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white"
+      : "cursor-pointer rounded-full border border-[#d7d2c4] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]";
 
   const navItems = [
     { href: basePath, label: labels.properties },

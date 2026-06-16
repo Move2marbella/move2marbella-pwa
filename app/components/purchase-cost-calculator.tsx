@@ -383,8 +383,8 @@ function ToggleButton({
       onClick={onClick}
       className={
         active
-          ? "rounded-[6px] bg-[#0f253d] px-4 py-3 text-sm font-semibold text-white"
-          : "rounded-[6px] border border-[#d7d2c4] bg-white px-4 py-3 text-sm font-semibold text-[#0f253d]"
+          ? "rounded-[6px] bg-[#0f253d] px-4 py-3 text-sm font-semibold uppercase tracking-wide text-white"
+          : "rounded-[6px] border border-[#d7d2c4] bg-white px-4 py-3 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
       }
     >
       {children}
@@ -623,7 +623,7 @@ export function PurchaseCostCalculator({ locale }: { locale: Locale }) {
           <button
             type="button"
             onClick={resetExample}
-            className="mt-4 w-full rounded-[6px] border border-white/25 px-4 py-3 text-sm font-semibold text-white"
+            className="mt-4 w-full rounded-[6px] border border-white/25 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-white"
           >
             {labels.reset}
           </button>

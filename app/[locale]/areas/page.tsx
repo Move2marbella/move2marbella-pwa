@@ -652,7 +652,7 @@ export default async function AreasPage({ params }: AreasPageProps) {
               </div>
               <Link
                 href={basePath}
-                className="mt-4 inline-flex rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold text-[#0f253d]"
+                className="mt-4 inline-flex rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
               >
                 {page.viewProperties}
               </Link>

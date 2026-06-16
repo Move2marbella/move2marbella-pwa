@@ -173,7 +173,7 @@ export function ValuationLeadGate({
           ) : null}
           <button
             disabled={isSubmitting}
-            className="h-12 rounded-md bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43] disabled:cursor-wait disabled:bg-[#b8a27b] sm:col-span-2"
+            className="h-12 rounded-md bg-[#ba9456] px-5 text-sm font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-[#a37f43] disabled:cursor-wait disabled:bg-[#b8a27b] sm:col-span-2"
           >
             {isSubmitting ? labels.leadSubmitting : labels.showDetailedValuation}
           </button>

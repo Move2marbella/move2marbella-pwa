@@ -280,7 +280,7 @@ export async function PropertyDetailContent({
           </Link>
           <Link
             href={basePath}
-            className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#242424]"
+            className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#242424]"
           >
             {t.back}
           </Link>
@@ -320,7 +320,7 @@ export async function PropertyDetailContent({
             href={getWhatsAppUrl(property.ref)}
             propertyRef={property.ref}
             source="property_detail_enquiry"
-            className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]"
+            className="mt-5 flex h-12 items-center justify-center rounded-[6px] bg-[#ba9456] px-5 text-sm font-bold uppercase tracking-wide text-white"
           >
             {t.askAboutProperty}
           </TrackedWhatsAppLink>
@@ -331,7 +331,7 @@ export async function PropertyDetailContent({
             source="property_detail_share"
             target="_blank"
             rel="noreferrer"
-            className="mt-3 flex h-12 items-center justify-center rounded-[6px] border border-white/35 px-5 text-base font-bold text-white transition hover:border-[#ba9456]"
+            className="mt-3 flex h-12 items-center justify-center rounded-[6px] border border-white/35 px-5 text-sm font-bold uppercase tracking-wide text-white transition hover:border-[#ba9456]"
           >
             {t.shareOnWhatsApp}
           </TrackedWhatsAppLink>
@@ -405,7 +405,7 @@ export async function PropertyDetailContent({
                   href={mapUrl ?? "#"}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-full border border-white/20 px-4 py-2 text-sm font-semibold text-white transition hover:border-[#ba9456]"
+                  className="rounded-full border border-white/20 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white transition hover:border-[#ba9456]"
                 >
                   {t.openInMaps}
                 </a>

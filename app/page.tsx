@@ -288,7 +288,7 @@ export async function HomeContent({
                     className="h-12 min-w-0 rounded-[6px] border border-[#d7d2c4] bg-white px-4 text-base outline-none transition focus:border-[#ba9456] focus:ring-4 focus:ring-[#ba9456]/20 md:h-14"
                   />
                 </label>
-                <button className="h-12 rounded-[6px] bg-[#ba9456] px-6 text-base font-bold text-[#0f253d] transition hover:bg-[#c7a469] md:h-14">
+                <button className="h-12 rounded-[6px] bg-[#ba9456] px-6 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-[#c7a469] md:h-14 md:text-base">
                   {t.search}
                 </button>
               </div>
@@ -382,7 +382,7 @@ export async function HomeContent({
           />
           <Link
             href={`${basePath}/valuation`}
-            className="inline-flex h-11 items-center rounded-[6px] bg-[#ba9456] px-5 text-sm font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-[#a37f43] sm:h-12 sm:text-base sm:normal-case sm:tracking-normal"
+            className="inline-flex h-11 items-center rounded-[6px] bg-[#ba9456] px-5 text-sm font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-[#a37f43] sm:h-12"
           >
             {t.valuation.homeCta}
           </Link>
@@ -453,7 +453,7 @@ export async function HomeContent({
                       <option value="price_asc">{t.priceLowToHigh}</option>
                     </select>
                   </label>
-                  <button className="h-10 rounded-[6px] bg-[#0f253d] px-3 text-sm font-semibold text-white">
+                  <button className="h-10 rounded-[6px] bg-[#0f253d] px-3 text-sm font-semibold uppercase tracking-wide text-white">
                     {t.apply}
                   </button>
                 </form>
@@ -511,7 +511,7 @@ export async function HomeContent({
                         />
                         <Link
                           href={propertyHref}
-                          className="rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold text-[#0f253d]"
+                          className="rounded-full border border-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
                         >
                           {t.details}
                         </Link>
@@ -519,7 +519,7 @@ export async function HomeContent({
                           href={getWhatsAppUrl(property.ref)}
                           propertyRef={property.ref}
                           source="property_card"
-                          className="rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold text-white"
+                          className="rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white"
                         >
                           {t.enquire}
                         </TrackedWhatsAppLink>
@@ -542,7 +542,7 @@ export async function HomeContent({
                 {currentPage > 1 ? (
                   <Link
                     href={getPageHref(currentPage - 1)}
-                    className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#0f253d]"
+                    className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
                   >
                     {t.previous}
                   </Link>
@@ -557,8 +557,8 @@ export async function HomeContent({
                     }
                     className={
                       pageNumber === currentPage
-                        ? "rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold text-white"
-                        : "rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#0f253d]"
+                        ? "rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white"
+                        : "rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
                     }
                   >
                     {pageNumber}
@@ -568,7 +568,7 @@ export async function HomeContent({
                 {currentPage < totalPages ? (
                   <Link
                     href={getPageHref(currentPage + 1)}
-                    className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold text-[#0f253d]"
+                    className="rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
                   >
                     {t.next}
                   </Link>
@@ -594,8 +594,8 @@ export async function HomeContent({
                     selectedCityName &&
                     normalizeFilterName(selectedCityName) ===
                       normalizeFilterName(filter.cityName)
-                      ? "rounded-full bg-[#0f253d] px-3 py-2 text-sm font-semibold text-white"
-                      : "rounded-full border border-[#ded4c2] px-3 py-2 text-sm font-semibold text-[#242424]"
+                      ? "rounded-full bg-[#0f253d] px-3 py-2 text-sm font-semibold uppercase tracking-wide text-white"
+                      : "rounded-full border border-[#ded4c2] px-3 py-2 text-sm font-semibold uppercase tracking-wide text-[#242424]"
                   }
                 >
                   {filter.label}

@@ -618,7 +618,7 @@ export async function ValuationContent({
                 </Select>
               </Field>
               <div className="flex items-end">
-                <button className="h-12 w-full rounded-md bg-[#ba9456] px-5 text-base font-semibold text-white shadow-sm transition hover:bg-[#a37f43]">
+                <button className="h-12 w-full rounded-md bg-[#ba9456] px-5 text-sm font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-[#a37f43]">
                   {v.calculateEstimate}
                 </button>
               </div>

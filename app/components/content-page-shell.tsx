@@ -145,20 +145,20 @@ export function ContentPageShell({
           <div className="flex flex-wrap gap-3">
             <Link
               href={basePath}
-              className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#0f253d]"
+              className="rounded-full bg-white px-5 py-3 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
             >
               {cta.search}
             </Link>
             <Link
               href={`${basePath}/valuation`}
-              className="rounded-full border border-white/30 px-5 py-3 text-sm font-semibold text-white"
+              className="rounded-full border border-white/30 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white"
             >
               {cta.valuation}
             </Link>
             <TrackedWhatsAppLink
               href={getGeneralWhatsAppUrl()}
               source="content_page_cta"
-              className="rounded-full bg-[#ba9456] px-5 py-3 text-sm font-semibold text-white"
+              className="rounded-full bg-[#ba9456] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white"
             >
               {cta.whatsapp}
             </TrackedWhatsAppLink>

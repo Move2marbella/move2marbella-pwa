@@ -331,19 +331,19 @@ export default async function HorvathZsoltMarbellaPage({
             <TrackedWhatsAppLink
               href={getGeneralWhatsAppUrl()}
               source="horvath_zsolt_cta"
-              className="rounded-full bg-[#ba9456] px-5 py-3 text-sm font-semibold text-white"
+              className="rounded-full bg-[#ba9456] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white"
             >
               Írok WhatsAppon
             </TrackedWhatsAppLink>
             <Link
               href="/hu"
-              className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#0f253d]"
+              className="rounded-full bg-white px-5 py-3 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
             >
               Ingatlanok keresése
             </Link>
             <Link
               href="/hu/valuation"
-              className="rounded-full border border-white/30 px-5 py-3 text-sm font-semibold text-white"
+              className="rounded-full border border-white/30 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white"
             >
               Értékbecslés
             </Link>

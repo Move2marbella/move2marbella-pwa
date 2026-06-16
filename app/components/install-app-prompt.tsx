@@ -210,7 +210,7 @@ export function InstallAppPrompt() {
         <button
           type="button"
           onClick={dismiss}
-          className="rounded-[6px] px-3 py-2 text-sm font-semibold text-white/75"
+          className="rounded-[6px] px-3 py-2 text-sm font-semibold uppercase tracking-wide text-white/75"
         >
           {text.dismiss}
         </button>
@@ -218,7 +218,7 @@ export function InstallAppPrompt() {
           <button
             type="button"
             onClick={dismiss}
-            className="rounded-[6px] bg-[#ba9456] px-3 py-2 text-sm font-bold text-[#0f253d]"
+            className="rounded-[6px] bg-[#ba9456] px-3 py-2 text-sm font-bold uppercase tracking-wide text-white"
           >
             {text.iosDone}
           </button>
@@ -226,7 +226,7 @@ export function InstallAppPrompt() {
           <button
             type="button"
             onClick={install}
-            className="rounded-[6px] bg-[#ba9456] px-3 py-2 text-sm font-bold text-[#0f253d]"
+            className="rounded-[6px] bg-[#ba9456] px-3 py-2 text-sm font-bold uppercase tracking-wide text-white"
           >
             {text.install}
           </button>

@@ -534,7 +534,7 @@ export default async function MeetMiguelPage({ params }: MeetMiguelPageProps) {
         <section className="mx-auto max-w-6xl px-5 pb-10 sm:px-8">
           <Link
             href="/hu/horvath-zsolt-marbella"
-            className="inline-flex rounded-full border border-[#0f253d] px-5 py-3 text-sm font-semibold text-[#0f253d]"
+            className="inline-flex rounded-full border border-[#0f253d] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
           >
             Részletes magyar bemutatkozó oldal
           </Link>

@@ -127,7 +127,7 @@ export function LeadForm({
             className="min-h-28 rounded-[6px] border border-[#d7d2c4] px-3 py-2 text-base outline-none focus:border-[#ba9456]"
           />
         </label>
-        <button className="mt-1 h-12 rounded-[6px] bg-[#ba9456] px-5 text-base font-bold text-[#0f253d]">
+        <button className="mt-1 h-12 rounded-[6px] bg-[#ba9456] px-5 text-sm font-bold uppercase tracking-wide text-white">
           {labels.sendEnquiry}
         </button>
       </form>
