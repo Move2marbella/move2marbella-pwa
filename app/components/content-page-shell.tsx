@@ -28,7 +28,7 @@ const ctaLabels: Record<
 > = {
   de: {
     search: "Immobilien suchen",
-    title: "Mochten Sie eine Shortlist statt endlosem Suchen?",
+    title: "Möchten Sie eine Shortlist statt endlosem Suchen?",
     valuation: "Bewertung",
     whatsapp: "WhatsApp",
   },
@@ -51,13 +51,13 @@ const ctaLabels: Record<
     whatsapp: "WhatsApp",
   },
   hu: {
-    search: "Ingatlanok keresese",
-    title: "Szeretnel vegtelen bongeszes helyett egy rovid listat?",
-    valuation: "Ertekbecsles",
+    search: "Ingatlanok keresése",
+    title: "Szeretnél végtelen böngészés helyett egy rövid listát?",
+    valuation: "Értékbecslés",
     whatsapp: "WhatsApp",
   },
   pl: {
-    search: "Szukaj nieruchomosci",
+    search: "Szukaj nieruchomości",
     title: "Chcesz shortlist zamiast bezkoncowego przegladania?",
     valuation: "Wycena",
     whatsapp: "WhatsApp",
