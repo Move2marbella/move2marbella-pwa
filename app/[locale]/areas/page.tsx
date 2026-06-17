@@ -332,24 +332,24 @@ const localizedGuides: Partial<Record<Locale, AreaGuide[]>> = {
       area: "Benahavis",
       vibe: "Hegyi andalúz falu Marbella és Estepona között, természetes völgyekkel és nyugodtabb ritmussal.",
       property: "Jó választás azoknak, akik privát szférát, kilátást, zárt urbanizációt és luxusingatlant keresnek a nyüzsgő parttól távolabb.",
-      lifestyle: "Tér, túrázás, golf, hagyományos éttermek és nyugodtabb élet Marbella közelében.",
+      lifestyle: "Tágas terek, túrázás, golf, hagyományos éttermek és nyugodtabb élet Marbella közelében.",
     },
     {
       area: "Elviria",
-      vibe: "Marbella keleti parti közössége, gyors bejutással a központba és lakóhangulatú beachside környezettel.",
+      vibe: "Marbella keleti parti része, gyors bejutással a központba és lakóhangulatú beachside környezettel.",
       property: "Erős családi házakban, tengerparti apartmanokban és minőségi villákban egy nyugodtabb lokációban.",
       lifestyle: "Homokos strandok, beach clubok, Nikki Beach, nemzetközi szolgáltatások és laza tengerparti élet.",
     },
     {
       area: "Estepona",
-      vibe: "Élénk parti város Marbellától nyugatra, óvárossal, kikötővel, sétánnyal és gyorsan fejlődő lakórészekkel.",
-      property: "Gyakran jobb ár-érték arányt ad, mint Marbella legdrágább címei, sok modern és újépítésű opcióval.",
+      vibe: "Élénk parti város Marbellától nyugatra, óvárossal, kikötővel, sétánnyal és gyorsan fejlődő zónákkal.",
+      property: "Gyakran jobb ár-érték arányt ad, mint Marbella legdrágább részei, sok modern és újépítésű opcióval.",
       lifestyle: "Családbarát, praktikus, egész évben élő város iskolákkal, egészségüggyel, golfpályákkal és strandokkal.",
     },
     {
       area: "Golden Mile",
-      vibe: "Presztízsfolyosó Marbella központja és Puerto Banús között, beach clubokkal, ikonikus hotelekkel és privát hangulattal.",
-      property: "A Costa del Sol egyik legértékesebb címe luxusvillákkal, prime apartmanokkal és branded residence projektekkel.",
+      vibe: "Presztízs régió Marbella központja és Puerto Banús között, beach clubokkal, ikonikus hotelekkel és privát hangulattal.",
+      property: "A Costa del Sol egyik legértékesebb része luxusvillákkal, prémium apartmanokkal és branded residence projektekkel.",
       lifestyle: "Közel van Puente Romano, Marbella Club, fine dining, strandéttermek, Marbella és Puerto Banús.",
     },
     {
@@ -362,11 +362,11 @@ const localizedGuides: Partial<Record<Locale, AreaGuide[]>> = {
       area: "Mijas Costa",
       vibe: "Sokszínű környék a part és a hegyek között, La Cala, Mijas Costa és Mijas Pueblo kombinációjával.",
       property: "Népszerű nemzetközi vevőknél golfingatlanok, parti apartmanok és elérhetőbb árszintek miatt.",
-      lifestyle: "Strandok, családi programok, golf, túraútvonalak, fehér falu hangulat és jó elérés Málaga repülőteréről.",
+      lifestyle: "Strandok, családi programok, golf, túraútvonalak, fehér falusi hangulat és könnyű elérés Málaga repülőteréről.",
     },
     {
       area: "La Quinta",
-      vibe: "Golfos, lakóhangulatú enklávé Benahavísban, a part felett és közel Nueva Andalucíához.",
+      vibe: "Golfos, lakóhangulatú régió Benahavísban, a part felett és közel Nueva Andalucíához.",
       property: "Prémium domboldali otthonokhoz vonzó, golf-, hegy- és tengerkilátás lehetőséggel.",
       lifestyle: "Csendes, rezidenciális, golffal a közelben és gyors kapcsolattal Puerto Banús, Marbella és San Pedro felé.",
     },
@@ -560,7 +560,7 @@ const areaContent: Record<
     guides: localizedGuides.pl ?? baseGuides,
   },
   hu: {
-    body: "Először a megfelelő környéket válaszd ki, és csak utána az ingatlant. Ezek a rövid guide-ok életmód, ingatlanlogika és vevői profil alapján hasonlítják össze Marbella, Estepona, Benahavís és a Costa del Sol kiemelt területeit.",
+    body: "Először a megfelelő környéket válaszd ki, és csak utána az ingatlant. Ezek a rövid guide-ok életmód és vevői profil alapján hasonlítják össze Marbella, Estepona, Benahavís és a Costa del Sol kiemelt területeit.",
     cardEyebrow: "Costa del Sol",
     eyebrow: "Környék guide-ok",
     headings: {
@@ -569,9 +569,9 @@ const areaContent: Record<
       vibe: "Elhelyezkedés és hangulat",
     },
     metaDescription:
-      "Kompakt Move2Marbella környék guide-ok Marbella, Estepona, Benahavís és a Costa del Sol ingatlanpiacához.",
+      "Move2Marbella területi leírások Marbella, Estepona, Benahavís és a Costa del Sol ingatlanpiacához.",
     title: "Hol érdemes vásárolni a Costa del Solon",
-    viewProperties: "Ingatlanok megnézése",
+    viewProperties: "Ingatlanok megtekintése",
     guides: localizedGuides.hu ?? baseGuides,
   },
 };

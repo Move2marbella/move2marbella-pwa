@@ -383,7 +383,7 @@ const content = {
   },
   hu: {
     body:
-      "Rövid, gyakorlati útmutató a Costa del Sol ingatlanvásárláshoz: foglaló, arras szerződés, ügyvédi ellenőrzés, közjegyzői zárás és várható extra költségek.",
+      "Rövid, gyakorlati útmutató a Costa del Sol-on ingatlanvásárláshoz: foglaló, arras szerződés, ügyvédi ellenőrzés, közjegyzői okirat és várható extra költségek.",
     eyebrow: "Vásárlási útmutató",
     metaDescription:
       "Kompakt magyar útmutató használt és újépítésű ingatlan vásárlásához Marbellán és a Costa del Solon: foglaló, arras, ITP, IVA, ügyvéd és közjegyző.",
@@ -428,8 +428,8 @@ const content = {
       "A projekt átadása gyakran 1-2 év, ezért a birtokbaadás is később történik.",
     ],
     resaleCosts: [
-      { label: "Használt ingatlan illeték Andalúziában", value: "7% ITP" },
-      { label: "Ügyvédi díj", value: "kb. 1%" },
+      { label: "Névreírési illeték Andalúziában", value: "7% ITP" },
+      { label: "Ügyvédi munkadíj", value: "kb. 1%" },
       { label: "Közjegyző és földhivatal", value: "kb. 0,5%" },
       { label: "Használt ingatlan teljes extra költség", value: "kb. 8,5%" },
     ],
