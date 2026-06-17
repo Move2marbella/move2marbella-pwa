@@ -179,12 +179,39 @@ const WORDPRESS_PROPERTY_TYPES_URL =
 const WORDPRESS_PROPERTY_FIELDS =
   "id,link,slug,title,property_city,property_type,property_meta";
 
-function formatPrice(currency: string, price: string) {
+function getCurrencyFormatter(currency: string) {
   return new Intl.NumberFormat("en-GB", {
     style: "currency",
     currency,
     maximumFractionDigits: 0,
-  }).format(Number(price));
+  });
+}
+
+function parsePriceNumbers(price: string) {
+  const matches = price.match(/\d[\d.,]*/g) ?? [];
+
+  return matches
+    .map((match) => Number(match.replace(/[.,]/g, "")))
+    .filter((value) => Number.isFinite(value) && value > 0);
+}
+
+function getRawPrice(price: string) {
+  return parsePriceNumbers(price)[0] ?? 0;
+}
+
+function formatPrice(currency: string, price: string) {
+  const formatter = getCurrencyFormatter(currency);
+  const prices = parsePriceNumbers(price);
+
+  if (prices.length >= 2) {
+    return `${formatter.format(prices[0])} - ${formatter.format(prices[1])}`;
+  }
+
+  if (prices.length === 1) {
+    return formatter.format(prices[0]);
+  }
+
+  return price;
 }
 
 function stripHtml(value: string) {
@@ -250,7 +277,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       cityIds: post.property_city ?? [],
       currency: property.Currency,
       price: formatPrice(property.Currency, property.Price),
-      rawPrice: Number(property.Price),
+      rawPrice: getRawPrice(property.Price),
       beds: property.Bedrooms,
       baths: property.Bathrooms,
       builtArea: property.Built,
@@ -481,7 +508,7 @@ async function fetchPropertySearchIndex() {
         bedrooms: Number(post.property_meta?.fave_property_bedrooms?.[0] ?? 0),
         cityIds: post.property_city ?? [],
         id: post.id,
-        price: Number(post.property_meta?.fave_property_price?.[0] ?? 0),
+        price: getRawPrice(post.property_meta?.fave_property_price?.[0] ?? "0"),
         ref,
         typeIds: post.property_type ?? [],
       });
