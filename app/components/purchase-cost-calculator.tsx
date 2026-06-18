@@ -223,7 +223,7 @@ const labelsByLocale: Record<Locale, Labels> = {
     professionalCosts: "Szakmai és zárási költségek",
     propertyType: "Ingatlan típusa",
     reduced: "Kedvezményes andalúziai lakásadó-kulcs alkalmazása, ha jogosult.",
-    reducedHint: "Egyszerűsített logika főlakóhely küszöbökre. Jogosultságot ellenőrizni kell.",
+    reducedHint: "Egyszerűsített logika főlakóhely adószámításra. Jogosultságot ellenőrizni kell.",
     registryFees: "Földhivatali költség",
     registryPercent: "Becsült földhivatal (%)",
     resale: "Használt ingatlan",

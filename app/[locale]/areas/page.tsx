@@ -344,7 +344,7 @@ const localizedGuides: Partial<Record<Locale, AreaGuide[]>> = {
       area: "Estepona",
       vibe: "Élénk parti város Marbellától nyugatra, óvárossal, kikötővel, sétánnyal és gyorsan fejlődő zónákkal.",
       property: "Gyakran jobb ár-érték arányt ad, mint Marbella legdrágább részei, sok modern és újépítésű opcióval.",
-      lifestyle: "Családbarát, praktikus, egész évben élő város iskolákkal, egészségüggyel, golfpályákkal és strandokkal.",
+      lifestyle: "Családbarát, praktikus, egész évben élhető város iskolákkal, egészségüggyel, golfpályákkal és strandokkal.",
     },
     {
       area: "Golden Mile",
@@ -562,7 +562,7 @@ const areaContent: Record<
   hu: {
     body: "Először a megfelelő környéket válaszd ki, és csak utána az ingatlant. Ezek a rövid guide-ok életmód és vevői profil alapján hasonlítják össze Marbella, Estepona, Benahavís és a Costa del Sol kiemelt területeit.",
     cardEyebrow: "Costa del Sol",
-    eyebrow: "Környék guide-ok",
+    eyebrow: "Környék leírások",
     headings: {
       lifestyle: "Szolgáltatások és életmód",
       property: "Ingatlan és befektetés",

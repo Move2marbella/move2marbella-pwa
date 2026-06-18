@@ -295,9 +295,17 @@ const meetContent: Record<Locale, MeetContent> = {
       { title: "Vevő-központú tanácsadás", text: "Nem a leggyorsabb tranzakció a cél, hanem egy olyan döntés, amit évekkel később is vállalni lehet." },
     ],
     supportEyebrow: "Támogatás",
+    supportBody: [
+      "A spanyolországi ingatlanvásárlás nem csupán az ingatlan kiválasztásából áll. A külföldi vásárlóknak gyakran szükségük van jogi, adózási, banki, jelzálogkölcsönnel kapcsolatos és gyakorlati helyi támogatásra ahhoz, hogy a folyamat biztonságos és átlátható legyen.",
+      "Zsolt egy megbízható helyi hálózattal együttműködve koordinálja a tanácsadási feladatokat, miközben a vevő figyelmét a fő célra irányítja: a tervhez illeszkedő helyszín, ingatlan és stratégia kiválasztására.",
+    ],
     supportTitle: "Vásárlás előtt, közben és után",
     title: "Ismerd meg Miguel Zsolt Horvath Dr.-t",
     whyEyebrow: "Miért fontos",
+    whyBody: [
+      "Marbellában ingatlanvásárláskor ritkán csak arról van szó, hogy megtaláljuk a gyönyörű otthont. A legtöbb vásárló valójában igyekszik megismerni a megfelelő környéket, az ingatlantípust, az árszintet és a megfelelő vásárlási stratégiát, mielőtt elkötelezi magát.",
+      "A Move2Marbella rendszerét a döntéshozatal támogatására tervezték. A cél az, hogy csökkentsék a bizonytalanságot, érthetőbbé tegyék a folyamatot, és segítsék az egyes vásárlókat abban, hogy megfelelően szűrt jelöltlistával haladjanak tovább.",
+    ],
     whyTitle: "A jó tanácsadás több, mint ingatlanok mutatása",
     faqs: [
       { question: "Ki Miguel Horvath?", answer: "Miguel Horvath, más néven Zsolt Miguel Horvath dr., a Move2Marbella alapítója, a Costa del Sol elismert ingatlantanácsadója." },

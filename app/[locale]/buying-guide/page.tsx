@@ -409,7 +409,7 @@ const content = {
         text: "A hivatalos foglalói szerződésben általában a vételár 10%-a szerepel. A korábbi 6.000 EUR ebbe beleszámít.",
       },
       {
-        title: "A foglaló jogi jelentősége",
+        title: "A foglaló magyarázata",
         text: "Ha az eladó lép vissza, általában a foglaló kétszeresét fizeti vissza. Ha a vevő lép vissza indokolatlanul, elveszítheti a foglalót.",
       },
       {
