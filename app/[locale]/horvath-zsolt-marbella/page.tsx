@@ -227,7 +227,7 @@ export default async function HorvathZsoltMarbellaPage({
             </div>
             <div className="grid gap-3 sm:grid-cols-3">
               <Stat label="helyi tapasztalat a Costa del Solon" value="2010 óta" />
-              <Stat label="orvosi és közgazdasági háttér" value="Dr. + közgazdász" />
+              <Stat label="orvosi és közgazdasági háttér" value="orvos & közgazdász" />
               <Stat label="magyar nyelvű vásárlói támogatás" value="HU / EN / ES" />
             </div>
           </div>

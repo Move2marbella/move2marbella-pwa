@@ -55,7 +55,7 @@ const enContent: MeetContent = {
     {
       question: "Who is Miguel Horvath?",
       answer:
-        "Miguel Horvath, also known as Zsolt Miguel Horvath or Dr. Horvath Zsolt Mihaly, is the founder of Move2Marbella and a Costa del Sol property advisor for international buyers.",
+        "Miguel Horvath, also known as Zsolt Miguel Horvath or Doctor Horvath Zsolt Mihaly, is the founder of Move2Marbella and a Costa del Sol property advisor for international buyers.",
     },
     {
       question: "What makes Move2Marbella different?",
@@ -155,7 +155,7 @@ const meetContent: Record<Locale, MeetContent> = {
     whyEyebrow: "Por qué importa",
     whyTitle: "Un buen consejo es más que mostrar listados",
     faqs: [
-      { question: "Quién es Miguel Horvath?", answer: "Miguel Horvath, también Zsolt Miguel Horvath o Dr. Horvath Zsolt Mihaly, es fundador de Move2Marbella y asesor inmobiliario en la Costa del Sol." },
+      { question: "Quién es Miguel Horvath?", answer: "Miguel Horvath, también Zsolt Miguel Horvath o Doctor Horvath Zsolt Mihaly, es fundador de Move2Marbella y asesor inmobiliario en la Costa del Sol." },
       { question: "Qué hace diferente a Move2Marbella?", answer: "Trabajamos como asesores del comprador: zona, microlocalización, costes, reventa y una lista corta con sentido." },
       { question: "En qué zonas se centra?", answer: "Marbella, Estepona, Benahavís, Nueva Andalucía, Golden Mile, San Pedro y otras zonas de alta demanda." },
       { question: "Solo trabaja con compradores húngaros?", answer: "No. Move2Marbella apoya a compradores internacionales, aunque el asesoramiento en húngaro es una ventaja para muchos clientes." },
@@ -393,7 +393,7 @@ export default async function MeetMiguelPage({ params }: MeetMiguelPageProps) {
           "@context": "https://schema.org",
           "@type": "Person",
           name: "Zsolt Miguel Horvath",
-          alternateName: ["Miguel Horvath", "Dr. Horváth Zsolt Mihály"],
+          alternateName: ["Miguel Horvath", "Doctor Horváth Zsolt Mihály"],
           jobTitle: "Costa del Sol property advisor",
           worksFor: {
             "@type": "RealEstateAgent",
