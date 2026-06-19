@@ -238,6 +238,22 @@ export default async function HorvathZsoltMarbellaPage({
         <LanguageSwitcher currentLocale="hu" getHref={getMeetMiguelHref} />
       </section>
 
+      <section className="mx-auto max-w-6xl px-5 py-6 sm:px-8">
+        <figure className="overflow-hidden rounded-[8px] bg-white shadow-sm ring-1 ring-black/5">
+          <Image
+            src="/zsolt-miguel-horvath.webp"
+            alt="Horváth Zsolt Marbella ingatlan tanácsadó"
+            width={1536}
+            height={1024}
+            sizes="(min-width: 1024px) 1152px, 100vw"
+            className="aspect-[3/2] w-full object-cover"
+          />
+          <figcaption className="border-t border-[#ece2d3] px-5 py-4 text-base font-semibold text-[#0f253d]">
+            Zsolt Miguel Horvath dr.
+          </figcaption>
+        </figure>
+      </section>
+
       <Section eyebrow="Miért fontos" title="A bizalom itt nem extra, hanem alap">
         <p>
           Külföldön ingatlant venni nem egyszerű keresési feladat. A vevőnek
