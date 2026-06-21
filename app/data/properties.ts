@@ -135,6 +135,7 @@ type PropertyFilters = {
   noStore?: boolean;
   propertyCities?: string[];
   reference?: string;
+  seaView?: boolean;
   propertyTypes?: string[];
   page?: number;
   sort?: PropertySortOrder;
@@ -145,6 +146,7 @@ export type PropertySortOrder = "price_asc" | "price_desc" | "reference_desc";
 type PropertySearchIndexEntry = {
   bedrooms: number;
   cityIds: number[];
+  hasSeaViews: boolean;
   id: number;
   price: number;
   ref: string;
@@ -166,6 +168,7 @@ export const quickFilters = [
   { label: "Estepona", cityName: "Estepona" },
   { label: "Nueva Andalucia", cityName: "Nueva Andalucia" },
   { label: "Puerto Banus", cityName: "Puerto Banus" },
+  { label: "Sea-View", seaView: true },
 ];
 
 export const bedroomOptions = [1, 2, 3, 4, 5, 6];
@@ -214,6 +217,22 @@ function formatPrice(currency: string, price: string) {
   return price;
 }
 
+function featureValuesIncludeSea(values?: string[]) {
+  return Boolean(
+    values?.some((value) =>
+      normalizeSearchText(decodeUnicodeArtifacts(value)).includes("sea"),
+    ),
+  );
+}
+
+function propertyHasSeaViews(property: ResalesProperty) {
+  const views = property.PropertyFeatures.Category.find(
+    (category) => decodeUnicodeArtifacts(category.Type) === "Views",
+  )?.Value;
+
+  return featureValuesIncludeSea(views);
+}
+
 function stripHtml(value: string) {
   return decodeUnicodeArtifacts(value)
     .replace(/<[^>]*>/g, "")
@@ -260,9 +279,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
     );
     const subLocation = propertySubLocation ? `, ${propertySubLocation}` : "";
     const location = `${propertyLocation}${subLocation}, ${propertyArea}`;
-    const views = property.PropertyFeatures.Category.find(
-      (category) => category.Type === "Views",
-    )?.Value;
+    const hasSeaViews = propertyHasSeaViews(property);
     const images = property.Pictures.Picture.map(
       (picture) => picture.PictureURL,
     );
@@ -285,7 +302,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       size: `${property.Built} m2`,
       plot: property.GardenPlot ? `${property.GardenPlot} m2` : "Community",
       terrace: `${property.Terrace} m2`,
-      tag: views?.includes("Sea") ? "Sea views" : propertyStatus,
+      tag: hasSeaViews ? "Sea views" : propertyStatus,
       type: propertyType,
       typeIds: post.property_type ?? [],
       status: propertyStatus,
@@ -309,6 +326,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
       filters.maxPrice ||
         filters.bedrooms ||
         filters.reference ||
+        filters.seaView ||
         filters.sort ||
         filters.keywords?.length,
     );
@@ -328,6 +346,10 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         }
 
         if (filters.bedrooms && property.bedrooms < filters.bedrooms) {
+          return false;
+        }
+
+        if (filters.seaView && !property.hasSeaViews) {
           return false;
         }
 
@@ -467,6 +489,20 @@ function getReferenceNumber(ref: string) {
   return Number(ref.replace(/\D/g, "")) || 0;
 }
 
+function getIndexedPropertyHasSeaViews(post: WordPressProperty) {
+  const importData = post.property_meta?._property_import_data?.[0];
+
+  if (!importData) {
+    return false;
+  }
+
+  try {
+    return propertyHasSeaViews(JSON.parse(importData) as ResalesProperty);
+  } catch {
+    return false;
+  }
+}
+
 async function fetchPropertySearchIndex() {
   try {
     const baseParams = new URLSearchParams({
@@ -475,7 +511,7 @@ async function fetchPropertySearchIndex() {
       orderby: "modified",
       order: "desc",
       _fields:
-        "id,property_city,property_type,property_meta._imported_ref,property_meta.fave_property_id,property_meta.fave_property_price,property_meta.fave_property_bedrooms",
+        "id,property_city,property_type,property_meta._imported_ref,property_meta._property_import_data,property_meta.fave_property_id,property_meta.fave_property_price,property_meta.fave_property_bedrooms",
     });
     const firstResponse = await fetch(
       `${WORDPRESS_PROPERTIES_URL}?${baseParams.toString()}`,
@@ -507,6 +543,7 @@ async function fetchPropertySearchIndex() {
       propertiesByReference.set(ref.toUpperCase(), {
         bedrooms: Number(post.property_meta?.fave_property_bedrooms?.[0] ?? 0),
         cityIds: post.property_city ?? [],
+        hasSeaViews: getIndexedPropertyHasSeaViews(post),
         id: post.id,
         price: getRawPrice(post.property_meta?.fave_property_price?.[0] ?? "0"),
         ref,
@@ -533,6 +570,10 @@ function propertyMatchesFilters(properties: Property[], filters: PropertyFilters
     }
 
     if (filters.bedrooms && Number(property.beds) < filters.bedrooms) {
+      return false;
+    }
+
+    if (filters.seaView && !propertyMatchesKeywords(property, ["sea views"])) {
       return false;
     }
 

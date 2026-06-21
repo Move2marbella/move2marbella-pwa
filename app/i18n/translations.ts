@@ -31,6 +31,7 @@ type Translation = {
   message: string;
   mapZone: string;
   moreSaved: string;
+  mustHave: string;
   name: string;
   nearbyAreaHint: string;
   nearbyAttribution: string;
@@ -55,6 +56,7 @@ type Translation = {
   saved: string;
   saveHint: string;
   search: string;
+  seaView: string;
   sendEnquiry: string;
   shareOnWhatsApp: string;
   sortByPrice: string;
@@ -153,6 +155,7 @@ export const translations: Record<Locale, Translation> = {
     liveSearchPreview: "Live search preview",
     location: "Location",
     maxPrice: "Max price",
+    mustHave: "Must have",
     message: "Message",
     mapZone: "Map zone",
     moreSaved: "more saved on this device.",
@@ -184,6 +187,7 @@ export const translations: Record<Locale, Translation> = {
     saved: "Saved",
     saveHint: "Tap Favourite on any property to keep it saved on this device.",
     search: "Search",
+    seaView: "Sea-View",
     sendEnquiry: "Send enquiry",
     shareOnWhatsApp: "Share on WhatsApp",
     sortByPrice: "Sort by",
@@ -290,6 +294,7 @@ export const translations: Record<Locale, Translation> = {
     liveSearchPreview: "Vista de búsqueda",
     location: "Ubicación",
     maxPrice: "Precio max.",
+    mustHave: "Imprescindible",
     message: "Mensaje",
     mapZone: "Zona del mapa",
     moreSaved: "más guardadas en este dispositivo.",
@@ -321,6 +326,7 @@ export const translations: Record<Locale, Translation> = {
     saved: "Guardado",
     saveHint: "Toca Favorito para guardar propiedades en este dispositivo.",
     search: "Buscar",
+    seaView: "Vistas al mar",
     sendEnquiry: "Enviar consulta",
     shareOnWhatsApp: "Compartir en WhatsApp",
     sortByPrice: "Ordenar por",
@@ -427,6 +433,7 @@ export const translations: Record<Locale, Translation> = {
     liveSearchPreview: "Aperçu de recherche",
     location: "Localisation",
     maxPrice: "Prix max.",
+    mustHave: "Indispensable",
     message: "Message",
     mapZone: "Zone carte",
     moreSaved: "autres enregistrés sur cet appareil.",
@@ -458,6 +465,7 @@ export const translations: Record<Locale, Translation> = {
     saved: "Enregistré",
     saveHint: "Touchez Favori pour garder un bien sur cet appareil.",
     search: "Rechercher",
+    seaView: "Vue mer",
     sendEnquiry: "Envoyer la demande",
     shareOnWhatsApp: "Partager sur WhatsApp",
     sortByPrice: "Trier par",
@@ -564,6 +572,7 @@ export const translations: Record<Locale, Translation> = {
     liveSearchPreview: "Suchvorschau",
     location: "Lage",
     maxPrice: "Max. Preis",
+    mustHave: "Must-have",
     message: "Nachricht",
     mapZone: "Kartenzone",
     moreSaved: "weitere auf diesem Gerät gespeichert.",
@@ -595,6 +604,7 @@ export const translations: Record<Locale, Translation> = {
     saved: "Gespeichert",
     saveHint: "Tippen Sie auf Favorit, um Immobilien auf diesem Gerät zu speichern.",
     search: "Suchen",
+    seaView: "Meerblick",
     sendEnquiry: "Anfrage senden",
     shareOnWhatsApp: "Auf WhatsApp teilen",
     sortByPrice: "Sortieren nach",
@@ -701,6 +711,7 @@ export const translations: Record<Locale, Translation> = {
     liveSearchPreview: "Результаты поиска",
     location: "Локация",
     maxPrice: "Макс. цена",
+    mustHave: "Обязательно",
     message: "Сообщение",
     mapZone: "Зона на карте",
     moreSaved: "ещё сохранено на этом устройстве.",
@@ -732,6 +743,7 @@ export const translations: Record<Locale, Translation> = {
     saved: "Сохранено",
     saveHint: "Нажмите В избранное, чтобы сохранить объект на этом устройстве.",
     search: "Поиск",
+    seaView: "Вид на море",
     sendEnquiry: "Отправить запрос",
     shareOnWhatsApp: "Поделиться в WhatsApp",
     sortByPrice: "Сортировать по",
@@ -838,6 +850,7 @@ export const translations: Record<Locale, Translation> = {
     liveSearchPreview: "Podgląd wyników",
     location: "Lokalizacja",
     maxPrice: "Cena maks.",
+    mustHave: "Must have",
     message: "Wiadomość",
     mapZone: "Strefa mapy",
     moreSaved: "więcej zapisanych na tym urządzeniu.",
@@ -869,6 +882,7 @@ export const translations: Record<Locale, Translation> = {
     saved: "Zapisano",
     saveHint: "Dotknij Ulubione, aby zapisać nieruchomość na tym urządzeniu.",
     search: "Szukaj",
+    seaView: "Widok na morze",
     sendEnquiry: "Wyślij zapytanie",
     shareOnWhatsApp: "Udostępnij na WhatsApp",
     sortByPrice: "Sortuj wg",
@@ -975,6 +989,7 @@ export const translations: Record<Locale, Translation> = {
     liveSearchPreview: "Keresési találatok",
     location: "Lokáció",
     maxPrice: "Max ár",
+    mustHave: "Must have",
     message: "Üzenet",
     mapZone: "Térkép",
     moreSaved: "tovább mentve ezen az eszközön.",
@@ -1006,6 +1021,7 @@ export const translations: Record<Locale, Translation> = {
     saved: "Mentve",
     saveHint: "Koppints a Kedvenc gombra, hogy elmentsd az ingatlant ezen az eszközön.",
     search: "Keresés",
+    seaView: "Tengeri kilátás",
     sendEnquiry: "Érdeklődés küldése",
     shareOnWhatsApp: "Megosztás WhatsAppon",
     sortByPrice: "Rendezés",

@@ -36,6 +36,7 @@ export type HomeSearchParams = {
   property_city?: string;
   q?: string;
   reference?: string;
+  sea_view?: string;
   property_type?: string;
   sort?: string;
 };
@@ -77,12 +78,14 @@ export async function HomeContent({
     property_city: selectedPropertyCity = "",
     q: searchQuery = "",
     reference = "",
+    sea_view = "",
     property_type: selectedPropertyType = "",
     sort = "reference_desc",
   } = await searchParams;
   const selectedReference = reference.trim().toUpperCase();
   const selectedSort: PropertySortOrder =
     sort === "price_asc" || sort === "price_desc" ? sort : "reference_desc";
+  const hasSeaViewFilter = sea_view === "1";
   const currentPage = Math.max(Number(page) || 1, 1);
   const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
   const selectedMaxPrice = Math.min(
@@ -129,6 +132,7 @@ export async function HomeContent({
     page: currentPage,
     propertyCities: propertyCityFilterIds,
     reference: selectedReference || undefined,
+    seaView: hasSeaViewFilter || parsedQuery.keywords.includes("sea views"),
     propertyTypes: propertyTypeFilterIds,
     sort: selectedSort,
   });
@@ -168,6 +172,10 @@ export async function HomeContent({
     paginationBaseParams.set("reference", selectedReference);
   }
 
+  if (hasSeaViewFilter) {
+    paginationBaseParams.set("sea_view", "1");
+  }
+
   if (bedrooms) {
     paginationBaseParams.set("bedrooms", bedrooms);
   }
@@ -192,20 +200,50 @@ export async function HomeContent({
       .toLowerCase();
   }
 
-  function getQuickFilterHref(cityName: string) {
-    const matchedCity = propertyCities.find(
-      (propertyCity) =>
-        normalizeFilterName(propertyCity.name) === normalizeFilterName(cityName),
-    );
+  function getQuickFilterHref(filter: (typeof quickFilters)[number]) {
     const params = new URLSearchParams(paginationBaseParams);
 
     params.set("page", "1");
+
+    if ("seaView" in filter && filter.seaView) {
+      params.set("sea_view", "1");
+      params.delete("property_city");
+
+      return `${basePath}?${params.toString()}`;
+    }
+
+    if (!("cityName" in filter) || !filter.cityName) {
+      return `${basePath}?${params.toString()}`;
+    }
+
+    const quickFilterCityName = filter.cityName;
+    const matchedCity = propertyCities.find(
+      (propertyCity) =>
+        normalizeFilterName(propertyCity.name) === normalizeFilterName(quickFilterCityName),
+    );
+
+    params.delete("sea_view");
 
     if (matchedCity) {
       params.set("property_city", String(matchedCity.id));
     }
 
     return `${basePath}?${params.toString()}`;
+  }
+
+  function isQuickFilterActive(filter: (typeof quickFilters)[number]) {
+    if ("seaView" in filter && filter.seaView) {
+      return hasSeaViewFilter;
+    }
+
+    if (!selectedCityName || !("cityName" in filter) || !filter.cityName) {
+      return false;
+    }
+
+    return (
+      normalizeFilterName(selectedCityName) ===
+      normalizeFilterName(filter.cityName)
+    );
   }
 
   const pageNumbers = Array.from(
@@ -364,6 +402,29 @@ export async function HomeContent({
                     defaultValue={effectiveMaxPrice}
                     label={t.maxPrice}
                   />
+                  <fieldset className="md:col-span-12">
+                    <legend className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                      {t.mustHave}
+                    </legend>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <label
+                        className={
+                          hasSeaViewFilter
+                            ? "inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white"
+                            : "inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
+                        }
+                      >
+                        <input
+                          type="checkbox"
+                          name="sea_view"
+                          value="1"
+                          defaultChecked={hasSeaViewFilter}
+                          className="h-4 w-4 accent-[#0f253d]"
+                        />
+                        {t.seaView}
+                      </label>
+                    </div>
+                  </fieldset>
                   <div className="md:col-span-12">
                     <button className="h-12 w-full rounded-[6px] bg-[#ba9456] px-6 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-[#c7a469]">
                       {t.search}
@@ -444,6 +505,9 @@ export async function HomeContent({
                       name="max_price"
                       value={selectedMaxPrice}
                     />
+                  ) : null}
+                  {hasSeaViewFilter ? (
+                    <input type="hidden" name="sea_view" value="1" />
                   ) : null}
                   <input type="hidden" name="page" value="1" />
                   <label className="flex items-center gap-2 text-sm font-semibold text-[#0f253d]">
@@ -596,11 +660,9 @@ export async function HomeContent({
               {quickFilters.map((filter) => (
                 <Link
                   key={filter.label}
-                  href={getQuickFilterHref(filter.cityName)}
+                  href={getQuickFilterHref(filter)}
                   className={
-                    selectedCityName &&
-                    normalizeFilterName(selectedCityName) ===
-                      normalizeFilterName(filter.cityName)
+                    isQuickFilterActive(filter)
                       ? "rounded-full bg-[#0f253d] px-3 py-2 text-sm font-semibold uppercase tracking-wide text-white"
                       : "rounded-full border border-[#ded4c2] px-3 py-2 text-sm font-semibold uppercase tracking-wide text-[#242424]"
                   }
