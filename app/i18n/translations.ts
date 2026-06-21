@@ -13,6 +13,7 @@ type Translation = {
   advancedFilters: string;
   back: string;
   bathrooms: string;
+  beachfront: string;
   bedrooms: string;
   built: string;
   clear: string;
@@ -140,6 +141,7 @@ export const translations: Record<Locale, Translation> = {
     advancedFilters: "Advanced filters",
     back: "Back",
     bathrooms: "Bathrooms",
+    beachfront: "Beachfront",
     bedrooms: "Bedrooms",
     built: "Built",
     clear: "Clear",
@@ -279,6 +281,7 @@ export const translations: Record<Locale, Translation> = {
     advancedFilters: "Filtros avanzados",
     back: "Volver",
     bathrooms: "Baños",
+    beachfront: "Primera línea de playa",
     bedrooms: "Dormitorios",
     built: "Construido",
     clear: "Borrar",
@@ -418,6 +421,7 @@ export const translations: Record<Locale, Translation> = {
     advancedFilters: "Filtres avancés",
     back: "Retour",
     bathrooms: "Salles de bain",
+    beachfront: "Front de mer",
     bedrooms: "Chambres",
     built: "Construit",
     clear: "Effacer",
@@ -557,6 +561,7 @@ export const translations: Record<Locale, Translation> = {
     advancedFilters: "Erweiterte Filter",
     back: "Zurück",
     bathrooms: "Badezimmer",
+    beachfront: "Direkt am Strand",
     bedrooms: "Schlafzimmer",
     built: "Wohnfläche",
     clear: "Löschen",
@@ -696,6 +701,7 @@ export const translations: Record<Locale, Translation> = {
     advancedFilters: "Расширенные фильтры",
     back: "Назад",
     bathrooms: "Ванные",
+    beachfront: "Первая линия пляжа",
     bedrooms: "Спальни",
     built: "Площадь",
     clear: "Очистить",
@@ -835,6 +841,7 @@ export const translations: Record<Locale, Translation> = {
     advancedFilters: "Filtry zaawansowane",
     back: "Wstecz",
     bathrooms: "Łazienki",
+    beachfront: "Przy plaży",
     bedrooms: "Sypialnie",
     built: "Powierzchnia",
     clear: "Wyczyść",
@@ -974,6 +981,7 @@ export const translations: Record<Locale, Translation> = {
     advancedFilters: "Részletes szűrők",
     back: "Vissza",
     bathrooms: "Fürdőszoba",
+    beachfront: "Beachfront",
     bedrooms: "Hálószoba",
     built: "Alapterület",
     clear: "Törlés",

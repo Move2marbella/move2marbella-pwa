@@ -44,7 +44,7 @@ const keywordAliases: Record<string, string[]> = {
     "tengerpart közelében",
     "cerca de la playa",
   ],
-  beachfront: ["beachfront", "frontline beach", "front line beach", "first line beach", "tengerparti", "primera linea playa"],
+  beachfront: ["beachfront", "frontline beach", "front line beach", "front line beach complex", "first line beach", "tengerparti", "primera linea playa"],
   golf: ["golf", "golf valley", "golfpálya"],
   terrace: ["terrace", "terasz", "terraza"],
 };

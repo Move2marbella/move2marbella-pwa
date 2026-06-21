@@ -129,6 +129,7 @@ export type SearchOption = {
 };
 
 type PropertyFilters = {
+  beachFront?: boolean;
   bedrooms?: number;
   keywords?: string[];
   maxPrice?: number;
@@ -146,6 +147,7 @@ export type PropertySortOrder = "price_asc" | "price_desc" | "reference_desc";
 type PropertySearchIndexEntry = {
   bedrooms: number;
   cityIds: number[];
+  hasBeachfront: boolean;
   hasSeaViews: boolean;
   id: number;
   price: number;
@@ -231,6 +233,16 @@ function propertyHasSeaViews(property: ResalesProperty) {
   )?.Value;
 
   return featureValuesIncludeSea(views);
+}
+
+function propertyHasBeachfront(property: ResalesProperty) {
+  const beachfrontAliases = new Set(["beachfront", "front line beach complex"]);
+
+  return property.PropertyFeatures.Category.some((group) =>
+    group.Value.some((value) =>
+      beachfrontAliases.has(normalizeSearchText(decodeUnicodeArtifacts(value))),
+    ),
+  );
 }
 
 function stripHtml(value: string) {
@@ -323,7 +335,8 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   try {
     const usesClientSideFilters = Boolean(
-      filters.maxPrice ||
+        filters.maxPrice ||
+        filters.beachFront ||
         filters.bedrooms ||
         filters.reference ||
         filters.seaView ||
@@ -332,7 +345,9 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     );
 
     if (usesClientSideFilters) {
-      const index = await fetchPropertySearchIndex(Boolean(filters.seaView));
+      const index = await fetchPropertySearchIndex(
+        Boolean(filters.seaView || filters.beachFront),
+      );
       const filteredEntries = index.filter((property) => {
         if (
           filters.reference &&
@@ -346,6 +361,10 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         }
 
         if (filters.bedrooms && property.bedrooms < filters.bedrooms) {
+          return false;
+        }
+
+        if (filters.beachFront && !property.hasBeachfront) {
           return false;
         }
 
@@ -503,14 +522,28 @@ function getIndexedPropertyHasSeaViews(post: WordPressProperty) {
   }
 }
 
-async function fetchPropertySearchIndex(includeSeaViews = false) {
+function getIndexedPropertyHasBeachfront(post: WordPressProperty) {
+  const importData = post.property_meta?._property_import_data?.[0];
+
+  if (!importData) {
+    return false;
+  }
+
+  try {
+    return propertyHasBeachfront(JSON.parse(importData) as ResalesProperty);
+  } catch {
+    return false;
+  }
+}
+
+async function fetchPropertySearchIndex(includeFeatureData = false) {
   try {
     const propertyMetaFields = [
       "property_meta._imported_ref",
       "property_meta.fave_property_id",
       "property_meta.fave_property_price",
       "property_meta.fave_property_bedrooms",
-      includeSeaViews ? "property_meta._property_import_data" : "",
+      includeFeatureData ? "property_meta._property_import_data" : "",
     ]
       .filter(Boolean)
       .join(",");
@@ -551,7 +584,8 @@ async function fetchPropertySearchIndex(includeSeaViews = false) {
       propertiesByReference.set(ref.toUpperCase(), {
         bedrooms: Number(post.property_meta?.fave_property_bedrooms?.[0] ?? 0),
         cityIds: post.property_city ?? [],
-        hasSeaViews: includeSeaViews ? getIndexedPropertyHasSeaViews(post) : false,
+        hasBeachfront: includeFeatureData ? getIndexedPropertyHasBeachfront(post) : false,
+        hasSeaViews: includeFeatureData ? getIndexedPropertyHasSeaViews(post) : false,
         id: post.id,
         price: getRawPrice(post.property_meta?.fave_property_price?.[0] ?? "0"),
         ref,
@@ -578,6 +612,10 @@ function propertyMatchesFilters(properties: Property[], filters: PropertyFilters
     }
 
     if (filters.bedrooms && Number(property.beds) < filters.bedrooms) {
+      return false;
+    }
+
+    if (filters.beachFront && !propertyMatchesKeywords(property, ["beachfront"])) {
       return false;
     }
 
@@ -657,6 +695,7 @@ function propertyMatchesKeywords(property: Property, keywords: string[]) {
     if (normalizedKeyword === "beachfront") {
       return (
         searchableText.includes("beachfront") ||
+        searchableText.includes("front line beach complex") ||
         searchableText.includes("frontline beach") ||
         searchableText.includes("front line beach") ||
         searchableText.includes("first line beach")

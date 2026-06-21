@@ -30,6 +30,7 @@ import { SITE_URL } from "./lib/seo";
 export const revalidate = 300;
 
 export type HomeSearchParams = {
+  beachfront?: string;
   bedrooms?: string;
   max_price?: string;
   page?: string;
@@ -72,6 +73,7 @@ export async function HomeContent({
     saved: t.saved,
   };
   const {
+    beachfront = "",
     bedrooms = "",
     max_price = "20000000",
     page = "1",
@@ -85,6 +87,7 @@ export async function HomeContent({
   const selectedReference = reference.trim().toUpperCase();
   const selectedSort: PropertySortOrder =
     sort === "price_asc" || sort === "price_desc" ? sort : "reference_desc";
+  const hasBeachfrontFilter = beachfront === "1";
   const hasSeaViewFilter = sea_view === "1";
   const currentPage = Math.max(Number(page) || 1, 1);
   const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
@@ -127,6 +130,7 @@ export async function HomeContent({
   );
   const result = await fetchProperties(9, {
     bedrooms: effectiveBedrooms,
+    beachFront: hasBeachfrontFilter || parsedQuery.keywords.includes("beachfront"),
     keywords: parsedQuery.keywords,
     maxPrice: hasEffectiveMaxPriceFilter ? effectiveMaxPrice : undefined,
     page: currentPage,
@@ -170,6 +174,10 @@ export async function HomeContent({
 
   if (selectedReference) {
     paginationBaseParams.set("reference", selectedReference);
+  }
+
+  if (hasBeachfrontFilter) {
+    paginationBaseParams.set("beachfront", "1");
   }
 
   if (hasSeaViewFilter) {
@@ -409,6 +417,22 @@ export async function HomeContent({
                     <div className="mt-2 flex flex-wrap gap-2">
                       <label
                         className={
+                          hasBeachfrontFilter
+                            ? "inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white"
+                            : "inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
+                        }
+                      >
+                        <input
+                          type="checkbox"
+                          name="beachfront"
+                          value="1"
+                          defaultChecked={hasBeachfrontFilter}
+                          className="h-4 w-4 accent-[#0f253d]"
+                        />
+                        {t.beachfront}
+                      </label>
+                      <label
+                        className={
                           hasSeaViewFilter
                             ? "inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white"
                             : "inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
@@ -505,6 +529,9 @@ export async function HomeContent({
                       name="max_price"
                       value={selectedMaxPrice}
                     />
+                  ) : null}
+                  {hasBeachfrontFilter ? (
+                    <input type="hidden" name="beachfront" value="1" />
                   ) : null}
                   {hasSeaViewFilter ? (
                     <input type="hidden" name="sea_view" value="1" />
