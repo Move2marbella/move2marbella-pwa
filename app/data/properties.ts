@@ -332,7 +332,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     );
 
     if (usesClientSideFilters) {
-      const index = await fetchPropertySearchIndex();
+      const index = await fetchPropertySearchIndex(Boolean(filters.seaView));
       const filteredEntries = index.filter((property) => {
         if (
           filters.reference &&
@@ -503,15 +503,23 @@ function getIndexedPropertyHasSeaViews(post: WordPressProperty) {
   }
 }
 
-async function fetchPropertySearchIndex() {
+async function fetchPropertySearchIndex(includeSeaViews = false) {
   try {
+    const propertyMetaFields = [
+      "property_meta._imported_ref",
+      "property_meta.fave_property_id",
+      "property_meta.fave_property_price",
+      "property_meta.fave_property_bedrooms",
+      includeSeaViews ? "property_meta._property_import_data" : "",
+    ]
+      .filter(Boolean)
+      .join(",");
     const baseParams = new URLSearchParams({
       per_page: "100",
       page: "1",
       orderby: "modified",
       order: "desc",
-      _fields:
-        "id,property_city,property_type,property_meta._imported_ref,property_meta._property_import_data,property_meta.fave_property_id,property_meta.fave_property_price,property_meta.fave_property_bedrooms",
+      _fields: `id,property_city,property_type,${propertyMetaFields}`,
     });
     const firstResponse = await fetch(
       `${WORDPRESS_PROPERTIES_URL}?${baseParams.toString()}`,
@@ -543,7 +551,7 @@ async function fetchPropertySearchIndex() {
       propertiesByReference.set(ref.toUpperCase(), {
         bedrooms: Number(post.property_meta?.fave_property_bedrooms?.[0] ?? 0),
         cityIds: post.property_city ?? [],
-        hasSeaViews: getIndexedPropertyHasSeaViews(post),
+        hasSeaViews: includeSeaViews ? getIndexedPropertyHasSeaViews(post) : false,
         id: post.id,
         price: getRawPrice(post.property_meta?.fave_property_price?.[0] ?? "0"),
         ref,
