@@ -25,6 +25,7 @@ type Translation = {
   favourites: string;
   featuredProperties: string;
   defaultSort: string;
+  heatedPool: string;
   leadForm: string;
   liveSearchPreview: string;
   location: string;
@@ -153,6 +154,7 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Favourites",
     featuredProperties: "Featured properties",
     defaultSort: "Newest",
+    heatedPool: "Heated Pool",
     leadForm: "Lead form",
     liveSearchPreview: "Live search preview",
     location: "Location",
@@ -293,6 +295,7 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Favoritos",
     featuredProperties: "Propiedades destacadas",
     defaultSort: "Más recientes",
+    heatedPool: "Piscina climatizada",
     leadForm: "Formulario",
     liveSearchPreview: "Vista de búsqueda",
     location: "Ubicación",
@@ -433,6 +436,7 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Favoris",
     featuredProperties: "Biens en vedette",
     defaultSort: "Plus récents",
+    heatedPool: "Piscine chauffée",
     leadForm: "Formulaire",
     liveSearchPreview: "Aperçu de recherche",
     location: "Localisation",
@@ -573,6 +577,7 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Favoriten",
     featuredProperties: "Ausgewählte Immobilien",
     defaultSort: "Neueste",
+    heatedPool: "Beheizter Pool",
     leadForm: "Kontaktformular",
     liveSearchPreview: "Suchvorschau",
     location: "Lage",
@@ -713,6 +718,7 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Избранное",
     featuredProperties: "Рекомендуемые объекты",
     defaultSort: "Новые",
+    heatedPool: "Подогреваемый бассейн",
     leadForm: "Форма заявки",
     liveSearchPreview: "Результаты поиска",
     location: "Локация",
@@ -853,6 +859,7 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Ulubione",
     featuredProperties: "Polecane nieruchomości",
     defaultSort: "Najnowsze",
+    heatedPool: "Podgrzewany basen",
     leadForm: "Formularz",
     liveSearchPreview: "Podgląd wyników",
     location: "Lokalizacja",
@@ -993,6 +1000,7 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Kedvencek",
     featuredProperties: "Kiemelt ingatlanok",
     defaultSort: "Legújabb",
+    heatedPool: "Fűtött medence",
     leadForm: "Űrlap",
     liveSearchPreview: "Keresési találatok",
     location: "Lokáció",

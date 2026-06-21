@@ -131,6 +131,7 @@ export type SearchOption = {
 type PropertyFilters = {
   beachFront?: boolean;
   bedrooms?: number;
+  heatedPool?: boolean;
   keywords?: string[];
   maxPrice?: number;
   noStore?: boolean;
@@ -148,6 +149,7 @@ type PropertySearchIndexEntry = {
   bedrooms: number;
   cityIds: number[];
   hasBeachfront: boolean;
+  hasHeatedPool: boolean;
   hasSeaViews: boolean;
   id: number;
   price: number;
@@ -245,6 +247,15 @@ function propertyHasBeachfront(property: ResalesProperty) {
   );
 }
 
+function propertyHasHeatedPool(property: ResalesProperty) {
+  return property.PropertyFeatures.Category.some((group) =>
+    group.Value.some(
+      (value) =>
+        normalizeSearchText(decodeUnicodeArtifacts(value)) === "heated pool",
+    ),
+  );
+}
+
 function stripHtml(value: string) {
   return decodeUnicodeArtifacts(value)
     .replace(/<[^>]*>/g, "")
@@ -338,6 +349,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         filters.maxPrice ||
         filters.beachFront ||
         filters.bedrooms ||
+        filters.heatedPool ||
         filters.reference ||
         filters.seaView ||
         filters.sort ||
@@ -346,7 +358,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
 
     if (usesClientSideFilters) {
       const index = await fetchPropertySearchIndex(
-        Boolean(filters.seaView || filters.beachFront),
+        Boolean(filters.seaView || filters.beachFront || filters.heatedPool),
       );
       const filteredEntries = index.filter((property) => {
         if (
@@ -365,6 +377,10 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         }
 
         if (filters.beachFront && !property.hasBeachfront) {
+          return false;
+        }
+
+        if (filters.heatedPool && !property.hasHeatedPool) {
           return false;
         }
 
@@ -536,6 +552,20 @@ function getIndexedPropertyHasBeachfront(post: WordPressProperty) {
   }
 }
 
+function getIndexedPropertyHasHeatedPool(post: WordPressProperty) {
+  const importData = post.property_meta?._property_import_data?.[0];
+
+  if (!importData) {
+    return false;
+  }
+
+  try {
+    return propertyHasHeatedPool(JSON.parse(importData) as ResalesProperty);
+  } catch {
+    return false;
+  }
+}
+
 async function fetchPropertySearchIndex(includeFeatureData = false) {
   try {
     const propertyMetaFields = [
@@ -585,6 +615,7 @@ async function fetchPropertySearchIndex(includeFeatureData = false) {
         bedrooms: Number(post.property_meta?.fave_property_bedrooms?.[0] ?? 0),
         cityIds: post.property_city ?? [],
         hasBeachfront: includeFeatureData ? getIndexedPropertyHasBeachfront(post) : false,
+        hasHeatedPool: includeFeatureData ? getIndexedPropertyHasHeatedPool(post) : false,
         hasSeaViews: includeFeatureData ? getIndexedPropertyHasSeaViews(post) : false,
         id: post.id,
         price: getRawPrice(post.property_meta?.fave_property_price?.[0] ?? "0"),
@@ -616,6 +647,10 @@ function propertyMatchesFilters(properties: Property[], filters: PropertyFilters
     }
 
     if (filters.beachFront && !propertyMatchesKeywords(property, ["beachfront"])) {
+      return false;
+    }
+
+    if (filters.heatedPool && !propertyMatchesKeywords(property, ["heated pool"])) {
       return false;
     }
 
@@ -700,6 +735,10 @@ function propertyMatchesKeywords(property: Property, keywords: string[]) {
         searchableText.includes("front line beach") ||
         searchableText.includes("first line beach")
       );
+    }
+
+    if (normalizedKeyword === "heated pool") {
+      return searchableText.includes("heated pool");
     }
 
     return normalizedKeyword

@@ -46,6 +46,7 @@ const keywordAliases: Record<string, string[]> = {
   ],
   beachfront: ["beachfront", "frontline beach", "front line beach", "front line beach complex", "first line beach", "tengerparti", "primera linea playa"],
   golf: ["golf", "golf valley", "golfpálya"],
+  "heated pool": ["heated pool", "heated swimming pool", "fűtött medence", "futott medence", "piscina climatizada", "beheizter pool"],
   terrace: ["terrace", "terasz", "terraza"],
 };
 
