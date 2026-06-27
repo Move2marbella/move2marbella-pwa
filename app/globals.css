@@ -82,3 +82,184 @@ button {
   outline: 3px solid rgba(186, 148, 86, 0.35);
   outline-offset: 4px;
 }
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+  }
+
+  main:has(.decision-guide-printable) > section:not(.decision-guide-printable) {
+    display: none !important;
+  }
+
+  .decision-guide-printable {
+    max-width: none !important;
+    padding: 0 !important;
+    color-adjust: exact;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .decision-guide-print-button {
+    display: none !important;
+  }
+
+  .decision-guide-sheet {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .decision-guide-sheet-header {
+    padding: 5mm 7mm !important;
+  }
+
+  .decision-guide-sheet-header h2 {
+    margin-top: 3mm !important;
+    font-size: 25pt !important;
+  }
+
+  .decision-guide-sheet-header img {
+    width: 46mm !important;
+  }
+
+  .decision-guide-sheet-header p {
+    margin-top: 2.5mm !important;
+    padding-top: 2.5mm !important;
+    font-size: 8.5pt !important;
+    line-height: 1.35 !important;
+  }
+
+  .decision-guide-matrix {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3mm !important;
+    padding: 3mm !important;
+  }
+
+  .decision-guide-matrix article > header {
+    padding: 2.5mm 4mm !important;
+  }
+
+  .decision-guide-matrix article > header h3 {
+    font-size: 13pt !important;
+  }
+
+  .decision-guide-factor-list li {
+    grid-template-columns: 8mm 1fr !important;
+    gap: 2mm !important;
+    padding: 1.55mm 3mm !important;
+  }
+
+  .decision-guide-factor-list li > span:first-child {
+    width: 7mm !important;
+    height: 7mm !important;
+    font-size: 6.5pt !important;
+  }
+
+  .decision-guide-factor-list strong {
+    font-size: 7.5pt !important;
+    line-height: 1.15 !important;
+  }
+
+  .decision-guide-factor-list strong + span {
+    margin-top: 0.5mm !important;
+    font-size: 6.8pt !important;
+    line-height: 1.25 !important;
+  }
+
+  .decision-guide-factor-list + p {
+    padding: 2mm 4mm !important;
+    font-size: 7pt !important;
+    line-height: 1.25 !important;
+  }
+
+  .decision-guide-priority {
+    margin: 0 3mm !important;
+    padding: 2mm 4mm !important;
+  }
+
+  .decision-guide-priority > div {
+    grid-template-columns: auto 1fr !important;
+    gap: 4mm !important;
+  }
+
+  .decision-guide-priority h3,
+  .decision-guide-priority p {
+    font-size: 8pt !important;
+    line-height: 1.3 !important;
+  }
+
+  .decision-guide-comparison {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 2mm !important;
+    padding: 2mm 3mm 0 !important;
+  }
+
+  .decision-guide-comparison > div {
+    padding: 2mm 3mm !important;
+    font-size: 7pt !important;
+  }
+
+  .decision-guide-comparison strong,
+  .decision-guide-comparison span {
+    font-size: 7.5pt !important;
+  }
+
+  .decision-guide-order {
+    padding: 2mm 3mm !important;
+  }
+
+  .decision-guide-order > p {
+    font-size: 6.5pt !important;
+  }
+
+  .decision-guide-order ol {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    margin-top: 1mm !important;
+  }
+
+  .decision-guide-order li {
+    min-height: 15mm !important;
+    padding: 2mm !important;
+  }
+
+  .decision-guide-order li span:first-child {
+    font-size: 10pt !important;
+  }
+
+  .decision-guide-order li span:last-child {
+    margin-top: 1mm !important;
+    font-size: 6.5pt !important;
+    line-height: 1.15 !important;
+  }
+
+  .decision-guide-quote {
+    padding: 2.5mm 5mm !important;
+    font-size: 8pt !important;
+    line-height: 1.3 !important;
+  }
+
+  .decision-guide-quote footer {
+    margin-top: 1mm !important;
+    font-size: 6pt !important;
+  }
+
+  .decision-guide-print-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .decision-guide-printable p,
+  .decision-guide-printable li,
+  .decision-guide-printable blockquote {
+    orphans: 3;
+    widows: 3;
+  }
+}

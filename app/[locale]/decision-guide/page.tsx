@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContentPageShell } from "../../components/content-page-shell";
+import { PropertyDecisionGuideContent } from "../../components/property-decision-guide-content";
 import {
   DecisionGuide,
   type EvaluationProperty,
@@ -80,6 +81,7 @@ export default async function DecisionGuidePage({
           initialProperty={initialProperty}
         />
       </section>
+      {locale === "en" ? <PropertyDecisionGuideContent /> : null}
     </ContentPageShell>
   );
 }
