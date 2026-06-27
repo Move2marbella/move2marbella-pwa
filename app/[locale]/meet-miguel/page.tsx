@@ -8,6 +8,7 @@ import { getLocale, getLocaleBasePath, locales, type Locale } from "../../i18n/t
 import { SITE_URL, getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
 
 type MeetMiguelPageProps = {
+  embedded?: boolean;
   params: Promise<{ locale: string }>;
 };
 
@@ -375,19 +376,16 @@ function Section({
   );
 }
 
-export default async function MeetMiguelPage({ params }: MeetMiguelPageProps) {
+export default async function MeetMiguelPage({
+  embedded = false,
+  params,
+}: MeetMiguelPageProps) {
   const { locale: localeParam } = await params;
   const locale = getLocale(localeParam);
   const page = meetContent[locale];
 
-  return (
-    <ContentPageShell
-      locale={locale}
-      getLanguageHref={getMeetMiguelHref}
-      eyebrow={page.eyebrow}
-      title={page.title}
-      body={page.body}
-    >
+  const sections = (
+    <>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -548,6 +546,37 @@ export default async function MeetMiguelPage({ params }: MeetMiguelPageProps) {
           </Link>
         </section>
       ) : null}
+    </>
+  );
+
+  if (embedded) {
+    return (
+      <section id="meet-miguel" className="border-t border-[#ded4c2] bg-[#f3ede3] pt-4">
+        <section className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-8 lg:grid-cols-[1fr_1.35fr] lg:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
+              {page.eyebrow}
+            </p>
+            <h2 className="mt-3 text-4xl font-semibold leading-tight text-[#0f253d] sm:text-5xl">
+              {page.title}
+            </h2>
+          </div>
+          <p className="text-lg leading-8 text-[#4b4740]">{page.body}</p>
+        </section>
+        {sections}
+      </section>
+    );
+  }
+
+  return (
+    <ContentPageShell
+      locale={locale}
+      getLanguageHref={getMeetMiguelHref}
+      eyebrow={page.eyebrow}
+      title={page.title}
+      body={page.body}
+    >
+      {sections}
     </ContentPageShell>
   );
 }

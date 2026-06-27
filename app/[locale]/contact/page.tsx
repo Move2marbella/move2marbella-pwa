@@ -5,6 +5,7 @@ import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import { getGeneralWhatsAppUrl } from "../../data/properties";
 import { getLocale, getLocaleBasePath, locales, type Locale } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
+import MeetMiguelPage from "../meet-miguel/page";
 
 type ContactPageProps = {
   params: Promise<{ locale: string }>;
@@ -223,6 +224,10 @@ export default async function ContactPage({ params }: ContactPageProps) {
           </p>
         </Link>
       </section>
+      {await MeetMiguelPage({
+        embedded: true,
+        params: Promise.resolve({ locale }),
+      })}
     </ContentPageShell>
   );
 }

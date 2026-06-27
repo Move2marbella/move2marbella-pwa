@@ -15,7 +15,6 @@ const navLabels: Record<
     buyingGuide: string;
     contact: string;
     decisionGuide: string;
-    meetMiguel: string;
     menu: string;
     properties: string;
     valuation: string;
@@ -26,7 +25,6 @@ const navLabels: Record<
     buyingGuide: "Kaufratgeber",
     contact: "Kontakt",
     decisionGuide: "Entscheidungshilfe",
-    meetMiguel: "Miguel Zsolt",
     menu: "MENÜ",
     properties: "Immobilien",
     valuation: "Bewertung",
@@ -36,7 +34,6 @@ const navLabels: Record<
     buyingGuide: "Buying Guide",
     contact: "Contact",
     decisionGuide: "Decision Guide",
-    meetMiguel: "Meet Miguel Zsolt",
     menu: "MENU",
     properties: "Properties",
     valuation: "Valuation",
@@ -46,7 +43,6 @@ const navLabels: Record<
     buyingGuide: "Guía de compra",
     contact: "Contacto",
     decisionGuide: "Guía de decisión",
-    meetMiguel: "Miguel Zsolt",
     menu: "MENÚ",
     properties: "Propiedades",
     valuation: "Tasación",
@@ -56,7 +52,6 @@ const navLabels: Record<
     buyingGuide: "Guide d'achat",
     contact: "Contact",
     decisionGuide: "Guide de décision",
-    meetMiguel: "Miguel Zsolt",
     menu: "MENU",
     properties: "Biens",
     valuation: "Estimation",
@@ -66,7 +61,6 @@ const navLabels: Record<
     buyingGuide: "Vásárlási útmutató",
     contact: "Kapcsolat",
     decisionGuide: "Döntési útmutató",
-    meetMiguel: "Horváth Zsolt",
     menu: "MENÜ",
     properties: "Ingatlanok",
     valuation: "Értékbecslés",
@@ -76,7 +70,6 @@ const navLabels: Record<
     buyingGuide: "Przewodnik zakupu",
     contact: "Kontakt",
     decisionGuide: "Przewodnik decyzji",
-    meetMiguel: "Miguel Zsolt",
     menu: "MENU",
     properties: "Nieruchomości",
     valuation: "Wycena",
@@ -86,18 +79,11 @@ const navLabels: Record<
     buyingGuide: "Гид покупателя",
     contact: "Контакт",
     decisionGuide: "Гид по выбору",
-    meetMiguel: "Miguel Zsolt",
     menu: "МЕНЮ",
     properties: "Недвижимость",
     valuation: "Оценка",
   },
 };
-
-function getMeetMiguelHref(locale: Locale) {
-  return locale === "hu"
-    ? "/hu/horvath-zsolt-marbella"
-    : `${getLocaleBasePath(locale)}/meet-miguel`;
-}
 
 export function MainNav({ locale, tone = "dark" }: MainNavProps) {
   const basePath = getLocaleBasePath(locale);
@@ -121,7 +107,6 @@ export function MainNav({ locale, tone = "dark" }: MainNavProps) {
     { href: `${basePath}/areas`, label: labels.areas },
     { href: `${basePath}/buying-guide`, label: labels.buyingGuide },
     { href: `${basePath}/decision-guide`, label: labels.decisionGuide },
-    { href: getMeetMiguelHref(locale), label: labels.meetMiguel },
     { href: `${basePath}/contact`, label: labels.contact },
   ];
 
