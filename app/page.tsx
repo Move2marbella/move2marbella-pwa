@@ -12,6 +12,7 @@ import {
   fetchPropertyTypes,
   bedroomOptions,
   getPropertyCityFilterIds,
+  getFeaturedRotationTypeIds,
   getPropertyTypeFilterIds,
   getSimplifiedPropertyCityOptions,
   getSimplifiedPropertyTypeOptions,
@@ -84,11 +85,13 @@ export async function HomeContent({
     reference = "",
     sea_view = "",
     property_type: selectedPropertyType = "",
-    sort = "reference_desc",
+    sort = "featured",
   } = await searchParams;
   const selectedReference = reference.trim().toUpperCase();
   const selectedSort: PropertySortOrder =
-    sort === "price_asc" || sort === "price_desc" ? sort : "reference_desc";
+    sort === "price_asc" || sort === "price_desc" || sort === "reference_desc"
+      ? sort
+      : "featured";
   const hasBeachfrontFilter = beachfront === "1";
   const hasHeatedPoolFilter = heated_pool === "1";
   const hasSeaViewFilter = sea_view === "1";
@@ -104,6 +107,7 @@ export async function HomeContent({
   ]);
   const propertyCityOptions = getSimplifiedPropertyCityOptions(propertyCities);
   const propertyTypeOptions = getSimplifiedPropertyTypeOptions(propertyTypes);
+  const featuredRotationTypeIds = getFeaturedRotationTypeIds(propertyTypes);
   const parsedQuery = parsePropertyQuery(
     searchQuery,
     propertyCities,
@@ -142,6 +146,8 @@ export async function HomeContent({
     reference: selectedReference || undefined,
     seaView: hasSeaViewFilter || parsedQuery.keywords.includes("sea views"),
     propertyTypes: propertyTypeFilterIds,
+    featuredApartmentTypeIds: featuredRotationTypeIds.apartment,
+    featuredVillaTypeIds: featuredRotationTypeIds.villa,
     sort: selectedSort,
   });
   const { properties, total, totalPages } = result;
@@ -571,7 +577,7 @@ export async function HomeContent({
                       defaultValue={selectedSort}
                       className="h-10 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-sm outline-none"
                     >
-                      <option value="reference_desc">{t.defaultSort}</option>
+                      <option value="featured">{t.defaultSort}</option>
                       <option value="price_desc">{t.priceHighToLow}</option>
                       <option value="price_asc">{t.priceLowToHigh}</option>
                     </select>

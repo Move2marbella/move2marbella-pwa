@@ -131,6 +131,8 @@ export type SearchOption = {
 type PropertyFilters = {
   beachFront?: boolean;
   bedrooms?: number;
+  featuredApartmentTypeIds?: string[];
+  featuredVillaTypeIds?: string[];
   heatedPool?: boolean;
   keywords?: string[];
   maxPrice?: number;
@@ -143,7 +145,11 @@ type PropertyFilters = {
   sort?: PropertySortOrder;
 };
 
-export type PropertySortOrder = "price_asc" | "price_desc" | "reference_desc";
+export type PropertySortOrder =
+  | "featured"
+  | "price_asc"
+  | "price_desc"
+  | "reference_desc";
 
 type PropertySearchIndexEntry = {
   bedrooms: number;
@@ -407,6 +413,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
       const sortedEntries = sortPropertySearchEntries(
         filteredEntries,
         filters.sort ?? "reference_desc",
+        filters,
       );
       const page = filters.page ?? 1;
       const candidateLimit = filters.keywords?.length ? 36 : limit;
@@ -496,7 +503,15 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
 function sortPropertySearchEntries(
   properties: PropertySearchIndexEntry[],
   sort: PropertySortOrder,
+  filters: Pick<
+    PropertyFilters,
+    "featuredApartmentTypeIds" | "featuredVillaTypeIds"
+  > = {},
 ) {
+  if (sort === "featured") {
+    return buildFeaturedRotation(properties, filters);
+  }
+
   return [...properties].sort((left, right) => {
     if (sort === "reference_desc") {
       return getReferenceNumber(right.ref) - getReferenceNumber(left.ref);
@@ -508,8 +523,87 @@ function sortPropertySearchEntries(
   });
 }
 
+function getDailyRotationValue(reference: string) {
+  const date = new Date().toISOString().slice(0, 10);
+  const input = `${date}:${reference}`;
+  let hash = 2166136261;
+
+  for (let index = 0; index < input.length; index += 1) {
+    hash ^= input.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return (hash >>> 0) / 4294967295;
+}
+
+function buildFeaturedRotation(
+  properties: PropertySearchIndexEntry[],
+  filters: Pick<
+    PropertyFilters,
+    "featuredApartmentTypeIds" | "featuredVillaTypeIds"
+  >,
+) {
+  const apartmentIds = new Set(
+    (filters.featuredApartmentTypeIds ?? []).map(Number),
+  );
+  const villaIds = new Set((filters.featuredVillaTypeIds ?? []).map(Number));
+  const references = properties.map((property) => getReferenceNumber(property.ref));
+  const minimumReference = Math.min(...references);
+  const maximumReference = Math.max(...references);
+  const referenceRange = Math.max(1, maximumReference - minimumReference);
+
+  function rotationScore(property: PropertySearchIndexEntry, randomWeight: number) {
+    const recency =
+      (getReferenceNumber(property.ref) - minimumReference) / referenceRange;
+    return getDailyRotationValue(property.ref) * randomWeight + recency * (1 - randomWeight);
+  }
+
+  const premium: PropertySearchIndexEntry[] = [];
+  const general: PropertySearchIndexEntry[] = [];
+
+  for (const property of properties) {
+    const isApartment = property.typeIds.some((id) => apartmentIds.has(id));
+    const isVilla = property.typeIds.some((id) => villaIds.has(id));
+    const isLuxuryApartment =
+      isApartment && property.price >= 2_000_000 && property.price <= 4_000_000;
+    const isLuxuryVilla = isVilla && property.price >= 3_000_000;
+
+    (isLuxuryApartment || isLuxuryVilla ? premium : general).push(property);
+  }
+
+  premium.sort((left, right) => rotationScore(right, 0.8) - rotationScore(left, 0.8));
+  general.sort((left, right) => rotationScore(right, 0.65) - rotationScore(left, 0.65));
+
+  const rotated: PropertySearchIndexEntry[] = [];
+  let premiumIndex = 0;
+  let generalIndex = 0;
+
+  while (premiumIndex < premium.length || generalIndex < general.length) {
+    for (let slot = 0; slot < 2 && premiumIndex < premium.length; slot += 1) {
+      rotated.push(premium[premiumIndex]);
+      premiumIndex += 1;
+    }
+
+    if (generalIndex < general.length) {
+      rotated.push(general[generalIndex]);
+      generalIndex += 1;
+    }
+
+    if (premiumIndex >= premium.length && generalIndex < general.length) {
+      rotated.push(...general.slice(generalIndex));
+      break;
+    }
+  }
+
+  return rotated;
+}
+
 function sortProperties(properties: Property[], sort: PropertySortOrder) {
   return [...properties].sort((left, right) => {
+    if (sort === "featured") {
+      return getDailyRotationValue(right.ref) - getDailyRotationValue(left.ref);
+    }
+
     if (sort === "reference_desc") {
       return getReferenceNumber(right.ref) - getReferenceNumber(left.ref);
     }
@@ -1114,6 +1208,15 @@ export function getPropertyTypeFilterIds(
   }
 
   return Array.from(ids);
+}
+
+export function getFeaturedRotationTypeIds(
+  propertyTypes: PropertyTypeOption[],
+) {
+  return {
+    apartment: getPropertyTypeFilterIds("apartment", propertyTypes),
+    villa: getPropertyTypeFilterIds("detached-villa", propertyTypes),
+  };
 }
 
 export function getPropertyCityFilterIds(
