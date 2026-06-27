@@ -17,6 +17,7 @@ import {
   fetchNearbyPlaces,
   groupNearbyPlaces,
 } from "../../data/nearby-places";
+import { getDecisionGuideCopy } from "../../data/decision-guide";
 import { Locale, getLocaleBasePath, getTranslations } from "../../i18n/translations";
 import {
   SITE_URL,
@@ -139,6 +140,7 @@ export async function PropertyDetailContent({
   searchParams,
 }: PropertyDetailContentProps) {
   const t = getTranslations(locale);
+  const decisionCopy = getDecisionGuideCopy(locale);
   const basePath = getLocaleBasePath(locale);
   const favouriteLabels = {
     clear: t.clear,
@@ -345,6 +347,13 @@ export async function PropertyDetailContent({
             className="mt-3 flex h-12 w-full items-center justify-center"
             labels={toggleLabels}
           />
+
+          <Link
+            href={`${basePath}/decision-guide?ref=${encodeURIComponent(property.ref)}&wp_id=${encodeURIComponent(String(property.id))}`}
+            className="mt-3 flex min-h-12 w-full items-center justify-center rounded-[6px] border border-[#ba9456] bg-white px-5 py-3 text-center text-sm font-bold uppercase tracking-wide text-[#0f253d] transition hover:bg-[#f2eadc]"
+          >
+            {decisionCopy.evaluateThisProperty}
+          </Link>
         </aside>
       </section>
 

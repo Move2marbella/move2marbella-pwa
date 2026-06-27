@@ -33,6 +33,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.65,
       },
       {
+        url: `${SITE_URL}${getLocalizedPath(locale, "/decision-guide")}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      },
+      {
         url: `${SITE_URL}${getLocalizedPath(locale, "/contact")}`,
         lastModified: now,
         changeFrequency: "monthly" as const,

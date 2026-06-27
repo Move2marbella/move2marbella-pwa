@@ -44,7 +44,7 @@ export function LanguageSwitcher({
   return (
     <nav
       aria-label="Language selector"
-      className={`flex gap-2 overflow-x-auto pb-1 ${className}`}
+      className={`flex flex-wrap gap-2 pb-1 ${className}`}
     >
       {locales.map((locale) => {
         const href =

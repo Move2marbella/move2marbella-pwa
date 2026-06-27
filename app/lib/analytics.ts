@@ -2,6 +2,8 @@
 
 export type AnalyticsEventName =
   | "app_open"
+  | "decision_guide_completed"
+  | "decision_guide_started"
   | "favourite_added"
   | "favourite_removed"
   | "favourites_cleared"

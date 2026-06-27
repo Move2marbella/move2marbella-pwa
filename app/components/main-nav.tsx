@@ -14,6 +14,7 @@ const navLabels: Record<
     areas: string;
     buyingGuide: string;
     contact: string;
+    decisionGuide: string;
     meetMiguel: string;
     menu: string;
     properties: string;
@@ -24,6 +25,7 @@ const navLabels: Record<
     areas: "Gebiete",
     buyingGuide: "Kaufratgeber",
     contact: "Kontakt",
+    decisionGuide: "Entscheidungshilfe",
     meetMiguel: "Miguel Zsolt",
     menu: "MENÜ",
     properties: "Immobilien",
@@ -33,6 +35,7 @@ const navLabels: Record<
     areas: "Areas",
     buyingGuide: "Buying Guide",
     contact: "Contact",
+    decisionGuide: "Decision Guide",
     meetMiguel: "Meet Miguel Zsolt",
     menu: "MENU",
     properties: "Properties",
@@ -42,6 +45,7 @@ const navLabels: Record<
     areas: "Zonas",
     buyingGuide: "Guía de compra",
     contact: "Contacto",
+    decisionGuide: "Guía de decisión",
     meetMiguel: "Miguel Zsolt",
     menu: "MENÚ",
     properties: "Propiedades",
@@ -51,6 +55,7 @@ const navLabels: Record<
     areas: "Secteurs",
     buyingGuide: "Guide d'achat",
     contact: "Contact",
+    decisionGuide: "Guide de décision",
     meetMiguel: "Miguel Zsolt",
     menu: "MENU",
     properties: "Biens",
@@ -60,6 +65,7 @@ const navLabels: Record<
     areas: "Környékek",
     buyingGuide: "Vásárlási útmutató",
     contact: "Kapcsolat",
+    decisionGuide: "Döntési útmutató",
     meetMiguel: "Horváth Zsolt",
     menu: "MENÜ",
     properties: "Ingatlanok",
@@ -69,6 +75,7 @@ const navLabels: Record<
     areas: "Lokalizacje",
     buyingGuide: "Przewodnik zakupu",
     contact: "Kontakt",
+    decisionGuide: "Przewodnik decyzji",
     meetMiguel: "Miguel Zsolt",
     menu: "MENU",
     properties: "Nieruchomości",
@@ -78,6 +85,7 @@ const navLabels: Record<
     areas: "Районы",
     buyingGuide: "Гид покупателя",
     contact: "Контакт",
+    decisionGuide: "Гид по выбору",
     meetMiguel: "Miguel Zsolt",
     menu: "МЕНЮ",
     properties: "Недвижимость",
@@ -112,20 +120,21 @@ export function MainNav({ locale, tone = "dark" }: MainNavProps) {
     { href: `${basePath}/valuation`, label: labels.valuation },
     { href: `${basePath}/areas`, label: labels.areas },
     { href: `${basePath}/buying-guide`, label: labels.buyingGuide },
+    { href: `${basePath}/decision-guide`, label: labels.decisionGuide },
     { href: getMeetMiguelHref(locale), label: labels.meetMiguel },
     { href: `${basePath}/contact`, label: labels.contact },
   ];
 
   return (
     <nav aria-label="Main navigation" className="flex items-center gap-2">
-      <div className="hidden flex-wrap items-center justify-end gap-1 xl:flex">
+      <div className="hidden flex-wrap items-center justify-end gap-1 2xl:flex">
         {navItems.map((item) => (
           <Link key={item.href} href={item.href} className={linkClass}>
             {item.label}
           </Link>
         ))}
       </div>
-      <details className="relative xl:hidden">
+      <details className="relative 2xl:hidden">
         <summary className={menuButtonClass}>{labels.menu}</summary>
         <div className="absolute right-0 z-50 w-64">
           <div className={panelClass}>
