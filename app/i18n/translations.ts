@@ -1,8 +1,10 @@
+import { editableCopy, mergeTranslation } from "../lib/editable-copy";
+
 export const locales = ["en", "es", "fr", "de", "ru", "pl", "hu"] as const;
 
 export type Locale = (typeof locales)[number];
 
-type Translation = {
+export type Translation = {
   any: string;
   anyProperty: string;
   anyReference: string;
@@ -1125,7 +1127,7 @@ export function getLocale(value?: string): Locale {
 }
 
 export function getTranslations(locale: Locale) {
-  return translations[locale];
+  return mergeTranslation(translations[locale], editableCopy[locale]);
 }
 
 export function getLocaleBasePath(locale: Locale) {

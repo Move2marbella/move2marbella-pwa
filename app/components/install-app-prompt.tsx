@@ -112,11 +112,12 @@ export function InstallAppPrompt() {
     useState<InstallPromptEvent | null>(null);
   const [visible, setVisible] = useState(false);
   const pathname = usePathname();
+  const isAdmin = pathname.startsWith("/admin");
   const locale = getPromptLocale(pathname);
   const isIos = isIosDevice();
 
   useEffect(() => {
-    if (isStandalone() || wasRecentlyDismissed()) {
+    if (isAdmin || isStandalone() || wasRecentlyDismissed()) {
       return;
     }
 
@@ -148,7 +149,7 @@ export function InstallAppPrompt() {
       );
       window.clearTimeout(promptTimer);
     };
-  }, [isIos]);
+  }, [isAdmin, isIos]);
 
   function dismiss() {
     window.localStorage.setItem(DISMISSED_STORAGE_KEY, String(Date.now()));
@@ -180,7 +181,7 @@ export function InstallAppPrompt() {
     setVisible(false);
   }
 
-  if (!visible) {
+  if (isAdmin || !visible) {
     return null;
   }
 
