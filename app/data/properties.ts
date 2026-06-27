@@ -65,6 +65,7 @@ type WordPressProperty = {
     fave_property_id?: string[];
     fave_property_bedrooms?: string[];
     fave_property_price?: string[];
+    own_property?: string[];
   };
   property_type?: number[];
 };
@@ -158,6 +159,7 @@ type PropertySearchIndexEntry = {
   hasHeatedPool: boolean;
   hasSeaViews: boolean;
   id: number;
+  isOwnProperty: boolean;
   price: number;
   ref: string;
   typeIds: number[];
@@ -558,10 +560,16 @@ function buildFeaturedRotation(
     return getDailyRotationValue(property.ref) * randomWeight + recency * (1 - randomWeight);
   }
 
+  const own: PropertySearchIndexEntry[] = [];
   const premium: PropertySearchIndexEntry[] = [];
   const general: PropertySearchIndexEntry[] = [];
 
   for (const property of properties) {
+    if (property.isOwnProperty) {
+      own.push(property);
+      continue;
+    }
+
     const isApartment = property.typeIds.some((id) => apartmentIds.has(id));
     const isVilla = property.typeIds.some((id) => villaIds.has(id));
     const isLuxuryApartment =
@@ -571,14 +579,25 @@ function buildFeaturedRotation(
     (isLuxuryApartment || isLuxuryVilla ? premium : general).push(property);
   }
 
+  own.sort((left, right) => rotationScore(right, 0.75) - rotationScore(left, 0.75));
   premium.sort((left, right) => rotationScore(right, 0.8) - rotationScore(left, 0.8));
   general.sort((left, right) => rotationScore(right, 0.65) - rotationScore(left, 0.65));
 
   const rotated: PropertySearchIndexEntry[] = [];
+  let ownIndex = 0;
   let premiumIndex = 0;
   let generalIndex = 0;
 
-  while (premiumIndex < premium.length || generalIndex < general.length) {
+  while (
+    ownIndex < own.length ||
+    premiumIndex < premium.length ||
+    generalIndex < general.length
+  ) {
+    if (ownIndex < own.length) {
+      rotated.push(own[ownIndex]);
+      ownIndex += 1;
+    }
+
     for (let slot = 0; slot < 2 && premiumIndex < premium.length; slot += 1) {
       rotated.push(premium[premiumIndex]);
       premiumIndex += 1;
@@ -589,7 +608,11 @@ function buildFeaturedRotation(
       generalIndex += 1;
     }
 
-    if (premiumIndex >= premium.length && generalIndex < general.length) {
+    if (
+      ownIndex >= own.length &&
+      premiumIndex >= premium.length &&
+      generalIndex < general.length
+    ) {
       rotated.push(...general.slice(generalIndex));
       break;
     }
@@ -667,6 +690,7 @@ async function fetchPropertySearchIndex(includeFeatureData = false) {
       "property_meta.fave_property_id",
       "property_meta.fave_property_price",
       "property_meta.fave_property_bedrooms",
+      "property_meta.own_property",
       includeFeatureData ? "property_meta._property_import_data" : "",
     ]
       .filter(Boolean)
@@ -712,6 +736,7 @@ async function fetchPropertySearchIndex(includeFeatureData = false) {
         hasHeatedPool: includeFeatureData ? getIndexedPropertyHasHeatedPool(post) : false,
         hasSeaViews: includeFeatureData ? getIndexedPropertyHasSeaViews(post) : false,
         id: post.id,
+        isOwnProperty: post.property_meta?.own_property?.[0] === "1",
         price: getRawPrice(post.property_meta?.fave_property_price?.[0] ?? "0"),
         ref,
         typeIds: post.property_type ?? [],
