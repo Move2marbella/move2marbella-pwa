@@ -140,7 +140,7 @@ export function MobileActionBar() {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-[70] border-t border-[#ded4c2] bg-[#fbf8f2]/95 px-3 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 shadow-[0_-10px_30px_rgba(15,37,61,0.14)] backdrop-blur transition-transform duration-300 ease-out xl:hidden ${
+      className={`site-mobile-action-bar fixed inset-x-0 bottom-0 z-[70] border-t border-[#ded4c2] bg-[#fbf8f2]/95 px-3 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 shadow-[0_-10px_30px_rgba(15,37,61,0.14)] backdrop-blur transition-transform duration-300 ease-out xl:hidden ${
         isVisible ? "translate-y-0" : "translate-y-full"
       }`}
     >

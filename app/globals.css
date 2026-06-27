@@ -85,21 +85,39 @@ button {
 
 @media print {
   @page {
-    size: A4 landscape;
+    size: A4 portrait;
     margin: 10mm;
   }
 
   html,
   body {
+    height: auto !important;
+    min-height: 0 !important;
     background: #ffffff !important;
+  }
+
+  body:has(.decision-guide-printable) {
+    display: block !important;
+    min-height: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  main:has(.decision-guide-printable) {
+    min-height: 0 !important;
   }
 
   main:has(.decision-guide-printable) > section:not(.decision-guide-printable) {
     display: none !important;
   }
 
+  body:has(.decision-guide-printable) .site-mobile-action-bar {
+    display: none !important;
+  }
+
   .decision-guide-printable {
+    width: 190mm !important;
     max-width: none !important;
+    margin: 0 auto !important;
     padding: 0 !important;
     color-adjust: exact;
     print-color-adjust: exact;
@@ -111,6 +129,9 @@ button {
   }
 
   .decision-guide-sheet {
+    width: 190mm !important;
+    max-height: 277mm !important;
+    overflow: hidden !important;
     break-inside: avoid;
     page-break-inside: avoid;
     border: 0 !important;
