@@ -1,34 +1,62 @@
 "use client";
 
 import Image from "next/image";
+import {
+  AirVent,
+  Armchair,
+  Bath,
+  Building2,
+  CircleDollarSign,
+  CookingPot,
+  DoorOpen,
+  Footprints,
+  KeyRound,
+  LayoutDashboard,
+  Lightbulb,
+  MapPin,
+  PaintRoller,
+  PanelsTopLeft,
+  Printer,
+  Scale,
+  Trees,
+  Waves,
+  type LucideIcon,
+} from "lucide-react";
 
 type GuideItem = {
+  icon: LucideIcon;
   title: string;
   description: string;
 };
 
 const immutableFeatures: GuideItem[] = [
   {
+    icon: MapPin,
     title: "Location & micro-location",
     description: "The neighbourhood, complex and exact position define value today and tomorrow.",
   },
   {
+    icon: Waves,
     title: "Sea view",
     description: "Open sea and panoramic views are scarce, difficult to replicate and command a premium.",
   },
   {
+    icon: Trees,
     title: "Surroundings",
     description: "Density, green space, noise, orientation and neighbourhood character are permanent.",
   },
   {
+    icon: Building2,
     title: "Community quality",
     description: "Gardens, security, pools, maintenance and management shape everyday ownership.",
   },
   {
+    icon: Footprints,
     title: "Walkability",
     description: "Convenient access to the beach, restaurants, shops and services supports demand.",
   },
   {
+    icon: KeyRound,
     title: "Rental potential / tourist licence possibility",
     description: "Demand, regulations and licence viability directly affect income potential.",
   },
@@ -36,43 +64,50 @@ const immutableFeatures: GuideItem[] = [
 
 const improvableFeatures: GuideItem[] = [
   {
+    icon: Bath,
     title: "Bathrooms",
     description: "Tiles, fittings, lighting and layout can be renewed after purchase.",
   },
   {
+    icon: CookingPot,
     title: "Kitchen & appliances",
     description: "Cabinetry, worktops, equipment and finishes can be upgraded or replaced.",
   },
   {
+    icon: AirVent,
     title: "Air conditioning & heating",
     description: "Modern systems and smart controls can improve comfort and efficiency.",
   },
   {
+    icon: DoorOpen,
     title: "Windows & doors",
     description: "High-quality replacements can improve insulation, comfort and appearance.",
   },
   {
+    icon: PaintRoller,
     title: "Flooring, lighting & finishes",
     description: "A considered specification can transform the atmosphere and perceived quality.",
   },
   {
+    icon: Armchair,
     title: "Interior design",
     description: "Furniture, colour, storage and styling can be adapted to the buyer.",
   },
   {
+    icon: LayoutDashboard,
     title: "Layout optimisation where technically possible",
     description: "Selective changes can improve flow, storage and the use of available space.",
   },
 ];
 
-const decisionOrder = [
-  "Location",
-  "View",
-  "Community",
-  "Surroundings",
-  "Rental potential",
-  "Renovation potential",
-  "Price",
+const decisionOrder: { icon: LucideIcon; label: string }[] = [
+  { icon: MapPin, label: "Location" },
+  { icon: Waves, label: "View" },
+  { icon: Building2, label: "Community" },
+  { icon: Trees, label: "Surroundings" },
+  { icon: KeyRound, label: "Rental potential" },
+  { icon: PanelsTopLeft, label: "Renovation potential" },
+  { icon: CircleDollarSign, label: "Price" },
 ];
 
 function GuideList({ items, accent }: { items: GuideItem[]; accent: "navy" | "gold" }) {
@@ -84,13 +119,14 @@ function GuideList({ items, accent }: { items: GuideItem[]; accent: "navy" | "go
           className="decision-guide-print-card grid grid-cols-[2.4rem_1fr] gap-3 border-b border-[#0F2346]/10 px-5 py-4 last:border-b-0 sm:grid-cols-[2.75rem_1fr] sm:px-6"
         >
           <span
-            className={`flex h-9 w-9 items-center justify-center rounded-full border text-xs font-semibold sm:h-10 sm:w-10 ${
+            className={`decision-guide-factor-icon flex h-9 w-9 items-center justify-center rounded-full border sm:h-10 sm:w-10 ${
               accent === "navy"
                 ? "border-[#0F2346] text-[#0F2346]"
                 : "border-[#C8A15A] text-[#8A682D]"
             }`}
           >
-            {String(index + 1).padStart(2, "0")}
+            <item.icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.7} />
+            <span className="sr-only">{index + 1}</span>
           </span>
           <span>
             <strong className="block text-sm font-semibold uppercase leading-5 text-[#0F2346] sm:text-base">
@@ -119,6 +155,7 @@ export function PropertyDecisionGuideContent() {
           onClick={() => window.print()}
           className="inline-flex min-h-12 items-center justify-center bg-[#C8A15A] px-5 py-3 text-sm font-semibold uppercase tracking-[0.08em] text-[#0F2346] transition hover:bg-[#D8B974] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0F2346]"
         >
+          <Printer aria-hidden="true" className="mr-2 h-4 w-4" strokeWidth={1.8} />
           Print / Save as PDF
         </button>
       </div>
@@ -144,14 +181,17 @@ export function PropertyDecisionGuideContent() {
                 What you can&apos;t change should always come first.
               </p>
             </div>
-            <aside className="decision-guide-print-card border border-[#C8A15A]/55 bg-[#F7F5F2] p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#9A7534]">
-                The key message
-              </p>
-              <p className="mt-3 text-sm leading-6 text-[#0F2346]">
-                The best decision is not only about the property today. It is about its
-                lifestyle value, resilience and future potential.
-              </p>
+            <aside className="decision-guide-print-card grid grid-cols-[2.5rem_1fr] gap-4 border border-[#C8A15A]/55 bg-[#F7F5F2] p-5">
+              <Lightbulb aria-hidden="true" className="h-9 w-9 text-[#C8A15A]" strokeWidth={1.5} />
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#9A7534]">
+                  The key message
+                </p>
+                <p className="mt-3 text-sm leading-6 text-[#0F2346]">
+                  The best decision is not only about the property today. It is about its
+                  lifestyle value, resilience and future potential.
+                </p>
+              </div>
             </aside>
           </div>
           <p className="mt-6 max-w-5xl border-t border-[#0F2346]/10 pt-5 text-base leading-7 text-[#535B68]">
@@ -191,9 +231,10 @@ export function PropertyDecisionGuideContent() {
         </section>
 
         <section className="decision-guide-priority mx-4 bg-[#0F2346] px-5 py-5 text-white sm:mx-6 sm:px-7">
-          <div className="grid gap-3 lg:grid-cols-[auto_1fr] lg:items-center">
+          <div className="grid grid-cols-[2.5rem_1fr] gap-4 lg:grid-cols-[2.5rem_auto_1fr] lg:items-center">
+            <Scale aria-hidden="true" className="h-9 w-9 text-[#C8A15A]" strokeWidth={1.5} />
             <h3 className="text-lg font-semibold uppercase text-[#C8A15A]">The right priority</h3>
-            <p className="text-sm leading-6 text-white/88">
+            <p className="col-start-2 text-sm leading-6 text-white/88 lg:col-start-auto">
               Always choose a property based on the factors you cannot change. They
               determine long-term value and lifestyle.
             </p>
@@ -218,14 +259,15 @@ export function PropertyDecisionGuideContent() {
           <ol className="mt-3 grid grid-cols-2 border-l border-t border-[#0F2346]/12 sm:grid-cols-4 lg:grid-cols-7">
             {decisionOrder.map((item, index) => (
               <li
-                key={item}
+                key={item.label}
                 className="decision-guide-print-card min-h-24 border-b border-r border-[#0F2346]/12 bg-white p-4"
               >
-                <span className="text-xl font-semibold text-[#C8A15A]">
-                  {String(index + 1).padStart(2, "0")}
+                <span className="flex items-center justify-between text-[#C8A15A]">
+                  <item.icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.7} />
+                  <span className="text-sm font-semibold">{String(index + 1).padStart(2, "0")}</span>
                 </span>
                 <span className="mt-5 block text-xs font-semibold uppercase leading-5 text-[#0F2346]">
-                  {item}
+                  {item.label}
                 </span>
               </li>
             ))}

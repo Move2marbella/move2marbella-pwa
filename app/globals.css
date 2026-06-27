@@ -157,10 +157,14 @@ button {
     padding: 1.55mm 3mm !important;
   }
 
-  .decision-guide-factor-list li > span:first-child {
+  .decision-guide-factor-icon {
     width: 7mm !important;
     height: 7mm !important;
-    font-size: 6.5pt !important;
+  }
+
+  .decision-guide-factor-icon svg {
+    width: 4mm !important;
+    height: 4mm !important;
   }
 
   .decision-guide-factor-list strong {
@@ -230,8 +234,9 @@ button {
     padding: 2mm !important;
   }
 
-  .decision-guide-order li span:first-child {
-    font-size: 10pt !important;
+  .decision-guide-order li svg {
+    width: 3.5mm !important;
+    height: 3.5mm !important;
   }
 
   .decision-guide-order li span:last-child {
