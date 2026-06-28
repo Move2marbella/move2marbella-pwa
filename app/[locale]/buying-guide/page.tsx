@@ -4,12 +4,13 @@ import { JsonLd } from "../../components/json-ld";
 import { PurchaseCostCalculator } from "../../components/purchase-cost-calculator";
 import { getLocale, locales, type Locale } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
+import { getEditablePageContent } from "../../lib/editable-copy";
 
 type BuyingGuidePageProps = {
   params: Promise<{ locale: string }>;
 };
 
-const content = {
+export const buyingGuideContent = {
   en: {
     body:
       "A compact guide to the practical buying process on the Costa del Sol: réservation, arras contract, legal checks, notary completion and the real extra costs.",
@@ -471,7 +472,7 @@ const content = {
 };
 
 function getContent(locale: Locale) {
-  return content[locale];
+  return getEditablePageContent("buyingGuide", locale, buyingGuideContent[locale]);
 }
 
 export function generateStaticParams() {

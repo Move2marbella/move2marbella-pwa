@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { getLocale, getLocaleBasePath, locales, type Locale } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
+import { getEditablePageContent } from "../../lib/editable-copy";
 
 type AreasPageProps = {
   params: Promise<{ locale: string }>;
@@ -391,7 +392,7 @@ const localizedGuides: Partial<Record<Locale, AreaGuide[]>> = {
   ],
 };
 
-const areaContent: Record<
+export const areaContent: Record<
   Locale,
   {
     body: string;
@@ -585,7 +586,7 @@ export async function generateMetadata({
 }: AreasPageProps): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = getLocale(localeParam);
-  const page = areaContent[locale];
+  const page = getEditablePageContent("areas", locale, areaContent[locale]);
 
   return {
     title: page.title,
@@ -601,7 +602,7 @@ export async function generateMetadata({
 export default async function AreasPage({ params }: AreasPageProps) {
   const { locale: localeParam } = await params;
   const locale = getLocale(localeParam);
-  const page = areaContent[locale];
+  const page = getEditablePageContent("areas", locale, areaContent[locale]);
   const basePath = getLocaleBasePath(locale);
 
   return (

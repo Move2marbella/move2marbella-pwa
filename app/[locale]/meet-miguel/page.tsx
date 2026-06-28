@@ -6,6 +6,7 @@ import { ContentPageShell } from "../../components/content-page-shell";
 import { JsonLd } from "../../components/json-ld";
 import { getLocale, getLocaleBasePath, locales, type Locale } from "../../i18n/translations";
 import { SITE_URL, getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
+import { getEditablePageContent } from "../../lib/editable-copy";
 
 type MeetMiguelPageProps = {
   embedded?: boolean;
@@ -108,7 +109,7 @@ const enContent: MeetContent = {
   whyTitle: "Good advice is more than showing listings",
 };
 
-const meetContent: Record<Locale, MeetContent> = {
+export const meetContent: Record<Locale, MeetContent> = {
   en: enContent,
   es: {
     ...enContent,
@@ -332,7 +333,7 @@ export async function generateMetadata({
 }: MeetMiguelPageProps): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = getLocale(localeParam);
-  const page = meetContent[locale];
+  const page = getEditablePageContent("meetMiguel", locale, meetContent[locale]);
   const canonical =
     locale === "hu" ? "/hu/horvath-zsolt-marbella" : getLocalizedPath(locale, "/meet-miguel");
 
@@ -382,7 +383,7 @@ export default async function MeetMiguelPage({
 }: MeetMiguelPageProps) {
   const { locale: localeParam } = await params;
   const locale = getLocale(localeParam);
-  const page = meetContent[locale];
+  const page = getEditablePageContent("meetMiguel", locale, meetContent[locale]);
 
   const sections = (
     <>

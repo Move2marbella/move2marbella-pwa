@@ -1127,7 +1127,7 @@ export function getLocale(value?: string): Locale {
 }
 
 export function getTranslations(locale: Locale) {
-  return mergeTranslation(translations[locale], editableCopy[locale]);
+  return mergeTranslation(translations[locale], editableCopy.translations?.[locale]);
 }
 
 export function getLocaleBasePath(locale: Locale) {

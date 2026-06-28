@@ -5,13 +5,14 @@ import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import { getGeneralWhatsAppUrl } from "../../data/properties";
 import { getLocale, getLocaleBasePath, locales, type Locale } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
+import { getEditablePageContent } from "../../lib/editable-copy";
 import MeetMiguelPage from "../meet-miguel/page";
 
 type ContactPageProps = {
   params: Promise<{ locale: string }>;
 };
 
-const contactContent: Record<
+export const contactContent: Record<
   Locale,
   {
     body: string;
@@ -152,7 +153,7 @@ export async function generateMetadata({
 }: ContactPageProps): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = getLocale(localeParam);
-  const page = contactContent[locale];
+  const page = getEditablePageContent("contact", locale, contactContent[locale]);
 
   return {
     title: page.title,
@@ -168,7 +169,7 @@ export async function generateMetadata({
 export default async function ContactPage({ params }: ContactPageProps) {
   const { locale: localeParam } = await params;
   const locale = getLocale(localeParam);
-  const page = contactContent[locale];
+  const page = getEditablePageContent("contact", locale, contactContent[locale]);
   const basePath = getLocaleBasePath(locale);
 
   return (

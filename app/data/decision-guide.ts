@@ -1,4 +1,5 @@
 import type { Locale } from "../i18n/translations";
+import { getEditablePageContent } from "../lib/editable-copy";
 
 export type DecisionQuestionId =
   | "location"
@@ -519,5 +520,5 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
 };
 
 export function getDecisionGuideCopy(locale: Locale) {
-  return decisionGuideCopy[locale];
+  return getEditablePageContent("decisionGuide", locale, decisionGuideCopy[locale]);
 }

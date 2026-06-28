@@ -1,13 +1,24 @@
 import "server-only";
 
 import localEditableCopy from "../../content/editable-copy.json";
+import { areaContent } from "../[locale]/areas/page";
+import { buyingGuideContent } from "../[locale]/buying-guide/page";
+import { contactContent } from "../[locale]/contact/page";
+import { meetContent } from "../[locale]/meet-miguel/page";
+import { horvathZsoltContent } from "../[locale]/horvath-zsolt-marbella/page";
+import { decisionGuideCopy } from "../data/decision-guide";
 import {
   locales,
   translations,
   type Locale,
-  type Translation,
 } from "../i18n/translations";
-import type { EditableCopy, TranslationOverride } from "./editable-copy";
+import {
+  editablePageKeys,
+  mergeEditableContent,
+  type EditableCopy,
+  type EditablePageKey,
+  type TranslationOverride,
+} from "./editable-copy";
 
 const DEFAULT_REPOSITORY = "Move2marbella/move2marbella-pwa";
 const DEFAULT_BRANCH = "main";
@@ -20,12 +31,28 @@ type GitHubFileResponse = {
   sha?: string;
 };
 
+export type EditableContentSnapshot = {
+  pages: Record<EditablePageKey, Partial<Record<Locale, unknown>>>;
+  translations: Record<Locale, TranslationOverride>;
+};
+
+const pageDefaults: Record<
+  EditablePageKey,
+  Partial<Record<Locale, unknown>>
+> = {
+  areas: areaContent,
+  buyingGuide: buyingGuideContent,
+  contact: contactContent,
+  decisionGuide: decisionGuideCopy,
+  horvathZsolt: horvathZsoltContent,
+  meetMiguel: meetContent,
+};
+
 function getGitHubConfig() {
   return {
     branch: process.env.GITHUB_CONTENT_BRANCH?.trim() || DEFAULT_BRANCH,
     path: process.env.GITHUB_CONTENT_PATH?.trim() || DEFAULT_CONTENT_PATH,
-    repository:
-      process.env.GITHUB_CONTENT_REPO?.trim() || DEFAULT_REPOSITORY,
+    repository: process.env.GITHUB_CONTENT_REPO?.trim() || DEFAULT_REPOSITORY,
     token: process.env.GITHUB_CONTENT_TOKEN?.trim() || "",
   };
 }
@@ -42,19 +69,35 @@ function getGitHubFileUrl(repository: string, path: string, branch: string) {
   return `https://api.github.com/repos/${repository}/contents/${path}?ref=${encodeURIComponent(branch)}`;
 }
 
+function normalizeDocument(value: unknown): EditableCopy {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return {};
+  }
+
+  const input = value as Record<string, unknown>;
+
+  if ("translations" in input || "pages" in input) {
+    return input as EditableCopy;
+  }
+
+  return { translations: input as Partial<Record<Locale, TranslationOverride>> };
+}
+
 function parseGitHubContent(file: GitHubFileResponse): EditableCopy {
   if (!file.content || file.encoding !== "base64") {
     return {};
   }
 
-  return JSON.parse(Buffer.from(file.content, "base64").toString("utf8")) as EditableCopy;
+  return normalizeDocument(
+    JSON.parse(Buffer.from(file.content, "base64").toString("utf8")),
+  );
 }
 
-export function getEditableSnapshot(overrides: EditableCopy) {
+function getTranslationSnapshot(overrides: EditableCopy) {
   return Object.fromEntries(
     locales.map((locale) => {
       const base = translations[locale];
-      const override = overrides[locale];
+      const override = overrides.translations?.[locale];
 
       return [
         locale,
@@ -77,63 +120,114 @@ export function getEditableSnapshot(overrides: EditableCopy) {
   ) as Record<Locale, TranslationOverride>;
 }
 
+export function getEditableSnapshot(overrides: EditableCopy): EditableContentSnapshot {
+  const pages = Object.fromEntries(
+    editablePageKeys.map((pageKey) => [
+      pageKey,
+      Object.fromEntries(
+        locales.map((locale) => [
+          locale,
+          pageDefaults[pageKey][locale] === undefined
+            ? undefined
+            : mergeEditableContent(
+                pageDefaults[pageKey][locale],
+                overrides.pages?.[pageKey]?.[locale],
+              ),
+        ]),
+      ),
+    ]),
+  ) as Record<EditablePageKey, Partial<Record<Locale, unknown>>>;
+
+  return {
+    pages,
+    translations: getTranslationSnapshot(overrides),
+  };
+}
+
+function sanitizeByTemplate(template: unknown, candidate: unknown): unknown {
+  if (typeof template === "string") {
+    return typeof candidate === "string"
+      ? candidate.slice(0, MAX_FIELD_LENGTH)
+      : template;
+  }
+
+  if (Array.isArray(template)) {
+    const input = Array.isArray(candidate) ? candidate : [];
+    return template.map((item, index) => sanitizeByTemplate(item, input[index]));
+  }
+
+  if (template && typeof template === "object") {
+    const input =
+      candidate && typeof candidate === "object" && !Array.isArray(candidate)
+        ? (candidate as Record<string, unknown>)
+        : {};
+
+    return Object.fromEntries(
+      Object.entries(template as Record<string, unknown>).map(([key, value]) => [
+        key,
+        sanitizeByTemplate(value, input[key]),
+      ]),
+    );
+  }
+
+  return template;
+}
+
 export function sanitizeEditableCopy(value: unknown): EditableCopy {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new Error("Invalid content payload");
   }
 
   const input = value as Record<string, unknown>;
-  const sanitized: EditableCopy = {};
+  const translationInput =
+    input.translations && typeof input.translations === "object"
+      ? (input.translations as Record<string, unknown>)
+      : {};
+  const pageInput =
+    input.pages && typeof input.pages === "object"
+      ? (input.pages as Record<string, unknown>)
+      : {};
+  const sanitizedTranslations: Partial<Record<Locale, TranslationOverride>> = {};
 
   for (const locale of locales) {
-    const localeInput = input[locale];
-
-    if (!localeInput || typeof localeInput !== "object" || Array.isArray(localeInput)) {
-      continue;
-    }
-
-    const source = localeInput as Record<string, unknown>;
-    const target: TranslationOverride = {};
-
-    for (const [key, defaultValue] of Object.entries(translations[locale])) {
-      if (key === "valuation" || key === "searchExamples" || typeof defaultValue !== "string") {
-        continue;
-      }
-
-      const candidate = source[key];
-
-      if (typeof candidate === "string") {
-        (target as Record<string, unknown>)[key] = candidate.slice(0, MAX_FIELD_LENGTH);
-      }
-    }
-
-    const valuationInput = source.valuation;
-
-    if (valuationInput && typeof valuationInput === "object" && !Array.isArray(valuationInput)) {
-      const valuationTarget: Record<string, string> = {};
-
-      for (const key of Object.keys(translations[locale].valuation)) {
-        const candidate = (valuationInput as Record<string, unknown>)[key];
-
-        if (typeof candidate === "string") {
-          valuationTarget[key] = candidate.slice(0, MAX_FIELD_LENGTH);
-        }
-      }
-
-      target.valuation = valuationTarget as Partial<Translation["valuation"]>;
-    }
-
-    sanitized[locale] = target;
+    sanitizedTranslations[locale] = sanitizeByTemplate(
+      getTranslationSnapshot({})[locale],
+      translationInput[locale],
+    ) as TranslationOverride;
   }
 
-  return sanitized;
+  const sanitizedPages = Object.fromEntries(
+    editablePageKeys.map((pageKey) => {
+      const localeInput =
+        pageInput[pageKey] && typeof pageInput[pageKey] === "object"
+          ? (pageInput[pageKey] as Record<string, unknown>)
+          : {};
+
+      return [
+        pageKey,
+        Object.fromEntries(
+          locales
+            .filter((locale) => pageDefaults[pageKey][locale] !== undefined)
+            .map((locale) => [
+              locale,
+              sanitizeByTemplate(pageDefaults[pageKey][locale], localeInput[locale]),
+            ]),
+        ),
+      ];
+    }),
+  );
+
+  return {
+    pages: sanitizedPages,
+    translations: sanitizedTranslations,
+  };
 }
 
 export async function readEditableContent() {
   const config = getGitHubConfig();
 
   if (!config.token) {
-    const local = localEditableCopy as EditableCopy;
+    const local = normalizeDocument(localEditableCopy);
 
     return {
       branch: config.branch,
@@ -215,7 +309,9 @@ export async function publishEditableContent(value: unknown) {
 
   if (!publishResponse.ok) {
     const detail = await publishResponse.text();
-    throw new Error(`GitHub publish failed (${publishResponse.status}): ${detail.slice(0, 300)}`);
+    throw new Error(
+      `GitHub publish failed (${publishResponse.status}): ${detail.slice(0, 300)}`,
+    );
   }
 
   const result = (await publishResponse.json()) as {
