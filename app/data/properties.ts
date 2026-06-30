@@ -311,6 +311,8 @@ function normalizeProperty(post: WordPressProperty): Property | null {
     const subLocation = propertySubLocation ? `, ${propertySubLocation}` : "";
     const location = `${propertyLocation}${subLocation}, ${propertyArea}`;
     const hasSeaViews = propertyHasSeaViews(property);
+    const currentPrice =
+      post.property_meta?.fave_property_price?.[0]?.trim() || property.Price;
     const images = property.Pictures.Picture.map(
       (picture) => picture.PictureURL,
     );
@@ -324,8 +326,8 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       city: propertyLocation,
       cityIds: post.property_city ?? [],
       currency: property.Currency,
-      price: formatPrice(property.Currency, property.Price),
-      rawPrice: getRawPrice(property.Price),
+      price: formatPrice(property.Currency, currentPrice),
+      rawPrice: getRawPrice(currentPrice),
       beds: property.Bedrooms,
       baths: property.Bathrooms,
       builtArea: property.Built,
