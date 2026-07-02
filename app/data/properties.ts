@@ -355,6 +355,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   try {
+    const referenceFilters = getReferenceFilters(filters.reference);
     const usesClientSideFilters = Boolean(
         filters.maxPrice ||
         filters.beachFront ||
@@ -372,8 +373,8 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
       );
       const filteredEntries = index.filter((property) => {
         if (
-          filters.reference &&
-          property.ref.toUpperCase() !== filters.reference.trim().toUpperCase()
+          referenceFilters.size > 0 &&
+          !referenceFilters.has(property.ref.trim().toUpperCase())
         ) {
           return false;
         }
@@ -502,6 +503,15 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
       properties: [],
     };
   }
+}
+
+function getReferenceFilters(reference?: string) {
+  return new Set(
+    (reference ?? "")
+      .split(",")
+      .map((value) => value.trim().toUpperCase())
+      .filter(Boolean),
+  );
 }
 
 function sortPropertySearchEntries(

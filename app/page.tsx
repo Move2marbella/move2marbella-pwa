@@ -87,7 +87,14 @@ export async function HomeContent({
     property_type: selectedPropertyType = "",
     sort = "featured",
   } = await searchParams;
-  const selectedReference = reference.trim().toUpperCase();
+  const selectedReference = Array.from(
+    new Set(
+      reference
+        .split(",")
+        .map((value) => value.trim().toUpperCase())
+        .filter(Boolean),
+    ),
+  ).join(",");
   const selectedSort: PropertySortOrder =
     sort === "price_asc" || sort === "price_desc" || sort === "reference_desc"
       ? sort
