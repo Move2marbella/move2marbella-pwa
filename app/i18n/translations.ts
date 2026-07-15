@@ -6,6 +6,7 @@ export type Locale = (typeof locales)[number];
 
 export type Translation = {
   any: string;
+  anyListingType: string;
   anyProperty: string;
   anyReference: string;
   apiStatus: string;
@@ -27,10 +28,13 @@ export type Translation = {
   favourites: string;
   featuredProperties: string;
   defaultSort: string;
+  forSale: string;
   heatedPool: string;
   leadForm: string;
   liveSearchPreview: string;
+  listingType: string;
   location: string;
+  longTermRental: string;
   maxPrice: string;
   message: string;
   mapZone: string;
@@ -135,6 +139,7 @@ export type Translation = {
 export const translations: Record<Locale, Translation> = {
   en: {
     any: "Any",
+    anyListingType: "Any listing type",
     anyProperty: "Any property",
     anyReference: "Any reference",
     apiStatus: "API Status",
@@ -156,10 +161,13 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Favourites",
     featuredProperties: "Featured properties",
     defaultSort: "Recommended",
+    forSale: "For sale",
     heatedPool: "Heated Pool",
     leadForm: "Lead form",
     liveSearchPreview: "Live search preview",
+    listingType: "Listing type",
     location: "Location",
+    longTermRental: "Long term rental",
     maxPrice: "Max price",
     mustHave: "Must have",
     message: "Message",
@@ -276,6 +284,7 @@ export const translations: Record<Locale, Translation> = {
   },
   es: {
     any: "Cualquiera",
+    anyListingType: "Cualquier operación",
     anyProperty: "Cualquier propiedad",
     anyReference: "Cualquier referencia",
     apiStatus: "Estado API",
@@ -297,10 +306,13 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Favoritos",
     featuredProperties: "Propiedades destacadas",
     defaultSort: "Recomendadas",
+    forSale: "En venta",
     heatedPool: "Piscina climatizada",
     leadForm: "Formulario",
     liveSearchPreview: "Vista de búsqueda",
+    listingType: "Operación",
     location: "Ubicación",
+    longTermRental: "Alquiler larga temporada",
     maxPrice: "Precio max.",
     mustHave: "Imprescindible",
     message: "Mensaje",
@@ -417,6 +429,7 @@ export const translations: Record<Locale, Translation> = {
   },
   fr: {
     any: "Tous",
+    anyListingType: "Toute opération",
     anyProperty: "Tout bien",
     anyReference: "Toute référence",
     apiStatus: "Statut API",
@@ -438,10 +451,13 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Favoris",
     featuredProperties: "Biens en vedette",
     defaultSort: "Recommandés",
+    forSale: "À vendre",
     heatedPool: "Piscine chauffée",
     leadForm: "Formulaire",
     liveSearchPreview: "Aperçu de recherche",
+    listingType: "Opération",
     location: "Localisation",
+    longTermRental: "Location longue durée",
     maxPrice: "Prix max.",
     mustHave: "Indispensable",
     message: "Message",
@@ -558,6 +574,7 @@ export const translations: Record<Locale, Translation> = {
   },
   de: {
     any: "Alle",
+    anyListingType: "Jede Angebotsart",
     anyProperty: "Jede Immobilie",
     anyReference: "Jede Referenz",
     apiStatus: "API Status",
@@ -579,10 +596,13 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Favoriten",
     featuredProperties: "Ausgewählte Immobilien",
     defaultSort: "Empfohlen",
+    forSale: "Zum Verkauf",
     heatedPool: "Beheizter Pool",
     leadForm: "Kontaktformular",
     liveSearchPreview: "Suchvorschau",
+    listingType: "Angebotsart",
     location: "Lage",
+    longTermRental: "Langzeitmiete",
     maxPrice: "Max. Preis",
     mustHave: "Must-have",
     message: "Nachricht",
@@ -699,6 +719,7 @@ export const translations: Record<Locale, Translation> = {
   },
   ru: {
     any: "Любой",
+    anyListingType: "Любой тип объявления",
     anyProperty: "Любая недвижимость",
     anyReference: "Любая референция",
     apiStatus: "Статус API",
@@ -720,10 +741,13 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Избранное",
     featuredProperties: "Рекомендуемые объекты",
     defaultSort: "Рекомендуемые",
+    forSale: "Продажа",
     heatedPool: "Подогреваемый бассейн",
     leadForm: "Форма заявки",
     liveSearchPreview: "Результаты поиска",
+    listingType: "Тип объявления",
     location: "Локация",
+    longTermRental: "Долгосрочная аренда",
     maxPrice: "Макс. цена",
     mustHave: "Обязательно",
     message: "Сообщение",
@@ -840,6 +864,7 @@ export const translations: Record<Locale, Translation> = {
   },
   pl: {
     any: "Dowolne",
+    anyListingType: "Dowolny typ oferty",
     anyProperty: "Dowolna nieruchomość",
     anyReference: "Dowolny numer",
     apiStatus: "Status API",
@@ -861,10 +886,13 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Ulubione",
     featuredProperties: "Polecane nieruchomości",
     defaultSort: "Polecane",
+    forSale: "Na sprzedaż",
     heatedPool: "Podgrzewany basen",
     leadForm: "Formularz",
     liveSearchPreview: "Podgląd wyników",
+    listingType: "Typ oferty",
     location: "Lokalizacja",
+    longTermRental: "Wynajem długoterminowy",
     maxPrice: "Cena maks.",
     mustHave: "Must have",
     message: "Wiadomość",
@@ -981,6 +1009,7 @@ export const translations: Record<Locale, Translation> = {
   },
   hu: {
     any: "Bármelyik",
+    anyListingType: "Bármilyen státusz",
     anyProperty: "Bármilyen ingatlan",
     anyReference: "Bármely referencia",
     apiStatus: "API státusz",
@@ -1002,10 +1031,13 @@ export const translations: Record<Locale, Translation> = {
     favourites: "Kedvencek",
     featuredProperties: "Kiemelt ingatlanok",
     defaultSort: "Ajánlott",
+    forSale: "Eladó",
     heatedPool: "Fűtött medence",
     leadForm: "Űrlap",
     liveSearchPreview: "Keresési találatok",
+    listingType: "Státusz",
     location: "Lokáció",
+    longTermRental: "Hosszú távú bérlet",
     maxPrice: "Max ár",
     mustHave: "Must have",
     message: "Üzenet",

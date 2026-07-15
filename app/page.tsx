@@ -9,12 +9,15 @@ import { TrackedWhatsAppLink } from "./components/tracked-whatsapp-link";
 import {
   fetchProperties,
   fetchPropertyCities,
+  fetchPropertyStatuses,
   fetchPropertyTypes,
   bedroomOptions,
   getPropertyCityFilterIds,
   getFeaturedRotationTypeIds,
+  getPropertyStatusFilterIds,
   getPropertyTypeFilterIds,
   getSimplifiedPropertyCityOptions,
+  getSimplifiedPropertyStatusOptions,
   getSimplifiedPropertyTypeOptions,
   getWhatsAppUrl,
   quickFilters,
@@ -37,6 +40,7 @@ export type HomeSearchParams = {
   max_price?: string;
   page?: string;
   property_city?: string;
+  property_status?: string;
   q?: string;
   reference?: string;
   sea_view?: string;
@@ -81,6 +85,7 @@ export async function HomeContent({
     max_price = "20000000",
     page = "1",
     property_city: selectedPropertyCity = "",
+    property_status: selectedPropertyStatus = "",
     q: searchQuery = "",
     reference = "",
     sea_view = "",
@@ -108,12 +113,26 @@ export async function HomeContent({
     Math.max(Number(max_price) || 20000000, 200000),
     20000000,
   );
-  const [propertyCities, propertyTypes] = await Promise.all([
+  const [propertyCities, propertyTypes, propertyStatuses] = await Promise.all([
     fetchPropertyCities(),
     fetchPropertyTypes(),
+    fetchPropertyStatuses(),
   ]);
   const propertyCityOptions = getSimplifiedPropertyCityOptions(propertyCities);
   const propertyTypeOptions = getSimplifiedPropertyTypeOptions(propertyTypes);
+  const propertyStatusOptions =
+    getSimplifiedPropertyStatusOptions(propertyStatuses);
+  function getPropertyStatusLabel(value: string, fallback: string) {
+    if (value === "for-sale") {
+      return t.forSale;
+    }
+
+    if (value === "long-term-rental") {
+      return t.longTermRental;
+    }
+
+    return fallback;
+  }
   const featuredRotationTypeIds = getFeaturedRotationTypeIds(propertyTypes);
   const parsedQuery = parsePropertyQuery(
     searchQuery,
@@ -142,6 +161,10 @@ export async function HomeContent({
     effectivePropertyType,
     propertyTypes,
   );
+  const propertyStatusFilterIds = getPropertyStatusFilterIds(
+    selectedPropertyStatus,
+    propertyStatuses,
+  );
   const result = await fetchProperties(9, {
     bedrooms: effectiveBedrooms,
     beachFront: hasBeachfrontFilter || parsedQuery.keywords.includes("beachfront"),
@@ -150,6 +173,7 @@ export async function HomeContent({
     maxPrice: hasEffectiveMaxPriceFilter ? effectiveMaxPrice : undefined,
     page: currentPage,
     propertyCities: propertyCityFilterIds,
+    propertyStatuses: propertyStatusFilterIds,
     reference: selectedReference || undefined,
     seaView: hasSeaViewFilter || parsedQuery.keywords.includes("sea views"),
     propertyTypes: propertyTypeFilterIds,
@@ -170,8 +194,24 @@ export async function HomeContent({
     propertyTypes.find(
       (propertyType) => String(propertyType.id) === effectivePropertyType,
     )?.name;
+  const selectedStatusName =
+    propertyStatusOptions.find((option) => option.value === selectedPropertyStatus)
+      ? getPropertyStatusLabel(
+          selectedPropertyStatus,
+          propertyStatusOptions.find((option) => option.value === selectedPropertyStatus)
+            ?.label ?? "",
+        )
+      : propertyStatuses.find(
+          (propertyStatus) => String(propertyStatus.id) === selectedPropertyStatus,
+        )?.name;
   const resultTitle =
-    [searchQuery.trim() ? `"${searchQuery.trim()}"` : "", selectedReference, selectedCityName, selectedTypeName]
+    [
+      searchQuery.trim() ? `"${searchQuery.trim()}"` : "",
+      selectedReference,
+      selectedCityName,
+      selectedTypeName,
+      selectedStatusName,
+    ]
       .filter(Boolean)
       .join(" - ") ||
     t.featuredProperties;
@@ -187,6 +227,10 @@ export async function HomeContent({
 
   if (selectedPropertyType) {
     paginationBaseParams.set("property_type", selectedPropertyType);
+  }
+
+  if (selectedPropertyStatus) {
+    paginationBaseParams.set("property_status", selectedPropertyStatus);
   }
 
   if (selectedReference) {
@@ -418,6 +462,26 @@ export async function HomeContent({
                   </label>
                   <label className="grid gap-1 md:col-span-2">
                     <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                      {t.listingType}
+                    </span>
+                    <select
+                      name="property_status"
+                      defaultValue={selectedPropertyStatus}
+                      className="h-12 rounded-[6px] border border-[#d7d2c4] bg-white px-3 text-base outline-none"
+                    >
+                      <option value="">{t.anyListingType}</option>
+                      {propertyStatusOptions.map((propertyStatus) => (
+                        <option key={propertyStatus.value} value={propertyStatus.value}>
+                          {getPropertyStatusLabel(
+                            propertyStatus.value,
+                            propertyStatus.label,
+                          )}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="grid gap-1 md:col-span-2">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                       {t.reference}
                     </span>
                     <input
@@ -544,6 +608,13 @@ export async function HomeContent({
                       type="hidden"
                       name="property_type"
                       value={selectedPropertyType}
+                    />
+                  ) : null}
+                  {selectedPropertyStatus ? (
+                    <input
+                      type="hidden"
+                      name="property_status"
+                      value={selectedPropertyStatus}
                     />
                   ) : null}
                   {bedrooms ? (

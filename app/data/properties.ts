@@ -55,6 +55,7 @@ type WordPressProperty = {
   link: string;
   modified_gmt?: string;
   property_city?: number[];
+  property_status?: number[];
   slug: string;
   title: {
     rendered: string;
@@ -100,6 +101,7 @@ export type Property = {
   type: string;
   typeIds: number[];
   status: string;
+  statusIds: number[];
   description: string;
   images: string[];
   featureGroups: ResalesFeatureGroup[];
@@ -123,6 +125,7 @@ type TaxonomyOption = {
 
 export type PropertyTypeOption = TaxonomyOption;
 export type PropertyCityOption = TaxonomyOption;
+export type PropertyStatusOption = TaxonomyOption;
 
 export type SearchOption = {
   label: string;
@@ -139,6 +142,7 @@ type PropertyFilters = {
   maxPrice?: number;
   noStore?: boolean;
   propertyCities?: string[];
+  propertyStatuses?: string[];
   reference?: string;
   seaView?: boolean;
   propertyTypes?: string[];
@@ -162,6 +166,7 @@ type PropertySearchIndexEntry = {
   isOwnProperty: boolean;
   price: number;
   ref: string;
+  statusIds: number[];
   typeIds: number[];
 };
 
@@ -189,10 +194,12 @@ const WORDPRESS_PROPERTIES_URL =
   "https://move2marbella.com/wp-json/wp/v2/properties";
 const WORDPRESS_PROPERTY_CITIES_URL =
   "https://move2marbella.com/wp-json/wp/v2/property_city";
+const WORDPRESS_PROPERTY_STATUSES_URL =
+  "https://move2marbella.com/wp-json/wp/v2/property_status";
 const WORDPRESS_PROPERTY_TYPES_URL =
   "https://move2marbella.com/wp-json/wp/v2/property_type";
 const WORDPRESS_PROPERTY_FIELDS =
-  "id,link,slug,title,property_city,property_type,property_meta";
+  "id,link,slug,title,property_city,property_status,property_type,property_meta";
 
 function getCurrencyFormatter(currency: string) {
   return new Intl.NumberFormat("en-GB", {
@@ -339,6 +346,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       type: propertyType,
       typeIds: post.property_type ?? [],
       status: propertyStatus,
+      statusIds: post.property_status ?? [],
       description: cleanDescription(property.Description),
       images,
       featureGroups: property.PropertyFeatures.Category.map((group) => ({
@@ -364,6 +372,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         filters.reference ||
         filters.seaView ||
         filters.sort ||
+        filters.propertyStatuses?.length ||
         filters.keywords?.length,
     );
 
@@ -413,6 +422,13 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
           return false;
         }
 
+        if (
+          filters.propertyStatuses?.length &&
+          !filters.propertyStatuses.some((id) => property.statusIds.includes(Number(id)))
+        ) {
+          return false;
+        }
+
         return true;
       });
       const sortedEntries = sortPropertySearchEntries(
@@ -454,6 +470,10 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
 
     if (filters.propertyCities?.length) {
       params.set("property_city", filters.propertyCities.join(","));
+    }
+
+    if (filters.propertyStatuses?.length) {
+      params.set("property_status", filters.propertyStatuses.join(","));
     }
 
     const response = await fetch(
@@ -712,7 +732,7 @@ async function fetchPropertySearchIndex(includeFeatureData = false) {
       page: "1",
       orderby: "modified",
       order: "desc",
-      _fields: `id,property_city,property_type,${propertyMetaFields}`,
+      _fields: `id,property_city,property_status,property_type,${propertyMetaFields}`,
     });
     const firstResponse = await fetch(
       `${WORDPRESS_PROPERTIES_URL}?${baseParams.toString()}`,
@@ -751,6 +771,7 @@ async function fetchPropertySearchIndex(includeFeatureData = false) {
         isOwnProperty: post.property_meta?.own_property?.[0] === "1",
         price: getRawPrice(post.property_meta?.fave_property_price?.[0] ?? "0"),
         ref,
+        statusIds: post.property_status ?? [],
         typeIds: post.property_type ?? [],
       });
     }
@@ -799,6 +820,13 @@ function propertyMatchesFilters(properties: Property[], filters: PropertyFilters
     if (
       filters.propertyTypes?.length &&
       !filters.propertyTypes.some((id) => property.typeIds.includes(Number(id)))
+    ) {
+      return false;
+    }
+
+    if (
+      filters.propertyStatuses?.length &&
+      !filters.propertyStatuses.some((id) => property.statusIds.includes(Number(id)))
     ) {
       return false;
     }
@@ -1137,6 +1165,15 @@ export async function fetchPropertyCities() {
   return orderTermsByHierarchy(terms);
 }
 
+export async function fetchPropertyStatuses() {
+  const terms = await fetchTaxonomyTerms(
+    WORDPRESS_PROPERTY_STATUSES_URL,
+    "Could not fetch Move2Marbella property statuses",
+  );
+
+  return orderTermsByHierarchy(terms);
+}
+
 export const PROPERTY_CITY_SEARCH_OPTIONS = [
   { label: "Marbella East", slug: "marbella-east" },
   { label: "Marbella", slug: "marbella-golden-mile" },
@@ -1163,6 +1200,11 @@ const PROPERTY_TYPE_FILTER_SLUGS: Record<string, string[]> = {
   penthouse: ["penthouse", "penthouse-duplex"],
 };
 
+export const PROPERTY_STATUS_SEARCH_OPTIONS = [
+  { label: "For sale", slug: "for-sale" },
+  { label: "Long term rental", slug: "long-term-rental" },
+];
+
 export function getSimplifiedPropertyCityOptions(
   propertyCities: PropertyCityOption[],
 ) {
@@ -1173,6 +1215,12 @@ export function getSimplifiedPropertyTypeOptions(
   propertyTypes: PropertyTypeOption[],
 ) {
   return getSearchOptions(PROPERTY_TYPE_SEARCH_OPTIONS, propertyTypes);
+}
+
+export function getSimplifiedPropertyStatusOptions(
+  propertyStatuses: PropertyStatusOption[],
+) {
+  return getSearchOptions(PROPERTY_STATUS_SEARCH_OPTIONS, propertyStatuses);
 }
 
 function getSearchOptions(
@@ -1261,6 +1309,13 @@ export function getPropertyCityFilterIds(
   propertyCities: PropertyCityOption[],
 ) {
   return getTaxonomyFilterIds(selectedCityId, propertyCities);
+}
+
+export function getPropertyStatusFilterIds(
+  selectedStatusId: string,
+  propertyStatuses: PropertyStatusOption[],
+) {
+  return getTaxonomyFilterIds(selectedStatusId, propertyStatuses);
 }
 
 export function getPropertyCityDescendants(
