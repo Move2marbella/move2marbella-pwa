@@ -42,4 +42,4 @@ export default async function LocalizedSimilarPropertiesPage({
   return <SimilarPropertiesPage locale={getLocale(locale)} />;
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

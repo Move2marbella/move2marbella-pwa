@@ -49,4 +49,4 @@ export default async function LocalizedSimilarPropertiesSlugPage({
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

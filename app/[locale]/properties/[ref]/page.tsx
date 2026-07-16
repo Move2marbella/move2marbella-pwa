@@ -57,4 +57,4 @@ export default async function LocalizedPropertyPage({
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

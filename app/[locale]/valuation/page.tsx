@@ -49,4 +49,4 @@ export default async function LocalizedValuationPage({
   return <ValuationPage locale={getLocale(locale)} searchParams={searchParams} />;
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

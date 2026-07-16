@@ -14,4 +14,4 @@ export default function SimilarPropertiesSlugPage({
   return <SimilarPropertiesPage params={params} />;
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

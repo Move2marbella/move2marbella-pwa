@@ -16,14 +16,43 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: ["/admin/", "/api/", "/_next/", "/*?*"],
       },
       {
         userAgent: "OAI-SearchBot",
-        allow: "/",
+        disallow: "/",
       },
       {
         userAgent: "GPTBot",
-        allow: "/",
+        disallow: "/",
+      },
+      {
+        userAgent: "ChatGPT-User",
+        disallow: "/",
+      },
+      {
+        userAgent: "CCBot",
+        disallow: "/",
+      },
+      {
+        userAgent: "ClaudeBot",
+        disallow: "/",
+      },
+      {
+        userAgent: "PerplexityBot",
+        disallow: "/",
+      },
+      {
+        userAgent: "Bytespider",
+        disallow: "/",
+      },
+      {
+        userAgent: "SemrushBot",
+        disallow: "/",
+      },
+      {
+        userAgent: "AhrefsBot",
+        disallow: "/",
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,

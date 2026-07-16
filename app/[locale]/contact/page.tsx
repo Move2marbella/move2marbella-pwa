@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
-import { getGeneralWhatsAppUrl } from "../../data/properties";
+import { getGeneralWhatsAppUrl } from "../../data/property-links";
 import { getLocale, getLocaleBasePath, locales, type Locale } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
 import { getEditablePageContent } from "../../lib/editable-copy";
@@ -233,4 +233,4 @@ export default async function ContactPage({ params }: ContactPageProps) {
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

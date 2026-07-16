@@ -649,4 +649,4 @@ export default async function BuyingGuidePage({
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

@@ -3,7 +3,7 @@ import { fetchPropertySitemapEntries } from "./data/properties";
 import { locales } from "./i18n/translations";
 import { IS_INDEXING_ENABLED, SITE_URL, getLocalizedPath } from "./lib/seo";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!IS_INDEXING_ENABLED) {

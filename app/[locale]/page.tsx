@@ -57,4 +57,4 @@ export default async function LocalizedHome({
   return <HomeContent locale={getLocale(locale)} searchParams={searchParams} />;
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

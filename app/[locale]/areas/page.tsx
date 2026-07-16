@@ -665,4 +665,4 @@ export default async function AreasPage({ params }: AreasPageProps) {
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

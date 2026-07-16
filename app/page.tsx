@@ -19,10 +19,10 @@ import {
   getSimplifiedPropertyCityOptions,
   getSimplifiedPropertyStatusOptions,
   getSimplifiedPropertyTypeOptions,
-  getWhatsAppUrl,
   quickFilters,
   type PropertySortOrder,
 } from "./data/properties";
+import { getWhatsAppUrl } from "./data/property-links";
 import {
   Locale,
   getLocaleBasePath,
@@ -31,7 +31,7 @@ import {
 import { parsePropertyQuery } from "./lib/property-query-parser";
 import { SITE_URL } from "./lib/seo";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export type HomeSearchParams = {
   beachfront?: string;

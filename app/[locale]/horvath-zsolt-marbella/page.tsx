@@ -7,7 +7,7 @@ import { JsonLd } from "../../components/json-ld";
 import { LanguageSwitcher } from "../../components/language-switcher";
 import { MainNav } from "../../components/main-nav";
 import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
-import { getGeneralWhatsAppUrl } from "../../data/properties";
+import { getGeneralWhatsAppUrl } from "../../data/property-links";
 import { getLocale, type Locale } from "../../i18n/translations";
 import { SITE_URL, getPageRobots } from "../../lib/seo";
 import { getEditablePageContent } from "../../lib/editable-copy";
@@ -373,4 +373,4 @@ export default async function HorvathZsoltMarbellaPage({
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

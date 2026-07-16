@@ -21,7 +21,7 @@ import {
 } from "../i18n/translations";
 import { SITE_URL } from "../lib/seo";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Property valuation",

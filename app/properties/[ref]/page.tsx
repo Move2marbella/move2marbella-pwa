@@ -10,9 +10,9 @@ import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import {
   fetchProperties,
   getPropertyByRef,
-  getWhatsAppUrl,
   type Property,
 } from "../../data/properties";
+import { getWhatsAppUrl } from "../../data/property-links";
 import {
   fetchNearbyPlaces,
   groupNearbyPlaces,
@@ -520,4 +520,4 @@ export async function PropertyDetailContent({
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

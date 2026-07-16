@@ -582,4 +582,4 @@ export default async function MeetMiguelPage({
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

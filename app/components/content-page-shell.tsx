@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { getGeneralWhatsAppUrl } from "../data/properties";
+import { getGeneralWhatsAppUrl } from "../data/property-links";
 import { type Locale, getLocaleBasePath } from "../i18n/translations";
 import { LanguageSwitcher } from "./language-switcher";
 import { MainNav } from "./main-nav";

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { getGeneralWhatsAppUrl } from "../data/properties";
+import { getGeneralWhatsAppUrl } from "../data/property-links";
 import { locales, type Locale, getLocaleBasePath } from "../i18n/translations";
 import { TrackedWhatsAppLink } from "./tracked-whatsapp-link";
 

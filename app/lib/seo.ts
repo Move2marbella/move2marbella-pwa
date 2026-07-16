@@ -4,7 +4,12 @@ export const PRODUCTION_SITE_URL = "https://move2marbella.com";
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://move2marbella-pwa.vercel.app"
 ).replace(/\/$/, "");
-export const IS_INDEXING_ENABLED = SITE_URL === PRODUCTION_SITE_URL;
+const INDEXABLE_SITE_URLS = new Set([
+  PRODUCTION_SITE_URL,
+  "https://app.move2marbella.com",
+]);
+
+export const IS_INDEXING_ENABLED = INDEXABLE_SITE_URLS.has(SITE_URL);
 
 export function getLocalizedPath(locale: Locale, path = "") {
   return `/${locale}${path}`;

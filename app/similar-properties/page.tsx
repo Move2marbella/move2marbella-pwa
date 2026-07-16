@@ -10,11 +10,11 @@ import {
   fetchPropertyTypes,
   getPropertyCityFilterIds,
   getPropertyTypeFilterIds,
-  getWhatsAppUrl,
   type Property,
   type PropertyCityOption,
   type PropertyTypeOption,
 } from "../data/properties";
+import { getWhatsAppUrl } from "../data/property-links";
 import { type Locale, getLocaleBasePath, getTranslations } from "../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../lib/seo";
 
@@ -412,4 +412,4 @@ export async function SimilarPropertiesContent({
   );
 }
 
-export const revalidate = 300;
+export const revalidate = 3600;

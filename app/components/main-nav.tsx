@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getGeneralWhatsAppUrl } from "../data/properties";
+import { getGeneralWhatsAppUrl } from "../data/property-links";
 import { type Locale, getLocaleBasePath } from "../i18n/translations";
 import { TrackedWhatsAppLink } from "./tracked-whatsapp-link";
 

@@ -65,8 +65,23 @@ Next.js frontend is ready to serve the production domain, set this environment
 variable in Vercel:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://move2marbella.com
+NEXT_PUBLIC_SITE_URL=https://app.move2marbella.com
 ```
 
 This enables search indexing, the public sitemap and crawler access in
 `robots.txt`.
+
+## Property search snapshot
+
+The home search uses a static property snapshot to avoid rebuilding the full
+WordPress property index on every Vercel request.
+
+Refresh it before a production deployment, or from a scheduled workflow:
+
+```bash
+npm run update:property-snapshot
+```
+
+The command writes `public/property-search-index.json`. Detail pages still fetch
+the individual WordPress property record, so galleries and descriptions stay
+complete.

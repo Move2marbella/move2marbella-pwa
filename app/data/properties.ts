@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { getLocationCoordinate } from "./location-coordinates";
 
 function isNextDynamicServerError(error: unknown) {
@@ -169,6 +171,36 @@ type PropertySearchIndexEntry = {
   statusIds: number[];
   typeIds: number[];
 };
+
+type PropertySearchSnapshotEntry = PropertySearchIndexEntry & {
+  agencyRef: string;
+  baths: string;
+  builtArea: number;
+  city: string;
+  currency: string;
+  images: string[];
+  location: string;
+  modified: string;
+  plotArea: number;
+  priceLabel: string;
+  searchText: string;
+  status: string;
+  tag: string;
+  terrace: number;
+  title: string;
+  type: string;
+  wordpressUrl: string;
+};
+
+type PropertySearchSnapshotFile =
+  | {
+      generatedAt: string;
+      count: number;
+      properties: PropertySearchSnapshotEntry[];
+    }
+  | PropertySearchSnapshotEntry[];
+
+let propertySearchSnapshotCache: PropertySearchSnapshotEntry[] | null = null;
 
 export const languages = [
   { code: "EN", label: "English" },
@@ -429,6 +461,13 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
           return false;
         }
 
+        if (
+          filters.keywords?.length &&
+          !propertySearchEntryMatchesKeywords(property, filters.keywords)
+        ) {
+          return false;
+        }
+
         return true;
       });
       const sortedEntries = sortPropertySearchEntries(
@@ -437,16 +476,15 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         filters,
       );
       const page = filters.page ?? 1;
-      const candidateLimit = filters.keywords?.length ? 36 : limit;
-      const entries = sortedEntries.slice(0, Math.max(page * limit, candidateLimit));
-      const detailedProperties = (
-        await Promise.all(
-          entries.map((property) => fetchPropertyByWordPressId(String(property.id))),
-        )
-      ).filter((property): property is Property => Boolean(property));
-      const matchingProperties = propertyMatchesFilters(detailedProperties, filters);
-      const properties = matchingProperties.slice((page - 1) * limit, page * limit);
-      const total = filters.keywords?.length ? matchingProperties.length : sortedEntries.length;
+      const entries = sortedEntries.slice((page - 1) * limit, page * limit);
+      const properties = entries.every(isPropertySearchSnapshotEntry)
+        ? entries.map(propertyFromSearchSnapshotEntry)
+        : (
+            await Promise.all(
+              entries.map((property) => fetchPropertyByWordPressId(String(property.id))),
+            )
+          ).filter((property): property is Property => Boolean(property));
+      const total = sortedEntries.length;
 
       return {
         page,
@@ -484,7 +522,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
           }
         : {
             next: {
-              revalidate: 300,
+              revalidate: 3600,
             },
           },
     );
@@ -673,6 +711,128 @@ function getReferenceNumber(ref: string) {
   return Number(ref.replace(/\D/g, "")) || 0;
 }
 
+function getPropertySearchSnapshot() {
+  if (propertySearchSnapshotCache) {
+    return propertySearchSnapshotCache;
+  }
+
+  try {
+    const snapshotPath = path.join(process.cwd(), "public", "property-search-index.json");
+    const parsed = JSON.parse(
+      fs.readFileSync(snapshotPath, "utf8"),
+    ) as PropertySearchSnapshotFile;
+    const properties = Array.isArray(parsed) ? parsed : parsed.properties;
+
+    propertySearchSnapshotCache = properties.filter(isPropertySearchSnapshotEntry);
+  } catch (error) {
+    console.warn("Move2Marbella property snapshot unavailable", error);
+    propertySearchSnapshotCache = [];
+  }
+
+  return propertySearchSnapshotCache;
+}
+
+function isPropertySearchSnapshotEntry(
+  property: PropertySearchIndexEntry,
+): property is PropertySearchSnapshotEntry {
+  return (
+    typeof (property as Partial<PropertySearchSnapshotEntry>).title === "string" &&
+    Array.isArray((property as Partial<PropertySearchSnapshotEntry>).images)
+  );
+}
+
+function propertyFromSearchSnapshotEntry(
+  property: PropertySearchSnapshotEntry,
+): Property {
+  return {
+    id: property.id,
+    ref: property.ref,
+    agencyRef: property.agencyRef,
+    title: property.title,
+    location: property.location,
+    city: property.city,
+    cityIds: property.cityIds,
+    currency: property.currency,
+    price: property.priceLabel,
+    rawPrice: property.price,
+    beds: String(property.bedrooms),
+    baths: property.baths,
+    builtArea: property.builtArea,
+    plotArea: property.plotArea,
+    size: `${property.builtArea} m2`,
+    plot: property.plotArea ? `${property.plotArea} m2` : "Community",
+    terrace: `${property.terrace} m2`,
+    tag: property.tag,
+    type: property.type,
+    typeIds: property.typeIds,
+    status: property.status,
+    statusIds: property.statusIds,
+    description: "",
+    images: property.images,
+    featureGroups: [],
+    wordpressUrl: property.wordpressUrl,
+    coordinates: getLocationCoordinate(property.city, property.location),
+  };
+}
+
+function propertySearchEntryMatchesKeywords(
+  property: PropertySearchIndexEntry,
+  keywords: string[],
+) {
+  if (!isPropertySearchSnapshotEntry(property)) {
+    return true;
+  }
+
+  const searchableText = normalizeSearchText(property.searchText);
+
+  return keywords.every((keyword) => {
+    const normalizedKeyword = normalizeSearchText(keyword);
+
+    if (normalizedKeyword === "sea views") {
+      return searchableText.includes("sea") || searchableText.includes("mar");
+    }
+
+    if (normalizedKeyword === "new build") {
+      return (
+        searchableText.includes("new build") ||
+        searchableText.includes("new development") ||
+        searchableText.includes("brand new") ||
+        searchableText.includes("obra nueva")
+      );
+    }
+
+    if (normalizedKeyword === "beachside") {
+      return (
+        searchableText.includes("beachside") ||
+        searchableText.includes("close to beach") ||
+        searchableText.includes("close to the beach") ||
+        searchableText.includes("walking distance to beach") ||
+        searchableText.includes("walk to beach") ||
+        searchableText.includes("near beach")
+      );
+    }
+
+    if (normalizedKeyword === "beachfront") {
+      return (
+        searchableText.includes("beachfront") ||
+        searchableText.includes("front line beach complex") ||
+        searchableText.includes("frontline beach") ||
+        searchableText.includes("front line beach") ||
+        searchableText.includes("first line beach")
+      );
+    }
+
+    if (normalizedKeyword === "heated pool") {
+      return searchableText.includes("heated pool");
+    }
+
+    return normalizedKeyword
+      .split(" ")
+      .filter(Boolean)
+      .every((token) => searchableText.includes(token));
+  });
+}
+
 function getIndexedPropertyHasSeaViews(post: WordPressProperty) {
   const importData = post.property_meta?._property_import_data?.[0];
 
@@ -717,6 +877,12 @@ function getIndexedPropertyHasHeatedPool(post: WordPressProperty) {
 
 async function fetchPropertySearchIndex(includeFeatureData = false) {
   try {
+    const snapshot = getPropertySearchSnapshot();
+
+    if (snapshot.length > 0) {
+      return snapshot;
+    }
+
     const propertyMetaFields = [
       "property_meta._imported_ref",
       "property_meta.fave_property_id",
@@ -908,6 +1074,16 @@ function propertyMatchesKeywords(property: Property, keywords: string[]) {
 }
 
 export async function fetchPropertySitemapEntries() {
+  const snapshot = getPropertySearchSnapshot();
+
+  if (snapshot.length > 0) {
+    return snapshot.map((property) => ({
+      id: property.id,
+      ref: property.ref,
+      modified: property.modified ? new Date(property.modified) : new Date(),
+    }));
+  }
+
   const baseParams = new URLSearchParams({
     per_page: "100",
     page: "1",
@@ -1034,7 +1210,7 @@ async function fetchPropertyByWordPressId(id: string) {
   try {
     const response = await fetch(`${WORDPRESS_PROPERTIES_URL}/${id}?${params}`, {
       next: {
-        revalidate: 300,
+        revalidate: 3600,
       },
     });
 
@@ -1067,7 +1243,7 @@ async function fetchTaxonomyTerms(url: string, errorMessage: string) {
     });
     const firstResponse = await fetch(`${url}?${baseParams.toString()}`, {
       next: {
-        revalidate: 300,
+        revalidate: 21600,
       },
     });
 
@@ -1089,7 +1265,7 @@ async function fetchTaxonomyTerms(url: string, errorMessage: string) {
 
         const response = await fetch(`${url}?${params.toString()}`, {
           next: {
-            revalidate: 300,
+            revalidate: 21600,
           },
         });
 

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "update:property-snapshot": "node scripts/update-property-snapshot.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
