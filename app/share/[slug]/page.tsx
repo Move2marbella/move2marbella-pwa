@@ -213,13 +213,7 @@ export default async function SharedListingPage({
             {listing.description || listing.fieldNotes || "Ask for details."}
           </p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-4">
-            <div className="rounded-[8px] bg-[#f7f2ea] p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
-                Status
-              </p>
-              <p className="mt-1 font-semibold">{listing.status}</p>
-            </div>
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
             <div className="rounded-[8px] bg-[#f7f2ea] p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
                 Plot
