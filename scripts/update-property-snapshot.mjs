@@ -113,10 +113,6 @@ function propertyHasHeatedPool(property) {
   );
 }
 
-function toListingImageUrl(url = "") {
-  return url.replace("/w1200/", "/w600/");
-}
-
 function normalizePost(post) {
   const importData = post.property_meta?._property_import_data?.[0];
 
@@ -135,7 +131,7 @@ function normalizePost(post) {
       post.property_meta?.fave_property_price?.[0]?.trim() || property.Price;
     const location = `${city}${subLocation ? `, ${subLocation}` : ""}, ${area}`;
     const images = (property.Pictures?.Picture ?? [])
-      .map((picture) => toListingImageUrl(picture.PictureURL))
+      .map((picture) => picture.PictureURL)
       .filter(Boolean)
       .slice(0, 1);
     const featureGroups = (property.PropertyFeatures?.Category ?? []).map((group) => ({
