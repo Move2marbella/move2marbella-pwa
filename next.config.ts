@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: "cdn.resales-online.com",
         protocol: "https",
       },
+      {
+        hostname: "jfxlxmrfdewoytbzfmce.supabase.co",
+        protocol: "https",
+      },
     ],
   },
 };
