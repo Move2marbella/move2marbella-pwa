@@ -209,6 +209,67 @@ function propertyMatchesFamily(property: Property, family: string) {
   return getTypeFamily(property.type) === family;
 }
 
+export function normalizeSeaViewValue(value?: string) {
+  const normalizedValue = normalize(value ?? "");
+
+  if (!normalizedValue || ["0", "false", "no", "none"].includes(normalizedValue)) {
+    return "none";
+  }
+
+  if (normalizedValue.includes("panoramic") || normalizedValue.includes("panoram")) {
+    return "panoramic";
+  }
+
+  if (normalizedValue.includes("partial") || normalizedValue.includes("reszleges")) {
+    return "partial";
+  }
+
+  if (
+    ["1", "true", "yes", "sea", "sea-view", "sea_view", "sea view", "sea views"].includes(
+      normalizedValue,
+    ) ||
+    normalizedValue.includes("meerblick") ||
+    normalizedValue.includes("vistas al mar") ||
+    normalizedValue.includes("tengeri kilatas")
+  ) {
+    return "sea";
+  }
+
+  return "none";
+}
+
+export function normalizeBeachfrontValue(value?: string) {
+  const normalizedValue = normalize(value ?? "");
+
+  if (!normalizedValue || ["0", "false", "no", "none"].includes(normalizedValue)) {
+    return "no";
+  }
+
+  if (
+    ["1", "true", "yes", "beachfront", "frontline", "frontline beach"].includes(
+      normalizedValue,
+    ) ||
+    normalizedValue.includes("front line") ||
+    normalizedValue.includes("first line") ||
+    normalizedValue.includes("primera linea") ||
+    normalizedValue.includes("elso sor")
+  ) {
+    return "frontline";
+  }
+
+  if (
+    normalizedValue.includes("beachside") ||
+    normalizedValue.includes("beach-side") ||
+    normalizedValue.includes("near beach") ||
+    normalizedValue.includes("close to beach") ||
+    normalizedValue.includes("strandkozeli")
+  ) {
+    return "beachside";
+  }
+
+  return "no";
+}
+
 function getAdjustmentMultiplier(input: ValuationInput) {
   const conditionAdjustments: Record<string, number> = {
     renovate: -0.08,
@@ -240,12 +301,15 @@ function getAdjustmentMultiplier(input: ValuationInput) {
     frontline: 0.14,
   };
 
+  const seaView = normalizeSeaViewValue(input.seaView);
+  const beachfront = normalizeBeachfrontValue(input.beachfront);
+
   return {
-    beachfront: beachfrontAdjustments[input.beachfront ?? "no"] ?? 0,
+    beachfront: beachfrontAdjustments[beachfront] ?? 0,
     condition: conditionAdjustments[input.condition ?? "good"] ?? 0,
     outdoorSpace: outdoorAdjustments[input.outdoorSpace ?? "terrace"] ?? 0,
     parking: parkingAdjustments[input.parking ?? "none"] ?? 0,
-    seaView: seaViewAdjustments[input.seaView ?? "none"] ?? 0,
+    seaView: seaViewAdjustments[seaView] ?? 0,
   };
 }
 

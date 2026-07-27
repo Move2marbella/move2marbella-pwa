@@ -6,7 +6,12 @@ import { LanguageSwitcher } from "../components/language-switcher";
 import { MainNav } from "../components/main-nav";
 import { ValuationLeadGate } from "../components/valuation-lead-gate";
 import { ValuationLocationFields } from "../components/valuation-location-fields";
-import { buildValuation, type ValuationInput } from "../data/valuation";
+import {
+  buildValuation,
+  normalizeBeachfrontValue,
+  normalizeSeaViewValue,
+  type ValuationInput,
+} from "../data/valuation";
 import { locationCoordinates } from "../data/location-coordinates";
 import {
   PROPERTY_CITY_SEARCH_OPTIONS,
@@ -456,7 +461,7 @@ function getInput(
 
   return {
     area: selectedArea?.label ?? selectedMunicipality.label,
-    beachfront: searchParams.beachfront || "no",
+    beachfront: normalizeBeachfrontValue(searchParams.beachfront),
     bedrooms: searchParams.bedrooms ? getNumber(searchParams.bedrooms, 3) : 3,
     builtArea: getNumber(searchParams.built_area, 140),
     condition: searchParams.condition || "good",
@@ -465,7 +470,7 @@ function getInput(
     parking: searchParams.parking || "garage",
     postalCode: selectedArea?.postalCode ?? selectedMunicipality.postalCode,
     propertyType: searchParams.property_type || "Apartment",
-    seaView: searchParams.sea_view || "none",
+    seaView: normalizeSeaViewValue(searchParams.sea_view),
   };
 }
 
