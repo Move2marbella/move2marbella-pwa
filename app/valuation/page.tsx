@@ -32,6 +32,7 @@ export const metadata: Metadata = {
 export type ValuationSearchParams = {
   area?: string;
   bedrooms?: string;
+  beachfront?: string;
   built_area?: string;
   condition?: string;
   municipality?: string;
@@ -39,6 +40,7 @@ export type ValuationSearchParams = {
   parking?: string;
   postal_code?: string;
   property_type?: string;
+  sea_view?: string;
 };
 
 export type ValuationAreaOption = {
@@ -80,13 +82,20 @@ const valuationOptionLabels: Record<
   Locale,
   {
     confidence: Record<"early" | "standard" | "strong", string>;
+    beachfront: Record<string, string>;
     condition: Record<string, string>;
     outdoorSpace: Record<string, string>;
     parking: Record<string, string>;
     propertyType: Record<string, string>;
+    seaView: Record<string, string>;
   }
 > = {
   en: {
+    beachfront: {
+      no: "Not beachfront",
+      beachside: "Beachside",
+      frontline: "Frontline beach",
+    },
     confidence: { early: "Early signal", standard: "Standard", strong: "Strong" },
     condition: {
       renovate: "Needs renovation",
@@ -113,8 +122,19 @@ const valuationOptionLabels: Record<
       Villa: "Villa",
       Plot: "Plot",
     },
+    seaView: {
+      none: "No sea view",
+      partial: "Partial sea view",
+      sea: "Sea view",
+      panoramic: "Panoramic sea view",
+    },
   },
   es: {
+    beachfront: {
+      no: "No primera línea",
+      beachside: "Cerca de la playa",
+      frontline: "Primera línea de playa",
+    },
     confidence: { early: "Señal inicial", standard: "Estándar", strong: "Alta" },
     condition: {
       renovate: "Necesita reforma",
@@ -141,8 +161,19 @@ const valuationOptionLabels: Record<
       Villa: "Villa",
       Plot: "Parcela",
     },
+    seaView: {
+      none: "Sin vistas al mar",
+      partial: "Vista parcial al mar",
+      sea: "Vista al mar",
+      panoramic: "Vista panorámica al mar",
+    },
   },
   fr: {
+    beachfront: {
+      no: "Pas front de mer",
+      beachside: "Proche plage",
+      frontline: "Front de mer",
+    },
     confidence: { early: "Signal initial", standard: "Standard", strong: "Forte" },
     condition: {
       renovate: "À rénover",
@@ -169,8 +200,19 @@ const valuationOptionLabels: Record<
       Villa: "Villa",
       Plot: "Terrain",
     },
+    seaView: {
+      none: "Sans vue mer",
+      partial: "Vue mer partielle",
+      sea: "Vue mer",
+      panoramic: "Vue mer panoramique",
+    },
   },
   de: {
+    beachfront: {
+      no: "Nicht direkt am Strand",
+      beachside: "Strandnah",
+      frontline: "Erste Strandlinie",
+    },
     confidence: { early: "Erstes Signal", standard: "Standard", strong: "Stark" },
     condition: {
       renovate: "Renovierungsbedürftig",
@@ -197,8 +239,19 @@ const valuationOptionLabels: Record<
       Villa: "Villa",
       Plot: "Grundstück",
     },
+    seaView: {
+      none: "Kein Meerblick",
+      partial: "Teilweiser Meerblick",
+      sea: "Meerblick",
+      panoramic: "Panorama-Meerblick",
+    },
   },
   ru: {
+    beachfront: {
+      no: "Не первая линия",
+      beachside: "Рядом с пляжем",
+      frontline: "Первая линия пляжа",
+    },
     confidence: { early: "Первичный сигнал", standard: "Стандарт", strong: "Высокая" },
     condition: {
       renovate: "Нужен ремонт",
@@ -225,8 +278,19 @@ const valuationOptionLabels: Record<
       Villa: "Вилла",
       Plot: "Участок",
     },
+    seaView: {
+      none: "Без вида на море",
+      partial: "Частичный вид на море",
+      sea: "Вид на море",
+      panoramic: "Панорамный вид на море",
+    },
   },
   pl: {
+    beachfront: {
+      no: "Nie przy plaży",
+      beachside: "Blisko plaży",
+      frontline: "Pierwsza linia plaży",
+    },
     confidence: { early: "Wstępny sygnał", standard: "Standard", strong: "Mocna" },
     condition: {
       renovate: "Do remontu",
@@ -253,8 +317,19 @@ const valuationOptionLabels: Record<
       Villa: "Willa",
       Plot: "Działka",
     },
+    seaView: {
+      none: "Bez widoku na morze",
+      partial: "Częściowy widok na morze",
+      sea: "Widok na morze",
+      panoramic: "Panoramiczny widok na morze",
+    },
   },
   hu: {
+    beachfront: {
+      no: "Nem tengerparti",
+      beachside: "Strandközeli",
+      frontline: "Első sor a tengerparton",
+    },
     confidence: { early: "Korai jelzés", standard: "Standard", strong: "Erős" },
     condition: {
       renovate: "Felújítandó",
@@ -280,6 +355,12 @@ const valuationOptionLabels: Record<
       Townhouse: "Sorház",
       Villa: "Villa",
       Plot: "Telek",
+    },
+    seaView: {
+      none: "Nincs tengeri kilátás",
+      partial: "Részleges tengeri kilátás",
+      sea: "Tengeri kilátás",
+      panoramic: "Panorámás tengeri kilátás",
     },
   },
 };
@@ -375,6 +456,7 @@ function getInput(
 
   return {
     area: selectedArea?.label ?? selectedMunicipality.label,
+    beachfront: searchParams.beachfront || "no",
     bedrooms: searchParams.bedrooms ? getNumber(searchParams.bedrooms, 3) : 3,
     builtArea: getNumber(searchParams.built_area, 140),
     condition: searchParams.condition || "good",
@@ -383,6 +465,7 @@ function getInput(
     parking: searchParams.parking || "garage",
     postalCode: selectedArea?.postalCode ?? selectedMunicipality.postalCode,
     propertyType: searchParams.property_type || "Apartment",
+    seaView: searchParams.sea_view || "none",
   };
 }
 
@@ -608,6 +691,24 @@ export async function ValuationContent({
                   ))}
                 </Select>
               </Field>
+              <Field label={v.formSeaView}>
+                <Select name="sea_view" defaultValue={input.seaView}>
+                  {Object.entries(options.seaView).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </Select>
+              </Field>
+              <Field label={v.formBeachfront}>
+                <Select name="beachfront" defaultValue={input.beachfront}>
+                  {Object.entries(options.beachfront).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </Select>
+              </Field>
               <Field label={v.formParking}>
                 <Select name="parking" defaultValue={input.parking}>
                   {Object.entries(options.parking).map(([value, label]) => (
@@ -799,7 +900,9 @@ export async function ValuationContent({
                       value={`${Math.round(
                         (valuation.adjustments.condition +
                           valuation.adjustments.outdoorSpace +
-                          valuation.adjustments.parking) *
+                          valuation.adjustments.parking +
+                          valuation.adjustments.seaView +
+                          valuation.adjustments.beachfront) *
                           100,
                       )}%`}
                     />

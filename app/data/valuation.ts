@@ -31,8 +31,10 @@ export type ValuationInput = {
   builtArea: number;
   bedrooms?: number;
   condition?: string;
+  beachfront?: string;
   outdoorSpace?: string;
   parking?: string;
+  seaView?: string;
 };
 
 export type ValuationComparable = {
@@ -82,9 +84,11 @@ export type ValuationResult = {
     };
   };
   adjustments: {
+    beachfront: number;
     condition: number;
     outdoorSpace: number;
     parking: number;
+    seaView: number;
   };
 };
 
@@ -224,11 +228,24 @@ function getAdjustmentMultiplier(input: ValuationInput) {
     garage: 0.03,
     multiple: 0.05,
   };
+  const seaViewAdjustments: Record<string, number> = {
+    none: 0,
+    partial: 0.05,
+    sea: 0.1,
+    panoramic: 0.15,
+  };
+  const beachfrontAdjustments: Record<string, number> = {
+    no: 0,
+    beachside: 0.06,
+    frontline: 0.14,
+  };
 
   return {
+    beachfront: beachfrontAdjustments[input.beachfront ?? "no"] ?? 0,
     condition: conditionAdjustments[input.condition ?? "good"] ?? 0,
     outdoorSpace: outdoorAdjustments[input.outdoorSpace ?? "terrace"] ?? 0,
     parking: parkingAdjustments[input.parking ?? "none"] ?? 0,
+    seaView: seaViewAdjustments[input.seaView ?? "none"] ?? 0,
   };
 }
 
@@ -603,7 +620,12 @@ export async function buildValuation(input: ValuationInput) {
     ]) ?? 0;
   const adjustments = getAdjustmentMultiplier(input);
   const adjustmentMultiplier =
-    1 + adjustments.condition + adjustments.outdoorSpace + adjustments.parking;
+    1 +
+    adjustments.condition +
+    adjustments.outdoorSpace +
+    adjustments.parking +
+    adjustments.seaView +
+    adjustments.beachfront;
   const adjustedPricePerSquareMetre = basePricePerSquareMetre * adjustmentMultiplier;
   const mid = adjustedPricePerSquareMetre * input.builtArea;
   const confidence = getConfidence(comparables.length, notariadoBenchmark);
