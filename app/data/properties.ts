@@ -67,7 +67,10 @@ type WordPressProperty = {
     _property_import_data?: string[];
     fave_property_id?: string[];
     fave_property_bedrooms?: string[];
+    fave_property_land?: string[];
     fave_property_price?: string[];
+    fave_property_size?: string[];
+    fave_terrace?: string[];
     own_property?: string[];
   };
   property_type?: number[];
@@ -253,6 +256,10 @@ function getRawPrice(price: string) {
   return parsePriceNumbers(price)[0] ?? 0;
 }
 
+function getRawArea(value?: string) {
+  return value ? parsePriceNumbers(value)[0] ?? 0 : 0;
+}
+
 function formatPrice(currency: string, price: string) {
   const formatter = getCurrencyFormatter(currency);
   const prices = parsePriceNumbers(price);
@@ -352,6 +359,12 @@ function normalizeProperty(post: WordPressProperty): Property | null {
     const hasSeaViews = propertyHasSeaViews(property);
     const currentPrice =
       post.property_meta?.fave_property_price?.[0]?.trim() || property.Price;
+    const builtArea =
+      getRawArea(post.property_meta?.fave_property_size?.[0]) || property.Built;
+    const plotArea =
+      getRawArea(post.property_meta?.fave_property_land?.[0]) || property.GardenPlot;
+    const terraceArea =
+      getRawArea(post.property_meta?.fave_terrace?.[0]) || property.Terrace;
     const images = property.Pictures.Picture.map(
       (picture) => picture.PictureURL,
     );
@@ -369,11 +382,11 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       rawPrice: getRawPrice(currentPrice),
       beds: property.Bedrooms,
       baths: property.Bathrooms,
-      builtArea: property.Built,
-      plotArea: property.GardenPlot,
-      size: `${property.Built} m2`,
-      plot: property.GardenPlot ? `${property.GardenPlot} m2` : "Community",
-      terrace: `${property.Terrace} m2`,
+      builtArea,
+      plotArea,
+      size: `${builtArea} m2`,
+      plot: plotArea ? `${plotArea} m2` : "Community",
+      terrace: `${terraceArea} m2`,
       tag: hasSeaViews ? "Sea views" : propertyStatus,
       type: propertyType,
       typeIds: post.property_type ?? [],
