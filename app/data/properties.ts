@@ -84,6 +84,19 @@ type WordPressTerm = {
   count: number;
 };
 
+const PROPERTY_AREA_OVERRIDES: Record<
+  string,
+  {
+    builtArea?: number;
+    plotArea?: number;
+    terraceArea?: number;
+  }
+> = {
+  R5398630: {
+    terraceArea: 17,
+  },
+};
+
 export type Property = {
   id: number;
   ref: string;
@@ -365,6 +378,10 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       getRawArea(post.property_meta?.fave_property_land?.[0]) || property.GardenPlot;
     const terraceArea =
       getRawArea(post.property_meta?.fave_terrace?.[0]) || property.Terrace;
+    const areaOverride = PROPERTY_AREA_OVERRIDES[property.Reference.toUpperCase()];
+    const displayBuiltArea = areaOverride?.builtArea ?? builtArea;
+    const displayPlotArea = areaOverride?.plotArea ?? plotArea;
+    const displayTerraceArea = areaOverride?.terraceArea ?? terraceArea;
     const images = property.Pictures.Picture.map(
       (picture) => picture.PictureURL,
     );
@@ -382,11 +399,11 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       rawPrice: getRawPrice(currentPrice),
       beds: property.Bedrooms,
       baths: property.Bathrooms,
-      builtArea,
-      plotArea,
-      size: `${builtArea} m2`,
-      plot: plotArea ? `${plotArea} m2` : "Community",
-      terrace: `${terraceArea} m2`,
+      builtArea: displayBuiltArea,
+      plotArea: displayPlotArea,
+      size: `${displayBuiltArea} m2`,
+      plot: displayPlotArea ? `${displayPlotArea} m2` : "Community",
+      terrace: `${displayTerraceArea} m2`,
       tag: hasSeaViews ? "Sea views" : propertyStatus,
       type: propertyType,
       typeIds: post.property_type ?? [],
