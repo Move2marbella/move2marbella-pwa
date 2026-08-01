@@ -353,14 +353,7 @@ function propertyHasHeatedPool(property: ResalesProperty) {
 function textSuggestsNewDevelopment(value: string) {
   const searchableText = normalizeSearchText(decodeUnicodeArtifacts(value));
 
-  return (
-    searchableText.includes("new development") ||
-    searchableText.includes("new construction") ||
-    searchableText.includes("new build") ||
-    searchableText.includes("brand new") ||
-    searchableText.includes("obra nueva") ||
-    searchableText.includes("off plan")
-  );
+  return searchableText === "new development";
 }
 
 function propertyIsNewDevelopment(property: ResalesProperty) {
