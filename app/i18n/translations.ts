@@ -44,6 +44,7 @@ export type Translation = {
   nearbyAreaHint: string;
   nearbyAttribution: string;
   nearbyPlaces: string;
+  newDevelopment: string;
   next: string;
   noPropertiesFound: string;
   overview: string;
@@ -179,6 +180,7 @@ export const translations: Record<Locale, Translation> = {
     nearbyAreaHint: "Places within the displayed ZIP zone.",
     nearbyAttribution: "Nearby place data: © OpenStreetMap contributors",
     nearbyPlaces: "Nearby places in the area",
+    newDevelopment: "New Development",
     next: "Next",
     noPropertiesFound: "No properties found for these filters.",
     overview: "Overview",
@@ -326,6 +328,7 @@ export const translations: Record<Locale, Translation> = {
     nearbyAreaHint: "Lugares dentro de la zona postal mostrada.",
     nearbyAttribution: "Datos de lugares cercanos: © colaboradores de OpenStreetMap",
     nearbyPlaces: "Lugares cercanos en la zona",
+    newDevelopment: "Obra nueva",
     next: "Siguiente",
     noPropertiesFound: "No se encontraron propiedades con estos filtros.",
     overview: "Resumen",
@@ -473,6 +476,7 @@ export const translations: Record<Locale, Translation> = {
     nearbyAreaHint: "Lieux situés dans la zone postale affichée.",
     nearbyAttribution: "Données des lieux à proximité : © contributeurs OpenStreetMap",
     nearbyPlaces: "Lieux à proximité dans la zone",
+    newDevelopment: "Programme neuf",
     next: "Suivant",
     noPropertiesFound: "Aucun bien trouvé avec ces filtres.",
     overview: "Aperçu",
@@ -620,6 +624,7 @@ export const translations: Record<Locale, Translation> = {
     nearbyAreaHint: "Orte innerhalb der angezeigten Postleitzone.",
     nearbyAttribution: "Daten zu Orten in der Nähe: © OpenStreetMap-Mitwirkende",
     nearbyPlaces: "Orte in der Nähe",
+    newDevelopment: "Neubau",
     next: "Weiter",
     noPropertiesFound: "Keine Immobilien für diese Filter gefunden.",
     overview: "Überblick",
@@ -767,6 +772,7 @@ export const translations: Record<Locale, Translation> = {
     nearbyAreaHint: "Места в пределах указанной почтовой зоны.",
     nearbyAttribution: "Данные о ближайших местах: © участники OpenStreetMap",
     nearbyPlaces: "Места поблизости",
+    newDevelopment: "Новостройка",
     next: "Далее",
     noPropertiesFound: "По этим фильтрам объекты не найдены.",
     overview: "Обзор",
@@ -914,6 +920,7 @@ export const translations: Record<Locale, Translation> = {
     nearbyAreaHint: "Miejsca w obrębie wyświetlonej strefy kodu pocztowego.",
     nearbyAttribution: "Dane o pobliskich miejscach: © autorzy OpenStreetMap",
     nearbyPlaces: "Miejsca w pobliżu",
+    newDevelopment: "Nowa inwestycja",
     next: "Dalej",
     noPropertiesFound: "Nie znaleziono nieruchomości dla tych filtrów.",
     overview: "Opis",
@@ -1061,6 +1068,7 @@ export const translations: Record<Locale, Translation> = {
     nearbyAreaHint: "A megjelenített irányítószám-zónán belüli helyek.",
     nearbyAttribution: "Nearby adatok: © OpenStreetMap használatával",
     nearbyPlaces: "Közeli helyek a környéken",
+    newDevelopment: "New Development",
     next: "Következő",
     noPropertiesFound: "Nincs találat ezekkel a szűrőkkel.",
     overview: "Áttekintés",

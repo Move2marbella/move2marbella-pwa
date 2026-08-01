@@ -39,6 +39,7 @@ export type HomeSearchParams = {
   bedrooms?: string;
   heated_pool?: string;
   max_price?: string;
+  new_development?: string;
   page?: string;
   property_city?: string;
   property_status?: string;
@@ -84,6 +85,7 @@ export async function HomeContent({
     bedrooms = "",
     heated_pool = "",
     max_price = "20000000",
+    new_development = "",
     page = "1",
     property_city: selectedPropertyCity = "",
     property_status: selectedPropertyStatus = "",
@@ -107,6 +109,7 @@ export async function HomeContent({
       : "featured";
   const hasBeachfrontFilter = beachfront === "1";
   const hasHeatedPoolFilter = heated_pool === "1";
+  const hasNewDevelopmentFilter = new_development === "1";
   const hasSeaViewFilter = sea_view === "1";
   const currentPage = Math.max(Number(page) || 1, 1);
   const hasMaxPriceFilter = Boolean(max_price) && max_price !== "20000000";
@@ -172,6 +175,7 @@ export async function HomeContent({
     heatedPool: hasHeatedPoolFilter || parsedQuery.keywords.includes("heated pool"),
     keywords: parsedQuery.keywords,
     maxPrice: hasEffectiveMaxPriceFilter ? effectiveMaxPrice : undefined,
+    newDevelopment: hasNewDevelopmentFilter,
     page: currentPage,
     propertyCities: propertyCityFilterIds,
     propertyStatuses: propertyStatusFilterIds,
@@ -244,6 +248,10 @@ export async function HomeContent({
 
   if (hasHeatedPoolFilter) {
     paginationBaseParams.set("heated_pool", "1");
+  }
+
+  if (hasNewDevelopmentFilter) {
+    paginationBaseParams.set("new_development", "1");
   }
 
   if (hasSeaViewFilter) {
@@ -549,6 +557,22 @@ export async function HomeContent({
                         />
                         {t.heatedPool}
                       </label>
+                      <label
+                        className={
+                          hasNewDevelopmentFilter
+                            ? "inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#0f253d] px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white"
+                            : "inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#ded4c2] bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#0f253d]"
+                        }
+                      >
+                        <input
+                          type="checkbox"
+                          name="new_development"
+                          value="1"
+                          defaultChecked={hasNewDevelopmentFilter}
+                          className="h-4 w-4 accent-[#0f253d]"
+                        />
+                        {t.newDevelopment}
+                      </label>
                     </div>
                   </fieldset>
                   <div className="md:col-span-12">
@@ -644,6 +668,9 @@ export async function HomeContent({
                   ) : null}
                   {hasHeatedPoolFilter ? (
                     <input type="hidden" name="heated_pool" value="1" />
+                  ) : null}
+                  {hasNewDevelopmentFilter ? (
+                    <input type="hidden" name="new_development" value="1" />
                   ) : null}
                   {hasSeaViewFilter ? (
                     <input type="hidden" name="sea_view" value="1" />

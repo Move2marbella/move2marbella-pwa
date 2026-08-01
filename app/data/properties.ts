@@ -160,6 +160,7 @@ type PropertyFilters = {
   heatedPool?: boolean;
   keywords?: string[];
   maxPrice?: number;
+  newDevelopment?: boolean;
   noStore?: boolean;
   propertyCities?: string[];
   propertyStatuses?: string[];
@@ -476,6 +477,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         filters.beachFront ||
         filters.bedrooms ||
         filters.heatedPool ||
+        filters.newDevelopment ||
         filters.reference ||
         filters.seaView ||
         filters.sort ||
@@ -485,7 +487,12 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
 
     if (usesClientSideFilters) {
       const index = await fetchPropertySearchIndex(
-        Boolean(filters.seaView || filters.beachFront || filters.heatedPool),
+        Boolean(
+          filters.seaView ||
+            filters.beachFront ||
+            filters.heatedPool ||
+            filters.newDevelopment,
+        ),
       );
       const filteredEntries = index.filter((property) => {
         if (
@@ -512,6 +519,10 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         }
 
         if (filters.seaView && !property.hasSeaViews) {
+          return false;
+        }
+
+        if (filters.newDevelopment && !property.isNewDevelopment) {
           return false;
         }
 
@@ -1064,6 +1075,10 @@ function propertyMatchesFilters(properties: Property[], filters: PropertyFilters
     }
 
     if (filters.seaView && !propertyMatchesKeywords(property, ["sea views"])) {
+      return false;
+    }
+
+    if (filters.newDevelopment && !property.isNewDevelopment) {
       return false;
     }
 
