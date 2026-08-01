@@ -16,6 +16,7 @@ import { locationCoordinates } from "../data/location-coordinates";
 import {
   PROPERTY_CITY_SEARCH_OPTIONS,
   fetchPropertyCities,
+  formatPropertyDisplayPrice,
   getPropertyCityDescendants,
   type PropertyCityOption,
 } from "../data/properties";
@@ -938,7 +939,7 @@ export async function ValuationContent({
                         </p>
                         <div className="mt-4 flex items-end justify-between gap-3">
                           <span className="text-lg font-semibold text-[#171717]">
-                            {property.price}
+                            {formatPropertyDisplayPrice(property, locale)}
                           </span>
                           <span className="text-sm text-[#5c564d]">
                             {formatEuro.format(property.pricePerSquareMetre)} / m2

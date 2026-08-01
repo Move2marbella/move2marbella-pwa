@@ -113,6 +113,29 @@ function propertyHasHeatedPool(property) {
   );
 }
 
+function textSuggestsNewDevelopment(value = "") {
+  const searchableText = normalizeSearchText(decodeUnicodeArtifacts(value));
+
+  return (
+    searchableText.includes("new development") ||
+    searchableText.includes("new construction") ||
+    searchableText.includes("new build") ||
+    searchableText.includes("brand new") ||
+    searchableText.includes("obra nueva") ||
+    searchableText.includes("off plan")
+  );
+}
+
+function propertyIsNewDevelopment(property) {
+  return (
+    textSuggestsNewDevelopment(property.PropertyType?.NameType) ||
+    textSuggestsNewDevelopment(property.Status?.en) ||
+    (property.PropertyFeatures?.Category ?? []).some((group) =>
+      [group.Type, ...(group.Value ?? [])].some(textSuggestsNewDevelopment),
+    )
+  );
+}
+
 function normalizePost(post) {
   const importData = post.property_meta?._property_import_data?.[0];
 
@@ -160,6 +183,7 @@ function normalizePost(post) {
       hasHeatedPool: propertyHasHeatedPool(property),
       hasSeaViews: propertyHasSeaViews(property),
       id: post.id,
+      isNewDevelopment: propertyIsNewDevelopment(property),
       images,
       isOwnProperty: post.property_meta?.own_property?.[0] === "1",
       location,

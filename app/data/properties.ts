@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import type { Locale } from "../i18n/translations";
 import { getLocationCoordinate } from "./location-coordinates";
 
 function isNextDynamicServerError(error: unknown) {
@@ -123,6 +124,7 @@ export type Property = {
   description: string;
   images: string[];
   featureGroups: ResalesFeatureGroup[];
+  isNewDevelopment: boolean;
   wordpressUrl: string;
   coordinates: {
     latitude: number;
@@ -181,6 +183,7 @@ type PropertySearchIndexEntry = {
   hasHeatedPool: boolean;
   hasSeaViews: boolean;
   id: number;
+  isNewDevelopment: boolean;
   isOwnProperty: boolean;
   price: number;
   ref: string;
@@ -288,6 +291,30 @@ function formatPrice(currency: string, price: string) {
   return price;
 }
 
+const newDevelopmentPricePrefixByLocale: Record<Exclude<Locale, "hu">, string> = {
+  de: "Ab ",
+  en: "From ",
+  es: "Desde ",
+  fr: "À partir de ",
+  pl: "Od ",
+  ru: "От ",
+};
+
+export function formatPropertyDisplayPrice(
+  property: Pick<Property, "isNewDevelopment" | "price">,
+  locale: Locale,
+) {
+  if (!property.isNewDevelopment) {
+    return property.price;
+  }
+
+  if (locale === "hu") {
+    return `${property.price} -tól`;
+  }
+
+  return `${newDevelopmentPricePrefixByLocale[locale]}${property.price}`;
+}
+
 function featureValuesIncludeSea(values?: string[]) {
   return Boolean(
     values?.some((value) =>
@@ -320,6 +347,29 @@ function propertyHasHeatedPool(property: ResalesProperty) {
       (value) =>
         normalizeSearchText(decodeUnicodeArtifacts(value)) === "heated pool",
     ),
+  );
+}
+
+function textSuggestsNewDevelopment(value: string) {
+  const searchableText = normalizeSearchText(decodeUnicodeArtifacts(value));
+
+  return (
+    searchableText.includes("new development") ||
+    searchableText.includes("new construction") ||
+    searchableText.includes("new build") ||
+    searchableText.includes("brand new") ||
+    searchableText.includes("obra nueva") ||
+    searchableText.includes("off plan")
+  );
+}
+
+function propertyIsNewDevelopment(property: ResalesProperty) {
+  return (
+    textSuggestsNewDevelopment(property.PropertyType.NameType) ||
+    textSuggestsNewDevelopment(property.Status.en) ||
+    property.PropertyFeatures.Category.some((group) =>
+      [group.Type, ...group.Value].some(textSuggestsNewDevelopment),
+    )
   );
 }
 
@@ -370,6 +420,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
     const subLocation = propertySubLocation ? `, ${propertySubLocation}` : "";
     const location = `${propertyLocation}${subLocation}, ${propertyArea}`;
     const hasSeaViews = propertyHasSeaViews(property);
+    const isNewDevelopment = propertyIsNewDevelopment(property);
     const currentPrice =
       post.property_meta?.fave_property_price?.[0]?.trim() || property.Price;
     const builtArea =
@@ -415,6 +466,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
         Type: decodeUnicodeArtifacts(group.Type),
         Value: group.Value.map((value) => decodeUnicodeArtifacts(value)),
       })),
+      isNewDevelopment,
       wordpressUrl: post.link,
       coordinates,
     };
@@ -800,6 +852,7 @@ function propertyFromSearchSnapshotEntry(
     description: "",
     images: property.images,
     featureGroups: [],
+    isNewDevelopment: Boolean(property.isNewDevelopment),
     wordpressUrl: property.wordpressUrl,
     coordinates: getLocationCoordinate(property.city, property.location),
   };
@@ -905,6 +958,20 @@ function getIndexedPropertyHasHeatedPool(post: WordPressProperty) {
   }
 }
 
+function getIndexedPropertyIsNewDevelopment(post: WordPressProperty) {
+  const importData = post.property_meta?._property_import_data?.[0];
+
+  if (!importData) {
+    return false;
+  }
+
+  try {
+    return propertyIsNewDevelopment(JSON.parse(importData) as ResalesProperty);
+  } catch {
+    return false;
+  }
+}
+
 async function fetchPropertySearchIndex(includeFeatureData = false) {
   try {
     const snapshot = getPropertySearchSnapshot();
@@ -964,6 +1031,7 @@ async function fetchPropertySearchIndex(includeFeatureData = false) {
         hasHeatedPool: includeFeatureData ? getIndexedPropertyHasHeatedPool(post) : false,
         hasSeaViews: includeFeatureData ? getIndexedPropertyHasSeaViews(post) : false,
         id: post.id,
+        isNewDevelopment: includeFeatureData ? getIndexedPropertyIsNewDevelopment(post) : false,
         isOwnProperty: post.property_meta?.own_property?.[0] === "1",
         price: getRawPrice(post.property_meta?.fave_property_price?.[0] ?? "0"),
         ref,

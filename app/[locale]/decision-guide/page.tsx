@@ -6,7 +6,10 @@ import {
   type EvaluationProperty,
 } from "../../components/decision-guide";
 import { getDecisionGuideCopy } from "../../data/decision-guide";
-import { getPropertyByRef } from "../../data/properties";
+import {
+  formatPropertyDisplayPrice,
+  getPropertyByRef,
+} from "../../data/properties";
 import { getLocale, type Locale } from "../../i18n/translations";
 import {
   getLanguageAlternates,
@@ -53,7 +56,7 @@ export default async function DecisionGuidePage({
         title: property.title,
         reference: property.ref,
         location: property.location,
-        price: property.price,
+        price: formatPropertyDisplayPrice(property, locale),
         image: property.images[0],
         url: getLocalizedPath(locale, `/properties/${property.ref}`),
       }

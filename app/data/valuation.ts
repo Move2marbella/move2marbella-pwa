@@ -42,6 +42,7 @@ export type ValuationComparable = {
   title: string;
   location: string;
   price: string;
+  isNewDevelopment: boolean;
   rawPrice: number;
   builtArea: number;
   pricePerSquareMetre: number;
@@ -592,6 +593,7 @@ async function getOwnListingComparables(input: ValuationInput) {
         title: property.title,
         location: property.location,
         price: property.price,
+        isNewDevelopment: property.isNewDevelopment,
         rawPrice: property.rawPrice,
         builtArea: property.builtArea,
         pricePerSquareMetre: property.rawPrice / property.builtArea,

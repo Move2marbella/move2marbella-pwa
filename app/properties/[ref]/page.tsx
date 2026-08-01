@@ -9,6 +9,7 @@ import { PropertyGallery } from "../../components/property-gallery";
 import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import {
   fetchProperties,
+  formatPropertyDisplayPrice,
   getPropertyByRef,
   type Property,
 } from "../../data/properties";
@@ -177,6 +178,7 @@ export async function PropertyDetailContent({
   );
   const nearbyGroups = groupNearbyPlaces(nearbyPlaces, locale);
   const pricePerSquareMetre = formatPricePerSquareMetre(property);
+  const displayPrice = formatPropertyDisplayPrice(property, locale);
 
   const stats = [
     { label: t.bedrooms, value: property.beds },
@@ -192,7 +194,7 @@ export async function PropertyDetailContent({
   const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(
     [
       `🏡 *${property.title.replace(" - ", " – ")}*`,
-      `💰 ${property.price}`,
+      `💰 ${displayPrice}`,
       `🛏 ${property.beds} bed | ${property.baths} bath | ${property.size}`,
       "🔎 View property",
       canonicalPropertyUrl,
@@ -298,7 +300,7 @@ export async function PropertyDetailContent({
           </h1>
           <p className="mt-2 text-sm text-white/72">{property.location}</p>
           <p className="mt-5 text-2xl font-bold text-[#f7f2ea]">
-            {property.price}
+            {displayPrice}
           </p>
 
           <div className="mt-5 grid grid-cols-2 gap-2">
@@ -339,7 +341,7 @@ export async function PropertyDetailContent({
             property={{
               ref: property.ref,
               title: property.title,
-              price: property.price,
+              price: displayPrice,
               location: property.location,
               image: property.images[0],
               href: propertyHref,
@@ -479,7 +481,7 @@ export async function PropertyDetailContent({
           <LeadForm
             propertyRef={property.ref}
             propertyTitle={property.title}
-            propertyPrice={property.price}
+            propertyPrice={displayPrice}
             propertyLocation={property.location}
             whatsappUrl={getWhatsAppUrl(property.ref)}
             labels={leadLabels}

@@ -8,6 +8,7 @@ import {
   fetchProperties,
   fetchPropertyCities,
   fetchPropertyTypes,
+  formatPropertyDisplayPrice,
   getPropertyCityFilterIds,
   getPropertyTypeFilterIds,
   type Property,
@@ -334,6 +335,7 @@ export async function SimilarPropertiesContent({
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {properties.map((property) => {
             const propertyHref = `${basePath}/properties/${property.ref}?wp_id=${property.id}`;
+            const displayPrice = formatPropertyDisplayPrice(property, locale);
 
             return (
               <article
@@ -373,12 +375,12 @@ export async function SimilarPropertiesContent({
                     <span>{property.ref}</span>
                   </div>
                   <div className="grid grid-cols-3 items-center gap-2 sm:flex sm:flex-wrap sm:justify-between sm:gap-3">
-                    <p className="col-span-3 text-lg font-bold">{property.price}</p>
+                    <p className="col-span-3 text-lg font-bold">{displayPrice}</p>
                     <FavouriteToggle
                       property={{
                         ref: property.ref,
                         title: property.title,
-                        price: property.price,
+                        price: displayPrice,
                         location: property.location,
                         image: property.images[0],
                         href: propertyHref,
