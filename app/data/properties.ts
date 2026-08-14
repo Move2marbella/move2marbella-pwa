@@ -17,6 +17,12 @@ type ResalesFeatureGroup = {
   Value: string[];
 };
 
+type ResalesPicture = {
+  Id: number;
+  PictureURL: string;
+  PictureCaption?: string;
+};
+
 type ResalesProperty = {
   Reference: string;
   AgencyRef?: string;
@@ -36,7 +42,7 @@ type ResalesProperty = {
   Bedrooms: string;
   Bathrooms: string;
   Currency: string;
-  Price: string;
+  Price: number | string;
   Built: number;
   Terrace: number;
   GardenPlot: number;
@@ -45,11 +51,28 @@ type ResalesProperty = {
     Category: ResalesFeatureGroup[];
   };
   Pictures: {
-    Picture: {
-      Id: number;
-      PictureURL: string;
-      PictureCaption: string;
-    }[];
+    Picture: ResalesPicture[] | ResalesPicture;
+  };
+  OwnProperty?: number | string;
+};
+
+type ResalesSearchResponse = {
+  QueryInfo?: {
+    PropertyCount?: number | string;
+    CurrentPage?: number | string;
+    PropertiesPerPage?: number | string;
+    SearchType?: string;
+  };
+  Property?: ResalesProperty[] | ResalesProperty;
+  transaction?: {
+    status?: string;
+  };
+};
+
+type ResalesDetailResponse = {
+  Property?: ResalesProperty;
+  transaction?: {
+    status?: string;
   };
 };
 
@@ -252,6 +275,12 @@ const WORDPRESS_PROPERTY_TYPES_URL =
   "https://move2marbella.com/wp-json/wp/v2/property_type";
 const WORDPRESS_PROPERTY_FIELDS =
   "id,link,slug,title,property_city,property_status,property_type,property_meta";
+const RESALES_BRIDGE_URL = process.env.RESALES_BRIDGE_URL?.replace(/\/$/, "");
+const RESALES_BRIDGE_SECRET = process.env.RESALES_BRIDGE_SECRET;
+
+function isResalesBridgeEnabled() {
+  return Boolean(RESALES_BRIDGE_URL && RESALES_BRIDGE_SECRET);
+}
 
 function getCurrencyFormatter(currency: string) {
   return new Intl.NumberFormat("en-GB", {
@@ -416,7 +445,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
     const hasSeaViews = propertyHasSeaViews(property);
     const isNewDevelopment = propertyIsNewDevelopment(property);
     const currentPrice =
-      post.property_meta?.fave_property_price?.[0]?.trim() || property.Price;
+      post.property_meta?.fave_property_price?.[0]?.trim() || String(property.Price);
     const builtArea =
       getRawArea(post.property_meta?.fave_property_size?.[0]) || property.Built;
     const plotArea =
@@ -427,7 +456,7 @@ function normalizeProperty(post: WordPressProperty): Property | null {
     const displayBuiltArea = areaOverride?.builtArea ?? builtArea;
     const displayPlotArea = areaOverride?.plotArea ?? plotArea;
     const displayTerraceArea = areaOverride?.terraceArea ?? terraceArea;
-    const images = property.Pictures.Picture.map(
+    const images = getResalesPictures(property).map(
       (picture) => picture.PictureURL,
     );
 
@@ -469,8 +498,295 @@ function normalizeProperty(post: WordPressProperty): Property | null {
   }
 }
 
+function getResalesPictures(property: ResalesProperty) {
+  if (Array.isArray(property.Pictures?.Picture)) {
+    return property.Pictures.Picture;
+  }
+
+  return property.Pictures?.Picture ? [property.Pictures.Picture] : [];
+}
+
+function normalizeResalesProperty(property: ResalesProperty): Property {
+  const propertyLocation = decodeUnicodeArtifacts(property.Location);
+  const propertySubLocation = decodeUnicodeArtifacts(property.SubLocation);
+  const propertyArea =
+    decodeUnicodeArtifacts(property.Area) || "Costa del Sol";
+  const propertyType = decodeUnicodeArtifacts(property.PropertyType.NameType);
+  const propertyStatus =
+    decodeUnicodeArtifacts(property.Status.en ?? property.Status.system) ||
+    "Available";
+  const coordinates = getLocationCoordinate(
+    propertySubLocation,
+    propertyLocation,
+  );
+  const subLocation = propertySubLocation ? `, ${propertySubLocation}` : "";
+  const location = `${propertyLocation}${subLocation}, ${propertyArea}`;
+  const hasSeaViews = propertyHasSeaViews(property);
+  const isNewDevelopment = propertyIsNewDevelopment(property);
+  const currentPrice = String(property.Price ?? "");
+  const areaOverride = PROPERTY_AREA_OVERRIDES[property.Reference.toUpperCase()];
+  const displayBuiltArea = areaOverride?.builtArea ?? Number(property.Built ?? 0);
+  const displayPlotArea =
+    areaOverride?.plotArea ?? Number(property.GardenPlot ?? 0);
+  const displayTerraceArea =
+    areaOverride?.terraceArea ?? Number(property.Terrace ?? 0);
+  const pictures = getResalesPictures(property);
+  const images = pictures
+    .map((picture) => picture.PictureURL)
+    .filter(Boolean);
+
+  return {
+    id: getReferenceNumber(property.Reference),
+    ref: property.Reference,
+    agencyRef: property.AgencyRef ?? property.Reference,
+    title: `${propertyType} - ${propertyLocation}`,
+    location,
+    city: propertyLocation,
+    cityIds: [],
+    currency: property.Currency || "EUR",
+    price: formatPrice(property.Currency || "EUR", currentPrice),
+    rawPrice: getRawPrice(currentPrice),
+    beds: String(property.Bedrooms ?? "0"),
+    baths: String(property.Bathrooms ?? "0"),
+    builtArea: displayBuiltArea,
+    plotArea: displayPlotArea,
+    size: `${displayBuiltArea} m2`,
+    plot: displayPlotArea ? `${displayPlotArea} m2` : "Community",
+    terrace: `${displayTerraceArea} m2`,
+    tag: hasSeaViews ? "Sea views" : propertyStatus,
+    type: propertyType,
+    typeIds: [],
+    status: propertyStatus,
+    statusIds: [],
+    description: cleanDescription(property.Description),
+    images,
+    featureGroups: property.PropertyFeatures.Category.map((group) => ({
+      Type: decodeUnicodeArtifacts(group.Type),
+      Value: group.Value.map((value) => decodeUnicodeArtifacts(value)),
+    })),
+    isNewDevelopment,
+    wordpressUrl: `https://move2marbella.com/property/${property.Reference.toLowerCase()}/`,
+    coordinates,
+  };
+}
+
+function getResalesProperties(value: ResalesSearchResponse["Property"]) {
+  if (!value) {
+    return [];
+  }
+
+  return Array.isArray(value) ? value : [value];
+}
+
+async function fetchResalesBridgeJson<T>(
+  endpoint: string,
+  params: URLSearchParams,
+  noStore = false,
+) {
+  if (!RESALES_BRIDGE_URL || !RESALES_BRIDGE_SECRET) {
+    throw new Error("Resales bridge is not configured");
+  }
+
+  params.set("lang", "1");
+  const response = await fetch(
+    `${RESALES_BRIDGE_URL}/${endpoint}?${params.toString()}`,
+    noStore
+      ? {
+          cache: "no-store",
+          headers: {
+            "X-M2M-Bridge-Secret": RESALES_BRIDGE_SECRET,
+          },
+        }
+      : {
+          next: {
+            revalidate: 300,
+          },
+          headers: {
+            "X-M2M-Bridge-Secret": RESALES_BRIDGE_SECRET,
+          },
+        },
+  );
+
+  if (!response.ok) {
+    throw new Error(`Resales bridge ${endpoint} failed: ${response.status}`);
+  }
+
+  return (await response.json()) as T;
+}
+
+async function fetchPropertyByResalesReference(ref: string) {
+  const normalizedReference = ref.trim().toUpperCase();
+
+  if (!normalizedReference) {
+    return null;
+  }
+
+  const data = await fetchResalesBridgeJson<ResalesDetailResponse>(
+    `property/${encodeURIComponent(normalizedReference)}`,
+    new URLSearchParams(),
+  );
+
+  return data.Property ? normalizeResalesProperty(data.Property) : null;
+}
+
+async function fetchPropertiesFromResalesBridge(
+  limit: number,
+  filters: PropertyFilters,
+) {
+  const referenceFilters = Array.from(getReferenceFilters(filters.reference));
+  const page = filters.page ?? 1;
+
+  if (referenceFilters.length > 0) {
+    const properties = (
+      await Promise.all(referenceFilters.map(fetchPropertyByResalesReference))
+    ).filter((property): property is Property => Boolean(property));
+    const filtered = sortProperties(
+      propertyMatchesFilters(properties, filters),
+      filters.sort ?? "reference_desc",
+    );
+
+    return {
+      page: 1,
+      total: filtered.length,
+      totalPages: 1,
+      properties: filtered,
+    };
+  }
+
+  const params = new URLSearchParams({
+    mode: filters.sort === "featured" ? "featured" : "sale",
+    pageSize: String(limit),
+    page: String(page),
+  });
+
+  if (filters.bedrooms) {
+    params.set("bedrooms", String(filters.bedrooms));
+  }
+
+  if (filters.maxPrice) {
+    params.set("maxPrice", String(filters.maxPrice));
+  }
+
+  const usesLocalFiltering = Boolean(
+    filters.beachFront ||
+      filters.heatedPool ||
+      filters.keywords?.length ||
+      filters.newDevelopment ||
+      filters.propertyCities?.length ||
+      filters.propertyStatuses?.length ||
+      filters.propertyTypes?.length ||
+      filters.seaView,
+  );
+
+  if (usesLocalFiltering) {
+    params.set("pageSize", "100");
+    params.set("page", "1");
+  }
+
+  const data = await fetchResalesBridgeJson<ResalesSearchResponse>(
+    "search",
+    params,
+    Boolean(filters.noStore),
+  );
+  const normalized = getResalesProperties(data.Property).map(normalizeResalesProperty);
+  const bridgeFilterNames = usesLocalFiltering
+    ? await getBridgeFilterNames(filters)
+    : { cities: [], statuses: [], types: [] };
+  const filtered = usesLocalFiltering
+    ? propertyMatchesBridgeFilters(normalized, filters, bridgeFilterNames)
+    : normalized;
+  const sorted = usesLocalFiltering
+    ? sortProperties(filtered, filters.sort ?? "reference_desc")
+    : filtered;
+  const properties = usesLocalFiltering
+    ? sorted.slice((page - 1) * limit, page * limit)
+    : sorted;
+  const total = usesLocalFiltering
+    ? sorted.length
+    : Number(data.QueryInfo?.PropertyCount ?? sorted.length);
+
+  return {
+    page,
+    total,
+    totalPages: Math.max(1, Math.ceil(total / limit)),
+    properties,
+  };
+}
+
+async function getBridgeFilterNames(filters: PropertyFilters) {
+  const [cities, types, statuses] = await Promise.all([
+    filters.propertyCities?.length ? fetchPropertyCities() : Promise.resolve([]),
+    filters.propertyTypes?.length ? fetchPropertyTypes() : Promise.resolve([]),
+    filters.propertyStatuses?.length ? fetchPropertyStatuses() : Promise.resolve([]),
+  ]);
+
+  return {
+    cities: getTermNamesForIds(cities, filters.propertyCities),
+    statuses: getTermNamesForIds(statuses, filters.propertyStatuses),
+    types: getTermNamesForIds(types, filters.propertyTypes),
+  };
+}
+
+function getTermNamesForIds(terms: TaxonomyOption[], ids?: string[]) {
+  const idSet = new Set((ids ?? []).map(Number));
+
+  return terms
+    .filter((term) => idSet.has(term.id))
+    .map((term) => normalizeSearchText(term.name));
+}
+
+function propertyMatchesBridgeFilters(
+  properties: Property[],
+  filters: PropertyFilters,
+  filterNames: {
+    cities: string[];
+    statuses: string[];
+    types: string[];
+  },
+) {
+  const taxonomyNeutralFilters = {
+    ...filters,
+    propertyCities: [],
+    propertyStatuses: [],
+    propertyTypes: [],
+  };
+
+  return propertyMatchesFilters(properties, taxonomyNeutralFilters).filter((property) => {
+    const locationText = normalizeSearchText(`${property.city} ${property.location}`);
+    const typeText = normalizeSearchText(property.type);
+    const statusText = normalizeSearchText(property.status);
+
+    if (
+      filterNames.cities.length > 0 &&
+      !filterNames.cities.some((name) => locationText.includes(name))
+    ) {
+      return false;
+    }
+
+    if (
+      filterNames.types.length > 0 &&
+      !filterNames.types.some((name) => typeText.includes(name))
+    ) {
+      return false;
+    }
+
+    if (
+      filterNames.statuses.length > 0 &&
+      !filterNames.statuses.some((name) => statusText.includes(name))
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   try {
+    if (isResalesBridgeEnabled()) {
+      return await fetchPropertiesFromResalesBridge(limit, filters);
+    }
+
     const referenceFilters = getReferenceFilters(filters.reference);
     const usesClientSideFilters = Boolean(
         filters.maxPrice ||
@@ -1619,6 +1935,10 @@ export function getPropertyCityDescendants(
 }
 
 export async function getPropertyByRef(ref: string, wordpressId?: string) {
+  if (isResalesBridgeEnabled()) {
+    return fetchPropertyByResalesReference(ref);
+  }
+
   if (wordpressId) {
     const property = await fetchPropertyByWordPressId(wordpressId);
 
