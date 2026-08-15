@@ -363,9 +363,13 @@ function propertyHasSeaViews(property: ResalesProperty) {
 
 function propertyHasBeachfront(property: ResalesProperty) {
   const beachfrontAliases = new Set(["beachfront", "front line beach complex"]);
+  const settings = property.PropertyFeatures.Category.find(
+    (category) =>
+      normalizeSearchText(decodeUnicodeArtifacts(category.Type)) === "setting",
+  )?.Value;
 
-  return property.PropertyFeatures.Category.some((group) =>
-    group.Value.some((value) =>
+  return Boolean(
+    settings?.some((value) =>
       beachfrontAliases.has(normalizeSearchText(decodeUnicodeArtifacts(value))),
     ),
   );
@@ -1434,7 +1438,17 @@ function normalizeSearchText(value: string) {
     .toLowerCase();
 }
 
+function getPropertyFeatureValues(property: Property, featureType: string) {
+  const normalizedFeatureType = normalizeSearchText(featureType);
+
+  return property.featureGroups
+    .filter((group) => normalizeSearchText(group.Type) === normalizedFeatureType)
+    .flatMap((group) => group.Value.map(normalizeSearchText));
+}
+
 function propertyMatchesKeywords(property: Property, keywords: string[]) {
+  const views = getPropertyFeatureValues(property, "views");
+  const settings = getPropertyFeatureValues(property, "setting");
   const searchableText = normalizeSearchText(
     [
       property.title,
@@ -1451,7 +1465,7 @@ function propertyMatchesKeywords(property: Property, keywords: string[]) {
     const normalizedKeyword = normalizeSearchText(keyword);
 
     if (normalizedKeyword === "sea views") {
-      return searchableText.includes("sea") || searchableText.includes("mar");
+      return views.some((value) => value.includes("sea"));
     }
 
     if (normalizedKeyword === "new build") {
@@ -1476,11 +1490,8 @@ function propertyMatchesKeywords(property: Property, keywords: string[]) {
 
     if (normalizedKeyword === "beachfront") {
       return (
-        searchableText.includes("beachfront") ||
-        searchableText.includes("front line beach complex") ||
-        searchableText.includes("frontline beach") ||
-        searchableText.includes("front line beach") ||
-        searchableText.includes("first line beach")
+        settings.includes("beachfront") ||
+        settings.includes("front line beach complex")
       );
     }
 
