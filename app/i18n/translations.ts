@@ -20,6 +20,7 @@ export type Translation = {
   bedrooms: string;
   built: string;
   clear: string;
+  communityFee: string;
   costaDelSol: string;
   details: string;
   email: string;
@@ -27,9 +28,11 @@ export type Translation = {
   favourite: string;
   favourites: string;
   featuredProperties: string;
+  garbageTax: string;
   defaultSort: string;
   forSale: string;
   heatedPool: string;
+  ibiTownhallTax: string;
   leadForm: string;
   liveSearchPreview: string;
   listingType: string;
@@ -51,6 +54,8 @@ export type Translation = {
   openInMaps: string;
   phone: string;
   plot: string;
+  perMonth: string;
+  perYear: string;
   previous: string;
   pricePerSquareMetre: string;
   priceHighToLow: string;
@@ -156,6 +161,7 @@ export const translations: Record<Locale, Translation> = {
     bedrooms: "Bedrooms",
     built: "Built",
     clear: "Clear",
+    communityFee: "Community fee",
     costaDelSol: "Costa del Sol",
     details: "Details",
     email: "Email",
@@ -163,9 +169,11 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Favourite",
     favourites: "Favourites",
     featuredProperties: "Featured properties",
+    garbageTax: "Garbage Tax",
     defaultSort: "Recommended",
     forSale: "For sale",
     heatedPool: "Heated Pool",
+    ibiTownhallTax: "IBI (Townhall Tax)",
     leadForm: "Lead form",
     liveSearchPreview: "Live search preview",
     listingType: "Listing type",
@@ -187,6 +195,8 @@ export const translations: Record<Locale, Translation> = {
     openInMaps: "Open in Maps",
     phone: "Phone",
     plot: "Plot",
+    perMonth: "month",
+    perYear: "year",
     previous: "Previous",
     pricePerSquareMetre: "Price / m²",
     priceHighToLow: "High to low price",
@@ -304,6 +314,7 @@ export const translations: Record<Locale, Translation> = {
     bedrooms: "Dormitorios",
     built: "Construido",
     clear: "Borrar",
+    communityFee: "Gastos de comunidad",
     costaDelSol: "Costa del Sol",
     details: "Detalles",
     email: "Email",
@@ -311,9 +322,11 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Favorito",
     favourites: "Favoritos",
     featuredProperties: "Propiedades destacadas",
+    garbageTax: "Tasa de basura",
     defaultSort: "Recomendadas",
     forSale: "En venta",
     heatedPool: "Piscina climatizada",
+    ibiTownhallTax: "IBI (impuesto municipal)",
     leadForm: "Formulario",
     liveSearchPreview: "Vista de búsqueda",
     listingType: "Operación",
@@ -335,6 +348,8 @@ export const translations: Record<Locale, Translation> = {
     openInMaps: "Abrir en Maps",
     phone: "Teléfono",
     plot: "Parcela",
+    perMonth: "mes",
+    perYear: "año",
     previous: "Anterior",
     pricePerSquareMetre: "Precio / m²",
     priceHighToLow: "Precio de mayor a menor",
@@ -452,6 +467,7 @@ export const translations: Record<Locale, Translation> = {
     bedrooms: "Chambres",
     built: "Construit",
     clear: "Effacer",
+    communityFee: "Charges de copropriété",
     costaDelSol: "Costa del Sol",
     details: "Details",
     email: "Email",
@@ -459,9 +475,11 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Favori",
     favourites: "Favoris",
     featuredProperties: "Biens en vedette",
+    garbageTax: "Taxe d'ordures",
     defaultSort: "Recommandés",
     forSale: "À vendre",
     heatedPool: "Piscine chauffée",
+    ibiTownhallTax: "IBI (taxe municipale)",
     leadForm: "Formulaire",
     liveSearchPreview: "Aperçu de recherche",
     listingType: "Opération",
@@ -483,6 +501,8 @@ export const translations: Record<Locale, Translation> = {
     openInMaps: "Ouvrir dans Maps",
     phone: "Téléphone",
     plot: "Terrain",
+    perMonth: "mois",
+    perYear: "an",
     previous: "Précédent",
     pricePerSquareMetre: "Prix / m²",
     priceHighToLow: "Prix décroissant",
@@ -600,6 +620,7 @@ export const translations: Record<Locale, Translation> = {
     bedrooms: "Schlafzimmer",
     built: "Wohnfläche",
     clear: "Löschen",
+    communityFee: "Community-Gebühr",
     costaDelSol: "Costa del Sol",
     details: "Details",
     email: "E-Mail",
@@ -607,9 +628,11 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Favorit",
     favourites: "Favoriten",
     featuredProperties: "Ausgewählte Immobilien",
+    garbageTax: "Müllgebühr",
     defaultSort: "Empfohlen",
     forSale: "Zum Verkauf",
     heatedPool: "Beheizter Pool",
+    ibiTownhallTax: "IBI (Gemeindesteuer)",
     leadForm: "Kontaktformular",
     liveSearchPreview: "Suchvorschau",
     listingType: "Angebotsart",
@@ -631,6 +654,8 @@ export const translations: Record<Locale, Translation> = {
     openInMaps: "In Maps öffnen",
     phone: "Telefon",
     plot: "Grundstück",
+    perMonth: "Monat",
+    perYear: "Jahr",
     previous: "Zurück",
     pricePerSquareMetre: "Preis / m²",
     priceHighToLow: "Preis absteigend",
@@ -748,6 +773,7 @@ export const translations: Record<Locale, Translation> = {
     bedrooms: "Спальни",
     built: "Площадь",
     clear: "Очистить",
+    communityFee: "Коммунальный сбор",
     costaDelSol: "Costa del Sol",
     details: "Подробнее",
     email: "Email",
@@ -755,9 +781,11 @@ export const translations: Record<Locale, Translation> = {
     favourite: "В избранное",
     favourites: "Избранное",
     featuredProperties: "Рекомендуемые объекты",
+    garbageTax: "Налог на мусор",
     defaultSort: "Рекомендуемые",
     forSale: "Продажа",
     heatedPool: "Подогреваемый бассейн",
+    ibiTownhallTax: "IBI (муниципальный налог)",
     leadForm: "Форма заявки",
     liveSearchPreview: "Результаты поиска",
     listingType: "Тип объявления",
@@ -779,6 +807,8 @@ export const translations: Record<Locale, Translation> = {
     openInMaps: "Открыть в Maps",
     phone: "Телефон",
     plot: "Участок",
+    perMonth: "месяц",
+    perYear: "год",
     previous: "Назад",
     pricePerSquareMetre: "Цена / м²",
     priceHighToLow: "Цена по убыванию",
@@ -896,6 +926,7 @@ export const translations: Record<Locale, Translation> = {
     bedrooms: "Sypialnie",
     built: "Powierzchnia",
     clear: "Wyczyść",
+    communityFee: "Opłata wspólnotowa",
     costaDelSol: "Costa del Sol",
     details: "Szczegóły",
     email: "Email",
@@ -903,9 +934,11 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Ulubione",
     favourites: "Ulubione",
     featuredProperties: "Polecane nieruchomości",
+    garbageTax: "Opłata za śmieci",
     defaultSort: "Polecane",
     forSale: "Na sprzedaż",
     heatedPool: "Podgrzewany basen",
+    ibiTownhallTax: "IBI (podatek miejski)",
     leadForm: "Formularz",
     liveSearchPreview: "Podgląd wyników",
     listingType: "Typ oferty",
@@ -927,6 +960,8 @@ export const translations: Record<Locale, Translation> = {
     openInMaps: "Otwórz w Maps",
     phone: "Telefon",
     plot: "Działka",
+    perMonth: "miesiąc",
+    perYear: "rok",
     previous: "Wstecz",
     pricePerSquareMetre: "Cena / m²",
     priceHighToLow: "Cena od najwyższej",
@@ -1044,6 +1079,7 @@ export const translations: Record<Locale, Translation> = {
     bedrooms: "Hálószoba",
     built: "Alapterület",
     clear: "Törlés",
+    communityFee: "Közös költség",
     costaDelSol: "Costa del Sol",
     details: "Részletek",
     email: "Email",
@@ -1051,9 +1087,11 @@ export const translations: Record<Locale, Translation> = {
     favourite: "Kedvenc",
     favourites: "Kedvencek",
     featuredProperties: "Kiemelt ingatlanok",
+    garbageTax: "Szemétdíj",
     defaultSort: "Ajánlott",
     forSale: "Eladó",
     heatedPool: "Fűtött medence",
+    ibiTownhallTax: "IBI (helyi adó)",
     leadForm: "Űrlap",
     liveSearchPreview: "Keresési találatok",
     listingType: "Státusz",
@@ -1075,6 +1113,8 @@ export const translations: Record<Locale, Translation> = {
     openInMaps: "Megnyitás Maps-ben",
     phone: "Telefon",
     plot: "Telek",
+    perMonth: "hó",
+    perYear: "év",
     previous: "Előző",
     pricePerSquareMetre: "Ár / m²",
     priceHighToLow: "Ár szerint csökkenő",

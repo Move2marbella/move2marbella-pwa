@@ -122,6 +122,16 @@ function formatPricePerSquareMetre(property: Property) {
   return `${formattedPrice}/m²`;
 }
 
+function formatPropertyCost(value: number, currency: string, period: string) {
+  const formattedValue = new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 0,
+  }).format(value);
+
+  return `${formattedValue}/${period}`;
+}
+
 export default async function PropertyPage({
   params,
   searchParams,
@@ -179,6 +189,34 @@ export async function PropertyDetailContent({
   const nearbyGroups = groupNearbyPlaces(nearbyPlaces, locale);
   const pricePerSquareMetre = formatPricePerSquareMetre(property);
   const displayPrice = formatPropertyDisplayPrice(property, locale);
+  const costCards = [
+    property.communityFeeMonthly
+      ? {
+          label: t.communityFee,
+          value: formatPropertyCost(
+            property.communityFeeMonthly,
+            property.currency,
+            t.perMonth,
+          ),
+        }
+      : null,
+    property.ibiYearly
+      ? {
+          label: t.ibiTownhallTax,
+          value: formatPropertyCost(property.ibiYearly, property.currency, t.perYear),
+        }
+      : null,
+    property.garbageTaxYearly
+      ? {
+          label: t.garbageTax,
+          value: formatPropertyCost(
+            property.garbageTaxYearly,
+            property.currency,
+            t.perYear,
+          ),
+        }
+      : null,
+  ].filter((card): card is { label: string; value: string } => Boolean(card));
 
   const stats = [
     { label: t.bedrooms, value: property.beds },
@@ -396,6 +434,14 @@ export async function PropertyDetailContent({
               </p>
               <p className="mt-1 font-semibold">{property.location}</p>
             </div>
+            {costCards.map((card) => (
+              <div key={card.label} className="rounded-[8px] bg-[#f7f2ea] p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#6f6a61]">
+                  {card.label}
+                </p>
+                <p className="mt-1 font-semibold">{card.value}</p>
+              </div>
+            ))}
           </div>
 
           {mapEmbedUrl && property.coordinates?.postalCode ? (

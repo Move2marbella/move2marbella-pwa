@@ -26,9 +26,12 @@ type ResalesPicture = {
 type ResalesProperty = {
   Reference: string;
   AgencyRef?: string;
+  Basura_Tax_Year?: number | string;
+  Community_Fees_Year?: number | string;
   Country?: string;
   Province?: string;
   Area?: string;
+  IBI_Fees_Year?: number | string;
   Location: string;
   SubLocation?: string;
   PropertyType: {
@@ -139,6 +142,9 @@ export type Property = {
   size: string;
   plot: string;
   terrace: string;
+  communityFeeMonthly: number;
+  garbageTaxYearly: number;
+  ibiYearly: number;
   tag: string;
   type: string;
   typeIds: number[];
@@ -303,6 +309,14 @@ function getRawPrice(price: string) {
 }
 
 function getRawArea(value?: string) {
+  return value ? parsePriceNumbers(value)[0] ?? 0 : 0;
+}
+
+function getRawCost(value?: number | string) {
+  if (typeof value === "number") {
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  }
+
   return value ? parsePriceNumbers(value)[0] ?? 0 : 0;
 }
 
@@ -482,6 +496,11 @@ function normalizeProperty(post: WordPressProperty): Property | null {
       size: `${displayBuiltArea} m2`,
       plot: displayPlotArea ? `${displayPlotArea} m2` : "Community",
       terrace: `${displayTerraceArea} m2`,
+      communityFeeMonthly: Math.round(
+        getRawCost(property.Community_Fees_Year) / 12,
+      ),
+      garbageTaxYearly: getRawCost(property.Basura_Tax_Year),
+      ibiYearly: getRawCost(property.IBI_Fees_Year),
       tag: hasSeaViews ? "Sea views" : propertyStatus,
       type: propertyType,
       typeIds: post.property_type ?? [],
@@ -557,6 +576,11 @@ function normalizeResalesProperty(property: ResalesProperty): Property {
     size: `${displayBuiltArea} m2`,
     plot: displayPlotArea ? `${displayPlotArea} m2` : "Community",
     terrace: `${displayTerraceArea} m2`,
+    communityFeeMonthly: Math.round(
+      getRawCost(property.Community_Fees_Year) / 12,
+    ),
+    garbageTaxYearly: getRawCost(property.Basura_Tax_Year),
+    ibiYearly: getRawCost(property.IBI_Fees_Year),
     tag: hasSeaViews ? "Sea views" : propertyStatus,
     type: propertyType,
     typeIds: [],
@@ -1168,6 +1192,9 @@ function propertyFromSearchSnapshotEntry(
     size: `${property.builtArea} m2`,
     plot: property.plotArea ? `${property.plotArea} m2` : "Community",
     terrace: `${property.terrace} m2`,
+    communityFeeMonthly: 0,
+    garbageTaxYearly: 0,
+    ibiYearly: 0,
     tag: property.tag,
     type: property.type,
     typeIds: property.typeIds,
