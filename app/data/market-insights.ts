@@ -55,7 +55,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         bullets: [
           "Average Marbella prices are broadly above €5,000/m².",
           "Prime areas such as Golden Mile, Puente Romano and Sierra Blanca trade far above the municipal average.",
-          "Strongest buyer protection comes from micro-location, legal clarity, condition and resale liquidity.",
+          "For buyers, good micro-location, legal transparency, property condition and resale potential are the key decision factors.",
         ],
       },
       {
@@ -108,7 +108,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         bullets: [
           "Los precios medios en Marbella se sitúan ampliamente por encima de €5.000/m².",
           "Golden Mile, Puente Romano y Sierra Blanca operan muy por encima de la media municipal.",
-          "La protección del comprador depende de microlocalización, legalidad, estado y liquidez futura.",
+          "Para el comprador, la buena microlocalización, la transparencia legal, el estado de la vivienda y el potencial de reventa son los factores clave.",
         ],
       },
       {
@@ -161,7 +161,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         bullets: [
           "Les prix moyens à Marbella sont largement au-dessus de €5,000/m².",
           "Golden Mile, Puente Romano et Sierra Blanca restent très au-dessus de la moyenne municipale.",
-          "La vraie protection vient de la micro-localisation, du juridique, de l'état et de la liquidité de revente.",
+          "Pour l'acheteur, la bonne micro-localisation, la transparence juridique, l'état du bien et le potentiel de revente sont les facteurs essentiels.",
         ],
       },
       {
@@ -214,7 +214,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         bullets: [
           "Marbellas Durchschnittspreise liegen breit über €5.000/m².",
           "Golden Mile, Puente Romano und Sierra Blanca handeln deutlich über dem Gemeindedurchschnitt.",
-          "Käuferschutz entsteht durch Mikrolage, rechtliche Klarheit, Zustand und Wiederverkaufsliquidität.",
+          "Aus Käufersicht sind gute Mikrolage, rechtliche Transparenz, Zustand der Immobilie und Wiederverkaufspotenzial die wichtigsten Faktoren.",
         ],
       },
       {
@@ -267,7 +267,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         bullets: [
           "Средние цены Marbella в целом выше €5,000/м².",
           "Golden Mile, Puente Romano и Sierra Blanca значительно выше средней цены муниципалитета.",
-          "Защита покупателя зависит от микролокации, юридической чистоты, состояния и ликвидности перепродажи.",
+          "С точки зрения покупателя, хорошая микролокация, юридическая прозрачность, состояние объекта и потенциал перепродажи являются ключевыми факторами.",
         ],
       },
       {
@@ -320,7 +320,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         bullets: [
           "Średnie ceny w Marbella są szeroko powyżej €5,000/m².",
           "Golden Mile, Puente Romano i Sierra Blanca są znacznie powyżej średniej gminy.",
-          "Ochrona kupującego zależy od mikrolokalizacji, stanu prawnego, jakości i płynności odsprzedaży.",
+          "Z punktu widzenia kupującego najważniejsze są dobra mikrolokalizacja, przejrzystość prawna, stan nieruchomości i potencjał odsprzedaży.",
         ],
       },
       {
@@ -373,7 +373,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         bullets: [
           "Marbella átlagárai széles körben €5,000/m² felett vannak.",
           "Golden Mile, Puente Romano és Sierra Blanca jóval a városi átlag felett mozog.",
-          "A vevő védelmét a mikrolokáció, jogi tisztaság, állapot és továbbértékesíthetőség adja.",
+          "A vevő szempontjából a jó mikrolokáció, jogi átláthatóság, az ingatlan állapota és továbbértékesíthetőségi potenciál a legfontosabbak.",
         ],
       },
       {
