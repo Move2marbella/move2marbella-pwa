@@ -44,7 +44,7 @@ export function LanguageSwitcher({
   return (
     <nav
       aria-label="Language selector"
-      className={`flex flex-wrap gap-2 pb-1 ${className}`}
+      className={`flex flex-nowrap gap-1 pb-1 sm:gap-2 ${className}`}
     >
       {locales.map((locale) => {
         const href =
@@ -58,7 +58,7 @@ export function LanguageSwitcher({
             href={href}
             aria-current={isActive ? "page" : undefined}
             aria-label={locale.toUpperCase()}
-            className={`shrink-0 rounded-full border px-3 py-2 text-sm font-semibold ${
+            className={`shrink-0 rounded-full border px-2.5 py-2 text-xs font-semibold sm:px-3 sm:text-sm ${
               isActive
                 ? "border-[#ba9456] bg-[#ba9456] text-white"
                 : "border-[#ded4c2] bg-white text-[#242424]"

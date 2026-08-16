@@ -15,6 +15,7 @@ const navLabels: Record<
     buyingGuide: string;
     contact: string;
     decisionGuide: string;
+    market: string;
     menu: string;
     properties: string;
     valuation: string;
@@ -24,7 +25,8 @@ const navLabels: Record<
     areas: "Gebiete",
     buyingGuide: "Kaufratgeber",
     contact: "Kontakt",
-    decisionGuide: "Entscheidungshilfe",
+    decisionGuide: "Valuator",
+    market: "Market",
     menu: "MENÜ",
     properties: "Immobilien",
     valuation: "Bewertung",
@@ -33,7 +35,8 @@ const navLabels: Record<
     areas: "Areas",
     buyingGuide: "Buying Guide",
     contact: "Contact",
-    decisionGuide: "Decision Guide",
+    decisionGuide: "Valuator",
+    market: "Market",
     menu: "MENU",
     properties: "Properties",
     valuation: "Valuation",
@@ -42,7 +45,8 @@ const navLabels: Record<
     areas: "Zonas",
     buyingGuide: "Guía de compra",
     contact: "Contacto",
-    decisionGuide: "Guía de decisión",
+    decisionGuide: "Valuator",
+    market: "Market",
     menu: "MENÚ",
     properties: "Propiedades",
     valuation: "Tasación",
@@ -51,7 +55,8 @@ const navLabels: Record<
     areas: "Secteurs",
     buyingGuide: "Guide d'achat",
     contact: "Contact",
-    decisionGuide: "Guide de décision",
+    decisionGuide: "Valuator",
+    market: "Market",
     menu: "MENU",
     properties: "Biens",
     valuation: "Estimation",
@@ -60,7 +65,8 @@ const navLabels: Record<
     areas: "Környékek",
     buyingGuide: "Vásárlási útmutató",
     contact: "Kapcsolat",
-    decisionGuide: "Döntési útmutató",
+    decisionGuide: "Valuator",
+    market: "Market",
     menu: "MENÜ",
     properties: "Ingatlanok",
     valuation: "Értékbecslés",
@@ -69,7 +75,8 @@ const navLabels: Record<
     areas: "Lokalizacje",
     buyingGuide: "Przewodnik zakupu",
     contact: "Kontakt",
-    decisionGuide: "Przewodnik decyzji",
+    decisionGuide: "Valuator",
+    market: "Market",
     menu: "MENU",
     properties: "Nieruchomości",
     valuation: "Wycena",
@@ -78,7 +85,8 @@ const navLabels: Record<
     areas: "Районы",
     buyingGuide: "Гид покупателя",
     contact: "Контакт",
-    decisionGuide: "Гид по выбору",
+    decisionGuide: "Valuator",
+    market: "Market",
     menu: "МЕНЮ",
     properties: "Недвижимость",
     valuation: "Оценка",
@@ -107,6 +115,7 @@ export function MainNav({ locale, tone = "dark" }: MainNavProps) {
     { href: `${basePath}/areas`, label: labels.areas },
     { href: `${basePath}/buying-guide`, label: labels.buyingGuide },
     { href: `${basePath}/decision-guide`, label: labels.decisionGuide },
+    { href: `${basePath}/market`, label: labels.market },
     { href: `${basePath}/contact`, label: labels.contact },
   ];
 
