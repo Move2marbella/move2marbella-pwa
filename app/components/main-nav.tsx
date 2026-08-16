@@ -15,7 +15,7 @@ const navLabels: Record<
     buyingGuide: string;
     contact: string;
     decisionGuide: string;
-    market: string;
+    trends: string;
     menu: string;
     properties: string;
     valuation: string;
@@ -26,7 +26,7 @@ const navLabels: Record<
     buyingGuide: "Kaufratgeber",
     contact: "Kontakt",
     decisionGuide: "Valuator",
-    market: "Market",
+    trends: "Trends",
     menu: "MENÜ",
     properties: "Immobilien",
     valuation: "Bewertung",
@@ -36,7 +36,7 @@ const navLabels: Record<
     buyingGuide: "Buying Guide",
     contact: "Contact",
     decisionGuide: "Valuator",
-    market: "Market",
+    trends: "Trends",
     menu: "MENU",
     properties: "Properties",
     valuation: "Valuation",
@@ -46,7 +46,7 @@ const navLabels: Record<
     buyingGuide: "Guía de compra",
     contact: "Contacto",
     decisionGuide: "Valuator",
-    market: "Market",
+    trends: "Trends",
     menu: "MENÚ",
     properties: "Propiedades",
     valuation: "Tasación",
@@ -56,7 +56,7 @@ const navLabels: Record<
     buyingGuide: "Guide d'achat",
     contact: "Contact",
     decisionGuide: "Valuator",
-    market: "Market",
+    trends: "Trends",
     menu: "MENU",
     properties: "Biens",
     valuation: "Estimation",
@@ -66,7 +66,7 @@ const navLabels: Record<
     buyingGuide: "Vásárlási útmutató",
     contact: "Kapcsolat",
     decisionGuide: "Valuator",
-    market: "Market",
+    trends: "Trends",
     menu: "MENÜ",
     properties: "Ingatlanok",
     valuation: "Értékbecslés",
@@ -76,7 +76,7 @@ const navLabels: Record<
     buyingGuide: "Przewodnik zakupu",
     contact: "Kontakt",
     decisionGuide: "Valuator",
-    market: "Market",
+    trends: "Trends",
     menu: "MENU",
     properties: "Nieruchomości",
     valuation: "Wycena",
@@ -86,7 +86,7 @@ const navLabels: Record<
     buyingGuide: "Гид покупателя",
     contact: "Контакт",
     decisionGuide: "Valuator",
-    market: "Market",
+    trends: "Trends",
     menu: "МЕНЮ",
     properties: "Недвижимость",
     valuation: "Оценка",
@@ -115,7 +115,7 @@ export function MainNav({ locale, tone = "dark" }: MainNavProps) {
     { href: `${basePath}/areas`, label: labels.areas },
     { href: `${basePath}/buying-guide`, label: labels.buyingGuide },
     { href: `${basePath}/decision-guide`, label: labels.decisionGuide },
-    { href: `${basePath}/market`, label: labels.market },
+    { href: `${basePath}/trends`, label: labels.trends },
     { href: `${basePath}/contact`, label: labels.contact },
   ];
 

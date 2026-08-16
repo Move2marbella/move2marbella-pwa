@@ -1,9 +1,9 @@
 import type { Locale } from "../i18n/translations";
 
 export type MarketInsight = {
+  bullets: string[];
   category: string;
   href: string;
-  summary: string;
   title: string;
 };
 
@@ -12,7 +12,6 @@ export type MarketPageCopy = {
   eyebrow: string;
   metaDescription: string;
   readMore: string;
-  sourceLabel: string;
   title: string;
   updatedLabel: string;
   updatedValue: string;
@@ -30,295 +29,372 @@ const sourcePosts = {
 export const marketPageCopy: Record<Locale, MarketPageCopy> = {
   en: {
     body:
-      "Compact market notes for buyers who want to understand price pressure, supply, risk and timing before choosing a property on the Costa del Sol.",
-    eyebrow: "Market insights",
+      "Short buyer-focused signals on prices, supply, risk and timing in Marbella and the Costa del Sol.",
+    eyebrow: "Trends",
     metaDescription:
-      "Marbella and Costa del Sol property market insights, buyer trends, price context and practical investment notes from Move2Marbella.",
-    readMore: "Read source article",
-    sourceLabel: "Source",
-    title: "Marbella market reports and buyer intelligence",
+      "Marbella and Costa del Sol real estate market trends, buyer signals, price context and practical investment notes from Move2Marbella.",
+    readMore: "Read source",
+    title: "Marbella real estate trends",
     updatedLabel: "Updated",
-    updatedValue: "2026 market cycle",
+    updatedValue: "Real Estate Market Trends",
     insights: [
       {
         category: "Market data",
         href: sourcePosts.data,
-        title: "How to read Marbella property market data",
-        summary:
-          "Asking prices, valuation reports and notarial transactions measure different parts of the market. Buyers should compare sources instead of relying on one headline number.",
+        title: "Marbella pricing signals",
+        bullets: [
+          "Marbella average asking price: about €5,596/m² in January 2026.",
+          "Apartment asking prices were higher on average: about €6,151/m².",
+          "Use asking prices, valuation data and notarial transactions together; each source measures a different layer of the market.",
+        ],
       },
       {
         category: "Buyer strategy",
         href: sourcePosts.risks,
-        title: "Marbella 2026: risks and opportunities",
-        summary:
-          "Demand remains strong, but growth is more selective. The best opportunities depend on micro-location, legal clarity, condition and real resale appeal.",
+        title: "Selective growth in 2026",
+        bullets: [
+          "Average Marbella prices are broadly above €5,000/m².",
+          "Prime areas such as Golden Mile, Puente Romano and Sierra Blanca trade far above the municipal average.",
+          "Strongest buyer protection comes from micro-location, legal clarity, condition and resale liquidity.",
+        ],
       },
       {
         category: "Spain context",
         href: sourcePosts.spain,
-        title: "Spanish property market outlook for 2026",
-        summary:
-          "National trends matter, but Marbella and the Costa del Sol behave differently because international demand, lifestyle buying and limited prime supply are local forces.",
+        title: "Costa del Sol vs national market",
+        bullets: [
+          "Marbella 2026 growth is expected to outperform the national average in selected prime segments.",
+          "Demand continues to outpace quality supply in the luxury villa and well-located apartment markets.",
+          "National data is useful context, but Costa del Sol pricing is driven by international demand and lifestyle buying.",
+        ],
       },
       {
         category: "Urban planning",
         href: sourcePosts.plots,
-        title: "Marbella abandoned plots regulation",
-        summary:
-          "New municipal pressure on neglected land and unfinished buildings may affect some owners, plots and stalled projects. Buyers should understand planning context before committing.",
+        title: "Abandoned plots and unfinished assets",
+        bullets: [
+          "The new Marbella regulation targets undeveloped urban plots, halted construction and ruinous buildings.",
+          "Owners may be pushed to act within defined timeframes; one year is a key reference in reported cases.",
+          "Distressed land can still be an opportunity, but planning, licence history and execution orders must be checked before reservation.",
+        ],
       },
     ],
   },
   es: {
     body:
-      "Notas compactas de mercado para compradores que quieren entender precios, oferta, riesgos y timing antes de elegir una propiedad en la Costa del Sol.",
-    eyebrow: "Market insights",
+      "Señales breves para compradores sobre precios, oferta, riesgo y timing en Marbella y la Costa del Sol.",
+    eyebrow: "Trends",
     metaDescription:
-      "Información del mercado inmobiliario de Marbella y la Costa del Sol: tendencias, precios, contexto comprador e inversión.",
-    readMore: "Leer artículo fuente",
-    sourceLabel: "Fuente",
-    title: "Informes de mercado de Marbella e inteligencia para compradores",
+      "Tendencias del mercado inmobiliario de Marbella y la Costa del Sol: precios, señales de comprador e inversión.",
+    readMore: "Leer fuente",
+    title: "Tendencias inmobiliarias en Marbella",
     updatedLabel: "Actualizado",
-    updatedValue: "Ciclo de mercado 2026",
+    updatedValue: "Tendencias del mercado inmobiliario",
     insights: [
       {
         category: "Datos de mercado",
         href: sourcePosts.data,
-        title: "Cómo leer los datos del mercado de Marbella",
-        summary:
-          "Los precios de oferta, las valoraciones y las compraventas notariales no miden lo mismo. Conviene comparar fuentes antes de decidir por un solo titular.",
+        title: "Señales de precios en Marbella",
+        bullets: [
+          "Precio medio de oferta en Marbella: aprox. €5.596/m² en enero de 2026.",
+          "Los apartamentos estaban por encima de la media: aprox. €6.151/m².",
+          "Conviene cruzar precios de oferta, valoraciones y compraventas notariales: no miden lo mismo.",
+        ],
       },
       {
         category: "Estrategia comprador",
         href: sourcePosts.risks,
-        title: "Marbella 2026: riesgos y oportunidades",
-        summary:
-          "La demanda sigue fuerte, pero el crecimiento es más selectivo. La buena compra depende de microlocalización, situación legal, estado y reventa real.",
+        title: "Crecimiento más selectivo en 2026",
+        bullets: [
+          "Los precios medios en Marbella se sitúan ampliamente por encima de €5.000/m².",
+          "Golden Mile, Puente Romano y Sierra Blanca operan muy por encima de la media municipal.",
+          "La protección del comprador depende de microlocalización, legalidad, estado y liquidez futura.",
+        ],
       },
       {
         category: "Contexto España",
         href: sourcePosts.spain,
-        title: "Perspectiva del mercado inmobiliario español en 2026",
-        summary:
-          "Las tendencias nacionales importan, pero Marbella y la Costa del Sol tienen dinámica propia por demanda internacional, lifestyle y escasez de producto prime.",
+        title: "Costa del Sol frente al mercado nacional",
+        bullets: [
+          "En 2026, Marbella puede superar la media nacional en segmentos prime seleccionados.",
+          "La demanda sigue por encima de la oferta de calidad en villas de lujo y apartamentos bien ubicados.",
+          "El dato nacional ayuda, pero la Costa del Sol responde a demanda internacional y compra lifestyle.",
+        ],
       },
       {
         category: "Urbanismo",
         href: sourcePosts.plots,
-        title: "Nueva norma de Marbella sobre solares abandonados",
-        summary:
-          "La presión municipal sobre suelo descuidado y edificios inacabados puede influir en propietarios, solares y proyectos parados. Antes de comprar, hay que entender el contexto urbanístico.",
+        title: "Solares abandonados y activos inacabados",
+        bullets: [
+          "La nueva norma de Marbella afecta solares urbanos sin desarrollar, obras paralizadas y edificios ruinosos.",
+          "Los propietarios pueden verse obligados a actuar en plazos definidos; un año aparece como referencia clave.",
+          "El suelo distressed puede ser oportunidad, pero antes de reservar hay que revisar planeamiento, licencias y expedientes.",
+        ],
       },
     ],
   },
   fr: {
     body:
-      "Notes de marché compactes pour comprendre prix, offre, risques et timing avant de choisir un bien sur la Costa del Sol.",
-    eyebrow: "Market insights",
+      "Signaux courts pour acheteurs sur prix, offre, risque et timing à Marbella et sur la Costa del Sol.",
+    eyebrow: "Trends",
     metaDescription:
-      "Insights sur le marché immobilier de Marbella et de la Costa del Sol: tendances, prix, contexte acheteur et investissement.",
-    readMore: "Lire l'article source",
-    sourceLabel: "Source",
-    title: "Rapports de marché Marbella et intelligence acheteur",
+      "Tendances du marché immobilier de Marbella et de la Costa del Sol: prix, signaux acheteurs et notes d'investissement.",
+    readMore: "Lire la source",
+    title: "Tendances immobilières à Marbella",
     updatedLabel: "Mis à jour",
-    updatedValue: "Cycle de marché 2026",
+    updatedValue: "Tendances du marché immobilier",
     insights: [
       {
         category: "Données marché",
         href: sourcePosts.data,
-        title: "Comment lire les données du marché à Marbella",
-        summary:
-          "Prix affichés, estimations et transactions notariales ne mesurent pas la même chose. Un acheteur doit croiser les sources avant de suivre un seul chiffre.",
+        title: "Signaux de prix à Marbella",
+        bullets: [
+          "Prix moyen affiché à Marbella: environ €5,596/m² en janvier 2026.",
+          "Les appartements étaient encore plus élevés: environ €6,151/m².",
+          "Croiser prix affichés, estimations et transactions notariales: chaque source mesure autre chose.",
+        ],
       },
       {
         category: "Stratégie acheteur",
         href: sourcePosts.risks,
-        title: "Marbella 2026: risques et opportunités",
-        summary:
-          "La demande reste forte, mais la croissance devient plus sélective. Les bonnes opportunités dépendent de la micro-localisation, du juridique, de l'état et de la revente.",
+        title: "Croissance plus sélective en 2026",
+        bullets: [
+          "Les prix moyens à Marbella sont largement au-dessus de €5,000/m².",
+          "Golden Mile, Puente Romano et Sierra Blanca restent très au-dessus de la moyenne municipale.",
+          "La vraie protection vient de la micro-localisation, du juridique, de l'état et de la liquidité de revente.",
+        ],
       },
       {
         category: "Contexte Espagne",
         href: sourcePosts.spain,
-        title: "Perspectives du marché immobilier espagnol en 2026",
-        summary:
-          "Les tendances nationales comptent, mais Marbella et la Costa del Sol réagissent différemment grâce à la demande internationale et à l'offre prime limitée.",
+        title: "Costa del Sol vs marché national",
+        bullets: [
+          "En 2026, Marbella devrait dépasser la moyenne nationale dans certains segments prime.",
+          "La demande dépasse encore l'offre de qualité pour les villas de luxe et les appartements bien placés.",
+          "Le national donne le contexte; la Costa del Sol dépend surtout de la demande internationale et lifestyle.",
+        ],
       },
       {
         category: "Urbanisme",
         href: sourcePosts.plots,
-        title: "Nouvelle règle de Marbella sur les terrains abandonnés",
-        summary:
-          "La pression municipale sur les terrains négligés et les bâtiments inachevés peut influencer certains propriétaires et projets. Le contexte urbanistique compte avant d'acheter.",
+        title: "Terrains abandonnés et actifs inachevés",
+        bullets: [
+          "La nouvelle règle de Marbella vise terrains urbains non bâtis, chantiers arrêtés et bâtiments ruineux.",
+          "Les propriétaires peuvent devoir agir dans des délais définis; un an ressort comme référence importante.",
+          "Les actifs distressed peuvent être intéressants, mais urbanisme, licences et ordres d'exécution doivent être vérifiés.",
+        ],
       },
     ],
   },
   de: {
     body:
-      "Kompakte Marktnotizen für Käufer, die Preisniveau, Angebot, Risiken und Timing an der Costa del Sol besser verstehen möchten.",
-    eyebrow: "Market insights",
+      "Kurze Käufersignale zu Preisen, Angebot, Risiko und Timing in Marbella und an der Costa del Sol.",
+    eyebrow: "Trends",
     metaDescription:
-      "Immobilienmarkt-Insights für Marbella und Costa del Sol: Trends, Preise, Käuferkontext und Investmenthinweise.",
-    readMore: "Quellartikel lesen",
-    sourceLabel: "Quelle",
-    title: "Marbella Market Reports und Käufer-Intelligence",
+      "Immobilientrends für Marbella und Costa del Sol: Preise, Käufersignale und Investmenthinweise.",
+    readMore: "Quelle lesen",
+    title: "Immobilientrends in Marbella",
     updatedLabel: "Aktualisiert",
-    updatedValue: "Marktzyklus 2026",
+    updatedValue: "Real Estate Market Trends",
     insights: [
       {
         category: "Marktdaten",
         href: sourcePosts.data,
-        title: "Wie man Marbella-Marktdaten richtig liest",
-        summary:
-          "Angebotspreise, Bewertungen und notarielle Transaktionen zeigen unterschiedliche Marktteile. Käufer sollten mehrere Quellen vergleichen.",
+        title: "Preissignale in Marbella",
+        bullets: [
+          "Durchschnittlicher Angebotspreis in Marbella: ca. €5.596/m² im Januar 2026.",
+          "Apartments lagen im Durchschnitt höher: ca. €6.151/m².",
+          "Angebotspreise, Bewertungsdaten und notarielle Verkäufe zusammen lesen; jede Quelle zeigt eine andere Ebene.",
+        ],
       },
       {
         category: "Käuferstrategie",
         href: sourcePosts.risks,
-        title: "Marbella 2026: Risiken und Chancen",
-        summary:
-          "Die Nachfrage bleibt stark, aber Wachstum wird selektiver. Gute Chancen hängen von Mikrolage, rechtlicher Klarheit, Zustand und Wiederverkaufswert ab.",
+        title: "Selektiveres Wachstum 2026",
+        bullets: [
+          "Marbellas Durchschnittspreise liegen breit über €5.000/m².",
+          "Golden Mile, Puente Romano und Sierra Blanca handeln deutlich über dem Gemeindedurchschnitt.",
+          "Käuferschutz entsteht durch Mikrolage, rechtliche Klarheit, Zustand und Wiederverkaufsliquidität.",
+        ],
       },
       {
         category: "Spanien-Kontext",
         href: sourcePosts.spain,
-        title: "Ausblick für den spanischen Immobilienmarkt 2026",
-        summary:
-          "Nationale Trends sind nützlich, aber Marbella und die Costa del Sol folgen eigenen Regeln: internationale Nachfrage, Lifestyle-Kauf und knappes Prime-Angebot.",
+        title: "Costa del Sol vs nationaler Markt",
+        bullets: [
+          "Marbella dürfte 2026 in ausgewählten Prime-Segmenten stärker wachsen als der nationale Durchschnitt.",
+          "Nachfrage übersteigt weiter das Qualitätsangebot bei Luxusvillen und gut gelegenen Apartments.",
+          "Nationale Daten sind Kontext; Costa del Sol wird von internationaler Nachfrage und Lifestyle-Käufen geprägt.",
+        ],
       },
       {
         category: "Stadtplanung",
         href: sourcePosts.plots,
-        title: "Marbellas neue Regel zu verlassenen Grundstücken",
-        summary:
-          "Mehr kommunaler Druck auf vernachlässigte Grundstücke und unfertige Gebäude kann Eigentümer und Projekte beeinflussen. Planungskontext ist wichtig.",
+        title: "Verlassene Grundstücke und unfertige Objekte",
+        bullets: [
+          "Die neue Marbella-Regel betrifft unbebaute Stadtgrundstücke, gestoppte Bauprojekte und ruinöse Gebäude.",
+          "Eigentümer können zu Maßnahmen innerhalb definierter Fristen gedrängt werden; ein Jahr ist ein wichtiger Bezugspunkt.",
+          "Distressed-Land kann Chance sein, aber Planung, Lizenzen und Vollstreckungsanordnungen müssen vor Reservierung geprüft werden.",
+        ],
       },
     ],
   },
   ru: {
     body:
-      "Короткие рыночные заметки для покупателей, которые хотят понимать цены, предложение, риски и момент покупки на Costa del Sol.",
-    eyebrow: "Market insights",
+      "Короткие сигналы для покупателей о ценах, предложении, рисках и timing в Marbella и на Costa del Sol.",
+    eyebrow: "Trends",
     metaDescription:
-      "Аналитика рынка недвижимости Marbella и Costa del Sol: тренды, цены, контекст для покупателей и инвесторов.",
+      "Тренды рынка недвижимости Marbella и Costa del Sol: цены, сигналы для покупателей и инвестиционные заметки.",
     readMore: "Читать источник",
-    sourceLabel: "Источник",
-    title: "Рыночные отчеты Marbella и аналитика для покупателей",
+    title: "Тренды недвижимости Marbella",
     updatedLabel: "Обновлено",
-    updatedValue: "Рыночный цикл 2026",
+    updatedValue: "Тренды рынка недвижимости",
     insights: [
       {
         category: "Данные рынка",
         href: sourcePosts.data,
-        title: "Как читать данные рынка Marbella",
-        summary:
-          "Цены объявлений, оценки и нотариальные сделки показывают разные части рынка. Покупателю важно сравнивать источники, а не один заголовок.",
+        title: "Ценовые сигналы Marbella",
+        bullets: [
+          "Средняя цена предложения в Marbella: около €5,596/м² в январе 2026.",
+          "Апартаменты были выше среднего: около €6,151/м².",
+          "Сравнивайте цены объявлений, оценки и нотариальные сделки: это разные уровни рынка.",
+        ],
       },
       {
         category: "Стратегия покупателя",
         href: sourcePosts.risks,
-        title: "Marbella 2026: риски и возможности",
-        summary:
-          "Спрос остается сильным, но рост становится более выборочным. Возможности зависят от микролокации, юридической чистоты, состояния и ликвидности.",
+        title: "Более выборочный рост в 2026",
+        bullets: [
+          "Средние цены Marbella в целом выше €5,000/м².",
+          "Golden Mile, Puente Romano и Sierra Blanca значительно выше средней цены муниципалитета.",
+          "Защита покупателя зависит от микролокации, юридической чистоты, состояния и ликвидности перепродажи.",
+        ],
       },
       {
         category: "Контекст Испании",
         href: sourcePosts.spain,
-        title: "Прогноз рынка недвижимости Испании на 2026 год",
-        summary:
-          "Национальные тренды важны, но Marbella и Costa del Sol имеют свою динамику из-за международного спроса и ограниченного prime-предложения.",
+        title: "Costa del Sol против национального рынка",
+        bullets: [
+          "В 2026 Marbella может опережать средний рынок Испании в выбранных prime-сегментах.",
+          "Спрос продолжает превышать качественное предложение в люксовых виллах и удачно расположенных апартаментах.",
+          "Национальные данные полезны, но Costa del Sol движется международным спросом и lifestyle-покупками.",
+        ],
       },
       {
         category: "Градостроительство",
         href: sourcePosts.plots,
-        title: "Новое правило Marbella по заброшенным участкам",
-        summary:
-          "Муниципальное давление на заброшенные участки и недострои может влиять на владельцев и проекты. Перед покупкой важно понимать градостроительный контекст.",
+        title: "Заброшенные участки и недостроенные активы",
+        bullets: [
+          "Новая норма Marbella касается незастроенных городских участков, остановленных строек и аварийных зданий.",
+          "Собственников могут обязать действовать в установленные сроки; один год указан как важный ориентир.",
+          "Distressed-активы могут быть возможностью, но до резервации нужно проверить планирование, лицензии и предписания.",
+        ],
       },
     ],
   },
   pl: {
     body:
-      "Krótkie notatki rynkowe dla kupujących, którzy chcą zrozumieć ceny, podaż, ryzyko i timing na Costa del Sol.",
-    eyebrow: "Market insights",
+      "Krótkie sygnały dla kupujących o cenach, podaży, ryzyku i timingu w Marbella oraz na Costa del Sol.",
+    eyebrow: "Trends",
     metaDescription:
-      "Analizy rynku nieruchomości Marbella i Costa del Sol: trendy, ceny, kontekst kupującego i informacje inwestycyjne.",
-    readMore: "Czytaj artykuł źródłowy",
-    sourceLabel: "Źródło",
-    title: "Raporty rynkowe Marbella i wiedza dla kupujących",
+      "Trendy rynku nieruchomości Marbella i Costa del Sol: ceny, sygnały kupujących i informacje inwestycyjne.",
+    readMore: "Czytaj źródło",
+    title: "Trendy nieruchomości w Marbella",
     updatedLabel: "Aktualizacja",
-    updatedValue: "Cykl rynkowy 2026",
+    updatedValue: "Trendy rynku nieruchomości",
     insights: [
       {
         category: "Dane rynkowe",
         href: sourcePosts.data,
-        title: "Jak czytać dane rynku Marbella",
-        summary:
-          "Ceny ofertowe, wyceny i transakcje notarialne pokazują różne części rynku. Kupujący powinien porównywać źródła.",
+        title: "Sygnały cenowe w Marbella",
+        bullets: [
+          "Średnia cena ofertowa w Marbella: ok. €5,596/m² w styczniu 2026.",
+          "Apartamenty były średnio droższe: ok. €6,151/m².",
+          "Łącz ceny ofertowe, wyceny i transakcje notarialne; każde źródło mierzy inny fragment rynku.",
+        ],
       },
       {
         category: "Strategia kupującego",
         href: sourcePosts.risks,
-        title: "Marbella 2026: ryzyka i możliwości",
-        summary:
-          "Popyt pozostaje silny, ale wzrost jest bardziej selektywny. Dobra okazja zależy od mikrolokalizacji, stanu prawnego, jakości i odsprzedaży.",
+        title: "Bardziej selektywny wzrost w 2026",
+        bullets: [
+          "Średnie ceny w Marbella są szeroko powyżej €5,000/m².",
+          "Golden Mile, Puente Romano i Sierra Blanca są znacznie powyżej średniej gminy.",
+          "Ochrona kupującego zależy od mikrolokalizacji, stanu prawnego, jakości i płynności odsprzedaży.",
+        ],
       },
       {
         category: "Kontekst Hiszpanii",
         href: sourcePosts.spain,
-        title: "Perspektywy hiszpańskiego rynku nieruchomości w 2026",
-        summary:
-          "Trendy krajowe są ważne, ale Marbella i Costa del Sol mają własną dynamikę dzięki popytowi międzynarodowemu i ograniczonej podaży prime.",
+        title: "Costa del Sol vs rynek krajowy",
+        bullets: [
+          "W 2026 Marbella może przewyższać średnią krajową w wybranych segmentach prime.",
+          "Popyt nadal przewyższa dobrej jakości podaż w luksusowych willach i dobrze położonych apartamentach.",
+          "Dane krajowe są kontekstem; Costa del Sol napędza popyt międzynarodowy i zakup lifestyle.",
+        ],
       },
       {
         category: "Urbanistyka",
         href: sourcePosts.plots,
-        title: "Nowa regulacja Marbella dotycząca opuszczonych działek",
-        summary:
-          "Presja miasta na zaniedbane działki i niedokończone budynki może wpływać na właścicieli i projekty. Kontekst planistyczny ma znaczenie.",
+        title: "Opuszczone działki i niedokończone aktywa",
+        bullets: [
+          "Nowa regulacja Marbella dotyczy niezabudowanych działek miejskich, zatrzymanych budów i ruin.",
+          "Właściciele mogą być zmuszeni do działania w określonych terminach; jeden rok jest ważnym punktem odniesienia.",
+          "Distressed land może być okazją, ale planowanie, licencje i nakazy trzeba sprawdzić przed rezerwacją.",
+        ],
       },
     ],
   },
   hu: {
     body:
-      "Rövid piaci összefoglalók azoknak, akik vásárlás előtt érteni szeretnék az árakat, a kínálatot, a kockázatokat és az időzítést a Costa del Solon.",
-    eyebrow: "Piaci információk",
+      "Rövid vevői jelzések árakról, kínálatról, kockázatokról és időzítésről Marbellán és a Costa del Solon.",
+    eyebrow: "Trends",
     metaDescription:
-      "Marbella és Costa del Sol ingatlanpiaci elemzések: trendek, árak, vevői szempontok és befektetési információk.",
-    readMore: "Forráscikk megnyitása",
-    sourceLabel: "Forrás",
-    title: "Marbella market reportok és vevői háttérinformációk",
+      "Marbella és Costa del Sol ingatlanpiaci trendek: árak, vevői jelzések és befektetési szempontok.",
+    readMore: "Forrás megnyitása",
+    title: "Marbella ingatlanpiaci trendek",
     updatedLabel: "Frissítve",
-    updatedValue: "2026-os piaci ciklus",
+    updatedValue: "Ingatlanpiaci trendek",
     insights: [
       {
         category: "Piaci adatok",
         href: sourcePosts.data,
-        title: "Hogyan érdemes olvasni a marbellai piaci adatokat",
-        summary:
-          "A hirdetési árak, értékbecslési riportok és közjegyzői tranzakciók nem ugyanazt mérik. Vásárlás előtt érdemes több adatforrást együtt nézni.",
+        title: "Marbella árjelzések",
+        bullets: [
+          "Marbella átlagos hirdetési ára: kb. €5,596/m² 2026 januárjában.",
+          "Az apartmanok átlaga ennél magasabb volt: kb. €6,151/m².",
+          "A hirdetési árakat, értékbecsléseket és közjegyzői tranzakciókat együtt érdemes nézni; mindegyik más piaci réteget mér.",
+        ],
       },
       {
         category: "Vevői stratégia",
         href: sourcePosts.risks,
-        title: "Marbella 2026: kockázatok és lehetőségek",
-        summary:
-          "A kereslet továbbra is erős, de az áremelkedés szelektívebb. A jó vétel a mikrolokáción, jogi tisztaságon, állapoton és továbbértékesíthetőségen múlik.",
+        title: "Szelektívebb növekedés 2026-ban",
+        bullets: [
+          "Marbella átlagárai széles körben €5,000/m² felett vannak.",
+          "Golden Mile, Puente Romano és Sierra Blanca jóval a városi átlag felett mozog.",
+          "A vevő védelmét a mikrolokáció, jogi tisztaság, állapot és továbbértékesíthetőség adja.",
+        ],
       },
       {
-        category: "Spanyol piaci háttér",
+        category: "Spanyol háttér",
         href: sourcePosts.spain,
-        title: "A spanyol ingatlanpiac 2026-os kilátásai",
-        summary:
-          "Az országos trendek fontosak, de Marbella és a Costa del Sol saját logika szerint működik: nemzetközi kereslet, életmódvásárlás és szűk prémium kínálat.",
+        title: "Costa del Sol vs országos piac",
+        bullets: [
+          "2026-ban Marbella egyes prémium szegmensekben várhatóan az országos átlag felett teljesít.",
+          "A kereslet továbbra is meghaladja a minőségi kínálatot luxusvillákban és jó lokációjú apartmanokban.",
+          "Az országos adat csak háttér; a Costa del Solt nemzetközi kereslet és életmódvásárlás mozgatja.",
+        ],
       },
       {
         category: "Városrendezés",
         href: sourcePosts.plots,
-        title: "Marbella új szabálya az elhagyott telkekről",
-        summary:
-          "Az elhanyagolt telkekre és befejezetlen épületekre vonatkozó önkormányzati nyomás hatással lehet tulajdonosokra és projektekre. Vásárlás előtt ezt is érteni kell.",
+        title: "Elhagyott telkek és befejezetlen projektek",
+        bullets: [
+          "Marbella új szabálya beépítetlen városi telkeket, leállt építkezéseket és romos épületeket céloz.",
+          "A tulajdonosokat meghatározott határidőn belüli lépésre kényszeríthetik; az 1 év fontos hivatkozási pont.",
+          "A distressed ingatlan lehetőség lehet, de foglaló előtt ellenőrizni kell a városrendezést, licenceket és hatósági eljárásokat.",
+        ],
       },
     ],
   },

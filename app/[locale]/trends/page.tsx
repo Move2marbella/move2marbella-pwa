@@ -5,7 +5,7 @@ import { getMarketPageCopy } from "../../data/market-insights";
 import { getLocale, locales } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
 
-type MarketPageProps = {
+type TrendsPageProps = {
   params: Promise<{ locale: string }>;
 };
 
@@ -15,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: MarketPageProps): Promise<Metadata> {
+}: TrendsPageProps): Promise<Metadata> {
   const { locale: rawLocale } = await params;
   const locale = getLocale(rawLocale);
   const copy = getMarketPageCopy(locale);
@@ -24,19 +24,19 @@ export async function generateMetadata({
     title: copy.title,
     description: copy.metaDescription,
     alternates: {
-      canonical: getLocalizedPath(locale, "/market"),
-      languages: getLanguageAlternates("/market"),
+      canonical: getLocalizedPath(locale, "/trends"),
+      languages: getLanguageAlternates("/trends"),
     },
     openGraph: {
       title: copy.title,
       description: copy.metaDescription,
-      url: getLocalizedPath(locale, "/market"),
+      url: getLocalizedPath(locale, "/trends"),
     },
     robots: getPageRobots(),
   };
 }
 
-export default async function MarketPage({ params }: MarketPageProps) {
+export default async function TrendsPage({ params }: TrendsPageProps) {
   const { locale: rawLocale } = await params;
   const locale = getLocale(rawLocale);
   const copy = getMarketPageCopy(locale);
@@ -45,7 +45,7 @@ export default async function MarketPage({ params }: MarketPageProps) {
     <ContentPageShell
       body={copy.body}
       eyebrow={copy.eyebrow}
-      languagePath="/market"
+      languagePath="/trends"
       locale={locale}
       title={copy.title}
     >
@@ -55,7 +55,7 @@ export default async function MarketPage({ params }: MarketPageProps) {
           "@type": "CollectionPage",
           name: copy.title,
           description: copy.metaDescription,
-          url: getLocalizedPath(locale, "/market"),
+          url: getLocalizedPath(locale, "/trends"),
           hasPart: copy.insights.map((insight) => ({
             "@type": "Article",
             headline: insight.title,
@@ -86,9 +86,14 @@ export default async function MarketPage({ params }: MarketPageProps) {
               <h3 className="mt-3 text-2xl font-semibold leading-tight text-[#0f253d]">
                 {insight.title}
               </h3>
-              <p className="mt-3 text-base leading-7 text-[#55514a]">
-                {insight.summary}
-              </p>
+              <ul className="mt-4 grid gap-2 text-base leading-7 text-[#55514a]">
+                {insight.bullets.map((bullet) => (
+                  <li key={bullet} className="flex gap-3">
+                    <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ba9456]" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
               <a
                 href={insight.href}
                 target="_blank"
