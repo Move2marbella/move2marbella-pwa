@@ -41,7 +41,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
       {
         category: "Market data",
         href: sourcePosts.data,
-        title: "Marbella pricing signals",
+        title: "Marbella property prices",
         bullets: [
           "Average price of properties listed for sale in Marbella: about €5,596/m² in January 2026.",
           "Listed apartments were higher on average: about €6,151/m².",
@@ -94,7 +94,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
       {
         category: "Datos de mercado",
         href: sourcePosts.data,
-        title: "Señales de precios en Marbella",
+        title: "Precios inmobiliarios en Marbella",
         bullets: [
           "Precio medio de las propiedades anunciadas en venta en Marbella: aprox. €5.596/m² en enero de 2026.",
           "Los apartamentos anunciados estaban por encima de la media: aprox. €6.151/m².",
@@ -147,7 +147,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
       {
         category: "Données marché",
         href: sourcePosts.data,
-        title: "Signaux de prix à Marbella",
+        title: "Prix immobiliers à Marbella",
         bullets: [
           "Prix moyen des biens proposés à la vente à Marbella: environ €5,596/m² en janvier 2026.",
           "Les appartements proposés à la vente étaient plus élevés: environ €6,151/m².",
@@ -200,7 +200,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
       {
         category: "Marktdaten",
         href: sourcePosts.data,
-        title: "Preissignale in Marbella",
+        title: "Immobilienpreise in Marbella",
         bullets: [
           "Durchschnittspreis der zum Verkauf angebotenen Immobilien in Marbella: ca. €5.596/m² im Januar 2026.",
           "Zum Verkauf angebotene Apartments lagen im Durchschnitt höher: ca. €6.151/m².",
@@ -253,7 +253,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
       {
         category: "Данные рынка",
         href: sourcePosts.data,
-        title: "Ценовые сигналы Marbella",
+        title: "Цены на недвижимость в Marbella",
         bullets: [
           "Средняя цена объектов, выставленных на продажу в Marbella: около €5,596/м² в январе 2026.",
           "Выставленные на продажу апартаменты были выше среднего: около €6,151/м².",
@@ -306,7 +306,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
       {
         category: "Dane rynkowe",
         href: sourcePosts.data,
-        title: "Sygnały cenowe w Marbella",
+        title: "Ceny nieruchomości w Marbella",
         bullets: [
           "Średnia cena nieruchomości wystawionych na sprzedaż w Marbella: ok. €5,596/m² w styczniu 2026.",
           "Wystawione na sprzedaż apartamenty były średnio droższe: ok. €6,151/m².",
@@ -359,7 +359,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
       {
         category: "Piaci adatok",
         href: sourcePosts.data,
-        title: "Marbella árjelzések",
+        title: "Marbella ingatlanárak",
         bullets: [
           "A Marbellán eladásra hirdetett ingatlanok átlagos ára: kb. €5,596/m² 2026 januárjában.",
           "Az eladásra hirdetett apartmanok átlaga ennél magasabb volt: kb. €6,151/m².",
