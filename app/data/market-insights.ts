@@ -43,9 +43,9 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         href: sourcePosts.data,
         title: "Marbella pricing signals",
         bullets: [
-          "Marbella average asking price: about €5,596/m² in January 2026.",
-          "Apartment asking prices were higher on average: about €6,151/m².",
-          "Use asking prices, valuation data and notarial transactions together; each source measures a different layer of the market.",
+          "Average price of properties listed for sale in Marbella: about €5,596/m² in January 2026.",
+          "Listed apartments were higher on average: about €6,151/m².",
+          "Use listed-property prices, valuation data and notarial transactions together; each source measures a different layer of the market.",
         ],
       },
       {
@@ -96,9 +96,9 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         href: sourcePosts.data,
         title: "Señales de precios en Marbella",
         bullets: [
-          "Precio medio de oferta en Marbella: aprox. €5.596/m² en enero de 2026.",
-          "Los apartamentos estaban por encima de la media: aprox. €6.151/m².",
-          "Conviene cruzar precios de oferta, valoraciones y compraventas notariales: no miden lo mismo.",
+          "Precio medio de las propiedades anunciadas en venta en Marbella: aprox. €5.596/m² en enero de 2026.",
+          "Los apartamentos anunciados estaban por encima de la media: aprox. €6.151/m².",
+          "Conviene cruzar precios de propiedades anunciadas, valoraciones y compraventas notariales: no miden lo mismo.",
         ],
       },
       {
@@ -149,9 +149,9 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         href: sourcePosts.data,
         title: "Signaux de prix à Marbella",
         bullets: [
-          "Prix moyen affiché à Marbella: environ €5,596/m² en janvier 2026.",
-          "Les appartements étaient encore plus élevés: environ €6,151/m².",
-          "Croiser prix affichés, estimations et transactions notariales: chaque source mesure autre chose.",
+          "Prix moyen des biens proposés à la vente à Marbella: environ €5,596/m² en janvier 2026.",
+          "Les appartements proposés à la vente étaient plus élevés: environ €6,151/m².",
+          "Croiser prix des biens proposés, estimations et transactions notariales: chaque source mesure autre chose.",
         ],
       },
       {
@@ -202,9 +202,9 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         href: sourcePosts.data,
         title: "Preissignale in Marbella",
         bullets: [
-          "Durchschnittlicher Angebotspreis in Marbella: ca. €5.596/m² im Januar 2026.",
-          "Apartments lagen im Durchschnitt höher: ca. €6.151/m².",
-          "Angebotspreise, Bewertungsdaten und notarielle Verkäufe zusammen lesen; jede Quelle zeigt eine andere Ebene.",
+          "Durchschnittspreis der zum Verkauf angebotenen Immobilien in Marbella: ca. €5.596/m² im Januar 2026.",
+          "Zum Verkauf angebotene Apartments lagen im Durchschnitt höher: ca. €6.151/m².",
+          "Preise angebotener Immobilien, Bewertungsdaten und notarielle Verkäufe zusammen lesen; jede Quelle zeigt eine andere Ebene.",
         ],
       },
       {
@@ -255,9 +255,9 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         href: sourcePosts.data,
         title: "Ценовые сигналы Marbella",
         bullets: [
-          "Средняя цена предложения в Marbella: около €5,596/м² в январе 2026.",
-          "Апартаменты были выше среднего: около €6,151/м².",
-          "Сравнивайте цены объявлений, оценки и нотариальные сделки: это разные уровни рынка.",
+          "Средняя цена объектов, выставленных на продажу в Marbella: около €5,596/м² в январе 2026.",
+          "Выставленные на продажу апартаменты были выше среднего: около €6,151/м².",
+          "Сравнивайте цены объектов в продаже, оценки и нотариальные сделки: это разные уровни рынка.",
         ],
       },
       {
@@ -308,9 +308,9 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         href: sourcePosts.data,
         title: "Sygnały cenowe w Marbella",
         bullets: [
-          "Średnia cena ofertowa w Marbella: ok. €5,596/m² w styczniu 2026.",
-          "Apartamenty były średnio droższe: ok. €6,151/m².",
-          "Łącz ceny ofertowe, wyceny i transakcje notarialne; każde źródło mierzy inny fragment rynku.",
+          "Średnia cena nieruchomości wystawionych na sprzedaż w Marbella: ok. €5,596/m² w styczniu 2026.",
+          "Wystawione na sprzedaż apartamenty były średnio droższe: ok. €6,151/m².",
+          "Łącz ceny nieruchomości wystawionych na sprzedaż, wyceny i transakcje notarialne; każde źródło mierzy inny fragment rynku.",
         ],
       },
       {
@@ -361,9 +361,9 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
         href: sourcePosts.data,
         title: "Marbella árjelzések",
         bullets: [
-          "Marbella átlagos hirdetési ára: kb. €5,596/m² 2026 januárjában.",
-          "Az apartmanok átlaga ennél magasabb volt: kb. €6,151/m².",
-          "A hirdetési árakat, értékbecsléseket és közjegyzői tranzakciókat együtt érdemes nézni; mindegyik más piaci réteget mér.",
+          "A Marbellán eladásra hirdetett ingatlanok átlagos ára: kb. €5,596/m² 2026 januárjában.",
+          "Az eladásra hirdetett apartmanok átlaga ennél magasabb volt: kb. €6,151/m².",
+          "Az eladásra hirdetett ingatlanok árait, értékbecsléseket és közjegyzői tranzakciókat együtt érdemes nézni; mindegyik más piaci réteget mér.",
         ],
       },
       {
