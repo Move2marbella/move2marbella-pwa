@@ -22,7 +22,7 @@ const navLabels: Record<
   }
 > = {
   de: {
-    areas: "Gebiete",
+    areas: "Regionen",
     buyingGuide: "Kaufratgeber",
     contact: "Kontakt",
     decisionGuide: "Valuator",
@@ -32,7 +32,7 @@ const navLabels: Record<
     valuation: "Bewertung",
   },
   en: {
-    areas: "Areas",
+    areas: "Regions",
     buyingGuide: "Buying Guide",
     contact: "Contact",
     decisionGuide: "Valuator",
@@ -42,7 +42,7 @@ const navLabels: Record<
     valuation: "Valuation",
   },
   es: {
-    areas: "Zonas",
+    areas: "Regiones",
     buyingGuide: "Guía de compra",
     contact: "Contacto",
     decisionGuide: "Valuator",
@@ -52,7 +52,7 @@ const navLabels: Record<
     valuation: "Tasación",
   },
   fr: {
-    areas: "Secteurs",
+    areas: "Régions",
     buyingGuide: "Guide d'achat",
     contact: "Contact",
     decisionGuide: "Valuator",
@@ -62,7 +62,7 @@ const navLabels: Record<
     valuation: "Estimation",
   },
   hu: {
-    areas: "Környékek",
+    areas: "Régiók",
     buyingGuide: "Vásárlási útmutató",
     contact: "Kapcsolat",
     decisionGuide: "Valuator",
@@ -72,7 +72,7 @@ const navLabels: Record<
     valuation: "Értékbecslés",
   },
   pl: {
-    areas: "Lokalizacje",
+    areas: "Regiony",
     buyingGuide: "Przewodnik zakupu",
     contact: "Kontakt",
     decisionGuide: "Valuator",
@@ -82,7 +82,7 @@ const navLabels: Record<
     valuation: "Wycena",
   },
   ru: {
-    areas: "Районы",
+    areas: "Регионы",
     buyingGuide: "Гид покупателя",
     contact: "Контакт",
     decisionGuide: "Valuator",

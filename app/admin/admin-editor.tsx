@@ -37,7 +37,7 @@ const localeOptions: Array<{ code: Locale; label: string }> = [
 const moduleOptions: Array<{ key: EditorModule; label: string }> = [
   { key: "interface", label: "App interface" },
   { key: "valuation", label: "Valuation" },
-  { key: "areas", label: "Areas" },
+  { key: "areas", label: "Regions" },
   { key: "buyingGuide", label: "Buying Guide" },
   { key: "contact", label: "Contact" },
   { key: "meetMiguel", label: "Meet Miguel" },

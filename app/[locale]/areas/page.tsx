@@ -412,7 +412,7 @@ export const areaContent: Record<
   en: {
     body: "Choose the right area before choosing the property. These compact guides compare lifestyle, property logic and buyer fit across Marbella, Estepona, Benahavis and the wider Costa del Sol.",
     cardEyebrow: "Costa del Sol",
-    eyebrow: "Area guides",
+    eyebrow: "Region guides",
     headings: {
       lifestyle: "Amenities & lifestyle",
       property: "Property & investment",
@@ -427,7 +427,7 @@ export const areaContent: Record<
   es: {
     body: "Elige la zona correcta antes de elegir la vivienda. Estas guías comparan estilo de vida, lógica inmobiliaria y perfil de comprador en Marbella, Estepona, Benahavis y la Costa del Sol.",
     cardEyebrow: "Costa del Sol",
-    eyebrow: "Guías de zonas",
+    eyebrow: "Guías de regiones",
     headings: {
       lifestyle: "Servicios y estilo de vida",
       property: "Propiedad e inversión",
@@ -503,7 +503,7 @@ export const areaContent: Record<
   fr: {
     body: "Choisissez le bon secteur avant de choisir le bien. Ces guides comparent style de vie, logique immobilière et profil d'acheteur à Marbella, Estepona, Benahavis et sur la Costa del Sol.",
     cardEyebrow: "Costa del Sol",
-    eyebrow: "Guides de secteurs",
+    eyebrow: "Guides des régions",
     headings: {
       lifestyle: "Services et style de vie",
       property: "Immobilier et investissement",
@@ -518,7 +518,7 @@ export const areaContent: Record<
   de: {
     body: "Wählen Sie zuerst die richtige Lage und erst danach die Immobilie. Diese kompakten Guides vergleichen Lebensstil, Immobilienlogik und Käuferprofil in Marbella, Estepona, Benahavis und an der Costa del Sol.",
     cardEyebrow: "Costa del Sol",
-    eyebrow: "Gebietsfuhrer",
+    eyebrow: "Regionenführer",
     headings: {
       lifestyle: "Angebot und Lebensstil",
       property: "Immobilie und Investment",
@@ -533,7 +533,7 @@ export const areaContent: Record<
   ru: {
     body: "Сначала выберите правильный район, затем объект. Эти краткие гиды сравнивают стиль жизни, логику рынка и профиль покупателя в Marbella, Estepona, Benahavis и на Costa del Sol.",
     cardEyebrow: "Costa del Sol",
-    eyebrow: "Гиды по районам",
+    eyebrow: "Гиды по регионам",
     headings: {
       lifestyle: "Инфраструктура и стиль жизни",
       property: "Недвижимость и инвестиции",
@@ -548,7 +548,7 @@ export const areaContent: Record<
   pl: {
     body: "Najpierw wybierz odpowiednia okolice, dopiero potem nieruchomosc. Te krótkie przewodniki porownuja styl życia, logike rynku i profil kupującego w Marbella, Estepona, Benahavis i na Costa del Sol.",
     cardEyebrow: "Costa del Sol",
-    eyebrow: "Przewodniki po lokalizacjach",
+    eyebrow: "Przewodniki po regionach",
     headings: {
       lifestyle: "Udogodnienia i styl życia",
       property: "Nieruchomosci i inwestycje",
@@ -561,9 +561,9 @@ export const areaContent: Record<
     guides: localizedGuides.pl ?? baseGuides,
   },
   hu: {
-    body: "Először a megfelelő környéket válaszd ki, és csak utána az ingatlant. Ezek a rövid guide-ok életmód és vevői profil alapján hasonlítják össze Marbella, Estepona, Benahavís és a Costa del Sol kiemelt területeit.",
+    body: "Először a megfelelő régiót válaszd ki, és csak utána az ingatlant. Ezek a rövid guide-ok életmód és vevői profil alapján hasonlítják össze Marbella, Estepona, Benahavís és a Costa del Sol kiemelt területeit.",
     cardEyebrow: "Costa del Sol",
-    eyebrow: "Környék leírások",
+    eyebrow: "Régió leírások",
     headings: {
       lifestyle: "Szolgáltatások és életmód",
       property: "Ingatlan és befektetés",
