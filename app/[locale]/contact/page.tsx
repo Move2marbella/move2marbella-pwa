@@ -85,8 +85,11 @@ const teamContent: Record<
       {
         bio: "Rental coordination and practical support for owners, guests and rental-ready properties.",
         company: "Welcome2Marbella",
+        email: "mira@welcome2marbella.com",
         initials: "MB",
+        languages: "English, Hungarian",
         name: "Mira Bartfai",
+        phone: "+34 603 401 828",
         role: "Rental Manager",
       },
       {
@@ -146,8 +149,11 @@ const teamContent: Record<
       {
         bio: "Coordinación de alquileres y apoyo práctico para propietarios, huéspedes e inmuebles listos para alquilar.",
         company: "Welcome2Marbella",
+        email: "mira@welcome2marbella.com",
         initials: "MB",
+        languages: "Inglés, húngaro",
         name: "Mira Bartfai",
+        phone: "+34 603 401 828",
         role: "Responsable de Alquileres",
       },
       {
@@ -207,8 +213,11 @@ const teamContent: Record<
       {
         bio: "Coordination locative et soutien pratique pour propriétaires, invités et biens prêts à louer.",
         company: "Welcome2Marbella",
+        email: "mira@welcome2marbella.com",
         initials: "MB",
+        languages: "Anglais, hongrois",
         name: "Mira Bartfai",
+        phone: "+34 603 401 828",
         role: "Responsable Locations",
       },
       {
@@ -268,8 +277,11 @@ const teamContent: Record<
       {
         bio: "Vermietungskoordination und praktische Unterstützung für Eigentümer, Gäste und vermietungsbereite Immobilien.",
         company: "Welcome2Marbella",
+        email: "mira@welcome2marbella.com",
         initials: "MB",
+        languages: "Englisch, Ungarisch",
         name: "Mira Bartfai",
+        phone: "+34 603 401 828",
         role: "Rental Manager",
       },
       {
@@ -329,8 +341,11 @@ const teamContent: Record<
       {
         bio: "Координация аренды и практическая поддержка собственников, гостей и объектов для аренды.",
         company: "Welcome2Marbella",
+        email: "mira@welcome2marbella.com",
         initials: "MB",
+        languages: "Английский, венгерский",
         name: "Mira Bartfai",
+        phone: "+34 603 401 828",
         role: "Менеджер по Аренде",
       },
       {
@@ -390,8 +405,11 @@ const teamContent: Record<
       {
         bio: "Koordynacja najmu i praktyczne wsparcie dla właścicieli, gości oraz nieruchomości gotowych do wynajmu.",
         company: "Welcome2Marbella",
+        email: "mira@welcome2marbella.com",
         initials: "MB",
+        languages: "Angielski, węgierski",
         name: "Mira Bartfai",
+        phone: "+34 603 401 828",
         role: "Rental Manager",
       },
       {
@@ -451,8 +469,11 @@ const teamContent: Record<
       {
         bio: "Bérbeadási koordináció és gyakorlati támogatás tulajdonosoknak, vendégeknek és kiadásra kész ingatlanoknak.",
         company: "Welcome2Marbella",
+        email: "mira@welcome2marbella.com",
         initials: "MB",
+        languages: "Angol, magyar",
         name: "Mira Bartfai",
+        phone: "+34 603 401 828",
         role: "Rental Manager",
       },
       {
