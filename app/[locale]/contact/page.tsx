@@ -92,8 +92,11 @@ const teamContent: Record<
       {
         bio: "Office administration, follow-up and process coordination so client requests move clearly.",
         company: "Move2Marbella",
+        email: "office@move2marbella.com",
         initials: "AV",
+        languages: "English, Spanish, Hungarian, Romanian",
         name: "Andrea Vida",
+        phone: "+34 650 812 064",
         role: "Office Manager",
       },
       {
@@ -150,8 +153,11 @@ const teamContent: Record<
       {
         bio: "Administración de oficina, seguimiento y coordinación de procesos para que cada solicitud avance con claridad.",
         company: "Move2Marbella",
+        email: "office@move2marbella.com",
         initials: "AV",
+        languages: "Inglés, español, húngaro, rumano",
         name: "Andrea Vida",
+        phone: "+34 650 812 064",
         role: "Office Manager",
       },
       {
@@ -208,8 +214,11 @@ const teamContent: Record<
       {
         bio: "Administration, suivi et coordination des processus pour faire avancer clairement chaque demande.",
         company: "Move2Marbella",
+        email: "office@move2marbella.com",
         initials: "AV",
+        languages: "Anglais, espagnol, hongrois, roumain",
         name: "Andrea Vida",
+        phone: "+34 650 812 064",
         role: "Office Manager",
       },
       {
@@ -266,8 +275,11 @@ const teamContent: Record<
       {
         bio: "Büroadministration, Nachverfolgung und Prozesskoordination für klare nächste Schritte.",
         company: "Move2Marbella",
+        email: "office@move2marbella.com",
         initials: "AV",
+        languages: "Englisch, Spanisch, Ungarisch, Rumänisch",
         name: "Andrea Vida",
+        phone: "+34 650 812 064",
         role: "Office Manager",
       },
       {
@@ -324,8 +336,11 @@ const teamContent: Record<
       {
         bio: "Офисное администрирование, контроль задач и координация процессов для понятных следующих шагов.",
         company: "Move2Marbella",
+        email: "office@move2marbella.com",
         initials: "AV",
+        languages: "Английский, испанский, венгерский, румынский",
         name: "Andrea Vida",
+        phone: "+34 650 812 064",
         role: "Office Manager",
       },
       {
@@ -382,8 +397,11 @@ const teamContent: Record<
       {
         bio: "Administracja biura, follow-up i koordynacja procesu, aby zgłoszenia szły jasno do przodu.",
         company: "Move2Marbella",
+        email: "office@move2marbella.com",
         initials: "AV",
+        languages: "Angielski, hiszpański, węgierski, rumuński",
         name: "Andrea Vida",
+        phone: "+34 650 812 064",
         role: "Office Manager",
       },
       {
@@ -440,8 +458,11 @@ const teamContent: Record<
       {
         bio: "Irodai adminisztráció, utánkövetés és folyamatkoordináció, hogy az ügyfélkérések tisztán haladjanak.",
         company: "Move2Marbella",
+        email: "office@move2marbella.com",
         initials: "AV",
+        languages: "Angol, spanyol, magyar, román",
         name: "Andrea Vida",
+        phone: "+34 650 812 064",
         role: "Office Manager",
       },
       {
