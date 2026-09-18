@@ -21,6 +21,15 @@ type TeamMember = {
   role: string;
 };
 
+const teamImageByName: Record<string, string> = {
+  "Andrea Vida": "/team/andrea-vida.jpg",
+  "Hajnalka Ságodi": "/team/hajnalka-sagodi.jpg",
+  "Maria Ivady": "/team/maria-ivady.png",
+  "Mira Bartfai": "/team/mira-bartfai.jpeg",
+  "Regan Berger": "/team/regan-berger.jpg",
+  "Zsolt Miguel Horvath dr.": "/team/zsolt-miguel-horvath.jpg",
+};
+
 const teamContent: Record<
   Locale,
   {
@@ -607,39 +616,43 @@ export default async function ContactPage({ params }: ContactPageProps) {
           {team.body}
         </p>
         <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {team.members.map((member) => (
-            <article
-              key={member.name}
-              className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
-            >
-              <div className="flex items-center gap-4">
-                {member.image ? (
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    width={72}
-                    height={72}
-                    className="h-16 w-16 rounded-full object-cover ring-1 ring-[#e3d8c7] sm:h-[72px] sm:w-[72px]"
-                  />
-                ) : (
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#102844] text-base font-semibold text-white ring-1 ring-[#e3d8c7] sm:h-[72px] sm:w-[72px]">
-                    {member.initials}
+          {team.members.map((member) => {
+            const memberImage = teamImageByName[member.name] ?? member.image;
+
+            return (
+              <article
+                key={member.name}
+                className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
+              >
+                <div className="flex items-center gap-4">
+                  {memberImage ? (
+                    <Image
+                      src={memberImage}
+                      alt={member.name}
+                      width={72}
+                      height={72}
+                      className="h-16 w-16 rounded-full object-cover ring-1 ring-[#e3d8c7] sm:h-[72px] sm:w-[72px]"
+                    />
+                  ) : (
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#102844] text-base font-semibold text-white ring-1 ring-[#e3d8c7] sm:h-[72px] sm:w-[72px]">
+                      {member.initials}
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="text-base font-semibold leading-tight text-[#171717]">
+                      {member.name}
+                    </h3>
                   </div>
-                )}
-                <div>
-                  <h3 className="text-base font-semibold leading-tight text-[#171717]">
-                    {member.name}
-                  </h3>
                 </div>
-              </div>
-              <p className="mt-4 text-sm font-semibold text-[#102844]">
-                {member.role}
-              </p>
-              <p className="mt-3 text-sm leading-6 text-[#4b4740]">
-                {member.bio}
-              </p>
-            </article>
-          ))}
+                <p className="mt-4 text-sm font-semibold text-[#102844]">
+                  {member.role}
+                </p>
+                <p className="mt-3 text-sm leading-6 text-[#4b4740]">
+                  {member.bio}
+                </p>
+              </article>
+            );
+          })}
         </div>
       </section>
     </ContentPageShell>
