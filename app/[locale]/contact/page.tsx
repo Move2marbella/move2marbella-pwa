@@ -30,6 +30,14 @@ const teamImageByName: Record<string, string> = {
   "Zsolt Miguel Horvath dr.": "/team/zsolt-miguel-horvath.jpg",
 };
 
+function getTeamMemberHref(member: TeamMember, locale: Locale) {
+  if (member.name !== "Zsolt Miguel Horvath dr.") {
+    return null;
+  }
+
+  return locale === "hu" ? "/hu/horvath-zsolt-marbella" : `${getLocaleBasePath(locale)}/meet-miguel`;
+}
+
 const teamContent: Record<
   Locale,
   {
@@ -618,6 +626,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
         <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {team.members.map((member) => {
             const memberImage = teamImageByName[member.name] ?? member.image;
+            const memberHref = getTeamMemberHref(member, locale);
 
             return (
               <article
@@ -639,9 +648,18 @@ export default async function ContactPage({ params }: ContactPageProps) {
                     </div>
                   )}
                   <div>
-                    <h3 className="text-base font-semibold leading-tight text-[#171717]">
-                      {member.name}
-                    </h3>
+                    {memberHref ? (
+                      <Link
+                        href={memberHref}
+                        className="text-base font-semibold leading-tight text-[#171717] underline decoration-[#c29a4b]/50 underline-offset-4 transition hover:text-[#9a7a3a]"
+                      >
+                        {member.name}
+                      </Link>
+                    ) : (
+                      <h3 className="text-base font-semibold leading-tight text-[#171717]">
+                        {member.name}
+                      </h3>
+                    )}
                   </div>
                 </div>
                 <p className="mt-4 text-sm font-semibold text-[#102844]">
