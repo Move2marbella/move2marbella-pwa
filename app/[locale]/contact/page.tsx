@@ -78,8 +78,11 @@ const teamContent: Record<
       {
         bio: "Property search support, shortlist coordination and client communication during the buying process.",
         company: "Move2Marbella",
+        email: "maria@move2marbella.com",
         initials: "MI",
+        languages: "Spanish, English, Russian, German",
         name: "Maria Ivady",
+        phone: "+34 605 565 701",
         role: "Senior Consultant",
       },
       {
@@ -142,8 +145,11 @@ const teamContent: Record<
       {
         bio: "Apoyo en la búsqueda, coordinación de preselecciones y comunicación con clientes durante la compra.",
         company: "Move2Marbella",
+        email: "maria@move2marbella.com",
         initials: "MI",
+        languages: "Español, inglés, ruso, alemán",
         name: "Maria Ivady",
+        phone: "+34 605 565 701",
         role: "Consultora Senior",
       },
       {
@@ -206,8 +212,11 @@ const teamContent: Record<
       {
         bio: "Aide à la recherche, coordination des sélections et communication client pendant le processus d'achat.",
         company: "Move2Marbella",
+        email: "maria@move2marbella.com",
         initials: "MI",
+        languages: "Espagnol, anglais, russe, allemand",
         name: "Maria Ivady",
+        phone: "+34 605 565 701",
         role: "Consultante Senior",
       },
       {
@@ -270,8 +279,11 @@ const teamContent: Record<
       {
         bio: "Unterstützung bei Immobiliensuche, Shortlist-Koordination und Kundenkommunikation im Kaufprozess.",
         company: "Move2Marbella",
+        email: "maria@move2marbella.com",
         initials: "MI",
+        languages: "Spanisch, Englisch, Russisch, Deutsch",
         name: "Maria Ivady",
+        phone: "+34 605 565 701",
         role: "Senior Consultant",
       },
       {
@@ -334,8 +346,11 @@ const teamContent: Record<
       {
         bio: "Поддержка поиска, координация короткого списка и коммуникация с клиентами в процессе покупки.",
         company: "Move2Marbella",
+        email: "maria@move2marbella.com",
         initials: "MI",
+        languages: "Испанский, английский, русский, немецкий",
         name: "Maria Ivady",
+        phone: "+34 605 565 701",
         role: "Старший Консультант",
       },
       {
@@ -398,8 +413,11 @@ const teamContent: Record<
       {
         bio: "Wsparcie wyszukiwania, koordynacja shortlisty i komunikacja z klientem w procesie zakupu.",
         company: "Move2Marbella",
+        email: "maria@move2marbella.com",
         initials: "MI",
+        languages: "Hiszpański, angielski, rosyjski, niemiecki",
         name: "Maria Ivady",
+        phone: "+34 605 565 701",
         role: "Senior Consultant",
       },
       {
@@ -462,8 +480,11 @@ const teamContent: Record<
       {
         bio: "Ingatlankeresési támogatás, shortlist-koordináció és ügyfélkommunikáció a vásárlási folyamatban.",
         company: "Move2Marbella",
+        email: "maria@move2marbella.com",
         initials: "MI",
+        languages: "Spanyol, angol, orosz, német",
         name: "Maria Ivady",
+        phone: "+34 605 565 701",
         role: "Senior Consultant",
       },
       {
