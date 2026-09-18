@@ -68,8 +68,11 @@ const teamContent: Record<
       {
         bio: "Local leadership and client coordination across Move2Marbella searches and buyer conversations.",
         company: "Move2Marbella",
+        email: "regan@move2marbella.com",
         initials: "RB",
+        languages: "English, Spanish",
         name: "Regan Berger",
+        phone: "+34 646 672 890",
         role: "Managing Partner",
       },
       {
@@ -123,8 +126,11 @@ const teamContent: Record<
       {
         bio: "Dirección local y coordinación de clientes en búsquedas y conversaciones de compra.",
         company: "Move2Marbella",
+        email: "regan@move2marbella.com",
         initials: "RB",
+        languages: "Inglés, español",
         name: "Regan Berger",
+        phone: "+34 646 672 890",
         role: "Managing Partner",
       },
       {
@@ -178,8 +184,11 @@ const teamContent: Record<
       {
         bio: "Leadership local et coordination client pour les recherches et les échanges d'achat.",
         company: "Move2Marbella",
+        email: "regan@move2marbella.com",
         initials: "RB",
+        languages: "Anglais, espagnol",
         name: "Regan Berger",
+        phone: "+34 646 672 890",
         role: "Managing Partner",
       },
       {
@@ -233,8 +242,11 @@ const teamContent: Record<
       {
         bio: "Lokale Leitung und Kundenkoordination bei Suchprozessen und Käufergesprächen.",
         company: "Move2Marbella",
+        email: "regan@move2marbella.com",
         initials: "RB",
+        languages: "Englisch, Spanisch",
         name: "Regan Berger",
+        phone: "+34 646 672 890",
         role: "Managing Partner",
       },
       {
@@ -288,8 +300,11 @@ const teamContent: Record<
       {
         bio: "Локальное руководство и координация клиентов по поиску и переговорам о покупке.",
         company: "Move2Marbella",
+        email: "regan@move2marbella.com",
         initials: "RB",
+        languages: "Английский, испанский",
         name: "Regan Berger",
+        phone: "+34 646 672 890",
         role: "Managing Partner",
       },
       {
@@ -343,8 +358,11 @@ const teamContent: Record<
       {
         bio: "Lokalne prowadzenie spraw i koordynacja klientów podczas wyszukiwania oraz rozmów zakupowych.",
         company: "Move2Marbella",
+        email: "regan@move2marbella.com",
         initials: "RB",
+        languages: "Angielski, hiszpański",
         name: "Regan Berger",
+        phone: "+34 646 672 890",
         role: "Managing Partner",
       },
       {
@@ -398,8 +416,11 @@ const teamContent: Record<
       {
         bio: "Helyi vezetés és ügyfélkoordináció a Move2Marbella kereséseiben és vevői egyeztetéseiben.",
         company: "Move2Marbella",
+        email: "regan@move2marbella.com",
         initials: "RB",
+        languages: "Angol, spanyol",
         name: "Regan Berger",
+        phone: "+34 646 672 890",
         role: "Managing Partner",
       },
       {
