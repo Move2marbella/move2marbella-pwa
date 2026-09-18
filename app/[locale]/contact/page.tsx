@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
@@ -6,10 +7,379 @@ import { getGeneralWhatsAppUrl } from "../../data/property-links";
 import { getLocale, getLocaleBasePath, locales, type Locale } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
 import { getEditablePageContent } from "../../lib/editable-copy";
-import MeetMiguelPage from "../meet-miguel/page";
 
 type ContactPageProps = {
   params: Promise<{ locale: string }>;
+};
+
+type TeamMember = {
+  bio: string;
+  company: string;
+  image?: string;
+  initials: string;
+  name: string;
+  role: string;
+};
+
+const teamContent: Record<
+  Locale,
+  {
+    body: string;
+    eyebrow: string;
+    members: TeamMember[];
+    title: string;
+  }
+> = {
+  en: {
+    body: "You speak with a small local team that combines buyer advisory, rentals, administration and on-the-ground coordination.",
+    eyebrow: "Team",
+    title: "Meet the Move2Marbella team",
+    members: [
+      {
+        bio: "Buyer-side strategy, market comparison and decision support for Costa del Sol property decisions.",
+        company: "Move2Marbella",
+        image: "/zsolt-miguel-horvath.webp",
+        initials: "ZH",
+        name: "Zsolt Miguel Horvath dr.",
+        role: "Founder & Strategic Director",
+      },
+      {
+        bio: "Local leadership and client coordination across Move2Marbella searches and buyer conversations.",
+        company: "Move2Marbella",
+        initials: "RB",
+        name: "Regan Berger",
+        role: "Managing Partner",
+      },
+      {
+        bio: "Property search support, shortlist coordination and client communication during the buying process.",
+        company: "Move2Marbella",
+        initials: "MI",
+        name: "Maria Ivady",
+        role: "Senior Consultant",
+      },
+      {
+        bio: "Rental coordination and practical support for owners, guests and rental-ready properties.",
+        company: "Welcome2Marbella",
+        initials: "MB",
+        name: "Mira Bartfai",
+        role: "Rental Manager",
+      },
+      {
+        bio: "Office administration, follow-up and process coordination so client requests move clearly.",
+        company: "Move2Marbella",
+        initials: "AV",
+        name: "Andrea Vida",
+        role: "Office Manager",
+      },
+      {
+        bio: "Client support and local coordination for property enquiries, viewings and next steps.",
+        company: "Move2Marbella",
+        initials: "HS",
+        name: "Hajnalka Ságodi",
+        role: "Client Coordinator",
+      },
+    ],
+  },
+  es: {
+    body: "Hablas con un pequeño equipo local que combina asesoramiento al comprador, alquileres, administración y coordinación sobre el terreno.",
+    eyebrow: "Equipo",
+    title: "Conoce al equipo de Move2Marbella",
+    members: [
+      {
+        bio: "Estrategia para compradores, comparación de mercado y apoyo en decisiones inmobiliarias en la Costa del Sol.",
+        company: "Move2Marbella",
+        image: "/zsolt-miguel-horvath.webp",
+        initials: "ZH",
+        name: "Zsolt Miguel Horvath dr.",
+        role: "Fundador y Director Estratégico",
+      },
+      {
+        bio: "Dirección local y coordinación de clientes en búsquedas y conversaciones de compra.",
+        company: "Move2Marbella",
+        initials: "RB",
+        name: "Regan Berger",
+        role: "Managing Partner",
+      },
+      {
+        bio: "Apoyo en la búsqueda, coordinación de preselecciones y comunicación con clientes durante la compra.",
+        company: "Move2Marbella",
+        initials: "MI",
+        name: "Maria Ivady",
+        role: "Consultora Senior",
+      },
+      {
+        bio: "Coordinación de alquileres y apoyo práctico para propietarios, huéspedes e inmuebles listos para alquilar.",
+        company: "Welcome2Marbella",
+        initials: "MB",
+        name: "Mira Bartfai",
+        role: "Responsable de Alquileres",
+      },
+      {
+        bio: "Administración de oficina, seguimiento y coordinación de procesos para que cada solicitud avance con claridad.",
+        company: "Move2Marbella",
+        initials: "AV",
+        name: "Andrea Vida",
+        role: "Office Manager",
+      },
+      {
+        bio: "Apoyo al cliente y coordinación local para consultas, visitas y próximos pasos.",
+        company: "Move2Marbella",
+        initials: "HS",
+        name: "Hajnalka Ságodi",
+        role: "Coordinadora de Clientes",
+      },
+    ],
+  },
+  fr: {
+    body: "Vous échangez avec une petite équipe locale qui réunit conseil acheteur, locations, administration et coordination sur place.",
+    eyebrow: "Équipe",
+    title: "Rencontrez l'équipe Move2Marbella",
+    members: [
+      {
+        bio: "Stratégie côté acheteur, comparaison de marché et aide à la décision immobilière sur la Costa del Sol.",
+        company: "Move2Marbella",
+        image: "/zsolt-miguel-horvath.webp",
+        initials: "ZH",
+        name: "Zsolt Miguel Horvath dr.",
+        role: "Fondateur et Directeur Stratégique",
+      },
+      {
+        bio: "Leadership local et coordination client pour les recherches et les échanges d'achat.",
+        company: "Move2Marbella",
+        initials: "RB",
+        name: "Regan Berger",
+        role: "Managing Partner",
+      },
+      {
+        bio: "Aide à la recherche, coordination des sélections et communication client pendant le processus d'achat.",
+        company: "Move2Marbella",
+        initials: "MI",
+        name: "Maria Ivady",
+        role: "Consultante Senior",
+      },
+      {
+        bio: "Coordination locative et soutien pratique pour propriétaires, invités et biens prêts à louer.",
+        company: "Welcome2Marbella",
+        initials: "MB",
+        name: "Mira Bartfai",
+        role: "Responsable Locations",
+      },
+      {
+        bio: "Administration, suivi et coordination des processus pour faire avancer clairement chaque demande.",
+        company: "Move2Marbella",
+        initials: "AV",
+        name: "Andrea Vida",
+        role: "Office Manager",
+      },
+      {
+        bio: "Support client et coordination locale pour les demandes, visites et prochaines étapes.",
+        company: "Move2Marbella",
+        initials: "HS",
+        name: "Hajnalka Ságodi",
+        role: "Coordinatrice Client",
+      },
+    ],
+  },
+  de: {
+    body: "Sie sprechen mit einem kleinen lokalen Team für Käuferberatung, Vermietung, Administration und Koordination vor Ort.",
+    eyebrow: "Team",
+    title: "Lernen Sie das Move2Marbella Team kennen",
+    members: [
+      {
+        bio: "Käuferstrategie, Marktvergleich und Entscheidungsunterstützung für Immobilien an der Costa del Sol.",
+        company: "Move2Marbella",
+        image: "/zsolt-miguel-horvath.webp",
+        initials: "ZH",
+        name: "Zsolt Miguel Horvath dr.",
+        role: "Gründer und Strategischer Direktor",
+      },
+      {
+        bio: "Lokale Leitung und Kundenkoordination bei Suchprozessen und Käufergesprächen.",
+        company: "Move2Marbella",
+        initials: "RB",
+        name: "Regan Berger",
+        role: "Managing Partner",
+      },
+      {
+        bio: "Unterstützung bei Immobiliensuche, Shortlist-Koordination und Kundenkommunikation im Kaufprozess.",
+        company: "Move2Marbella",
+        initials: "MI",
+        name: "Maria Ivady",
+        role: "Senior Consultant",
+      },
+      {
+        bio: "Vermietungskoordination und praktische Unterstützung für Eigentümer, Gäste und vermietungsbereite Immobilien.",
+        company: "Welcome2Marbella",
+        initials: "MB",
+        name: "Mira Bartfai",
+        role: "Rental Manager",
+      },
+      {
+        bio: "Büroadministration, Nachverfolgung und Prozesskoordination für klare nächste Schritte.",
+        company: "Move2Marbella",
+        initials: "AV",
+        name: "Andrea Vida",
+        role: "Office Manager",
+      },
+      {
+        bio: "Kundenbetreuung und lokale Koordination für Anfragen, Besichtigungen und nächste Schritte.",
+        company: "Move2Marbella",
+        initials: "HS",
+        name: "Hajnalka Ságodi",
+        role: "Kundenkoordinatorin",
+      },
+    ],
+  },
+  ru: {
+    body: "Вы общаетесь с небольшой локальной командой: консультации покупателям, аренда, администрирование и координация на месте.",
+    eyebrow: "Команда",
+    title: "Познакомьтесь с командой Move2Marbella",
+    members: [
+      {
+        bio: "Стратегия для покупателей, сравнение рынка и поддержка решений по недвижимости на Costa del Sol.",
+        company: "Move2Marbella",
+        image: "/zsolt-miguel-horvath.webp",
+        initials: "ZH",
+        name: "Zsolt Miguel Horvath dr.",
+        role: "Основатель и Стратегический Директор",
+      },
+      {
+        bio: "Локальное руководство и координация клиентов по поиску и переговорам о покупке.",
+        company: "Move2Marbella",
+        initials: "RB",
+        name: "Regan Berger",
+        role: "Managing Partner",
+      },
+      {
+        bio: "Поддержка поиска, координация короткого списка и коммуникация с клиентами в процессе покупки.",
+        company: "Move2Marbella",
+        initials: "MI",
+        name: "Maria Ivady",
+        role: "Старший Консультант",
+      },
+      {
+        bio: "Координация аренды и практическая поддержка собственников, гостей и объектов для аренды.",
+        company: "Welcome2Marbella",
+        initials: "MB",
+        name: "Mira Bartfai",
+        role: "Менеджер по Аренде",
+      },
+      {
+        bio: "Офисное администрирование, контроль задач и координация процессов для понятных следующих шагов.",
+        company: "Move2Marbella",
+        initials: "AV",
+        name: "Andrea Vida",
+        role: "Office Manager",
+      },
+      {
+        bio: "Поддержка клиентов и локальная координация по запросам, просмотрам и следующим шагам.",
+        company: "Move2Marbella",
+        initials: "HS",
+        name: "Hajnalka Ságodi",
+        role: "Координатор Клиентов",
+      },
+    ],
+  },
+  pl: {
+    body: "Rozmawiasz z małym lokalnym zespołem łączącym doradztwo kupującego, wynajem, administrację i koordynację na miejscu.",
+    eyebrow: "Zespół",
+    title: "Poznaj zespół Move2Marbella",
+    members: [
+      {
+        bio: "Strategia po stronie kupującego, porównanie rynku i wsparcie decyzji dotyczących nieruchomości na Costa del Sol.",
+        company: "Move2Marbella",
+        image: "/zsolt-miguel-horvath.webp",
+        initials: "ZH",
+        name: "Zsolt Miguel Horvath dr.",
+        role: "Założyciel i Dyrektor Strategiczny",
+      },
+      {
+        bio: "Lokalne prowadzenie spraw i koordynacja klientów podczas wyszukiwania oraz rozmów zakupowych.",
+        company: "Move2Marbella",
+        initials: "RB",
+        name: "Regan Berger",
+        role: "Managing Partner",
+      },
+      {
+        bio: "Wsparcie wyszukiwania, koordynacja shortlisty i komunikacja z klientem w procesie zakupu.",
+        company: "Move2Marbella",
+        initials: "MI",
+        name: "Maria Ivady",
+        role: "Senior Consultant",
+      },
+      {
+        bio: "Koordynacja najmu i praktyczne wsparcie dla właścicieli, gości oraz nieruchomości gotowych do wynajmu.",
+        company: "Welcome2Marbella",
+        initials: "MB",
+        name: "Mira Bartfai",
+        role: "Rental Manager",
+      },
+      {
+        bio: "Administracja biura, follow-up i koordynacja procesu, aby zgłoszenia szły jasno do przodu.",
+        company: "Move2Marbella",
+        initials: "AV",
+        name: "Andrea Vida",
+        role: "Office Manager",
+      },
+      {
+        bio: "Wsparcie klienta i lokalna koordynacja zapytań, oględzin oraz kolejnych kroków.",
+        company: "Move2Marbella",
+        initials: "HS",
+        name: "Hajnalka Ságodi",
+        role: "Koordynatorka Klientów",
+      },
+    ],
+  },
+  hu: {
+    body: "Egy kis helyi csapattal beszélsz, ahol a vevői tanácsadás, a bérbeadás, az adminisztráció és a helyszíni koordináció egy kézben mozog.",
+    eyebrow: "Csapat",
+    title: "Ismerd meg a Move2Marbella csapatát",
+    members: [
+      {
+        bio: "Vevői stratégia, piaci összehasonlítás és döntéstámogatás Costa del Sol ingatlanvásárlásokhoz.",
+        company: "Move2Marbella",
+        image: "/zsolt-miguel-horvath.webp",
+        initials: "ZH",
+        name: "Zsolt Miguel Horvath dr.",
+        role: "Alapító és stratégiai vezető",
+      },
+      {
+        bio: "Helyi vezetés és ügyfélkoordináció a Move2Marbella kereséseiben és vevői egyeztetéseiben.",
+        company: "Move2Marbella",
+        initials: "RB",
+        name: "Regan Berger",
+        role: "Managing Partner",
+      },
+      {
+        bio: "Ingatlankeresési támogatás, shortlist-koordináció és ügyfélkommunikáció a vásárlási folyamatban.",
+        company: "Move2Marbella",
+        initials: "MI",
+        name: "Maria Ivady",
+        role: "Senior Consultant",
+      },
+      {
+        bio: "Bérbeadási koordináció és gyakorlati támogatás tulajdonosoknak, vendégeknek és kiadásra kész ingatlanoknak.",
+        company: "Welcome2Marbella",
+        initials: "MB",
+        name: "Mira Bartfai",
+        role: "Rental Manager",
+      },
+      {
+        bio: "Irodai adminisztráció, utánkövetés és folyamatkoordináció, hogy az ügyfélkérések tisztán haladjanak.",
+        company: "Move2Marbella",
+        initials: "AV",
+        name: "Andrea Vida",
+        role: "Office Manager",
+      },
+      {
+        bio: "Ügyféltámogatás és helyi koordináció érdeklődésekhez, megtekintésekhez és következő lépésekhez.",
+        company: "Move2Marbella",
+        initials: "HS",
+        name: "Hajnalka Ságodi",
+        role: "Ügyfélkoordinátor",
+      },
+    ],
+  },
 };
 
 export const contactContent: Record<
@@ -171,6 +541,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
   const locale = getLocale(localeParam);
   const page = getEditablePageContent("contact", locale, contactContent[locale]);
   const basePath = getLocaleBasePath(locale);
+  const team = teamContent[locale];
 
   return (
     <ContentPageShell
@@ -225,10 +596,55 @@ export default async function ContactPage({ params }: ContactPageProps) {
           </p>
         </Link>
       </section>
-      {await MeetMiguelPage({
-        embedded: true,
-        params: Promise.resolve({ locale }),
-      })}
+      <section className="mx-auto max-w-6xl px-5 pb-12 sm:px-8">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#9a7a3a]">
+          {team.eyebrow}
+        </p>
+        <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-[#102844] sm:text-4xl">
+          {team.title}
+        </h2>
+        <p className="mt-4 max-w-3xl text-base leading-7 text-[#4b4740]">
+          {team.body}
+        </p>
+        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {team.members.map((member) => (
+            <article
+              key={member.name}
+              className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-black/5"
+            >
+              <div className="flex items-center gap-3">
+                {member.image ? (
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    width={56}
+                    height={56}
+                    className="h-14 w-14 rounded-full object-cover ring-1 ring-[#e3d8c7]"
+                  />
+                ) : (
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#102844] text-sm font-semibold text-white ring-1 ring-[#e3d8c7]">
+                    {member.initials}
+                  </div>
+                )}
+                <div>
+                  <h3 className="text-base font-semibold leading-tight text-[#171717]">
+                    {member.name}
+                  </h3>
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#9a7a3a]">
+                    {member.company}
+                  </p>
+                </div>
+              </div>
+              <p className="mt-4 text-sm font-semibold text-[#102844]">
+                {member.role}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-[#4b4740]">
+                {member.bio}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
     </ContentPageShell>
   );
 }
