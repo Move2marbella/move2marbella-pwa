@@ -15,9 +15,12 @@ type ContactPageProps = {
 type TeamMember = {
   bio: string;
   company: string;
+  email?: string;
   image?: string;
   initials: string;
+  languages?: string;
   name: string;
+  phone?: string;
   role: string;
 };
 
@@ -89,11 +92,14 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Client support and local coordination for property enquiries, viewings and next steps.",
+        bio: "With several decades in the Hungarian real estate market, Hajnalka supports Hungarian-speaking clients at the early stage of their Spanish property journey, helping them clarify goals, understand options and enter the Marbella market with confidence.",
         company: "Move2Marbella",
+        email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
+        languages: "Hungarian, English, German",
         name: "Hajnalka Ságodi",
-        role: "Client Coordinator",
+        phone: "+36 30 966 0339",
+        role: "Senior Partner in Hungary & Hungarian Representative",
       },
     ],
   },
@@ -139,11 +145,14 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Apoyo al cliente y coordinación local para consultas, visitas y próximos pasos.",
+        bio: "Con varias décadas de experiencia en el mercado inmobiliario húngaro, Hajnalka apoya a clientes húngaro-parlantes en las primeras etapas de su compra en España, ayudándoles a aclarar objetivos, entender opciones y entrar en el mercado de Marbella con confianza.",
         company: "Move2Marbella",
+        email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
+        languages: "Húngaro, inglés, alemán",
         name: "Hajnalka Ságodi",
-        role: "Coordinadora de Clientes",
+        phone: "+36 30 966 0339",
+        role: "Senior Partner en Hungría y representante húngara",
       },
     ],
   },
@@ -189,11 +198,14 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Support client et coordination locale pour les demandes, visites et prochaines étapes.",
+        bio: "Avec plusieurs décennies d'expérience sur le marché immobilier hongrois, Hajnalka accompagne les clients hongrois au début de leur projet immobilier en Espagne, pour clarifier leurs objectifs, comprendre leurs options et aborder Marbella avec confiance.",
         company: "Move2Marbella",
+        email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
+        languages: "Hongrois, anglais, allemand",
         name: "Hajnalka Ságodi",
-        role: "Coordinatrice Client",
+        phone: "+36 30 966 0339",
+        role: "Senior Partner en Hongrie et représentante hongroise",
       },
     ],
   },
@@ -239,11 +251,14 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Kundenbetreuung und lokale Koordination für Anfragen, Besichtigungen und nächste Schritte.",
+        bio: "Mit mehreren Jahrzehnten Erfahrung im ungarischen Immobilienmarkt unterstützt Hajnalka ungarischsprachige Kunden in der frühen Phase ihrer Immobiliensuche in Spanien, klärt Ziele, Optionen und den Einstieg in den Markt von Marbella.",
         company: "Move2Marbella",
+        email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
+        languages: "Ungarisch, Englisch, Deutsch",
         name: "Hajnalka Ságodi",
-        role: "Kundenkoordinatorin",
+        phone: "+36 30 966 0339",
+        role: "Senior Partner in Ungarn und ungarische Repräsentantin",
       },
     ],
   },
@@ -289,11 +304,14 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Поддержка клиентов и локальная координация по запросам, просмотрам и следующим шагам.",
+        bio: "Имея несколько десятилетий опыта на венгерском рынке недвижимости, Hajnalka поддерживает венгероязычных клиентов на раннем этапе покупки недвижимости в Испании, помогая уточнить цели, понять варианты и уверенно выйти на рынок Marbella.",
         company: "Move2Marbella",
+        email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
+        languages: "Венгерский, английский, немецкий",
         name: "Hajnalka Ságodi",
-        role: "Координатор Клиентов",
+        phone: "+36 30 966 0339",
+        role: "Senior Partner в Венгрии и венгерский представитель",
       },
     ],
   },
@@ -339,11 +357,14 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Wsparcie klienta i lokalna koordynacja zapytań, oględzin oraz kolejnych kroków.",
+        bio: "Dzięki kilkudziesięciu latom doświadczenia na węgierskim rynku nieruchomości Hajnalka wspiera klientów węgierskojęzycznych na początku ich hiszpańskiej drogi zakupowej, pomagając doprecyzować cele, opcje i wejść na rynek Marbelli z pewnością.",
         company: "Move2Marbella",
+        email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
+        languages: "Węgierski, angielski, niemiecki",
         name: "Hajnalka Ságodi",
-        role: "Koordynatorka Klientów",
+        phone: "+36 30 966 0339",
+        role: "Senior Partner na Węgrzech i przedstawicielka węgierska",
       },
     ],
   },
@@ -389,11 +410,14 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Ügyféltámogatás és helyi koordináció érdeklődésekhez, megtekintésekhez és következő lépésekhez.",
+        bio: "Több évtizedes magyar ingatlanpiaci tapasztalattal támogatja a magyar ügyfeleket a spanyol ingatlanvásárlási folyamat korai szakaszában: segít tisztázni a célokat, átlátni a lehetőségeket és magabiztosan belépni a Marbella és Costa del Sol piacára.",
         company: "Move2Marbella",
+        email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
+        languages: "Magyar, angol, német",
         name: "Hajnalka Ságodi",
-        role: "Ügyfélkoordinátor",
+        phone: "+36 30 966 0339",
+        role: "Magyarországi senior partner és magyar képviselő",
       },
     ],
   },
@@ -665,9 +689,34 @@ export default async function ContactPage({ params }: ContactPageProps) {
                 <p className="mt-4 text-sm font-semibold text-[#102844]">
                   {member.role}
                 </p>
+                {member.languages ? (
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#9a7a3a]">
+                    {member.languages}
+                  </p>
+                ) : null}
                 <p className="mt-3 text-sm leading-6 text-[#4b4740]">
                   {member.bio}
                 </p>
+                {member.phone || member.email ? (
+                  <div className="mt-4 space-y-1 border-t border-[#eee5d8] pt-3 text-sm leading-6">
+                    {member.phone ? (
+                      <a
+                        href={`tel:${member.phone.replace(/\s/g, "")}`}
+                        className="block font-semibold text-[#102844] transition hover:text-[#9a7a3a]"
+                      >
+                        {member.phone}
+                      </a>
+                    ) : null}
+                    {member.email ? (
+                      <a
+                        href={`mailto:${member.email}`}
+                        className="block break-all font-semibold text-[#102844] transition hover:text-[#9a7a3a]"
+                      >
+                        {member.email}
+                      </a>
+                    ) : null}
+                  </div>
+                ) : null}
               </article>
             );
           })}
