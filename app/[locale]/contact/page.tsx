@@ -15,6 +15,8 @@ type ContactPageProps = {
 type TeamMember = {
   bio: string;
   company: string;
+  detailsBio?: string;
+  detailsLabel?: string;
   email?: string;
   image?: string;
   initials: string;
@@ -92,8 +94,10 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "With several decades in the Hungarian real estate market, Hajnalka supports Hungarian-speaking clients at the early stage of their Spanish property journey, helping them clarify goals, understand options and enter the Marbella market with confidence.",
+        bio: "Trusted first point of contact in Hungary for Hungarian-speaking clients starting their Spanish property journey.",
         company: "Move2Marbella",
+        detailsBio: "Ságodi Hajnalka is the Senior Partner in Hungary and Hungarian Representative of Move2Marbella. With several decades of experience in the Hungarian real estate market, she supports Hungarian-speaking clients at the early stages of their Spanish property journey, helping them understand their goals, clarify their options and enter the Marbella and Costa del Sol market with confidence. Working closely with the Move2Marbella team, she provides a trusted first point of contact in Hungary, backed by strong local expertise in Southern Spain.",
+        detailsLabel: "About Hajnalka Ságodi",
         email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
         languages: "Hungarian, English, German",
@@ -145,8 +149,10 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Con varias décadas de experiencia en el mercado inmobiliario húngaro, Hajnalka apoya a clientes húngaro-parlantes en las primeras etapas de su compra en España, ayudándoles a aclarar objetivos, entender opciones y entrar en el mercado de Marbella con confianza.",
+        bio: "Primer punto de contacto de confianza en Hungría para clientes húngaro-parlantes que empiezan su búsqueda en España.",
         company: "Move2Marbella",
+        detailsBio: "Ságodi Hajnalka es Senior Partner en Hungría y representante húngara de Move2Marbella. Con varias décadas de experiencia en el mercado inmobiliario húngaro, apoya a clientes húngaro-parlantes en las primeras etapas de su compra en España, ayudándoles a entender sus objetivos, aclarar sus opciones y entrar en el mercado de Marbella y la Costa del Sol con confianza. Trabaja estrechamente con el equipo de Move2Marbella y ofrece un primer punto de contacto de confianza en Hungría, respaldado por fuerte experiencia local en el sur de España.",
+        detailsLabel: "Sobre Hajnalka Ságodi",
         email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
         languages: "Húngaro, inglés, alemán",
@@ -198,8 +204,10 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Avec plusieurs décennies d'expérience sur le marché immobilier hongrois, Hajnalka accompagne les clients hongrois au début de leur projet immobilier en Espagne, pour clarifier leurs objectifs, comprendre leurs options et aborder Marbella avec confiance.",
+        bio: "Premier contact de confiance en Hongrie pour les clients hongrois qui démarrent leur projet immobilier en Espagne.",
         company: "Move2Marbella",
+        detailsBio: "Ságodi Hajnalka est Senior Partner en Hongrie et représentante hongroise de Move2Marbella. Avec plusieurs décennies d'expérience sur le marché immobilier hongrois, elle accompagne les clients hongrois au début de leur projet immobilier en Espagne, les aide à comprendre leurs objectifs, clarifier leurs options et aborder le marché de Marbella et de la Costa del Sol avec confiance. En étroite collaboration avec l'équipe Move2Marbella, elle constitue un premier point de contact fiable en Hongrie, soutenu par une forte expertise locale dans le sud de l'Espagne.",
+        detailsLabel: "À propos de Hajnalka Ságodi",
         email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
         languages: "Hongrois, anglais, allemand",
@@ -251,8 +259,10 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Mit mehreren Jahrzehnten Erfahrung im ungarischen Immobilienmarkt unterstützt Hajnalka ungarischsprachige Kunden in der frühen Phase ihrer Immobiliensuche in Spanien, klärt Ziele, Optionen und den Einstieg in den Markt von Marbella.",
+        bio: "Vertrauensvolle erste Ansprechpartnerin in Ungarn für ungarischsprachige Kunden am Beginn ihrer Spanien-Suche.",
         company: "Move2Marbella",
+        detailsBio: "Ságodi Hajnalka ist Senior Partner in Ungarn und ungarische Repräsentantin von Move2Marbella. Mit mehreren Jahrzehnten Erfahrung im ungarischen Immobilienmarkt unterstützt sie ungarischsprachige Kunden in der frühen Phase ihrer Immobiliensuche in Spanien, hilft ihnen, Ziele zu verstehen, Optionen zu klären und mit Vertrauen in den Markt von Marbella und der Costa del Sol einzusteigen. In enger Zusammenarbeit mit dem Move2Marbella Team bietet sie einen verlässlichen ersten Kontaktpunkt in Ungarn, gestützt durch starke lokale Expertise in Südspanien.",
+        detailsLabel: "Über Hajnalka Ságodi",
         email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
         languages: "Ungarisch, Englisch, Deutsch",
@@ -304,8 +314,10 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Имея несколько десятилетий опыта на венгерском рынке недвижимости, Hajnalka поддерживает венгероязычных клиентов на раннем этапе покупки недвижимости в Испании, помогая уточнить цели, понять варианты и уверенно выйти на рынок Marbella.",
+        bio: "Надёжный первый контакт в Венгрии для венгероязычных клиентов, начинающих поиск недвижимости в Испании.",
         company: "Move2Marbella",
+        detailsBio: "Ságodi Hajnalka является Senior Partner в Венгрии и венгерским представителем Move2Marbella. Имея несколько десятилетий опыта на венгерском рынке недвижимости, она поддерживает венгероязычных клиентов на раннем этапе их пути к покупке недвижимости в Испании, помогая понять цели, уточнить варианты и уверенно выйти на рынок Marbella и Costa del Sol. Работая в тесном контакте с командой Move2Marbella, она обеспечивает надёжную первую точку контакта в Венгрии, опираясь на сильную локальную экспертизу в южной Испании.",
+        detailsLabel: "О Hajnalka Ságodi",
         email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
         languages: "Венгерский, английский, немецкий",
@@ -357,8 +369,10 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Dzięki kilkudziesięciu latom doświadczenia na węgierskim rynku nieruchomości Hajnalka wspiera klientów węgierskojęzycznych na początku ich hiszpańskiej drogi zakupowej, pomagając doprecyzować cele, opcje i wejść na rynek Marbelli z pewnością.",
+        bio: "Zaufany pierwszy kontakt na Węgrzech dla klientów węgierskojęzycznych rozpoczynających zakup w Hiszpanii.",
         company: "Move2Marbella",
+        detailsBio: "Ságodi Hajnalka jest Senior Partnerem na Węgrzech i węgierską przedstawicielką Move2Marbella. Dzięki kilkudziesięciu latom doświadczenia na węgierskim rynku nieruchomości wspiera klientów węgierskojęzycznych na wczesnym etapie ich hiszpańskiej drogi zakupowej, pomagając zrozumieć cele, doprecyzować opcje i wejść na rynek Marbelli oraz Costa del Sol z pewnością. Ściśle współpracując z zespołem Move2Marbella, zapewnia zaufany pierwszy kontakt na Węgrzech, wsparty silną lokalną wiedzą w południowej Hiszpanii.",
+        detailsLabel: "O Hajnalka Ságodi",
         email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
         languages: "Węgierski, angielski, niemiecki",
@@ -410,8 +424,10 @@ const teamContent: Record<
         role: "Office Manager",
       },
       {
-        bio: "Több évtizedes magyar ingatlanpiaci tapasztalattal támogatja a magyar ügyfeleket a spanyol ingatlanvásárlási folyamat korai szakaszában: segít tisztázni a célokat, átlátni a lehetőségeket és magabiztosan belépni a Marbella és Costa del Sol piacára.",
+        bio: "Megbízható első kapcsolódási pont Magyarországon azoknak, akik spanyol ingatlanvásárlásban gondolkodnak.",
         company: "Move2Marbella",
+        detailsBio: "Ságodi Hajnalka a Move2Marbella magyarországi senior partnere és magyar képviselője. Több évtizedes magyar ingatlanpiaci tapasztalattal támogatja a magyar nyelvű ügyfeleket a spanyol ingatlanvásárlási folyamat korai szakaszában: segít megérteni a célokat, tisztázni a lehetőségeket, és magabiztosan belépni a Marbella és Costa del Sol piacára. A Move2Marbella csapatával szorosan együttműködve megbízható első kapcsolódási pontot biztosít Magyarországon, erős dél-spanyolországi helyi szakértelemmel a háttérben.",
+        detailsLabel: "Hajnalka Ságodi bemutatkozása",
         email: "sagodi.hajnalka@gmail.com",
         initials: "HS",
         languages: "Magyar, angol, német",
@@ -697,6 +713,14 @@ export default async function ContactPage({ params }: ContactPageProps) {
                 <p className="mt-3 text-sm leading-6 text-[#4b4740]">
                   {member.bio}
                 </p>
+                {member.detailsBio ? (
+                  <details className="mt-4 rounded-[8px] border border-[#eee5d8] bg-[#fbf8f2] p-3 text-sm leading-6 text-[#4b4740]">
+                    <summary className="cursor-pointer text-sm font-semibold text-[#102844] transition hover:text-[#9a7a3a]">
+                      {member.detailsLabel ?? member.name}
+                    </summary>
+                    <p className="mt-3">{member.detailsBio}</p>
+                  </details>
+                ) : null}
                 {member.phone || member.email ? (
                   <div className="mt-4 space-y-1 border-t border-[#eee5d8] pt-3 text-sm leading-6">
                     {member.phone ? (
