@@ -60,9 +60,14 @@ const teamContent: Record<
       {
         bio: "Buyer-side strategy, market comparison and decision support for Costa del Sol property decisions.",
         company: "Move2Marbella",
+        detailsBio: "Dr. Horváth Zsolt Mihály, also known to many clients as Zsolt Miguel Horvath, is the founder of Move2Marbella and a trusted property advisor for international buyers on the Costa del Sol, with a strong focus on Marbella, Estepona, Benahavís and the surrounding prime areas. With local market experience since 2010, he helps buyers navigate not only property selection, but also the much more important questions behind a successful purchase: which area fits their goals, which property type holds value best, what the real ownership costs are, how strong the resale potential is and where hidden risks may appear.",
+        detailsLabel: "About Zsolt Miguel Horvath",
+        email: "info@move2marbella.com",
         image: "/zsolt-miguel-horvath.webp",
         initials: "ZH",
+        languages: "English, Spanish, Hungarian",
         name: "Zsolt Miguel Horvath dr.",
+        phone: "+34 673 151 000",
         role: "Founder & Strategic Director",
       },
       {
@@ -127,9 +132,14 @@ const teamContent: Record<
       {
         bio: "Estrategia para compradores, comparación de mercado y apoyo en decisiones inmobiliarias en la Costa del Sol.",
         company: "Move2Marbella",
+        detailsBio: "Dr. Horváth Zsolt Mihály, conocido por muchos clientes como Zsolt Miguel Horvath, es el fundador de Move2Marbella y un asesor inmobiliario de confianza para compradores internacionales en la Costa del Sol, con especial enfoque en Marbella, Estepona, Benahavís y las zonas prime cercanas. Con experiencia local desde 2010, ayuda a los compradores no solo a seleccionar propiedades, sino también a resolver las preguntas clave detrás de una buena compra: qué zona encaja con sus objetivos, qué tipo de propiedad conserva mejor el valor, cuáles son los costes reales de propiedad, qué fuerza tiene la reventa y dónde pueden aparecer riesgos ocultos.",
+        detailsLabel: "Sobre Zsolt Miguel Horvath",
+        email: "info@move2marbella.com",
         image: "/zsolt-miguel-horvath.webp",
         initials: "ZH",
+        languages: "Inglés, español, húngaro",
         name: "Zsolt Miguel Horvath dr.",
+        phone: "+34 673 151 000",
         role: "Fundador y Director Estratégico",
       },
       {
@@ -194,9 +204,14 @@ const teamContent: Record<
       {
         bio: "Stratégie côté acheteur, comparaison de marché et aide à la décision immobilière sur la Costa del Sol.",
         company: "Move2Marbella",
+        detailsBio: "Dr. Horváth Zsolt Mihály, connu par de nombreux clients sous le nom de Zsolt Miguel Horvath, est le fondateur de Move2Marbella et un conseiller immobilier de confiance pour les acheteurs internationaux sur la Costa del Sol, avec un fort accent sur Marbella, Estepona, Benahavís et les secteurs prime voisins. Fort d'une expérience locale depuis 2010, il aide les acheteurs non seulement à choisir des biens, mais aussi à traiter les questions essentielles d'un achat réussi: quel secteur correspond aux objectifs, quel type de bien conserve le mieux sa valeur, quels sont les vrais coûts de détention, quel est le potentiel de revente et où peuvent apparaître les risques cachés.",
+        detailsLabel: "À propos de Zsolt Miguel Horvath",
+        email: "info@move2marbella.com",
         image: "/zsolt-miguel-horvath.webp",
         initials: "ZH",
+        languages: "Anglais, espagnol, hongrois",
         name: "Zsolt Miguel Horvath dr.",
+        phone: "+34 673 151 000",
         role: "Fondateur et Directeur Stratégique",
       },
       {
@@ -261,9 +276,14 @@ const teamContent: Record<
       {
         bio: "Käuferstrategie, Marktvergleich und Entscheidungsunterstützung für Immobilien an der Costa del Sol.",
         company: "Move2Marbella",
+        detailsBio: "Dr. Horváth Zsolt Mihály, vielen Kunden auch als Zsolt Miguel Horvath bekannt, ist Gründer von Move2Marbella und vertrauensvoller Immobilienberater für internationale Käufer an der Costa del Sol, mit starkem Fokus auf Marbella, Estepona, Benahavís und die umliegenden Prime-Lagen. Mit lokaler Markterfahrung seit 2010 unterstützt er Käufer nicht nur bei der Auswahl von Immobilien, sondern vor allem bei den entscheidenden Fragen eines erfolgreichen Kaufs: welche Lage zu den Zielen passt, welcher Immobilientyp den Wert am besten hält, welche realen Besitzkosten entstehen, wie stark das Wiederverkaufspotenzial ist und wo versteckte Risiken liegen können.",
+        detailsLabel: "Über Zsolt Miguel Horvath",
+        email: "info@move2marbella.com",
         image: "/zsolt-miguel-horvath.webp",
         initials: "ZH",
+        languages: "Englisch, Spanisch, Ungarisch",
         name: "Zsolt Miguel Horvath dr.",
+        phone: "+34 673 151 000",
         role: "Gründer und Strategischer Direktor",
       },
       {
@@ -328,9 +348,14 @@ const teamContent: Record<
       {
         bio: "Стратегия для покупателей, сравнение рынка и поддержка решений по недвижимости на Costa del Sol.",
         company: "Move2Marbella",
+        detailsBio: "Dr. Horváth Zsolt Mihály, многим клиентам известный как Zsolt Miguel Horvath, является основателем Move2Marbella и доверенным консультантом по недвижимости для международных покупателей на Costa del Sol, с сильным фокусом на Marbella, Estepona, Benahavís и окружающие премиальные районы. Имея местный рыночный опыт с 2010 года, он помогает покупателям не только выбирать недвижимость, но и разбираться в ключевых вопросах успешной покупки: какой район соответствует целям, какой тип недвижимости лучше сохраняет ценность, каковы реальные расходы владения, насколько силен потенциал перепродажи и где могут скрываться риски.",
+        detailsLabel: "О Zsolt Miguel Horvath",
+        email: "info@move2marbella.com",
         image: "/zsolt-miguel-horvath.webp",
         initials: "ZH",
+        languages: "Английский, испанский, венгерский",
         name: "Zsolt Miguel Horvath dr.",
+        phone: "+34 673 151 000",
         role: "Основатель и Стратегический Директор",
       },
       {
@@ -395,9 +420,14 @@ const teamContent: Record<
       {
         bio: "Strategia po stronie kupującego, porównanie rynku i wsparcie decyzji dotyczących nieruchomości na Costa del Sol.",
         company: "Move2Marbella",
+        detailsBio: "Dr. Horváth Zsolt Mihály, znany wielu klientom jako Zsolt Miguel Horvath, jest założycielem Move2Marbella i zaufanym doradcą nieruchomości dla międzynarodowych kupujących na Costa del Sol, ze szczególnym naciskiem na Marbella, Estepona, Benahavís oraz okoliczne lokalizacje premium. Dzięki lokalnemu doświadczeniu od 2010 roku pomaga kupującym nie tylko w wyborze nieruchomości, ale także w kluczowych pytaniach stojących za udanym zakupem: która okolica pasuje do celów, jaki typ nieruchomości najlepiej utrzymuje wartość, jakie są realne koszty posiadania, jak silny jest potencjał odsprzedaży i gdzie mogą pojawić się ukryte ryzyka.",
+        detailsLabel: "O Zsolt Miguel Horvath",
+        email: "info@move2marbella.com",
         image: "/zsolt-miguel-horvath.webp",
         initials: "ZH",
+        languages: "Angielski, hiszpański, węgierski",
         name: "Zsolt Miguel Horvath dr.",
+        phone: "+34 673 151 000",
         role: "Założyciel i Dyrektor Strategiczny",
       },
       {
@@ -462,9 +492,14 @@ const teamContent: Record<
       {
         bio: "Vevői stratégia, piaci összehasonlítás és döntéstámogatás Costa del Sol ingatlanvásárlásokhoz.",
         company: "Move2Marbella",
+        detailsBio: "Dr. Horváth Zsolt Mihály, sok ügyfél számára Zsolt Miguel Horvath néven ismert, a Move2Marbella alapítója és nemzetközi vevők megbízható ingatlan tanácsadója a Costa del Solon, különös fókuszban Marbellával, Esteponával, Benahavísszal és a környező prémium területekkel. 2010 óta szerzett helyi piaci tapasztalatával nemcsak az ingatlan kiválasztásában segít, hanem azokban a fontosabb kérdésekben is, amelyek egy sikeres vásárlás mögött állnak: melyik környék illik a célokhoz, melyik ingatlantípus tartja jobban az értékét, mik a valódi fenntartási költségek, mennyire erős a továbbértékesítési potenciál, és hol jelenhetnek meg rejtett kockázatok.",
+        detailsLabel: "Zsolt Miguel Horvath bemutatkozása",
+        email: "info@move2marbella.com",
         image: "/zsolt-miguel-horvath.webp",
         initials: "ZH",
+        languages: "Angol, spanyol, magyar",
         name: "Zsolt Miguel Horvath dr.",
+        phone: "+34 673 151 000",
         role: "Alapító és stratégiai vezető",
       },
       {
