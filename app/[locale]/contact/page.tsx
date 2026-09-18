@@ -606,23 +606,23 @@ export default async function ContactPage({ params }: ContactPageProps) {
         <p className="mt-4 max-w-3xl text-base leading-7 text-[#4b4740]">
           {team.body}
         </p>
-        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {team.members.map((member) => (
             <article
               key={member.name}
-              className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-black/5"
+              className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 {member.image ? (
                   <Image
                     src={member.image}
                     alt={member.name}
-                    width={56}
-                    height={56}
-                    className="h-14 w-14 rounded-full object-cover ring-1 ring-[#e3d8c7]"
+                    width={72}
+                    height={72}
+                    className="h-16 w-16 rounded-full object-cover ring-1 ring-[#e3d8c7] sm:h-[72px] sm:w-[72px]"
                   />
                 ) : (
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#102844] text-sm font-semibold text-white ring-1 ring-[#e3d8c7]">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#102844] text-base font-semibold text-white ring-1 ring-[#e3d8c7] sm:h-[72px] sm:w-[72px]">
                     {member.initials}
                   </div>
                 )}
@@ -630,9 +630,6 @@ export default async function ContactPage({ params }: ContactPageProps) {
                   <h3 className="text-base font-semibold leading-tight text-[#171717]">
                     {member.name}
                   </h3>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#9a7a3a]">
-                    {member.company}
-                  </p>
                 </div>
               </div>
               <p className="mt-4 text-sm font-semibold text-[#102844]">
