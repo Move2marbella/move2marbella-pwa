@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ContactLeadForm } from "../../components/contact-lead-form";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import { getGeneralWhatsAppUrl } from "../../data/property-links";
@@ -10,6 +11,21 @@ import { getEditablePageContent } from "../../lib/editable-copy";
 
 type ContactPageProps = {
   params: Promise<{ locale: string }>;
+};
+
+type ContactFormCopy = {
+  body: string;
+  email: string;
+  emailPlaceholder: string;
+  message: string;
+  messagePlaceholder: string;
+  name: string;
+  phone: string;
+  send: string;
+  sending: string;
+  submitError: string;
+  success: string;
+  title: string;
 };
 
 type TeamMember = {
@@ -572,6 +588,7 @@ export const contactContent: Record<
       whatsappEyebrow: string;
     };
     eyebrow: string;
+    form: ContactFormCopy;
     metaDescription: string;
     title: string;
   }
@@ -588,6 +605,20 @@ export const contactContent: Record<
       whatsappEyebrow: "Fastest",
     },
     eyebrow: "Contact",
+    form: {
+      body: "Tell us the location, property type, budget, timing and any must-have details. We will reply with the next practical step.",
+      email: "Email",
+      emailPlaceholder: "name@example.com",
+      message: "What are you looking for?",
+      messagePlaceholder: "Example: 3 bedroom apartment in Nueva Andalucia, terrace, parking, budget around €700,000, preferably ready to move in.",
+      name: "Name",
+      phone: "Phone",
+      send: "Send request",
+      sending: "Sending...",
+      submitError: "Please add your name, your message and an email address or phone number.",
+      success: "Thank you. Your request has been sent and we will get back to you.",
+      title: "Send your search brief",
+    },
     metaDescription:
       "Contact Move2Marbella for Costa del Sol property search, valuations and buyer advisory.",
     title: "Tell us what you are looking for",
@@ -604,6 +635,20 @@ export const contactContent: Record<
       whatsappEyebrow: "Más rápido",
     },
     eyebrow: "Contacto",
+    form: {
+      body: "Cuéntanos zona, tipo de propiedad, presupuesto, timing y detalles imprescindibles. Te responderemos con el siguiente paso práctico.",
+      email: "Email",
+      emailPlaceholder: "nombre@ejemplo.com",
+      message: "Qué estás buscando?",
+      messagePlaceholder: "Ejemplo: apartamento de 3 dormitorios en Nueva Andalucía, terraza, parking, presupuesto alrededor de €700.000, preferiblemente listo para entrar.",
+      name: "Nombre",
+      phone: "Teléfono",
+      send: "Enviar solicitud",
+      sending: "Enviando...",
+      submitError: "Añade tu nombre, tu mensaje y un email o teléfono.",
+      success: "Gracias. Hemos recibido tu solicitud y te responderemos.",
+      title: "Envíanos tu brief de búsqueda",
+    },
     metaDescription:
       "Contacta con Move2Marbella para busqueda de propiedades, tasaciónes y asesoramiento comprador en la Costa del Sol.",
     title: "Cuentanos que estas buscando",
@@ -620,6 +665,20 @@ export const contactContent: Record<
       whatsappEyebrow: "Le plus rapide",
     },
     eyebrow: "Contact",
+    form: {
+      body: "Indiquez le secteur, le type de bien, le budget, le calendrier et les critères indispensables. Nous répondrons avec la prochaine étape utile.",
+      email: "Email",
+      emailPlaceholder: "nom@example.com",
+      message: "Que recherchez-vous?",
+      messagePlaceholder: "Exemple: appartement 3 chambres à Nueva Andalucía, terrasse, parking, budget autour de €700 000, idéalement prêt à emménager.",
+      name: "Nom",
+      phone: "Téléphone",
+      send: "Envoyer la demande",
+      sending: "Envoi...",
+      submitError: "Merci d'ajouter votre nom, votre message et un email ou téléphone.",
+      success: "Merci. Votre demande a été envoyée et nous reviendrons vers vous.",
+      title: "Envoyez votre brief de recherche",
+    },
     metaDescription:
       "Contactez Move2Marbella pour recherche immobilière, estimation et conseil acheteur sur la Costa del Sol.",
     title: "Dites-nous ce que vous recherchez",
@@ -636,6 +695,20 @@ export const contactContent: Record<
       whatsappEyebrow: "Am schnellsten",
     },
     eyebrow: "Kontakt",
+    form: {
+      body: "Nennen Sie Lage, Immobilientyp, Budget, Zeitplan und wichtige Kriterien. Wir antworten mit dem nächsten sinnvollen Schritt.",
+      email: "E-Mail",
+      emailPlaceholder: "name@example.com",
+      message: "Wonach suchen Sie?",
+      messagePlaceholder: "Beispiel: 3-Zimmer-Wohnung in Nueva Andalucía, Terrasse, Parkplatz, Budget ca. €700.000, möglichst bezugsfertig.",
+      name: "Name",
+      phone: "Telefon",
+      send: "Anfrage senden",
+      sending: "Wird gesendet...",
+      submitError: "Bitte geben Sie Name, Nachricht und eine E-Mail-Adresse oder Telefonnummer ein.",
+      success: "Danke. Ihre Anfrage wurde gesendet und wir melden uns bei Ihnen.",
+      title: "Senden Sie Ihr Suchprofil",
+    },
     metaDescription:
       "Kontaktieren Sie Move2Marbella für Immobiliensuche, Bewertung und Käuferberatung an der Costa del Sol.",
     title: "Sagen Sie uns, wonach Sie suchen",
@@ -652,6 +725,20 @@ export const contactContent: Record<
       whatsappEyebrow: "Быстрее всего",
     },
     eyebrow: "Контакт",
+    form: {
+      body: "Опишите район, тип недвижимости, бюджет, сроки и обязательные критерии. Мы ответим с практичным следующим шагом.",
+      email: "Email",
+      emailPlaceholder: "name@example.com",
+      message: "Что вы ищете?",
+      messagePlaceholder: "Например: квартира с 3 спальнями в Nueva Andalucía, терраса, парковка, бюджет около €700,000, желательно готовая к заселению.",
+      name: "Имя",
+      phone: "Телефон",
+      send: "Отправить запрос",
+      sending: "Отправка...",
+      submitError: "Укажите имя, сообщение и email или телефон.",
+      success: "Спасибо. Ваш запрос отправлен, мы свяжемся с вами.",
+      title: "Отправьте ваш запрос",
+    },
     metaDescription:
       "Свяжитесь с Move2Marbella для поиска недвижимости, оценки и консультации покупателя на Costa del Sol.",
     title: "Расскажите, что вы ищете",
@@ -668,6 +755,20 @@ export const contactContent: Record<
       whatsappEyebrow: "Najszybciej",
     },
     eyebrow: "Kontakt",
+    form: {
+      body: "Napisz lokalizację, typ nieruchomości, budżet, termin i najważniejsze wymagania. Odpowiemy z kolejnym praktycznym krokiem.",
+      email: "Email",
+      emailPlaceholder: "imie@example.com",
+      message: "Czego szukasz?",
+      messagePlaceholder: "Przykład: apartament z 3 sypialniami w Nueva Andalucía, taras, parking, budżet około €700 000, najlepiej gotowy do zamieszkania.",
+      name: "Imię",
+      phone: "Telefon",
+      send: "Wyślij zapytanie",
+      sending: "Wysyłanie...",
+      submitError: "Dodaj imię, wiadomość oraz email lub telefon.",
+      success: "Dziękujemy. Twoje zapytanie zostało wysłane, wrócimy z odpowiedzią.",
+      title: "Wyślij swój brief",
+    },
     metaDescription:
       "Skontaktuj się z Move2Marbella w sprawie wyszukiwania nieruchomości, wyceny i doradztwa kupującego na Costa del Sol.",
     title: "Napisz, czego szukasz",
@@ -684,6 +785,20 @@ export const contactContent: Record<
       whatsappEyebrow: "Leggyorsabb",
     },
     eyebrow: "Kapcsolat",
+    form: {
+      body: "Írd meg a környéket, ingatlantípust, költségkeretet, időzítést és a fontos elvárásokat. Visszajelzünk a következő gyakorlati lépéssel.",
+      email: "Email",
+      emailPlaceholder: "nev@example.com",
+      message: "Mit keresel?",
+      messagePlaceholder: "Példa: 3 hálószobás apartman Nueva Andalucíában, terasz, parkoló, kb. €700.000 keret, lehetőleg beköltözhető állapotban.",
+      name: "Név",
+      phone: "Telefon",
+      send: "Kérés elküldése",
+      sending: "Küldés...",
+      submitError: "Add meg a neved, az üzeneted, valamint email címet vagy telefonszámot.",
+      success: "Köszönjük. Megkaptuk az üzeneted, hamarosan jelentkezünk.",
+      title: "Küldd el, mit keresel",
+    },
     metaDescription:
       "Kapcsolat a Move2Marbella csapatával Costa del Sol ingatlankereséshez, értékbecsléshez és vevői tanácsadáshoz.",
     title: "Írd meg, mit keresel",
@@ -727,7 +842,8 @@ export default async function ContactPage({ params }: ContactPageProps) {
       title={page.title}
       body={page.body}
     >
-      <section className="mx-auto grid max-w-6xl gap-4 px-5 py-10 sm:px-8 md:grid-cols-3">
+      <ContactLeadForm labels={page.form} locale={locale} />
+      <section className="mx-auto grid max-w-6xl gap-4 px-5 pb-10 sm:px-8 md:grid-cols-3">
         <TrackedWhatsAppLink
           href={getGeneralWhatsAppUrl()}
           source="contact_page_whatsapp"

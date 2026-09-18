@@ -2,6 +2,7 @@
 
 export type AnalyticsEventName =
   | "app_open"
+  | "contact_form_submitted"
   | "decision_guide_completed"
   | "decision_guide_started"
   | "favourite_added"
