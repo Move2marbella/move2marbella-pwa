@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContentPageShell } from "../../../components/content-page-shell";
+import { HungarianBuyerGuideDetails } from "../../../components/hungarian-buyer-guide-details";
 import { JsonLd } from "../../../components/json-ld";
 import {
   getMarketArticle,
@@ -125,75 +126,82 @@ export default async function MarketArticlePage({
         }}
       />
 
-      <article className="mx-auto max-w-5xl px-5 py-8 sm:px-8 sm:py-12">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#d8d0c2] pb-5">
-          <Link
-            href={`${basePath}/trends`}
-            className="text-sm font-bold uppercase tracking-[0.12em] text-[#0f253d] underline decoration-[#ba9456] decoration-2 underline-offset-4"
-          >
-            ← {ui.back}
-          </Link>
-          <p className="text-sm text-[#6f6a61]">{ui.updated}</p>
-        </div>
-
-        <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
-          <div className="min-w-0">
-            <p className="text-xl leading-9 text-[#302d28]">
-              {article.bullets[0]}
-            </p>
-
-            <section className="mt-9 border-t border-[#d8d0c2] pt-7">
-              <h2 className="text-2xl font-semibold text-[#0f253d]">
-                {ui.practicalNextStep}
-              </h2>
-              <div className="mt-5 grid gap-5">
-                {article.bullets.slice(1).map((bullet) => (
-                  <p key={bullet} className="text-lg leading-8 text-[#514c44]">
-                    {bullet}
-                  </p>
-                ))}
-              </div>
-            </section>
-
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link
-                href={basePath}
-                className="rounded-[6px] bg-[#0f253d] px-5 py-3 text-sm font-bold uppercase tracking-wide text-white"
-              >
-                {ui.findProperties}
-              </Link>
-              <Link
-                href={`${basePath}/areas`}
-                className="rounded-[6px] bg-[#ba9456] px-5 py-3 text-sm font-bold uppercase tracking-wide text-white"
-              >
-                {ui.exploreAreas}
-              </Link>
-              <a
-                href={article.href}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-[6px] border border-[#0f253d] px-5 py-3 text-sm font-bold uppercase tracking-wide text-[#0f253d]"
-              >
-                {ui.readSource}
-              </a>
-            </div>
+      {locale === "hu" && slug === "buying-property-in-spain-guide" ? (
+        <HungarianBuyerGuideDetails />
+      ) : (
+        <article className="mx-auto max-w-5xl px-5 py-8 sm:px-8 sm:py-12">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#d8d0c2] pb-5">
+            <Link
+              href={`${basePath}/trends`}
+              className="text-sm font-bold uppercase tracking-[0.12em] text-[#0f253d] underline decoration-[#ba9456] decoration-2 underline-offset-4"
+            >
+              ← {ui.back}
+            </Link>
+            <p className="text-sm text-[#6f6a61]">{ui.updated}</p>
           </div>
 
-          <aside className="border-l-4 border-[#ba9456] bg-[#0f253d] p-6 text-white lg:sticky lg:top-6">
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#d7b879]">
-              {ui.buyerTakeaway}
-            </p>
-            <ul className="mt-5 grid gap-4 text-sm leading-6 text-white/85">
-              {article.bullets.map((bullet) => (
-                <li key={bullet} className="flex gap-3">
-                  <span className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-[#d7b879]" />
-                  <span>{bullet}</span>
-                </li>
-              ))}
-            </ul>
-          </aside>
-        </div>
-      </article>
+          <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
+            <div className="min-w-0">
+              <p className="text-xl leading-9 text-[#302d28]">
+                {article.bullets[0]}
+              </p>
+
+              <section className="mt-9 border-t border-[#d8d0c2] pt-7">
+                <h2 className="text-2xl font-semibold text-[#0f253d]">
+                  {ui.practicalNextStep}
+                </h2>
+                <div className="mt-5 grid gap-5">
+                  {article.bullets.slice(1).map((bullet) => (
+                    <p
+                      key={bullet}
+                      className="text-lg leading-8 text-[#514c44]"
+                    >
+                      {bullet}
+                    </p>
+                  ))}
+                </div>
+              </section>
+
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Link
+                  href={basePath}
+                  className="rounded-[6px] bg-[#0f253d] px-5 py-3 text-sm font-bold uppercase tracking-wide text-white"
+                >
+                  {ui.findProperties}
+                </Link>
+                <Link
+                  href={`${basePath}/areas`}
+                  className="rounded-[6px] bg-[#ba9456] px-5 py-3 text-sm font-bold uppercase tracking-wide text-white"
+                >
+                  {ui.exploreAreas}
+                </Link>
+                <a
+                  href={article.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-[6px] border border-[#0f253d] px-5 py-3 text-sm font-bold uppercase tracking-wide text-[#0f253d]"
+                >
+                  {ui.readSource}
+                </a>
+              </div>
+            </div>
+
+            <aside className="border-l-4 border-[#ba9456] bg-[#0f253d] p-6 text-white lg:sticky lg:top-6">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#d7b879]">
+                {ui.buyerTakeaway}
+              </p>
+              <ul className="mt-5 grid gap-4 text-sm leading-6 text-white/85">
+                {article.bullets.map((bullet) => (
+                  <li key={bullet} className="flex gap-3">
+                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-[#d7b879]" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        </article>
+      )}
     </ContentPageShell>
   );
 }
