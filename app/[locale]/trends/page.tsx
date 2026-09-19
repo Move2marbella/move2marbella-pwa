@@ -30,9 +30,25 @@ export async function generateMetadata({
     openGraph: {
       title: copy.title,
       description: copy.metaDescription,
+      images: [
+        {
+          alt: "Move2Marbella Costa del Sol real estate trends",
+          height: 675,
+          url: "/move2marbella-panorama.jpg",
+          width: 1200,
+        },
+      ],
+      siteName: "Move2Marbella",
+      type: "website",
       url: getLocalizedPath(locale, "/trends"),
     },
     robots: getPageRobots(),
+    twitter: {
+      card: "summary_large_image",
+      description: copy.metaDescription,
+      images: ["/move2marbella-panorama.jpg"],
+      title: copy.title,
+    },
   };
 }
 

@@ -493,7 +493,28 @@ export async function generateMetadata({
       canonical: getLocalizedPath(locale, "/buying-guide"),
       languages: getLanguageAlternates("/buying-guide"),
     },
+    openGraph: {
+      description: page.metaDescription,
+      images: [
+        {
+          alt: "Move2Marbella buying guide for Costa del Sol property",
+          height: 675,
+          url: "/move2marbella-panorama.jpg",
+          width: 1200,
+        },
+      ],
+      siteName: "Move2Marbella",
+      title: page.title,
+      type: "website",
+      url: getLocalizedPath(locale, "/buying-guide"),
+    },
     robots: getPageRobots(),
+    twitter: {
+      card: "summary_large_image",
+      description: page.metaDescription,
+      images: ["/move2marbella-panorama.jpg"],
+      title: page.title,
+    },
   };
 }
 

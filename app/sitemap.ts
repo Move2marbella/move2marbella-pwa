@@ -21,6 +21,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const contentPages = [
     ...locales.flatMap((locale) => [
       {
+        url: `${SITE_URL}${getLocalizedPath(locale, "/valuation")}`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.85,
+      },
+      {
         url: `${SITE_URL}${getLocalizedPath(locale, "/areas")}`,
         lastModified: now,
         changeFrequency: "monthly" as const,

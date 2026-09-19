@@ -595,7 +595,28 @@ export async function generateMetadata({
       canonical: getLocalizedPath(locale, "/areas"),
       languages: getLanguageAlternates("/areas"),
     },
+    openGraph: {
+      description: page.metaDescription,
+      images: [
+        {
+          alt: "Costa del Sol area guides by Move2Marbella",
+          height: 675,
+          url: "/move2marbella-panorama.jpg",
+          width: 1200,
+        },
+      ],
+      siteName: "Move2Marbella",
+      title: page.title,
+      type: "website",
+      url: getLocalizedPath(locale, "/areas"),
+    },
     robots: getPageRobots(),
+    twitter: {
+      card: "summary_large_image",
+      description: page.metaDescription,
+      images: ["/move2marbella-panorama.jpg"],
+      title: page.title,
+    },
   };
 }
 

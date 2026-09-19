@@ -34,9 +34,25 @@ export async function generateMetadata({
     openGraph: {
       title: t.valuation.heroTitle,
       description: t.valuation.heroBody,
+      images: [
+        {
+          alt: "Move2Marbella Costa del Sol property valuation",
+          height: 675,
+          url: "/move2marbella-panorama.jpg",
+          width: 1200,
+        },
+      ],
+      siteName: "Move2Marbella",
+      type: "website",
       url: canonical,
     },
     robots: getPageRobots(),
+    twitter: {
+      card: "summary_large_image",
+      description: t.valuation.heroBody,
+      images: ["/move2marbella-panorama.jpg"],
+      title: t.valuation.heroTitle,
+    },
   };
 }
 

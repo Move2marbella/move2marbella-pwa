@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ContactLeadForm } from "../../components/contact-lead-form";
 import { ContentPageShell } from "../../components/content-page-shell";
+import { TrackedContactLink } from "../../components/tracked-contact-link";
 import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import { getGeneralWhatsAppUrl } from "../../data/property-links";
 import { getLocale, getLocaleBasePath, locales, type Locale } from "../../i18n/translations";
@@ -823,7 +824,28 @@ export async function generateMetadata({
       canonical: getLocalizedPath(locale, "/contact"),
       languages: getLanguageAlternates("/contact"),
     },
+    openGraph: {
+      description: page.metaDescription,
+      images: [
+        {
+          alt: "Move2Marbella contact and buyer advisory",
+          height: 675,
+          url: "/move2marbella-panorama.jpg",
+          width: 1200,
+        },
+      ],
+      siteName: "Move2Marbella",
+      title: page.title,
+      type: "website",
+      url: getLocalizedPath(locale, "/contact"),
+    },
     robots: getPageRobots(),
+    twitter: {
+      card: "summary_large_image",
+      description: page.metaDescription,
+      images: ["/move2marbella-panorama.jpg"],
+      title: page.title,
+    },
   };
 }
 
@@ -859,20 +881,23 @@ export default async function ContactPage({ params }: ContactPageProps) {
             {page.cards.whatsappBody}
           </p>
         </TrackedWhatsAppLink>
-        <a
-          href="mailto:info@movetomarbella.com"
+        <TrackedContactLink
+          contactMethod="email"
+          contactName="Move2Marbella"
+          href="mailto:info@move2marbella.com"
+          source="contact_page_email_card"
           className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
         >
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#9a7a3a]">
             {page.cards.emailEyebrow}
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-[#171717]">
-            info@movetomarbella.com
+            info@move2marbella.com
           </h2>
           <p className="mt-3 text-base leading-7 text-[#4b4740]">
             {page.cards.emailBody}
           </p>
-        </a>
+        </TrackedContactLink>
         <Link
           href={`${basePath}/valuation`}
           className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5"
@@ -959,20 +984,26 @@ export default async function ContactPage({ params }: ContactPageProps) {
                 {member.phone || member.email ? (
                   <div className="mt-4 space-y-1 border-t border-[#eee5d8] pt-3 text-sm leading-6">
                     {member.phone ? (
-                      <a
+                      <TrackedContactLink
+                        contactMethod="phone"
+                        contactName={member.name}
                         href={`tel:${member.phone.replace(/\s/g, "")}`}
+                        source="contact_team_card"
                         className="block font-semibold text-[#102844] transition hover:text-[#9a7a3a]"
                       >
                         {member.phone}
-                      </a>
+                      </TrackedContactLink>
                     ) : null}
                     {member.email ? (
-                      <a
+                      <TrackedContactLink
+                        contactMethod="email"
+                        contactName={member.name}
                         href={`mailto:${member.email}`}
+                        source="contact_team_card"
                         className="block break-all font-semibold text-[#102844] transition hover:text-[#9a7a3a]"
                       >
                         {member.email}
-                      </a>
+                      </TrackedContactLink>
                     ) : null}
                   </div>
                 ) : null}

@@ -8,6 +8,8 @@ export type AnalyticsEventName =
   | "favourite_added"
   | "favourite_removed"
   | "favourites_cleared"
+  | "contact_email_click"
+  | "contact_phone_click"
   | "lead_form_submitted"
   | "pwa_install_accepted"
   | "pwa_install_clicked"

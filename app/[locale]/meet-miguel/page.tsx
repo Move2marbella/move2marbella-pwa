@@ -347,7 +347,28 @@ export async function generateMetadata({
         hu: "/hu/horvath-zsolt-marbella",
       },
     },
+    openGraph: {
+      description: page.metaDescription,
+      images: [
+        {
+          alt: "Miguel Zsolt Horvath, Move2Marbella founder",
+          height: 675,
+          url: "/move2marbella-panorama.jpg",
+          width: 1200,
+        },
+      ],
+      siteName: "Move2Marbella",
+      title: page.title,
+      type: "profile",
+      url: canonical,
+    },
     robots: getPageRobots(),
+    twitter: {
+      card: "summary_large_image",
+      description: page.metaDescription,
+      images: ["/move2marbella-panorama.jpg"],
+      title: page.title,
+    },
   };
 }
 
