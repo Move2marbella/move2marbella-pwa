@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { JsonLd } from "../../components/json-ld";
+import { MarketArticleBrowser } from "../../components/market-article-browser";
 import { getMarketArticles, getMarketPageCopy } from "../../data/market-insights";
-import { getLocale, locales } from "../../i18n/translations";
+import { getLocale, getLocaleBasePath, locales } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
 
 type TrendsPageProps = {
@@ -58,6 +58,7 @@ export default async function TrendsPage({ params }: TrendsPageProps) {
   const locale = getLocale(rawLocale);
   const copy = getMarketPageCopy(locale);
   const articles = getMarketArticles(locale);
+  const basePath = getLocaleBasePath(locale);
 
   return (
     <ContentPageShell
@@ -92,35 +93,12 @@ export default async function TrendsPage({ params }: TrendsPageProps) {
             </h2>
           </div>
         </div>
-        <div className="grid gap-4 lg:grid-cols-2">
-          {articles.map((insight) => (
-            <article
-              key={insight.slug}
-              className="grid rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6"
-            >
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#9a7a3a]">
-                {insight.category}
-              </p>
-              <h3 className="mt-3 text-2xl font-semibold leading-tight text-[#0f253d]">
-                {insight.title}
-              </h3>
-              <ul className="mt-4 grid gap-2 text-base leading-7 text-[#55514a]">
-                {insight.bullets.map((bullet) => (
-                  <li key={bullet} className="flex gap-3">
-                    <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ba9456]" />
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={getLocalizedPath(locale, `/trends/${insight.slug}`)}
-                className="mt-5 inline-flex w-fit rounded-full bg-[#0f253d] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#173b60]"
-              >
-                {copy.readMore}
-              </Link>
-            </article>
-          ))}
-        </div>
+        <MarketArticleBrowser
+          articles={articles}
+          basePath={basePath}
+          locale={locale}
+          readMore={copy.readMore}
+        />
       </section>
     </ContentPageShell>
   );
