@@ -8,6 +8,7 @@ export type AnalyticsEventName =
   | "favourite_added"
   | "favourite_removed"
   | "favourites_cleared"
+  | "generate_lead"
   | "contact_email_click"
   | "contact_phone_click"
   | "lead_form_submitted"
@@ -45,4 +46,16 @@ export function trackEvent(
       window.dataLayer?.push(args);
     };
   window.gtag("event", eventName, params);
+}
+
+export function trackLeadConversion(
+  leadType: "contact" | "property_enquiry" | "valuation",
+  params: AnalyticsEventParams = {},
+) {
+  trackEvent("generate_lead", {
+    currency: "EUR",
+    lead_type: leadType,
+    value: 1,
+    ...params,
+  });
 }

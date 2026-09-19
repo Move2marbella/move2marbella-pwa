@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { JsonLd } from "../../components/json-ld";
-import { getMarketPageCopy } from "../../data/market-insights";
+import { getMarketArticles, getMarketPageCopy } from "../../data/market-insights";
 import { getLocale, locales } from "../../i18n/translations";
 import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
 
@@ -56,6 +57,7 @@ export default async function TrendsPage({ params }: TrendsPageProps) {
   const { locale: rawLocale } = await params;
   const locale = getLocale(rawLocale);
   const copy = getMarketPageCopy(locale);
+  const articles = getMarketArticles(locale);
 
   return (
     <ContentPageShell
@@ -72,10 +74,10 @@ export default async function TrendsPage({ params }: TrendsPageProps) {
           name: copy.title,
           description: copy.metaDescription,
           url: getLocalizedPath(locale, "/trends"),
-          hasPart: copy.insights.map((insight) => ({
+          hasPart: articles.map((insight) => ({
             "@type": "Article",
             headline: insight.title,
-            url: insight.href,
+            url: getLocalizedPath(locale, `/trends/${insight.slug}`),
           })),
         }}
       />
@@ -91,9 +93,9 @@ export default async function TrendsPage({ params }: TrendsPageProps) {
           </div>
         </div>
         <div className="grid gap-4 lg:grid-cols-2">
-          {copy.insights.map((insight) => (
+          {articles.map((insight) => (
             <article
-              key={insight.href}
+              key={insight.slug}
               className="grid rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6"
             >
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#9a7a3a]">
@@ -110,14 +112,12 @@ export default async function TrendsPage({ params }: TrendsPageProps) {
                   </li>
                 ))}
               </ul>
-              <a
-                href={insight.href}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                href={getLocalizedPath(locale, `/trends/${insight.slug}`)}
                 className="mt-5 inline-flex w-fit rounded-full bg-[#0f253d] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#173b60]"
               >
                 {copy.readMore}
-              </a>
+              </Link>
             </article>
           ))}
         </div>

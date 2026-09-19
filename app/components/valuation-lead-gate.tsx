@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, ReactNode, useState } from "react";
-import { trackEvent } from "../lib/analytics";
+import { trackEvent, trackLeadConversion } from "../lib/analytics";
 
 type ValuationLeadContext = {
   adjustments: Record<string, number>;
@@ -96,6 +96,12 @@ export function ValuationLeadGate({
         has_phone: Boolean(phone),
         whatsapp_consent: whatsappConsent,
       });
+      trackLeadConversion("valuation", {
+        has_email: Boolean(email),
+        has_phone: Boolean(phone),
+        locale: leadContext.locale,
+        whatsapp_consent: whatsappConsent,
+      });
       setIsUnlocked(true);
     } catch {
       setSubmitError(labels.leadSubmitError);
@@ -105,7 +111,28 @@ export function ValuationLeadGate({
   }
 
   if (isUnlocked) {
-    return <>{children}</>;
+    const successMessages: Record<string, string> = {
+      de: "Vielen Dank. Ihre Bewertung wurde gesendet; der detaillierte Bericht ist jetzt verfügbar.",
+      en: "Thank you. Your valuation request has been sent and the detailed report is now available.",
+      es: "Gracias. Tu solicitud de valoración ha sido enviada y el informe detallado ya está disponible.",
+      fr: "Merci. Votre demande d’estimation a été envoyée et le rapport détaillé est maintenant disponible.",
+      hu: "Köszönjük. Az értékbecslési kérelmet elküldtük, a részletes jelentés most már elérhető.",
+      pl: "Dziękujemy. Prośba o wycenę została wysłana, a szczegółowy raport jest już dostępny.",
+      ru: "Спасибо. Запрос на оценку отправлен, подробный отчёт теперь доступен.",
+    };
+
+    return (
+      <>
+        <div
+          className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold leading-6 text-emerald-900 lg:col-span-2"
+          role="status"
+          aria-live="polite"
+        >
+          {successMessages[leadContext.locale] ?? successMessages.en}
+        </div>
+        {children}
+      </>
+    );
   }
 
   return (

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { fetchPropertySitemapEntries } from "./data/properties";
+import { marketArticleSlugs } from "./data/market-insights";
 import { locales } from "./i18n/translations";
 import { IS_INDEXING_ENABLED, SITE_URL, getLocalizedPath } from "./lib/seo";
 
@@ -71,6 +72,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
+    ...locales.flatMap((locale) =>
+      marketArticleSlugs.map((slug) => ({
+        url: `${SITE_URL}${getLocalizedPath(locale, `/trends/${slug}`)}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.65,
+      })),
+    ),
   ];
   const propertyPages = properties.map((property) => ({
     url: `${SITE_URL}${getLocalizedPath("en", `/properties/${property.ref}`)}`,

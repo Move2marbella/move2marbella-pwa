@@ -525,6 +525,7 @@ export async function PropertyDetailContent({
 
         <aside className="space-y-5">
           <LeadForm
+            locale={locale}
             propertyRef={property.ref}
             propertyTitle={property.title}
             propertyPrice={displayPrice}

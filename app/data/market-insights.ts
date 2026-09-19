@@ -7,6 +7,19 @@ export type MarketInsight = {
   title: string;
 };
 
+export const marketArticleSlugs = [
+  "marbella-property-prices-2026",
+  "marbella-market-growth-2026",
+  "costa-del-sol-vs-spain-property-market",
+  "marbella-abandoned-plots-buyer-risk",
+  "property-purchase-costs-andalusia",
+  "buying-property-in-spain-guide",
+  "new-build-vs-resale-costa-del-sol",
+  "sea-view-beachside-beachfront-marbella",
+] as const;
+
+export type MarketArticleSlug = (typeof marketArticleSlugs)[number];
+
 export type MarketPageCopy = {
   body: string;
   eyebrow: string;
@@ -19,11 +32,31 @@ export type MarketPageCopy = {
 };
 
 const sourcePosts = {
+  buying: "https://move2marbella.com/buying-guide/",
+  costs: "https://move2marbella.com/property-purchase-costs-in-marbella-2026/",
   data: "https://move2marbella.com/how-to-read-marbella-property-market-data/",
   risks:
     "https://move2marbella.com/marbella-property-market-2026-what-buyers-should-really-know/",
   spain: "https://move2marbella.com/what-to-expect-from-the-spanish-property-market-in-2026/",
   plots: "https://move2marbella.com/marbella-abandoned-plots-regulation-2026/",
+};
+
+export const marketArticleUi: Record<Locale, {
+  back: string;
+  buyerTakeaway: string;
+  exploreAreas: string;
+  findProperties: string;
+  practicalNextStep: string;
+  readSource: string;
+  updated: string;
+}> = {
+  en: { back: "All trends", buyerTakeaway: "Buyer takeaway", exploreAreas: "Explore regions", findProperties: "Find properties", practicalNextStep: "Practical next step", readSource: "Read source", updated: "Updated September 2026" },
+  es: { back: "Todas las tendencias", buyerTakeaway: "Conclusión para compradores", exploreAreas: "Explorar regiones", findProperties: "Buscar propiedades", practicalNextStep: "Siguiente paso práctico", readSource: "Leer fuente", updated: "Actualizado en septiembre de 2026" },
+  fr: { back: "Toutes les tendances", buyerTakeaway: "À retenir pour l’acheteur", exploreAreas: "Explorer les régions", findProperties: "Voir les biens", practicalNextStep: "Prochaine étape", readSource: "Lire la source", updated: "Mis à jour en septembre 2026" },
+  de: { back: "Alle Trends", buyerTakeaway: "Fazit für Käufer", exploreAreas: "Regionen entdecken", findProperties: "Immobilien suchen", practicalNextStep: "Praktischer nächster Schritt", readSource: "Quelle lesen", updated: "Aktualisiert im September 2026" },
+  ru: { back: "Все тренды", buyerTakeaway: "Вывод для покупателя", exploreAreas: "Изучить регионы", findProperties: "Найти объекты", practicalNextStep: "Практический следующий шаг", readSource: "Читать источник", updated: "Обновлено в сентябре 2026" },
+  pl: { back: "Wszystkie trendy", buyerTakeaway: "Wniosek dla kupującego", exploreAreas: "Poznaj regiony", findProperties: "Znajdź nieruchomości", practicalNextStep: "Praktyczny następny krok", readSource: "Czytaj źródło", updated: "Aktualizacja: wrzesień 2026" },
+  hu: { back: "Összes trend", buyerTakeaway: "Vevői összefoglaló", exploreAreas: "Régiók megtekintése", findProperties: "Ingatlanok keresése", practicalNextStep: "Gyakorlati következő lépés", readSource: "Forrás megnyitása", updated: "Frissítve: 2026. szeptember" },
 };
 
 export const marketPageCopy: Record<Locale, MarketPageCopy> = {
@@ -33,7 +66,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
     eyebrow: "Trends",
     metaDescription:
       "Marbella and Costa del Sol real estate market trends, buyer signals, price context and practical investment notes from Move2Marbella.",
-    readMore: "Read source",
+    readMore: "Read article",
     title: "Marbella real estate trends",
     updatedLabel: "Updated",
     updatedValue: "Real Estate Market Trends",
@@ -78,6 +111,46 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
           "Distressed land can still be an opportunity, but planning, licence history and execution orders must be checked before reservation.",
         ],
       },
+      {
+        category: "Buying costs",
+        href: sourcePosts.costs,
+        title: "Property purchase costs in Andalusia",
+        bullets: [
+          "Resale homes normally carry 7% transfer tax in Andalusia; new homes generally carry 10% VAT plus stamp duty.",
+          "Legal, notary and land-registry costs must be included before setting the final property budget.",
+          "Calculate costs separately for resale and new-build property because the tax structure is different.",
+        ],
+      },
+      {
+        category: "Buying guide",
+        href: sourcePosts.buying,
+        title: "Buying property in Spain: buyer roadmap",
+        bullets: [
+          "A reservation, legal due diligence, private purchase contract and notarial completion are distinct stages.",
+          "Check ownership, debts, planning status and licences before committing the main deposit.",
+          "Define location, total budget and exit strategy before comparing individual properties.",
+        ],
+      },
+      {
+        category: "Property choice",
+        href: sourcePosts.costs,
+        title: "New build vs resale on the Costa del Sol",
+        bullets: [
+          "New developments offer modern specifications and staged payments, but require delivery and developer checks.",
+          "Resale homes can offer established locations and immediate use, while condition and renovation costs need scrutiny.",
+          "Compare total acquisition cost, not only the advertised price.",
+        ],
+      },
+      {
+        category: "Coastal property",
+        href: sourcePosts.data,
+        title: "Sea-view, beachside or beachfront?",
+        bullets: [
+          "Sea-view describes outlook, beachside describes location, and beachfront means the property or complex is directly by the shore.",
+          "Orientation, future construction and the exact position within a complex can materially change the value of a view.",
+          "Verify the feature at the property and on planning maps instead of relying on listing terminology alone.",
+        ],
+      },
     ],
   },
   es: {
@@ -86,7 +159,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
     eyebrow: "Trends",
     metaDescription:
       "Tendencias del mercado inmobiliario de Marbella y la Costa del Sol: precios, señales de comprador e inversión.",
-    readMore: "Leer fuente",
+    readMore: "Leer artículo",
     title: "Tendencias inmobiliarias en Marbella",
     updatedLabel: "Actualizado",
     updatedValue: "Tendencias del mercado inmobiliario",
@@ -131,6 +204,46 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
           "El suelo distressed puede ser oportunidad, pero antes de reservar hay que revisar planeamiento, licencias y expedientes.",
         ],
       },
+      {
+        category: "Costes de compra",
+        href: sourcePosts.costs,
+        title: "Costes de compra de vivienda en Andalucía",
+        bullets: [
+          "La vivienda usada tributa normalmente al 7% por ITP en Andalucía; la obra nueva suele llevar 10% de IVA más AJD.",
+          "Abogado, notaría y Registro deben formar parte del presupuesto total antes de elegir vivienda.",
+          "Calcula por separado obra nueva y reventa porque su estructura fiscal es diferente.",
+        ],
+      },
+      {
+        category: "Guía de compra",
+        href: sourcePosts.buying,
+        title: "Comprar vivienda en España: hoja de ruta",
+        bullets: [
+          "Reserva, revisión legal, contrato privado y firma notarial son etapas distintas.",
+          "Comprueba titularidad, deudas, situación urbanística y licencias antes de entregar el depósito principal.",
+          "Define zona, presupuesto total y estrategia de salida antes de comparar inmuebles.",
+        ],
+      },
+      {
+        category: "Elección del inmueble",
+        href: sourcePosts.costs,
+        title: "Obra nueva o reventa en la Costa del Sol",
+        bullets: [
+          "La obra nueva ofrece especificaciones modernas y pagos por fases, pero exige revisar promotor y entrega.",
+          "La reventa permite ubicaciones consolidadas y uso inmediato; hay que revisar estado y reforma.",
+          "Compara el coste total de adquisición, no solo el precio anunciado.",
+        ],
+      },
+      {
+        category: "Vivienda costera",
+        href: sourcePosts.data,
+        title: "Vistas al mar, cerca de playa o primera línea",
+        bullets: [
+          "Vistas al mar describe la perspectiva, beachside la ubicación y beachfront el contacto directo con la costa.",
+          "Orientación, futuras obras y posición dentro del complejo pueden cambiar mucho el valor de las vistas.",
+          "Verifica la característica in situ y en el planeamiento, no solo en el anuncio.",
+        ],
+      },
     ],
   },
   fr: {
@@ -139,7 +252,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
     eyebrow: "Trends",
     metaDescription:
       "Tendances du marché immobilier de Marbella et de la Costa del Sol: prix, signaux acheteurs et notes d'investissement.",
-    readMore: "Lire la source",
+    readMore: "Lire l’article",
     title: "Tendances immobilières à Marbella",
     updatedLabel: "Mis à jour",
     updatedValue: "Tendances du marché immobilier",
@@ -184,6 +297,46 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
           "Les actifs distressed peuvent être intéressants, mais urbanisme, licences et ordres d'exécution doivent être vérifiés.",
         ],
       },
+      {
+        category: "Frais d’achat",
+        href: sourcePosts.costs,
+        title: "Frais d’achat immobilier en Andalousie",
+        bullets: [
+          "La revente supporte normalement 7% d’ITP en Andalousie; le neuf généralement 10% de TVA plus droit de timbre.",
+          "Avocat, notaire et registre foncier doivent être inclus dans le budget global.",
+          "Calculez séparément neuf et revente car leur fiscalité diffère.",
+        ],
+      },
+      {
+        category: "Guide d’achat",
+        href: sourcePosts.buying,
+        title: "Acheter en Espagne: parcours de l’acheteur",
+        bullets: [
+          "Réservation, audit juridique, contrat privé et signature notariale sont des étapes distinctes.",
+          "Vérifiez propriété, dettes, urbanisme et licences avant le dépôt principal.",
+          "Définissez zone, budget total et stratégie de revente avant de comparer les biens.",
+        ],
+      },
+      {
+        category: "Choix du bien",
+        href: sourcePosts.costs,
+        title: "Neuf ou revente sur la Costa del Sol",
+        bullets: [
+          "Le neuf offre prestations modernes et paiements échelonnés, avec contrôle du promoteur et de la livraison.",
+          "La revente offre des quartiers établis et un usage immédiat; état et rénovation doivent être étudiés.",
+          "Comparez le coût total d’acquisition, pas seulement le prix affiché.",
+        ],
+      },
+      {
+        category: "Immobilier côtier",
+        href: sourcePosts.data,
+        title: "Vue mer, proche plage ou front de mer?",
+        bullets: [
+          "Vue mer décrit la perspective, beachside la localisation et beachfront une position directement en bord de mer.",
+          "Orientation, futures constructions et position dans la résidence peuvent modifier la valeur de la vue.",
+          "Vérifiez sur place et dans les plans d’urbanisme, pas seulement dans l’annonce.",
+        ],
+      },
     ],
   },
   de: {
@@ -192,7 +345,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
     eyebrow: "Trends",
     metaDescription:
       "Immobilientrends für Marbella und Costa del Sol: Preise, Käufersignale und Investmenthinweise.",
-    readMore: "Quelle lesen",
+    readMore: "Artikel lesen",
     title: "Immobilientrends in Marbella",
     updatedLabel: "Aktualisiert",
     updatedValue: "Real Estate Market Trends",
@@ -237,6 +390,46 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
           "Distressed-Land kann Chance sein, aber Planung, Lizenzen und Vollstreckungsanordnungen müssen vor Reservierung geprüft werden.",
         ],
       },
+      {
+        category: "Kaufnebenkosten",
+        href: sourcePosts.costs,
+        title: "Immobilienkaufkosten in Andalusien",
+        bullets: [
+          "Bei Bestandsimmobilien fallen in Andalusien normalerweise 7% Grunderwerbsteuer an; bei Neubauten meist 10% MwSt. plus Stempelsteuer.",
+          "Anwalt, Notar und Grundbuch müssen vor der Objektauswahl im Gesamtbudget stehen.",
+          "Neubau und Bestand getrennt kalkulieren, da die Steuerstruktur unterschiedlich ist.",
+        ],
+      },
+      {
+        category: "Kaufleitfaden",
+        href: sourcePosts.buying,
+        title: "Immobilienkauf in Spanien: Fahrplan",
+        bullets: [
+          "Reservierung, rechtliche Prüfung, Privatvertrag und notarielle Übergabe sind getrennte Schritte.",
+          "Eigentum, Schulden, Baurecht und Genehmigungen vor der Hauptanzahlung prüfen.",
+          "Lage, Gesamtbudget und Exit-Strategie vor dem Objektvergleich definieren.",
+        ],
+      },
+      {
+        category: "Objektwahl",
+        href: sourcePosts.costs,
+        title: "Neubau oder Bestand an der Costa del Sol",
+        bullets: [
+          "Neubau bietet moderne Ausstattung und Ratenzahlungen, verlangt aber Bauträger- und Übergabeprüfung.",
+          "Bestand bietet etablierte Lagen und sofortige Nutzung; Zustand und Renovierungskosten sind zu prüfen.",
+          "Gesamte Erwerbskosten vergleichen, nicht nur den Angebotspreis.",
+        ],
+      },
+      {
+        category: "Küstenimmobilien",
+        href: sourcePosts.data,
+        title: "Meerblick, strandnah oder direkt am Strand?",
+        bullets: [
+          "Meerblick beschreibt die Aussicht, beachside die Lage und beachfront eine direkte Position an der Küste.",
+          "Ausrichtung, künftige Bebauung und Lage innerhalb der Anlage beeinflussen den Wert stark.",
+          "Merkmal vor Ort und in Planungsunterlagen prüfen, nicht nur im Inserat.",
+        ],
+      },
     ],
   },
   ru: {
@@ -245,7 +438,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
     eyebrow: "Trends",
     metaDescription:
       "Тренды рынка недвижимости Marbella и Costa del Sol: цены, сигналы для покупателей и инвестиционные заметки.",
-    readMore: "Читать источник",
+    readMore: "Читать статью",
     title: "Тренды недвижимости Marbella",
     updatedLabel: "Обновлено",
     updatedValue: "Тренды рынка недвижимости",
@@ -290,6 +483,46 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
           "Distressed-активы могут быть возможностью, но до резервации нужно проверить планирование, лицензии и предписания.",
         ],
       },
+      {
+        category: "Расходы на покупку",
+        href: sourcePosts.costs,
+        title: "Расходы на покупку недвижимости в Андалусии",
+        bullets: [
+          "Вторичная недвижимость обычно облагается 7% ITP; новостройки — 10% НДС плюс гербовый сбор.",
+          "Юрист, нотариус и реестр должны входить в полный бюджет до выбора объекта.",
+          "Новостройку и вторичную недвижимость рассчитывайте отдельно из-за разной налоговой структуры.",
+        ],
+      },
+      {
+        category: "Руководство покупателя",
+        href: sourcePosts.buying,
+        title: "Покупка недвижимости в Испании: этапы",
+        bullets: [
+          "Резерв, юридическая проверка, частный договор и нотариальное завершение — отдельные этапы.",
+          "До основного депозита проверьте собственника, долги, градостроительный статус и лицензии.",
+          "Сначала определите район, полный бюджет и стратегию выхода, затем сравнивайте объекты.",
+        ],
+      },
+      {
+        category: "Выбор объекта",
+        href: sourcePosts.costs,
+        title: "Новостройка или вторичная недвижимость",
+        bullets: [
+          "Новостройки предлагают современные характеристики и поэтапную оплату, но требуют проверки застройщика и сроков.",
+          "Вторичное жильё даёт сложившуюся локацию и быстрое заселение; важны состояние и ремонт.",
+          "Сравнивайте полную стоимость приобретения, а не только цену объявления.",
+        ],
+      },
+      {
+        category: "Недвижимость у моря",
+        href: sourcePosts.data,
+        title: "Вид на море, рядом с пляжем или первая линия?",
+        bullets: [
+          "Sea-view означает вид, beachside — расположение рядом с пляжем, beachfront — непосредственно у берега.",
+          "Ориентация, будущая застройка и положение в комплексе существенно влияют на ценность вида.",
+          "Проверяйте характеристику на месте и по градостроительным картам, а не только по объявлению.",
+        ],
+      },
     ],
   },
   pl: {
@@ -298,7 +531,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
     eyebrow: "Trends",
     metaDescription:
       "Trendy rynku nieruchomości Marbella i Costa del Sol: ceny, sygnały kupujących i informacje inwestycyjne.",
-    readMore: "Czytaj źródło",
+    readMore: "Czytaj artykuł",
     title: "Trendy nieruchomości w Marbella",
     updatedLabel: "Aktualizacja",
     updatedValue: "Trendy rynku nieruchomości",
@@ -343,6 +576,46 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
           "Distressed land może być okazją, ale planowanie, licencje i nakazy trzeba sprawdzić przed rezerwacją.",
         ],
       },
+      {
+        category: "Koszty zakupu",
+        href: sourcePosts.costs,
+        title: "Koszty zakupu nieruchomości w Andaluzji",
+        bullets: [
+          "Rynek wtórny zwykle podlega 7% ITP; nowa nieruchomość — 10% VAT plus podatek skarbowy.",
+          "Prawnik, notariusz i rejestr muszą być uwzględnione w pełnym budżecie.",
+          "Nowe i używane nieruchomości licz osobno ze względu na inną strukturę podatków.",
+        ],
+      },
+      {
+        category: "Przewodnik kupującego",
+        href: sourcePosts.buying,
+        title: "Zakup nieruchomości w Hiszpanii: etapy",
+        bullets: [
+          "Rezerwacja, analiza prawna, umowa prywatna i akt notarialny to osobne etapy.",
+          "Przed główną zaliczką sprawdź własność, długi, planowanie i pozwolenia.",
+          "Najpierw określ lokalizację, pełny budżet i strategię wyjścia, potem porównuj oferty.",
+        ],
+      },
+      {
+        category: "Wybór nieruchomości",
+        href: sourcePosts.costs,
+        title: "Nowa inwestycja czy rynek wtórny",
+        bullets: [
+          "Nowe inwestycje oferują nowoczesny standard i płatności etapowe, ale wymagają kontroli dewelopera i terminu.",
+          "Rynek wtórny daje ustaloną lokalizację i szybkie użytkowanie; trzeba sprawdzić stan i remont.",
+          "Porównuj pełny koszt nabycia, nie tylko cenę ofertową.",
+        ],
+      },
+      {
+        category: "Nieruchomości nad morzem",
+        href: sourcePosts.data,
+        title: "Widok na morze, blisko plaży czy pierwsza linia?",
+        bullets: [
+          "Sea-view opisuje widok, beachside lokalizację, a beachfront bezpośrednie położenie przy brzegu.",
+          "Orientacja, przyszła zabudowa i położenie w kompleksie znacząco zmieniają wartość widoku.",
+          "Sprawdź cechę na miejscu i w planach, nie tylko w opisie oferty.",
+        ],
+      },
     ],
   },
   hu: {
@@ -351,7 +624,7 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
     eyebrow: "Trends",
     metaDescription:
       "Marbella és Costa del Sol ingatlanpiaci trendek: árak, vevői jelzések és befektetési szempontok.",
-    readMore: "Forrás megnyitása",
+    readMore: "Cikk megnyitása",
     title: "Marbella ingatlanpiaci trendek",
     updatedLabel: "Frissítve",
     updatedValue: "Ingatlanpiaci trendek",
@@ -396,10 +669,68 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
           "A distressed ingatlan lehetőség lehet, de foglaló előtt ellenőrizni kell a városrendezést, licenceket és hatósági eljárásokat.",
         ],
       },
+      {
+        category: "Vásárlási költségek",
+        href: sourcePosts.costs,
+        title: "Ingatlanvásárlási költségek Andalúziában",
+        bullets: [
+          "Használt ingatlannál Andalúziában általában 7% ITP fizetendő; új építésnél jellemzően 10% áfa és illeték.",
+          "Az ügyvédi, közjegyzői és ingatlan-nyilvántartási díjakat már a teljes keret meghatározásakor számolni kell.",
+          "A használt és az új építésű ingatlant külön kell kalkulálni, mert eltérő az adóstruktúrájuk.",
+        ],
+      },
+      {
+        category: "Vásárlási útmutató",
+        href: sourcePosts.buying,
+        title: "Spanyolországi ingatlanvásárlás: vevői útvonal",
+        bullets: [
+          "A foglalás, jogi átvilágítás, magánszerződés és közjegyzői adásvétel különálló szakaszok.",
+          "A fő foglaló kifizetése előtt ellenőrizni kell a tulajdonjogot, tartozásokat, városrendezési státuszt és engedélyeket.",
+          "Az ingatlanok összevetése előtt határozd meg a lokációt, teljes keretet és továbbértékesítési stratégiát.",
+        ],
+      },
+      {
+        category: "Ingatlanválasztás",
+        href: sourcePosts.costs,
+        title: "Új építés vagy használt ingatlan a Costa del Solon",
+        bullets: [
+          "Az új projektek modern műszaki tartalmat és szakaszos fizetést kínálnak, de ellenőrizni kell a fejlesztőt és az átadást.",
+          "A használt ingatlanok bejáratott lokációt és gyors használatot adhatnak; az állapotot és felújítási költséget vizsgálni kell.",
+          "Ne csak a hirdetési árat, hanem a teljes bekerülési költséget hasonlítsd össze.",
+        ],
+      },
+      {
+        category: "Tengerparti ingatlan",
+        href: sourcePosts.data,
+        title: "Tengeri kilátás, strandközeli vagy közvetlen vízpart?",
+        bullets: [
+          "A sea-view a kilátást, a beachside a strandközeli elhelyezkedést, a beachfront pedig a közvetlen vízparti fekvést jelenti.",
+          "A tájolás, a jövőbeli építkezések és a komplexumon belüli pozíció jelentősen befolyásolhatják a kilátás értékét.",
+          "A jellemzőt a helyszínen és városrendezési térképen is ellenőrizd, ne csak a hirdetés alapján.",
+        ],
+      },
     ],
   },
 };
 
 export function getMarketPageCopy(locale: Locale) {
   return marketPageCopy[locale];
+}
+
+export function getMarketArticle(locale: Locale, slug: string) {
+  const index = marketArticleSlugs.indexOf(slug as MarketArticleSlug);
+
+  if (index === -1) {
+    return null;
+  }
+
+  const insight = marketPageCopy[locale].insights[index];
+  return insight ? { ...insight, slug: marketArticleSlugs[index] } : null;
+}
+
+export function getMarketArticles(locale: Locale) {
+  return marketArticleSlugs.flatMap((slug, index) => {
+    const insight = marketPageCopy[locale].insights[index];
+    return insight ? [{ ...insight, slug }] : [];
+  });
 }

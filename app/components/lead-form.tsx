@@ -1,9 +1,10 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { trackEvent } from "../lib/analytics";
+import { trackEvent, trackLeadConversion } from "../lib/analytics";
 
 type LeadFormProps = {
+  locale?: string;
   labels?: {
     email: string;
     leadDefaultMessage: string;
@@ -22,6 +23,7 @@ type LeadFormProps = {
 };
 
 export function LeadForm({
+  locale = "en",
   labels = {
     email: "Email",
     leadDefaultMessage: "I would like more information about this property.",
@@ -45,6 +47,17 @@ export function LeadForm({
   const [company, setCompany] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const successMessages: Record<string, string> = {
+    de: "Vielen Dank. Ihre Anfrage wurde gesendet. Wir melden uns in Kürze bei Ihnen.",
+    en: "Thank you. Your property enquiry has been sent. We will contact you shortly.",
+    es: "Gracias. Tu consulta ha sido enviada. Nos pondremos en contacto contigo en breve.",
+    fr: "Merci. Votre demande a été envoyée. Nous vous contacterons prochainement.",
+    hu: "Köszönjük. Az ingatlannal kapcsolatos érdeklődésedet elküldtük, hamarosan jelentkezünk.",
+    pl: "Dziękujemy. Twoje zapytanie zostało wysłane. Wkrótce się skontaktujemy.",
+    ru: "Спасибо. Ваш запрос отправлен. Мы скоро свяжемся с вами.",
+  };
 
   async function submitLead(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -96,6 +109,11 @@ export function LeadForm({
 
       url.searchParams.set("text", text);
       trackEvent("lead_form_submitted", {
+        locale,
+        property_reference: propertyRef,
+      });
+      trackLeadConversion("property_enquiry", {
+        locale,
         property_reference: propertyRef,
       });
       trackEvent("whatsapp_click", {
@@ -109,6 +127,7 @@ export function LeadForm({
       } else {
         window.location.href = url.toString();
       }
+      setSubmitSuccess(true);
     } catch {
       whatsappWindow?.close();
       setSubmitError("The enquiry could not be sent. Please try again.");
@@ -125,6 +144,15 @@ export function LeadForm({
       <h2 className="mt-2 text-2xl font-semibold text-[#171717]">
         {labels.requestDetails}
       </h2>
+      {submitSuccess ? (
+        <div
+          className="mt-4 rounded-[8px] border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold leading-6 text-emerald-900"
+          role="status"
+          aria-live="polite"
+        >
+          {successMessages[locale] ?? successMessages.en}
+        </div>
+      ) : (
       <form onSubmit={submitLead} className="mt-4 grid gap-3">
         <label className="hidden" aria-hidden="true">
           Company
@@ -195,6 +223,7 @@ export function LeadForm({
           {isSubmitting ? "Sending..." : labels.sendEnquiry}
         </button>
       </form>
+      )}
     </section>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { trackEvent } from "../lib/analytics";
+import { trackEvent, trackLeadConversion } from "../lib/analytics";
 
 type ContactLeadFormLabels = {
   body: string;
@@ -69,6 +69,12 @@ export function ContactLeadForm({ labels, locale }: ContactLeadFormProps) {
       trackEvent("contact_form_submitted", {
         has_email: Boolean(email),
         has_phone: Boolean(phone),
+        locale,
+      });
+      trackLeadConversion("contact", {
+        has_email: Boolean(email),
+        has_phone: Boolean(phone),
+        locale,
       });
       setSubmitSuccess(true);
       setEmail("");
@@ -94,6 +100,15 @@ export function ContactLeadForm({ labels, locale }: ContactLeadFormProps) {
           </p>
         </div>
 
+        {submitSuccess ? (
+          <div
+            className="mt-6 rounded-[8px] border border-emerald-200 bg-emerald-50 p-5 text-emerald-900"
+            role="status"
+            aria-live="polite"
+          >
+            <p className="text-lg font-semibold">{labels.success}</p>
+          </div>
+        ) : (
         <form onSubmit={submitContactLead} className="mt-6 grid gap-4 md:grid-cols-3">
           <label className="hidden" aria-hidden="true">
             Company
@@ -152,11 +167,6 @@ export function ContactLeadForm({ labels, locale }: ContactLeadFormProps) {
               {submitError}
             </p>
           ) : null}
-          {submitSuccess ? (
-            <p className="rounded-[6px] border border-emerald-200 bg-emerald-50 p-3 text-sm font-semibold text-emerald-800 md:col-span-3">
-              {labels.success}
-            </p>
-          ) : null}
           <button
             disabled={isSubmitting}
             className="h-12 rounded-[6px] bg-[#ba9456] px-5 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-[#a37f43] disabled:cursor-wait disabled:bg-[#b8a27b] md:col-span-3"
@@ -164,6 +174,7 @@ export function ContactLeadForm({ labels, locale }: ContactLeadFormProps) {
             {isSubmitting ? labels.sending : labels.send}
           </button>
         </form>
+        )}
       </div>
     </section>
   );
