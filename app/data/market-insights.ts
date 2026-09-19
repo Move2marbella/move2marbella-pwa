@@ -50,24 +50,24 @@ export const marketArticleUi: Record<Locale, {
   readSource: string;
   updated: string;
 }> = {
-  en: { back: "All trends", buyerTakeaway: "Buyer takeaway", exploreAreas: "Explore regions", findProperties: "Find properties", practicalNextStep: "Practical next step", readSource: "Read source", updated: "Updated September 2026" },
-  es: { back: "Todas las tendencias", buyerTakeaway: "Conclusión para compradores", exploreAreas: "Explorar regiones", findProperties: "Buscar propiedades", practicalNextStep: "Siguiente paso práctico", readSource: "Leer fuente", updated: "Actualizado en septiembre de 2026" },
-  fr: { back: "Toutes les tendances", buyerTakeaway: "À retenir pour l’acheteur", exploreAreas: "Explorer les régions", findProperties: "Voir les biens", practicalNextStep: "Prochaine étape", readSource: "Lire la source", updated: "Mis à jour en septembre 2026" },
-  de: { back: "Alle Trends", buyerTakeaway: "Fazit für Käufer", exploreAreas: "Regionen entdecken", findProperties: "Immobilien suchen", practicalNextStep: "Praktischer nächster Schritt", readSource: "Quelle lesen", updated: "Aktualisiert im September 2026" },
-  ru: { back: "Все тренды", buyerTakeaway: "Вывод для покупателя", exploreAreas: "Изучить регионы", findProperties: "Найти объекты", practicalNextStep: "Практический следующий шаг", readSource: "Читать источник", updated: "Обновлено в сентябре 2026" },
-  pl: { back: "Wszystkie trendy", buyerTakeaway: "Wniosek dla kupującego", exploreAreas: "Poznaj regiony", findProperties: "Znajdź nieruchomości", practicalNextStep: "Praktyczny następny krok", readSource: "Czytaj źródło", updated: "Aktualizacja: wrzesień 2026" },
-  hu: { back: "Összes trend", buyerTakeaway: "Vevői összefoglaló", exploreAreas: "Régiók megtekintése", findProperties: "Ingatlanok keresése", practicalNextStep: "Gyakorlati következő lépés", readSource: "Forrás megnyitása", updated: "Frissítve: 2026. szeptember" },
+  en: { back: "All insights", buyerTakeaway: "Buyer takeaway", exploreAreas: "Explore regions", findProperties: "Find properties", practicalNextStep: "Practical next step", readSource: "Read source", updated: "Updated September 2026" },
+  es: { back: "Todas las guías y análisis", buyerTakeaway: "Conclusión para compradores", exploreAreas: "Explorar regiones", findProperties: "Buscar propiedades", practicalNextStep: "Siguiente paso práctico", readSource: "Leer fuente", updated: "Actualizado en septiembre de 2026" },
+  fr: { back: "Tous les guides et analyses", buyerTakeaway: "À retenir pour l’acheteur", exploreAreas: "Explorer les régions", findProperties: "Voir les biens", practicalNextStep: "Prochaine étape", readSource: "Lire la source", updated: "Mis à jour en septembre 2026" },
+  de: { back: "Alle Ratgeber", buyerTakeaway: "Fazit für Käufer", exploreAreas: "Regionen entdecken", findProperties: "Immobilien suchen", practicalNextStep: "Praktischer nächster Schritt", readSource: "Quelle lesen", updated: "Aktualisiert im September 2026" },
+  ru: { back: "Все гиды и аналитика", buyerTakeaway: "Вывод для покупателя", exploreAreas: "Изучить регионы", findProperties: "Найти объекты", practicalNextStep: "Практический следующий шаг", readSource: "Читать источник", updated: "Обновлено в сентябре 2026" },
+  pl: { back: "Wszystkie poradniki i analizy", buyerTakeaway: "Wniosek dla kupującego", exploreAreas: "Poznaj regiony", findProperties: "Znajdź nieruchomości", practicalNextStep: "Praktyczny następny krok", readSource: "Czytaj źródło", updated: "Aktualizacja: wrzesień 2026" },
+  hu: { back: "Vissza a tudástárhoz", buyerTakeaway: "Vevői összefoglaló", exploreAreas: "Régiók megtekintése", findProperties: "Ingatlanok keresése", practicalNextStep: "Gyakorlati következő lépés", readSource: "Forrás megnyitása", updated: "Frissítve: 2026. szeptember" },
 };
 
 export const marketPageCopy: Record<Locale, MarketPageCopy> = {
   en: {
     body:
       "Short buyer-focused signals on prices, supply, risk and timing in Marbella and the Costa del Sol.",
-    eyebrow: "Trends",
+    eyebrow: "Insights",
     metaDescription:
       "Marbella and Costa del Sol real estate market trends, buyer signals, price context and practical investment notes from Move2Marbella.",
     readMore: "Read article",
-    title: "Marbella real estate trends",
+    title: "Marbella Property Insights",
     updatedLabel: "Updated",
     updatedValue: "Real Estate Market Trends",
     insights: [
@@ -156,11 +156,11 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
   es: {
     body:
       "Señales breves para compradores sobre precios, oferta, riesgo y timing en Marbella y la Costa del Sol.",
-    eyebrow: "Trends",
+    eyebrow: "Guías y análisis",
     metaDescription:
       "Tendencias del mercado inmobiliario de Marbella y la Costa del Sol: precios, señales de comprador e inversión.",
     readMore: "Leer artículo",
-    title: "Tendencias inmobiliarias en Marbella",
+    title: "Guías y análisis inmobiliarios de Marbella",
     updatedLabel: "Actualizado",
     updatedValue: "Tendencias del mercado inmobiliario",
     insights: [
@@ -249,11 +249,11 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
   fr: {
     body:
       "Signaux courts pour acheteurs sur prix, offre, risque et timing à Marbella et sur la Costa del Sol.",
-    eyebrow: "Trends",
+    eyebrow: "Guides et analyses",
     metaDescription:
       "Tendances du marché immobilier de Marbella et de la Costa del Sol: prix, signaux acheteurs et notes d'investissement.",
     readMore: "Lire l’article",
-    title: "Tendances immobilières à Marbella",
+    title: "Guides et analyses immobilières de Marbella",
     updatedLabel: "Mis à jour",
     updatedValue: "Tendances du marché immobilier",
     insights: [
@@ -342,11 +342,11 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
   de: {
     body:
       "Kurze Käufersignale zu Preisen, Angebot, Risiko und Timing in Marbella und an der Costa del Sol.",
-    eyebrow: "Trends",
+    eyebrow: "Ratgeber",
     metaDescription:
       "Immobilientrends für Marbella und Costa del Sol: Preise, Käufersignale und Investmenthinweise.",
     readMore: "Artikel lesen",
-    title: "Immobilientrends in Marbella",
+    title: "Marbella Immobilienratgeber",
     updatedLabel: "Aktualisiert",
     updatedValue: "Real Estate Market Trends",
     insights: [
@@ -435,11 +435,11 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
   ru: {
     body:
       "Короткие сигналы для покупателей о ценах, предложении, рисках и timing в Marbella и на Costa del Sol.",
-    eyebrow: "Trends",
+    eyebrow: "Гиды и аналитика",
     metaDescription:
       "Тренды рынка недвижимости Marbella и Costa del Sol: цены, сигналы для покупателей и инвестиционные заметки.",
     readMore: "Читать статью",
-    title: "Тренды недвижимости Marbella",
+    title: "Гиды и аналитика по недвижимости Marbella",
     updatedLabel: "Обновлено",
     updatedValue: "Тренды рынка недвижимости",
     insights: [
@@ -528,11 +528,11 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
   pl: {
     body:
       "Krótkie sygnały dla kupujących o cenach, podaży, ryzyku i timingu w Marbella oraz na Costa del Sol.",
-    eyebrow: "Trends",
+    eyebrow: "Poradniki i analizy",
     metaDescription:
       "Trendy rynku nieruchomości Marbella i Costa del Sol: ceny, sygnały kupujących i informacje inwestycyjne.",
     readMore: "Czytaj artykuł",
-    title: "Trendy nieruchomości w Marbella",
+    title: "Poradniki i analizy nieruchomości w Marbella",
     updatedLabel: "Aktualizacja",
     updatedValue: "Trendy rynku nieruchomości",
     insights: [
@@ -621,11 +621,11 @@ export const marketPageCopy: Record<Locale, MarketPageCopy> = {
   hu: {
     body:
       "Rövid vevői jelzések árakról, kínálatról, kockázatokról és időzítésről Marbellán és a Costa del Solon.",
-    eyebrow: "Trends",
+    eyebrow: "Tudástár",
     metaDescription:
       "Marbella és Costa del Sol ingatlanpiaci trendek: árak, vevői jelzések és befektetési szempontok.",
     readMore: "Cikk megnyitása",
-    title: "Marbella ingatlanpiaci trendek",
+    title: "Marbellai ingatlanpiaci tudástár",
     updatedLabel: "Frissítve",
     updatedValue: "Ingatlanpiaci trendek",
     insights: [
