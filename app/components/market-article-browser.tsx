@@ -1,7 +1,6 @@
 "use client";
 
 import { Search } from "lucide-react";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 
 type MarketArticleBrowserProps = {
@@ -84,12 +83,12 @@ export function MarketArticleBrowser({
                   </li>
                 ))}
               </ul>
-              <Link
+              <a
                 href={`${basePath}/trends/${article.slug}`}
                 className="mt-5 inline-flex w-fit rounded-full bg-[#0f253d] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#173b60] focus:outline-none focus:ring-4 focus:ring-[#ba9456]/30"
               >
                 {readMore}
-              </Link>
+              </a>
             </article>
           ))}
         </div>
