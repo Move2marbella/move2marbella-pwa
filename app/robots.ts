@@ -19,15 +19,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/", "/api/", "/_next/", "/*?*"],
       },
       {
-        userAgent: "OAI-SearchBot",
-        disallow: "/",
-      },
-      {
         userAgent: "GPTBot",
-        disallow: "/",
-      },
-      {
-        userAgent: "ChatGPT-User",
         disallow: "/",
       },
       {
@@ -36,10 +28,6 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: "ClaudeBot",
-        disallow: "/",
-      },
-      {
-        userAgent: "PerplexityBot",
         disallow: "/",
       },
       {
