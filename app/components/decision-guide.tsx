@@ -96,7 +96,8 @@ function calculateResult(answers: AnswerMap): EvaluationResult {
       (question) => question.changeable === changeable,
     );
     const possible = questions.reduce(
-      (sum, question) => sum + importanceWeight[answers[question.id].importance],
+      (sum, question) =>
+        sum + importanceWeight[answers[question.id].importance],
       0,
     );
     const achieved = questions.reduce((sum, question) => {
@@ -111,11 +112,19 @@ function calculateResult(answers: AnswerMap): EvaluationResult {
   const condition = sectionScore(true);
   const critical = decisionQuestions.filter((question) => {
     const answer = answers[question.id];
-    return !question.changeable && answer.importance === "essential" && answer.rating === "no";
+    return (
+      !question.changeable &&
+      answer.importance === "essential" &&
+      answer.rating === "no"
+    );
   }).length;
   const unknownEssentials = decisionQuestions.filter((question) => {
     const answer = answers[question.id];
-    return !question.changeable && answer.importance === "essential" && answer.rating === "unknown";
+    return (
+      !question.changeable &&
+      answer.importance === "essential" &&
+      answer.rating === "unknown"
+    );
   }).length;
   const unknown = decisionQuestions.filter(
     (question) => answers[question.id].rating === "unknown",
@@ -123,7 +132,8 @@ function calculateResult(answers: AnswerMap): EvaluationResult {
   const improvements = decisionQuestions.filter(
     (question) =>
       question.changeable &&
-      (answers[question.id].rating === "partly" || answers[question.id].rating === "no"),
+      (answers[question.id].rating === "partly" ||
+        answers[question.id].rating === "no"),
   ).length;
 
   let overall = Math.round(longTerm * 0.75 + condition * 0.25);
@@ -139,7 +149,15 @@ function calculateResult(answers: AnswerMap): EvaluationResult {
     recommendation = "reconsider";
   }
 
-  return { overall, longTerm, condition, critical, unknown, improvements, recommendation };
+  return {
+    overall,
+    longTerm,
+    condition,
+    critical,
+    unknown,
+    improvements,
+    recommendation,
+  };
 }
 
 function readStorage<T>(key: string): T[] {
@@ -164,20 +182,26 @@ export function DecisionGuide({
   copy,
   initialProperty = null,
 }: DecisionGuideProps) {
-  const [mode, setMode] = useState<"choose" | "app" | "external" | "questions" | "result">(
-    initialProperty ? "questions" : "choose",
+  const [mode, setMode] = useState<
+    "choose" | "app" | "external" | "questions" | "result"
+  >(initialProperty ? "questions" : "choose");
+  const [property, setProperty] = useState<EvaluationProperty | null>(
+    initialProperty,
   );
-  const [property, setProperty] = useState<EvaluationProperty | null>(initialProperty);
   const [answers, setAnswers] = useState<AnswerMap>(createInitialAnswers);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [savedEvaluations, setSavedEvaluations] = useState<SavedEvaluation[]>([]);
+  const [savedEvaluations, setSavedEvaluations] = useState<SavedEvaluation[]>(
+    [],
+  );
   const [favourites, setFavourites] = useState<FavouriteProperty[]>([]);
   const [result, setResult] = useState<EvaluationResult | null>(null);
   const guideTopRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      setSavedEvaluations(readStorage<SavedEvaluation>(EVALUATIONS_STORAGE_KEY));
+      setSavedEvaluations(
+        readStorage<SavedEvaluation>(EVALUATIONS_STORAGE_KEY),
+      );
       setFavourites(readStorage<FavouriteProperty>(FAVOURITES_STORAGE_KEY));
     }, 0);
 
@@ -193,13 +217,19 @@ export function DecisionGuide({
   const answer = answers[question.id];
   const progress = ((questionIndex + 1) / decisionQuestions.length) * 100;
   const groupLabel = question.changeable ? copy.changeable : copy.immutable;
-  const groupHint = question.changeable ? copy.changeableHint : copy.immutableHint;
+  const groupHint = question.changeable
+    ? copy.changeableHint
+    : copy.immutableHint;
 
   const scoreCards = useMemo(
     () =>
       result
         ? [
-            { label: copy.overallScore, value: `${result.overall}/100`, accent: true },
+            {
+              label: copy.overallScore,
+              value: `${result.overall}/100`,
+              accent: true,
+            },
             { label: copy.longTermFit, value: `${result.longTerm}/100` },
             { label: copy.currentCondition, value: `${result.condition}/100` },
           ]
@@ -210,13 +240,18 @@ export function DecisionGuide({
   const resultDetails = useMemo(() => {
     if (!result) return { critical: [], verify: [], improvements: [] };
 
-    const label = (questionId: DecisionQuestionId) => copy.questions[questionId];
+    const label = (questionId: DecisionQuestionId) =>
+      copy.questions[questionId];
 
     return {
       critical: decisionQuestions
         .filter((item) => {
           const itemAnswer = answers[item.id];
-          return !item.changeable && itemAnswer.importance === "essential" && itemAnswer.rating === "no";
+          return (
+            !item.changeable &&
+            itemAnswer.importance === "essential" &&
+            itemAnswer.rating === "no"
+          );
         })
         .map((item) => label(item.id)),
       verify: decisionQuestions
@@ -287,7 +322,10 @@ export function DecisionGuide({
       ...savedEvaluations.filter((saved) => saved.id !== evaluation.id),
     ];
 
-    window.localStorage.setItem(EVALUATIONS_STORAGE_KEY, JSON.stringify(nextSaved));
+    window.localStorage.setItem(
+      EVALUATIONS_STORAGE_KEY,
+      JSON.stringify(nextSaved),
+    );
     setSavedEvaluations(nextSaved);
     setResult(nextResult);
     setMode("result");
@@ -325,8 +363,13 @@ export function DecisionGuide({
   }
 
   function deleteEvaluation(id: string) {
-    const nextSaved = savedEvaluations.filter((evaluation) => evaluation.id !== id);
-    window.localStorage.setItem(EVALUATIONS_STORAGE_KEY, JSON.stringify(nextSaved));
+    const nextSaved = savedEvaluations.filter(
+      (evaluation) => evaluation.id !== id,
+    );
+    window.localStorage.setItem(
+      EVALUATIONS_STORAGE_KEY,
+      JSON.stringify(nextSaved),
+    );
     setSavedEvaluations(nextSaved);
   }
 
@@ -345,8 +388,12 @@ export function DecisionGuide({
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#9a7a3a]">
             {copy.eyebrow}
           </p>
-          <h2 className="mt-2 text-3xl font-semibold text-[#0f253d]">{copy.chooseTitle}</h2>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-[#5c564d]">{copy.chooseBody}</p>
+          <h2 className="mt-2 text-3xl font-semibold text-[#0f253d]">
+            {copy.chooseTitle}
+          </h2>
+          <p className="mt-3 max-w-2xl text-base leading-7 text-[#5c564d]">
+            {copy.chooseBody}
+          </p>
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             <button
               type="button"
@@ -368,43 +415,55 @@ export function DecisionGuide({
 
       {mode === "app" ? (
         <section className="bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-8">
-          <button type="button" onClick={() => setMode("choose")} className="text-sm font-semibold text-[#0f253d]">
+          <button
+            type="button"
+            onClick={() => setMode("choose")}
+            className="text-sm font-semibold text-[#0f253d]"
+          >
             ← {copy.back}
           </button>
-          <h2 className="mt-5 text-3xl font-semibold text-[#0f253d]">{copy.savedProperties}</h2>
+          <h2 className="mt-5 text-3xl font-semibold text-[#0f253d]">
+            {copy.savedProperties}
+          </h2>
           {favourites.length > 0 ? (
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {favourites.map((favourite) => (
-                <button
+                <a
                   key={favourite.ref}
-                  type="button"
-                  onClick={() =>
-                    beginEvaluation({
-                      id: `app:${favourite.ref}`,
-                      source: "app",
-                      title: favourite.title,
-                      reference: favourite.ref,
-                      location: favourite.location,
-                      price: favourite.price,
-                      image: favourite.image,
-                      url: favourite.href,
-                    })
-                  }
+                  href={`${basePath}/decision-guide?ref=${encodeURIComponent(favourite.ref)}`}
                   className="grid min-h-24 grid-cols-[88px_1fr] gap-3 rounded-[8px] border border-[#e5dac8] p-3 text-left transition hover:border-[#ba9456]"
                 >
-                  <img src={favourite.image} alt="" className="h-20 w-full rounded-[6px] object-cover" />
+                  <img
+                    src={favourite.image}
+                    alt=""
+                    className="h-20 w-full rounded-[6px] object-cover"
+                  />
                   <span className="min-w-0">
-                    <span className="block truncate font-semibold text-[#0f253d]">{favourite.title}</span>
-                    <span className="mt-1 block truncate text-sm text-[#6f6a61]">{favourite.location}</span>
-                    <span className="mt-1 block text-sm font-semibold text-[#9a7a3a]">{favourite.price}</span>
+                    <span className="block truncate font-semibold text-[#0f253d]">
+                      {favourite.title}
+                    </span>
+                    <span className="mt-1 block truncate text-sm text-[#6f6a61]">
+                      {favourite.location}
+                    </span>
+                    <span className="mt-1 block text-sm font-semibold text-[#9a7a3a]">
+                      {favourite.price}
+                    </span>
+                    <span className="mt-2 block text-xs font-bold uppercase tracking-wide text-[#0f253d]">
+                      {copy.evaluateThisProperty} →
+                    </span>
                   </span>
-                </button>
+                </a>
               ))}
             </div>
           ) : (
             <div className="mt-5 border-l-4 border-[#ba9456] bg-[#fbf8f2] p-5">
-              <p className="text-base leading-7 text-[#5c564d]">{copy.noSavedProperties}</p>
-              <Link href={basePath} className="mt-4 inline-flex rounded-[6px] bg-[#0f253d] px-5 py-3 text-sm font-semibold text-white">
+              <p className="text-base leading-7 text-[#5c564d]">
+                {copy.noSavedProperties}
+              </p>
+              <Link
+                href={basePath}
+                className="mt-4 inline-flex rounded-[6px] bg-[#0f253d] px-5 py-3 text-sm font-semibold text-white"
+              >
                 {copy.browseProperties}
               </Link>
             </div>
@@ -414,30 +473,67 @@ export function DecisionGuide({
 
       {mode === "external" ? (
         <section className="bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-8">
-          <button type="button" onClick={() => setMode("choose")} className="text-sm font-semibold text-[#0f253d]">
+          <button
+            type="button"
+            onClick={() => setMode("choose")}
+            className="text-sm font-semibold text-[#0f253d]"
+          >
             ← {copy.back}
           </button>
-          <h2 className="mt-5 text-3xl font-semibold text-[#0f253d]">{copy.externalTitle}</h2>
-          <form onSubmit={handleExternalSubmit} className="mt-6 grid gap-4 sm:grid-cols-2">
+          <h2 className="mt-5 text-3xl font-semibold text-[#0f253d]">
+            {copy.externalTitle}
+          </h2>
+          <form
+            onSubmit={handleExternalSubmit}
+            className="mt-6 grid gap-4 sm:grid-cols-2"
+          >
             <label className="grid gap-2 text-sm font-semibold text-[#4d4942]">
               {copy.propertyName}
-              <input name="title" required className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal" />
+              <input
+                name="title"
+                required
+                className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal"
+              />
             </label>
             <label className="grid gap-2 text-sm font-semibold text-[#4d4942]">
               {copy.propertyLocation}
-              <input name="location" required className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal" />
+              <input
+                name="location"
+                required
+                className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal"
+              />
             </label>
             <label className="grid gap-2 text-sm font-semibold text-[#4d4942]">
-              {copy.propertyReference} <span className="font-normal text-[#817a70]">({copy.optional})</span>
-              <input name="reference" className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal" />
+              {copy.propertyReference}{" "}
+              <span className="font-normal text-[#817a70]">
+                ({copy.optional})
+              </span>
+              <input
+                name="reference"
+                className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal"
+              />
             </label>
             <label className="grid gap-2 text-sm font-semibold text-[#4d4942]">
-              {copy.propertyPrice} <span className="font-normal text-[#817a70]">({copy.optional})</span>
-              <input name="price" inputMode="decimal" className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal" />
+              {copy.propertyPrice}{" "}
+              <span className="font-normal text-[#817a70]">
+                ({copy.optional})
+              </span>
+              <input
+                name="price"
+                inputMode="decimal"
+                className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal"
+              />
             </label>
             <label className="grid gap-2 text-sm font-semibold text-[#4d4942] sm:col-span-2">
-              {copy.propertyUrl} <span className="font-normal text-[#817a70]">({copy.optional})</span>
-              <input name="url" type="url" className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal" />
+              {copy.propertyUrl}{" "}
+              <span className="font-normal text-[#817a70]">
+                ({copy.optional})
+              </span>
+              <input
+                name="url"
+                type="url"
+                className="h-12 rounded-[6px] border border-[#d9cfbd] px-4 font-normal"
+              />
             </label>
             <button className="mt-2 min-h-12 rounded-[6px] bg-[#ba9456] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white sm:col-span-2">
               {copy.startEvaluation}
@@ -449,63 +545,81 @@ export function DecisionGuide({
       {mode === "questions" && property ? (
         <section className="overflow-hidden bg-white shadow-sm ring-1 ring-black/5">
           <div className="h-2 bg-[#e9dfcf]">
-            <div className="h-full bg-[#ba9456] transition-all" style={{ width: `${progress}%` }} />
+            <div
+              className="h-full bg-[#ba9456] transition-all"
+              style={{ width: `${progress}%` }}
+            />
           </div>
           <div className="p-5 sm:p-8">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#9a7a3a]">
-                  {copy.questionProgress} {questionIndex + 1}/{decisionQuestions.length}
+                  {copy.questionProgress} {questionIndex + 1}/
+                  {decisionQuestions.length}
                 </p>
                 <p className="mt-1 text-sm text-[#6f6a61]">{property.title}</p>
               </div>
-              <span className={`rounded-full px-3 py-1 text-xs font-semibold ${question.changeable ? "bg-[#efe2c5] text-[#73561d]" : "bg-[#dfe8f0] text-[#0f253d]"}`}>
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${question.changeable ? "bg-[#efe2c5] text-[#73561d]" : "bg-[#dfe8f0] text-[#0f253d]"}`}
+              >
                 {groupLabel}
               </span>
             </div>
             <h2 className="mt-7 max-w-3xl text-3xl font-semibold leading-tight text-[#0f253d] sm:text-4xl">
               {copy.questions[question.id]}
             </h2>
-            <p className="mt-3 text-base leading-7 text-[#625c53]">{groupHint}</p>
+            <p className="mt-3 text-base leading-7 text-[#625c53]">
+              {groupHint}
+            </p>
 
             <fieldset className="mt-7">
-              <legend className="text-sm font-semibold text-[#4d4942]">{copy.importance}</legend>
+              <legend className="text-sm font-semibold text-[#4d4942]">
+                {copy.importance}
+              </legend>
               <div className="mt-3 grid grid-cols-3 gap-2">
-                {(["essential", "important", "advantage"] as Importance[]).map((importance) => (
-                  <button
-                    key={importance}
-                    type="button"
-                    aria-pressed={answer.importance === importance}
-                    onClick={() => updateAnswer({ importance })}
-                    className={`min-h-12 rounded-[6px] border px-2 py-3 text-xs font-semibold sm:text-sm ${answer.importance === importance ? "border-[#0f253d] bg-[#0f253d] text-white" : "border-[#d9cfbd] bg-white text-[#4d4942]"}`}
-                  >
-                    {copy[importance]}
-                  </button>
-                ))}
+                {(["essential", "important", "advantage"] as Importance[]).map(
+                  (importance) => (
+                    <button
+                      key={importance}
+                      type="button"
+                      aria-pressed={answer.importance === importance}
+                      onClick={() => updateAnswer({ importance })}
+                      className={`min-h-12 rounded-[6px] border px-2 py-3 text-xs font-semibold sm:text-sm ${answer.importance === importance ? "border-[#0f253d] bg-[#0f253d] text-white" : "border-[#d9cfbd] bg-white text-[#4d4942]"}`}
+                    >
+                      {copy[importance]}
+                    </button>
+                  ),
+                )}
               </div>
             </fieldset>
 
             <fieldset className="mt-7">
               <legend className="sr-only">{copy.assessment}</legend>
               <div className="grid gap-2 sm:grid-cols-2">
-                {(["meets", "partly", "no", "unknown"] as Rating[]).map((rating) => (
-                  <button
-                    key={rating}
-                    type="button"
-                    aria-pressed={answer.rating === rating}
-                    onClick={() => updateAnswer({ rating })}
-                    className={`min-h-14 rounded-[6px] border px-4 py-3 text-left text-sm font-semibold ${answer.rating === rating ? "border-[#ba9456] bg-[#f5ead7] text-[#0f253d] ring-2 ring-[#ba9456]/25" : "border-[#ddd3c1] bg-[#fbfaf7] text-[#4d4942]"}`}
-                  >
-                    {copy[rating]}
-                  </button>
-                ))}
+                {(["meets", "partly", "no", "unknown"] as Rating[]).map(
+                  (rating) => (
+                    <button
+                      key={rating}
+                      type="button"
+                      aria-pressed={answer.rating === rating}
+                      onClick={() => updateAnswer({ rating })}
+                      className={`min-h-14 rounded-[6px] border px-4 py-3 text-left text-sm font-semibold ${answer.rating === rating ? "border-[#ba9456] bg-[#f5ead7] text-[#0f253d] ring-2 ring-[#ba9456]/25" : "border-[#ddd3c1] bg-[#fbfaf7] text-[#4d4942]"}`}
+                    >
+                      {copy[rating]}
+                    </button>
+                  ),
+                )}
               </div>
             </fieldset>
 
             <div className="mt-8 flex items-center justify-between gap-3">
               <button
                 type="button"
-                onClick={() => (questionIndex > 0 ? setQuestionIndex(questionIndex - 1) : resetGuide())}
+                onClick={() =>
+                  questionIndex > 0
+                    ? setQuestionIndex(questionIndex - 1)
+                    : resetGuide()
+                }
                 className="min-h-12 rounded-[6px] border border-[#d9cfbd] px-5 py-3 text-sm font-semibold text-[#0f253d]"
               >
                 {copy.back}
@@ -515,7 +629,9 @@ export function DecisionGuide({
                 onClick={continueEvaluation}
                 className="min-h-12 rounded-[6px] bg-[#ba9456] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#a8834c]"
               >
-                {questionIndex === decisionQuestions.length - 1 ? copy.finish : copy.next}
+                {questionIndex === decisionQuestions.length - 1
+                  ? copy.finish
+                  : copy.next}
               </button>
             </div>
           </div>
@@ -525,25 +641,40 @@ export function DecisionGuide({
       {mode === "result" && property && result ? (
         <section className="overflow-hidden bg-white shadow-sm ring-1 ring-black/5">
           <div className="bg-[#0f253d] p-5 text-white sm:p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ba9456]">{copy.resultTitle}</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ba9456]">
+              {copy.resultTitle}
+            </p>
             <h2 className="mt-2 text-3xl font-semibold">{property.title}</h2>
             <p className="mt-2 text-white/70">{property.location}</p>
-            <p className="mt-5 text-xl font-semibold text-[#f0d39b]">{recommendationLabel(copy, result)}</p>
+            <p className="mt-5 text-xl font-semibold text-[#f0d39b]">
+              {recommendationLabel(copy, result)}
+            </p>
           </div>
           <div className="p-5 sm:p-8">
             <div className="grid gap-3 sm:grid-cols-3">
               {scoreCards.map((card) => (
-                <div key={card.label} className={`rounded-[8px] p-4 ${card.accent ? "bg-[#ba9456] text-white" : "bg-[#f7f2ea] text-[#0f253d]"}`}>
-                  <p className="text-xs font-semibold uppercase tracking-wide opacity-70">{card.label}</p>
+                <div
+                  key={card.label}
+                  className={`rounded-[8px] p-4 ${card.accent ? "bg-[#ba9456] text-white" : "bg-[#f7f2ea] text-[#0f253d]"}`}
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide opacity-70">
+                    {card.label}
+                  </p>
                   <p className="mt-2 text-3xl font-semibold">{card.value}</p>
                 </div>
               ))}
             </div>
 
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
-              <ResultMetric label={copy.criticalIssues} value={result.critical} />
+              <ResultMetric
+                label={copy.criticalIssues}
+                value={result.critical}
+              />
               <ResultMetric label={copy.itemsToVerify} value={result.unknown} />
-              <ResultMetric label={copy.improvementPotential} value={result.improvements} />
+              <ResultMetric
+                label={copy.improvementPotential}
+                value={result.improvements}
+              />
             </div>
 
             {resultDetails.critical.length > 0 ||
@@ -558,7 +689,11 @@ export function DecisionGuide({
                   />
                 ) : null}
                 {resultDetails.verify.length > 0 ? (
-                  <ResultDetailList label={copy.itemsToVerify} items={resultDetails.verify} tone="verify" />
+                  <ResultDetailList
+                    label={copy.itemsToVerify}
+                    items={resultDetails.verify}
+                    tone="verify"
+                  />
                 ) : null}
                 {resultDetails.improvements.length > 0 ? (
                   <ResultDetailList
@@ -577,8 +712,14 @@ export function DecisionGuide({
             ) : null}
 
             <p className="mt-5 text-sm text-[#6f6a61]">{copy.saved}</p>
-            <p className="mt-2 text-xs leading-5 text-[#817a70]">{copy.scoreDisclaimer}</p>
-            <button type="button" onClick={resetGuide} className="mt-6 min-h-12 rounded-[6px] bg-[#0f253d] px-5 py-3 text-sm font-semibold text-white">
+            <p className="mt-2 text-xs leading-5 text-[#817a70]">
+              {copy.scoreDisclaimer}
+            </p>
+            <button
+              type="button"
+              onClick={resetGuide}
+              className="mt-6 min-h-12 rounded-[6px] bg-[#0f253d] px-5 py-3 text-sm font-semibold text-white"
+            >
               {copy.startOver}
             </button>
           </div>
@@ -586,24 +727,45 @@ export function DecisionGuide({
       ) : null}
 
       <section className="border-t border-[#ded4c2] pt-7">
-        <h2 className="text-2xl font-semibold text-[#0f253d]">{copy.yourEvaluations}</h2>
+        <h2 className="text-2xl font-semibold text-[#0f253d]">
+          {copy.yourEvaluations}
+        </h2>
         {savedEvaluations.length > 0 ? (
           <div className="mt-4 grid gap-3 lg:grid-cols-2">
             {savedEvaluations.map((evaluation) => (
-              <article key={evaluation.id} className="grid gap-4 rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-black/5 sm:grid-cols-[1fr_auto] sm:items-center">
-                <button type="button" onClick={() => loadEvaluation(evaluation)} className="text-left">
-                  <p className="font-semibold text-[#0f253d]">{evaluation.property.title}</p>
-                  <p className="mt-1 text-sm text-[#6f6a61]">{evaluation.property.location}</p>
-                  <p className="mt-2 text-sm font-semibold text-[#9a7a3a]">{copy.overallScore}: {evaluation.result.overall}/100</p>
+              <article
+                key={evaluation.id}
+                className="grid gap-4 rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-black/5 sm:grid-cols-[1fr_auto] sm:items-center"
+              >
+                <button
+                  type="button"
+                  onClick={() => loadEvaluation(evaluation)}
+                  className="text-left"
+                >
+                  <p className="font-semibold text-[#0f253d]">
+                    {evaluation.property.title}
+                  </p>
+                  <p className="mt-1 text-sm text-[#6f6a61]">
+                    {evaluation.property.location}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-[#9a7a3a]">
+                    {copy.overallScore}: {evaluation.result.overall}/100
+                  </p>
                 </button>
-                <button type="button" onClick={() => deleteEvaluation(evaluation.id)} className="rounded-[6px] border border-[#ded4c2] px-3 py-2 text-xs font-semibold text-[#6f6a61]">
+                <button
+                  type="button"
+                  onClick={() => deleteEvaluation(evaluation.id)}
+                  className="rounded-[6px] border border-[#ded4c2] px-3 py-2 text-xs font-semibold text-[#6f6a61]"
+                >
                   {copy.delete}
                 </button>
               </article>
             ))}
           </div>
         ) : (
-          <p className="mt-3 text-sm leading-6 text-[#6f6a61]">{copy.noEvaluations}</p>
+          <p className="mt-3 text-sm leading-6 text-[#6f6a61]">
+            {copy.noEvaluations}
+          </p>
         )}
       </section>
     </div>
@@ -613,7 +775,9 @@ export function DecisionGuide({
 function ResultMetric({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-[8px] border border-[#e4dac8] p-4">
-      <p className="text-xs font-semibold uppercase tracking-wide text-[#777168]">{label}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-[#777168]">
+        {label}
+      </p>
       <p className="mt-2 text-2xl font-semibold text-[#0f253d]">{value}</p>
     </div>
   );

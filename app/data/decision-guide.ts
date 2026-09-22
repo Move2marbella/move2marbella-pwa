@@ -100,7 +100,8 @@ const en: DecisionGuideCopy = {
   title: "Choose the property that still works in 10–15 years",
   eyebrow: "Property decision guide",
   body: "Compare what cannot be changed with what can be improved. Essential long-term factors carry substantially more weight than finishes and fittings.",
-  metaDescription: "Evaluate and compare Costa del Sol properties using weighted long-term value factors, improvement potential and critical buyer requirements.",
+  metaDescription:
+    "Evaluate and compare Costa del Sol properties using weighted long-term value factors, improvement potential and critical buyer requirements.",
   evaluateInApp: "Evaluate in property app",
   evaluateAnother: "Evaluate another property",
   evaluateThisProperty: "Evaluate this property",
@@ -151,8 +152,10 @@ const en: DecisionGuideCopy = {
   reconsider: "Reconsider before proceeding",
   verifyFirst: "Verify the unknown essentials first",
   saved: "Saved on this device",
-  criticalMessage: "An essential factor that cannot be changed does not meet your criteria. Renovations should not cancel out this warning.",
-  scoreDisclaimer: "This score supports comparison; it is not a valuation, survey or legal recommendation.",
+  criticalMessage:
+    "An essential factor that cannot be changed does not meet your criteria. Renovations should not cancel out this warning.",
+  scoreDisclaimer:
+    "This score supports comparison; it is not a valuation, survey or legal recommendation.",
   questions: {
     location: "Location and micro-area",
     views: "Views",
@@ -176,14 +179,17 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     title: "Elige una vivienda que siga funcionando dentro de 10–15 años",
     eyebrow: "Guía de decisión inmobiliaria",
     body: "Compara lo que no puede cambiarse con lo que sí puede mejorarse. Los factores esenciales de largo plazo tienen mucho más peso que los acabados.",
-    metaDescription: "Evalúa y compara propiedades en la Costa del Sol mediante factores ponderados de valor a largo plazo, mejoras y requisitos críticos.",
-    evaluateInApp: "Evaluate in property app",
-    evaluateAnother: "Evaluate another property",
+    metaDescription:
+      "Evalúa y compara propiedades en la Costa del Sol mediante factores ponderados de valor a largo plazo, mejoras y requisitos críticos.",
+    evaluateInApp: "Evaluar una propiedad guardada",
+    evaluateAnother: "Añadir otra propiedad",
     evaluateThisProperty: "Evaluar esta propiedad",
     chooseTitle: "¿Qué quieres evaluar?",
-    chooseBody: "Elige una propiedad guardada en la app o introduce otra manualmente.",
+    chooseBody:
+      "Elige una propiedad guardada en la app o introduce otra manualmente.",
     savedProperties: "Propiedades guardadas",
-    noSavedProperties: "Todavía no hay propiedades guardadas en este dispositivo.",
+    noSavedProperties:
+      "Todavía no hay propiedades guardadas en este dispositivo.",
     browseProperties: "Ver propiedades",
     externalTitle: "Añadir otra propiedad",
     propertyName: "Nombre de la propiedad",
@@ -199,7 +205,8 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     startOver: "Evaluar otra",
     delete: "Eliminar",
     yourEvaluations: "Mis evaluaciones",
-    noEvaluations: "Las evaluaciones terminadas se guardarán en este dispositivo.",
+    noEvaluations:
+      "Las evaluaciones terminadas se guardarán en este dispositivo.",
     immutable: "Lo que no puedes cambiar",
     changeable: "Lo que puedes cambiar",
     immutableHint: "Factores permanentes que crean valor a largo plazo.",
@@ -227,8 +234,10 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     reconsider: "Reconsidera antes de continuar",
     verifyFirst: "Comprueba primero los puntos esenciales",
     saved: "Guardado en este dispositivo",
-    criticalMessage: "Un factor esencial que no puede cambiarse no cumple tus criterios. Una reforma no debe ocultar esta advertencia.",
-    scoreDisclaimer: "Esta puntuación ayuda a comparar; no es una tasación, inspección ni recomendación legal.",
+    criticalMessage:
+      "Un factor esencial que no puede cambiarse no cumple tus criterios. Una reforma no debe ocultar esta advertencia.",
+    scoreDisclaimer:
+      "Esta puntuación ayuda a comparar; no es una tasación, inspección ni recomendación legal.",
     questions: {
       location: "Ubicación y microzona",
       views: "Vistas",
@@ -249,12 +258,14 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     title: "Válaszd azt az ingatlant, amely 10–15 év múlva is jó döntés",
     eyebrow: "Ingatlanválasztási útmutató",
     body: "Hasonlítsd össze a nem változtatható értékeket a fejleszthető tulajdonságokkal. A hosszú távú, alapvető tényezők sokkal nagyobb súlyt kapnak.",
-    metaDescription: "Ingatlanok értékelése és összehasonlítása súlyozott hosszú távú érték, fejlesztési lehetőségek és kritikus vásárlói feltételek alapján.",
-    evaluateInApp: "Evaluate in property app",
-    evaluateAnother: "Evaluate another property",
+    metaDescription:
+      "Ingatlanok értékelése és összehasonlítása súlyozott hosszú távú érték, fejlesztési lehetőségek és kritikus vásárlói feltételek alapján.",
+    evaluateInApp: "Mentett ingatlan értékelése",
+    evaluateAnother: "Másik ingatlan megadása",
     evaluateThisProperty: "Ingatlan értékelése",
     chooseTitle: "Melyik ingatlant szeretnéd értékelni?",
-    chooseBody: "Válassz egy appban mentett ingatlant, vagy adj meg egy másik ingatlant.",
+    chooseBody:
+      "Válassz egy appban mentett ingatlant, vagy adj meg egy másik ingatlant.",
     savedProperties: "Appban mentett ingatlanok",
     noSavedProperties: "Ezen az eszközön még nincs mentett ingatlan.",
     browseProperties: "Ingatlanok böngészése",
@@ -300,8 +311,10 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     reconsider: "Gondold át újra a továbblépés előtt",
     verifyFirst: "Először ellenőrizd az ismeretlen alapfeltételeket",
     saved: "Mentve ezen az eszközön",
-    criticalMessage: "Egy nem változtatható, alapvető tényező nem felel meg a feltételeidnek. Ezt egy felújítás nem ellensúlyozhatja.",
-    scoreDisclaimer: "A pontszám az összehasonlítást segíti; nem értékbecslés, műszaki vizsgálat vagy jogi tanács.",
+    criticalMessage:
+      "Egy nem változtatható, alapvető tényező nem felel meg a feltételeidnek. Ezt egy felújítás nem ellensúlyozhatja.",
+    scoreDisclaimer:
+      "A pontszám az összehasonlítást segíti; nem értékbecslés, műszaki vizsgálat vagy jogi tanács.",
     questions: {
       location: "Lokáció és mikrokörnyezet",
       views: "Kilátás",
@@ -324,9 +337,11 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     body: "Vergleichen Sie unveränderbare Faktoren mit verbesserbaren Eigenschaften. Langfristige Kriterien erhalten deutlich mehr Gewicht.",
     evaluateThisProperty: "Diese Immobilie bewerten",
     chooseTitle: "Was möchten Sie bewerten?",
-    chooseBody: "Wählen Sie eine gespeicherte Immobilie oder erfassen Sie eine andere.",
+    chooseBody:
+      "Wählen Sie eine gespeicherte Immobilie oder erfassen Sie eine andere.",
     savedProperties: "Gespeicherte Immobilien",
-    noSavedProperties: "Auf diesem Gerät sind noch keine Immobilien gespeichert.",
+    noSavedProperties:
+      "Auf diesem Gerät sind noch keine Immobilien gespeichert.",
     browseProperties: "Immobilien ansehen",
     externalTitle: "Andere Immobilie hinzufügen",
     propertyName: "Immobilienname",
@@ -341,11 +356,13 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     startOver: "Weitere bewerten",
     delete: "Löschen",
     yourEvaluations: "Meine Bewertungen",
-    noEvaluations: "Abgeschlossene Bewertungen werden auf diesem Gerät gespeichert.",
+    noEvaluations:
+      "Abgeschlossene Bewertungen werden auf diesem Gerät gespeichert.",
     immutable: "Was Sie nicht ändern können",
     changeable: "Was Sie ändern können",
     immutableHint: "Dauerhafte Faktoren für langfristigen Wert.",
-    changeableHint: "Eigenschaften, die nach dem Kauf verbessert werden können.",
+    changeableHint:
+      "Eigenschaften, die nach dem Kauf verbessert werden können.",
     importance: "Wie wichtig ist Ihnen das?",
     assessment: "Bewertung",
     essential: "Unverzichtbar",
@@ -364,7 +381,18 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     itemsToVerify: "Zu prüfende Punkte",
     improvementPotential: "Verbesserungsmöglichkeiten",
     questions: {
-      location: "Lage und Mikrolage", views: "Aussicht", surroundings: "Umgebung und Nachbarschaft", complexAmenities: "Ausstattung der Wohnanlage", proximity: "Nähe und Infrastruktur", rentalPotential: "Vermietungspotenzial und Lizenz", bathrooms: "Badezimmer", kitchen: "Küche und Geräte", climate: "Klimaanlage und Heizung", windows: "Fenster und Türen", finishes: "Böden, Oberflächen und Beleuchtung", layout: "Grundriss und Optimierung",
+      location: "Lage und Mikrolage",
+      views: "Aussicht",
+      surroundings: "Umgebung und Nachbarschaft",
+      complexAmenities: "Ausstattung der Wohnanlage",
+      proximity: "Nähe und Infrastruktur",
+      rentalPotential: "Vermietungspotenzial und Lizenz",
+      bathrooms: "Badezimmer",
+      kitchen: "Küche und Geräte",
+      climate: "Klimaanlage und Heizung",
+      windows: "Fenster und Türen",
+      finishes: "Böden, Oberflächen und Beleuchtung",
+      layout: "Grundriss und Optimierung",
     },
   },
   fr: {
@@ -374,7 +402,8 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     body: "Comparez les facteurs immuables avec les éléments améliorables. Les critères essentiels à long terme ont beaucoup plus de poids.",
     evaluateThisProperty: "Évaluer ce bien",
     chooseTitle: "Quel bien souhaitez-vous évaluer ?",
-    chooseBody: "Choisissez un bien enregistré dans l’app ou ajoutez-en un autre.",
+    chooseBody:
+      "Choisissez un bien enregistré dans l’app ou ajoutez-en un autre.",
     savedProperties: "Biens enregistrés",
     noSavedProperties: "Aucun bien n’est encore enregistré sur cet appareil.",
     browseProperties: "Voir les biens",
@@ -391,7 +420,8 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     startOver: "Évaluer un autre",
     delete: "Supprimer",
     yourEvaluations: "Mes évaluations",
-    noEvaluations: "Les évaluations terminées seront enregistrées sur cet appareil.",
+    noEvaluations:
+      "Les évaluations terminées seront enregistrées sur cet appareil.",
     immutable: "Ce que vous ne pouvez pas changer",
     changeable: "Ce que vous pouvez changer",
     immutableHint: "Facteurs durables qui créent de la valeur à long terme.",
@@ -414,7 +444,18 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     itemsToVerify: "Points à vérifier",
     improvementPotential: "Possibilités d’amélioration",
     questions: {
-      location: "Localisation et micro-secteur", views: "Vues", surroundings: "Environnement et quartier", complexAmenities: "Services de la résidence", proximity: "Proximité et infrastructures", rentalPotential: "Potentiel locatif et licence", bathrooms: "Salles de bains", kitchen: "Cuisine et appareils", climate: "Climatisation et chauffage", windows: "Fenêtres et portes", finishes: "Sols, finitions et éclairage", layout: "Agencement et optimisation",
+      location: "Localisation et micro-secteur",
+      views: "Vues",
+      surroundings: "Environnement et quartier",
+      complexAmenities: "Services de la résidence",
+      proximity: "Proximité et infrastructures",
+      rentalPotential: "Potentiel locatif et licence",
+      bathrooms: "Salles de bains",
+      kitchen: "Cuisine et appareils",
+      climate: "Climatisation et chauffage",
+      windows: "Fenêtres et portes",
+      finishes: "Sols, finitions et éclairage",
+      layout: "Agencement et optimisation",
     },
   },
   pl: {
@@ -464,7 +505,18 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     itemsToVerify: "Punkty do sprawdzenia",
     improvementPotential: "Możliwości ulepszeń",
     questions: {
-      location: "Lokalizacja i mikrolokalizacja", views: "Widoki", surroundings: "Otoczenie i charakter dzielnicy", complexAmenities: "Udogodnienia osiedla", proximity: "Bliskość i infrastruktura", rentalPotential: "Potencjał najmu i licencja", bathrooms: "Łazienki", kitchen: "Kuchnia i sprzęt", climate: "Klimatyzacja i ogrzewanie", windows: "Okna i drzwi", finishes: "Podłogi, wykończenie i oświetlenie", layout: "Układ i możliwości optymalizacji",
+      location: "Lokalizacja i mikrolokalizacja",
+      views: "Widoki",
+      surroundings: "Otoczenie i charakter dzielnicy",
+      complexAmenities: "Udogodnienia osiedla",
+      proximity: "Bliskość i infrastruktura",
+      rentalPotential: "Potencjał najmu i licencja",
+      bathrooms: "Łazienki",
+      kitchen: "Kuchnia i sprzęt",
+      climate: "Klimatyzacja i ogrzewanie",
+      windows: "Okna i drzwi",
+      finishes: "Podłogi, wykończenie i oświetlenie",
+      layout: "Układ i możliwości optymalizacji",
     },
   },
   ru: {
@@ -514,11 +566,26 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
     itemsToVerify: "Что проверить",
     improvementPotential: "Возможности улучшения",
     questions: {
-      location: "Расположение и микрорайон", views: "Виды", surroundings: "Окружение и характер района", complexAmenities: "Инфраструктура комплекса", proximity: "Близость и инфраструктура", rentalPotential: "Арендный потенциал и лицензия", bathrooms: "Ванные комнаты", kitchen: "Кухня и техника", climate: "Кондиционирование и отопление", windows: "Окна и двери", finishes: "Полы, отделка и освещение", layout: "Планировка и оптимизация",
+      location: "Расположение и микрорайон",
+      views: "Виды",
+      surroundings: "Окружение и характер района",
+      complexAmenities: "Инфраструктура комплекса",
+      proximity: "Близость и инфраструктура",
+      rentalPotential: "Арендный потенциал и лицензия",
+      bathrooms: "Ванные комнаты",
+      kitchen: "Кухня и техника",
+      climate: "Кондиционирование и отопление",
+      windows: "Окна и двери",
+      finishes: "Полы, отделка и освещение",
+      layout: "Планировка и оптимизация",
     },
   },
 };
 
 export function getDecisionGuideCopy(locale: Locale) {
-  return getEditablePageContent("decisionGuide", locale, decisionGuideCopy[locale]);
+  return getEditablePageContent(
+    "decisionGuide",
+    locale,
+    decisionGuideCopy[locale],
+  );
 }
