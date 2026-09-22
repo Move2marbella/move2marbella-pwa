@@ -431,7 +431,7 @@ export function DecisionGuide({
                 <a
                   key={favourite.ref}
                   href={`${basePath}/decision-guide?ref=${encodeURIComponent(favourite.ref)}`}
-                  className="grid min-h-24 grid-cols-[88px_1fr] gap-3 rounded-[8px] border border-[#e5dac8] p-3 text-left transition hover:border-[#ba9456]"
+                  className="group grid min-h-24 grid-cols-[88px_1fr] gap-3 rounded-[8px] border border-[#e5dac8] p-3 text-left transition hover:border-[#ba9456]"
                 >
                   <img
                     src={favourite.image}
@@ -448,7 +448,7 @@ export function DecisionGuide({
                     <span className="mt-1 block text-sm font-semibold text-[#9a7a3a]">
                       {favourite.price}
                     </span>
-                    <span className="mt-2 block text-xs font-bold uppercase tracking-wide text-[#0f253d]">
+                    <span className="mt-3 inline-flex min-h-10 w-full items-center justify-center rounded-[6px] bg-[#0f253d] px-3 py-2 text-center text-xs font-bold uppercase tracking-wide text-white shadow-sm transition group-hover:bg-[#173b60]">
                       {copy.evaluateThisProperty} →
                     </span>
                   </span>
