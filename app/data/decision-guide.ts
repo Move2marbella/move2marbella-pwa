@@ -97,7 +97,7 @@ type DecisionGuideCopy = {
 };
 
 const en: DecisionGuideCopy = {
-  title: "Choose the property that still works in 10–15 years",
+  title: "Property Score",
   eyebrow: "Property decision guide",
   body: "Compare what cannot be changed with what can be improved. Essential long-term factors carry substantially more weight than finishes and fittings.",
   metaDescription:
@@ -176,7 +176,7 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
   en,
   es: {
     ...en,
-    title: "Elige una vivienda que siga funcionando dentro de 10–15 años",
+    title: "Property Score",
     eyebrow: "Guía de decisión inmobiliaria",
     body: "Compara lo que no puede cambiarse con lo que sí puede mejorarse. Los factores esenciales de largo plazo tienen mucho más peso que los acabados.",
     metaDescription:
@@ -255,7 +255,7 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
   },
   hu: {
     ...en,
-    title: "Válaszd azt az ingatlant, amely 10–15 év múlva is jó döntés",
+    title: "Property Score",
     eyebrow: "Ingatlanválasztási útmutató",
     body: "Hasonlítsd össze a nem változtatható értékeket a fejleszthető tulajdonságokkal. A hosszú távú, alapvető tényezők sokkal nagyobb súlyt kapnak.",
     metaDescription:
@@ -332,7 +332,7 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
   },
   de: {
     ...en,
-    title: "Wählen Sie eine Immobilie, die auch in 10–15 Jahren passt",
+    title: "Property Score",
     eyebrow: "Entscheidungshilfe für Immobilien",
     body: "Vergleichen Sie unveränderbare Faktoren mit verbesserbaren Eigenschaften. Langfristige Kriterien erhalten deutlich mehr Gewicht.",
     evaluateThisProperty: "Diese Immobilie bewerten",
@@ -397,7 +397,7 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
   },
   fr: {
     ...en,
-    title: "Choisissez un bien qui restera pertinent dans 10–15 ans",
+    title: "Property Score",
     eyebrow: "Guide de décision immobilière",
     body: "Comparez les facteurs immuables avec les éléments améliorables. Les critères essentiels à long terme ont beaucoup plus de poids.",
     evaluateThisProperty: "Évaluer ce bien",
@@ -460,7 +460,7 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
   },
   pl: {
     ...en,
-    title: "Wybierz nieruchomość, która sprawdzi się także za 10–15 lat",
+    title: "Property Score",
     eyebrow: "Przewodnik decyzyjny",
     body: "Porównaj czynniki niezmienne z elementami, które można ulepszyć. Kryteria długoterminowe mają znacznie większą wagę.",
     evaluateThisProperty: "Oceń tę nieruchomość",
@@ -521,7 +521,7 @@ export const decisionGuideCopy: Record<Locale, DecisionGuideCopy> = {
   },
   ru: {
     ...en,
-    title: "Выберите объект, который останется удачным через 10–15 лет",
+    title: "Property Score",
     eyebrow: "Гид по выбору недвижимости",
     body: "Сравните неизменяемые факторы с тем, что можно улучшить. Долгосрочные критерии имеют значительно больший вес.",
     evaluateThisProperty: "Оценить этот объект",
