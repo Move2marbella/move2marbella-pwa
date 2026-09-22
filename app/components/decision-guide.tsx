@@ -430,7 +430,7 @@ export function DecisionGuide({
               {favourites.map((favourite) => (
                 <a
                   key={favourite.ref}
-                  href={`${basePath}/decision-guide?ref=${encodeURIComponent(favourite.ref)}`}
+                  href={`${basePath}/score?ref=${encodeURIComponent(favourite.ref)}`}
                   className="group grid min-h-24 grid-cols-[88px_1fr] gap-3 rounded-[8px] border border-[#e5dac8] p-3 text-left transition hover:border-[#ba9456]"
                 >
                   <img

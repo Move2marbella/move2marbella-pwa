@@ -114,8 +114,8 @@ export function MainNav({ locale, tone = "dark" }: MainNavProps) {
     { href: `${basePath}/valuation`, label: labels.valuation },
     { href: `${basePath}/areas`, label: labels.areas },
     { href: `${basePath}/buying-guide`, label: labels.buyingGuide },
-    { href: `${basePath}/decision-guide`, label: labels.decisionGuide },
-    { href: `${basePath}/trends`, label: labels.trends },
+    { href: `${basePath}/score`, label: labels.decisionGuide },
+    { href: `${basePath}/insights`, label: labels.trends },
     { href: `${basePath}/contact`, label: labels.contact },
   ];
 

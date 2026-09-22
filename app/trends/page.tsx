@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
-export default function TrendsRedirect() {
-  redirect("/en/trends");
+export default function LegacyTrendsRedirect() {
+  permanentRedirect("/en/insights");
 }

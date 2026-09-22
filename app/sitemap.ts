@@ -40,13 +40,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.65,
       },
       {
-        url: `${SITE_URL}${getLocalizedPath(locale, "/decision-guide")}`,
+        url: `${SITE_URL}${getLocalizedPath(locale, "/score")}`,
         lastModified: now,
         changeFrequency: "monthly" as const,
         priority: 0.7,
       },
       {
-        url: `${SITE_URL}${getLocalizedPath(locale, "/trends")}`,
+        url: `${SITE_URL}${getLocalizedPath(locale, "/insights")}`,
         lastModified: now,
         changeFrequency: "weekly" as const,
         priority: 0.7,
@@ -74,7 +74,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...locales.flatMap((locale) =>
       marketArticleSlugs.map((slug) => ({
-        url: `${SITE_URL}${getLocalizedPath(locale, `/trends/${slug}`)}`,
+        url: `${SITE_URL}${getLocalizedPath(locale, `/insights/${slug}`)}`,
         lastModified: now,
         changeFrequency: "monthly" as const,
         priority: 0.65,

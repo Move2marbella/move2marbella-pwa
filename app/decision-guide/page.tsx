@@ -1,6 +1,5 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
-export default function DecisionGuideRedirect() {
-  redirect("/en/decision-guide");
+export default function LegacyDecisionGuideRedirect() {
+  permanentRedirect("/en/score");
 }
-

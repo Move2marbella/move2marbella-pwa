@@ -2,7 +2,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FavouritesPanel, FavouriteToggle } from "../../components/favourite-toggle";
+import {
+  FavouritesPanel,
+  FavouriteToggle,
+} from "../../components/favourite-toggle";
 import { JsonLd } from "../../components/json-ld";
 import { LeadForm } from "../../components/lead-form";
 import { PropertyGallery } from "../../components/property-gallery";
@@ -14,12 +17,13 @@ import {
   type Property,
 } from "../../data/properties";
 import { getWhatsAppUrl } from "../../data/property-links";
-import {
-  fetchNearbyPlaces,
-  groupNearbyPlaces,
-} from "../../data/nearby-places";
+import { fetchNearbyPlaces, groupNearbyPlaces } from "../../data/nearby-places";
 import { getDecisionGuideCopy } from "../../data/decision-guide";
-import { Locale, getLocaleBasePath, getTranslations } from "../../i18n/translations";
+import {
+  Locale,
+  getLocaleBasePath,
+  getTranslations,
+} from "../../i18n/translations";
 import {
   SITE_URL,
   getLanguageAlternates,
@@ -203,7 +207,11 @@ export async function PropertyDetailContent({
     property.ibiYearly
       ? {
           label: t.ibiTownhallTax,
-          value: formatPropertyCost(property.ibiYearly, property.currency, t.perYear),
+          value: formatPropertyCost(
+            property.ibiYearly,
+            property.currency,
+            t.perYear,
+          ),
         }
       : null,
     property.garbageTaxYearly
@@ -389,7 +397,7 @@ export async function PropertyDetailContent({
           />
 
           <Link
-            href={`${basePath}/decision-guide?ref=${encodeURIComponent(property.ref)}&wp_id=${encodeURIComponent(String(property.id))}`}
+            href={`${basePath}/score?ref=${encodeURIComponent(property.ref)}&wp_id=${encodeURIComponent(String(property.id))}`}
             className="mt-3 flex min-h-12 w-full items-center justify-center rounded-[6px] border border-[#ba9456] bg-white px-5 py-3 text-center text-sm font-bold uppercase tracking-wide text-[#0f253d] transition hover:bg-[#f2eadc]"
           >
             {decisionCopy.evaluateThisProperty}

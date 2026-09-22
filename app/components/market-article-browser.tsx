@@ -115,7 +115,7 @@ export function MarketArticleBrowser({
               {locale === "hu" &&
               article.slug === "buying-property-in-spain-guide" ? (
                 <a
-                  href={`${basePath}/trends/${article.slug}`}
+                  href={`${basePath}/insights/${article.slug}`}
                   className="mt-5 inline-flex w-fit rounded-full bg-[#0f253d] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#173b60] focus:outline-none focus:ring-4 focus:ring-[#ba9456]/30"
                 >
                   Részletes vásárlási útmutató
