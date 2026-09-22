@@ -12,24 +12,53 @@ type MarketArticleBrowserProps = {
   }>;
   basePath: string;
   locale: string;
-  readMore: string;
 };
 
-const searchCopy: Record<string, { label: string; noResults: string; placeholder: string }> = {
-  de: { label: "Artikel durchsuchen", noResults: "Keine passenden Artikel gefunden.", placeholder: "Thema, Region oder Stichwort" },
-  en: { label: "Search articles", noResults: "No matching articles found.", placeholder: "Topic, region or keyword" },
-  es: { label: "Buscar artículos", noResults: "No se encontraron artículos.", placeholder: "Tema, región o palabra clave" },
-  fr: { label: "Rechercher des articles", noResults: "Aucun article correspondant.", placeholder: "Sujet, région ou mot-clé" },
-  hu: { label: "Cikkek keresése", noResults: "Nincs a keresésnek megfelelő cikk.", placeholder: "Téma, régió vagy kulcsszó" },
-  pl: { label: "Szukaj artykułów", noResults: "Nie znaleziono pasujących artykułów.", placeholder: "Temat, region lub słowo kluczowe" },
-  ru: { label: "Поиск статей", noResults: "Подходящие статьи не найдены.", placeholder: "Тема, регион или ключевое слово" },
+const searchCopy: Record<
+  string,
+  { label: string; noResults: string; placeholder: string }
+> = {
+  de: {
+    label: "Artikel durchsuchen",
+    noResults: "Keine passenden Artikel gefunden.",
+    placeholder: "Thema, Region oder Stichwort",
+  },
+  en: {
+    label: "Search articles",
+    noResults: "No matching articles found.",
+    placeholder: "Topic, region or keyword",
+  },
+  es: {
+    label: "Buscar artículos",
+    noResults: "No se encontraron artículos.",
+    placeholder: "Tema, región o palabra clave",
+  },
+  fr: {
+    label: "Rechercher des articles",
+    noResults: "Aucun article correspondant.",
+    placeholder: "Sujet, région ou mot-clé",
+  },
+  hu: {
+    label: "Cikkek keresése",
+    noResults: "Nincs a keresésnek megfelelő cikk.",
+    placeholder: "Téma, régió vagy kulcsszó",
+  },
+  pl: {
+    label: "Szukaj artykułów",
+    noResults: "Nie znaleziono pasujących artykułów.",
+    placeholder: "Temat, region lub słowo kluczowe",
+  },
+  ru: {
+    label: "Поиск статей",
+    noResults: "Подходящие статьи не найдены.",
+    placeholder: "Тема, регион или ключевое слово",
+  },
 };
 
 export function MarketArticleBrowser({
   articles,
   basePath,
   locale,
-  readMore,
 }: MarketArticleBrowserProps) {
   const [query, setQuery] = useState("");
   const copy = searchCopy[locale] ?? searchCopy.en;
@@ -83,12 +112,15 @@ export function MarketArticleBrowser({
                   </li>
                 ))}
               </ul>
-              <a
-                href={`${basePath}/trends/${article.slug}`}
-                className="mt-5 inline-flex w-fit rounded-full bg-[#0f253d] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#173b60] focus:outline-none focus:ring-4 focus:ring-[#ba9456]/30"
-              >
-                {readMore}
-              </a>
+              {locale === "hu" &&
+              article.slug === "buying-property-in-spain-guide" ? (
+                <a
+                  href={`${basePath}/trends/${article.slug}`}
+                  className="mt-5 inline-flex w-fit rounded-full bg-[#0f253d] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#173b60] focus:outline-none focus:ring-4 focus:ring-[#ba9456]/30"
+                >
+                  Részletes vásárlási útmutató
+                </a>
+              ) : null}
             </article>
           ))}
         </div>

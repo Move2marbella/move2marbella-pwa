@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import { ContentPageShell } from "../../components/content-page-shell";
 import { JsonLd } from "../../components/json-ld";
 import { MarketArticleBrowser } from "../../components/market-article-browser";
-import { getMarketArticles, getMarketPageCopy } from "../../data/market-insights";
+import {
+  getMarketArticles,
+  getMarketPageCopy,
+} from "../../data/market-insights";
 import { getLocale, getLocaleBasePath, locales } from "../../i18n/translations";
-import { getLanguageAlternates, getLocalizedPath, getPageRobots } from "../../lib/seo";
+import {
+  getLanguageAlternates,
+  getLocalizedPath,
+  getPageRobots,
+} from "../../lib/seo";
 
 type TrendsPageProps = {
   params: Promise<{ locale: string }>;
@@ -97,7 +104,6 @@ export default async function TrendsPage({ params }: TrendsPageProps) {
           articles={articles}
           basePath={basePath}
           locale={locale}
-          readMore={copy.readMore}
         />
       </section>
     </ContentPageShell>
