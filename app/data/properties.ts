@@ -92,6 +92,7 @@ type WordPressProperty = {
   property_meta?: {
     _imported_ref?: string[];
     _property_import_data?: string[];
+    fave_featured?: string[];
     fave_property_id?: string[];
     fave_property_bedrooms?: string[];
     fave_property_land?: string[];
@@ -213,6 +214,7 @@ type PropertySearchIndexEntry = {
   hasHeatedPool: boolean;
   hasSeaViews: boolean;
   id: number;
+  isFeatured: boolean;
   isNewDevelopment: boolean;
   isOwnProperty: boolean;
   price: number;
@@ -1063,11 +1065,17 @@ function buildFeaturedRotation(
     return getDailyRotationValue(property.ref) * randomWeight + recency * (1 - randomWeight);
   }
 
+  const featured: PropertySearchIndexEntry[] = [];
   const own: PropertySearchIndexEntry[] = [];
   const premium: PropertySearchIndexEntry[] = [];
   const general: PropertySearchIndexEntry[] = [];
 
   for (const property of properties) {
+    if (property.isFeatured) {
+      featured.push(property);
+      continue;
+    }
+
     if (property.isOwnProperty) {
       own.push(property);
       continue;
@@ -1082,11 +1090,14 @@ function buildFeaturedRotation(
     (isLuxuryApartment || isLuxuryVilla ? premium : general).push(property);
   }
 
+  featured.sort(
+    (left, right) => rotationScore(right, 0.75) - rotationScore(left, 0.75),
+  );
   own.sort((left, right) => rotationScore(right, 0.75) - rotationScore(left, 0.75));
   premium.sort((left, right) => rotationScore(right, 0.8) - rotationScore(left, 0.8));
   general.sort((left, right) => rotationScore(right, 0.65) - rotationScore(left, 0.65));
 
-  const rotated: PropertySearchIndexEntry[] = [];
+  const rotated: PropertySearchIndexEntry[] = [...featured, ...own];
   let ownIndex = 0;
   let premiumIndex = 0;
   let generalIndex = 0;
@@ -1339,6 +1350,7 @@ async function fetchPropertySearchIndex(includeFeatureData = false) {
       "property_meta.fave_property_id",
       "property_meta.fave_property_price",
       "property_meta.fave_property_bedrooms",
+      "property_meta.fave_featured",
       "property_meta.own_property",
       includeFeatureData ? "property_meta._property_import_data" : "",
     ]
@@ -1385,6 +1397,7 @@ async function fetchPropertySearchIndex(includeFeatureData = false) {
         hasHeatedPool: includeFeatureData ? getIndexedPropertyHasHeatedPool(post) : false,
         hasSeaViews: includeFeatureData ? getIndexedPropertyHasSeaViews(post) : false,
         id: post.id,
+        isFeatured: post.property_meta?.fave_featured?.[0] === "1",
         isNewDevelopment: includeFeatureData ? getIndexedPropertyIsNewDevelopment(post) : false,
         isOwnProperty: post.property_meta?.own_property?.[0] === "1",
         price: getRawPrice(post.property_meta?.fave_property_price?.[0] ?? "0"),
