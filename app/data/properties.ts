@@ -811,7 +811,10 @@ function propertyMatchesBridgeFilters(
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   try {
-    if (isResalesBridgeEnabled()) {
+    // The Resales featured filter is intentionally small and can run out after
+    // the first page. Build the featured rotation from the complete snapshot so
+    // pagination continues with own listings, premium stock and then all homes.
+    if (isResalesBridgeEnabled() && filters.sort !== "featured") {
       return await fetchPropertiesFromResalesBridge(limit, filters);
     }
 
