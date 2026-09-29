@@ -234,6 +234,25 @@ async function getSimilarProperties(slug?: string, requiredLocation?: string) {
   const propertyCitiesFilter = citySlug
     ? getPropertyCityFilterIds(citySlug, propertyCities)
     : [];
+  const normalizedRequiredLocation = normalize(requiredLocation ?? "");
+
+  if (normalizedRequiredLocation) {
+    const result = await fetchProperties(100, {
+      keywords: [requiredLocation ?? ""],
+      noStore: true,
+      propertyTypes: propertyTypesFilter,
+      sort: "reference_desc",
+    });
+
+    return result.properties
+      .filter((property) =>
+        normalize(`${property.city} ${property.location}`).includes(
+          normalizedRequiredLocation,
+        ),
+      )
+      .slice(0, 9);
+  }
+
   const attempts = requiredLocation
     ? [
         { propertyCities: propertyCitiesFilter, propertyTypes: propertyTypesFilter },
@@ -247,7 +266,6 @@ async function getSimilarProperties(slug?: string, requiredLocation?: string) {
       ];
   const seenRefs = new Set<string>();
   const matches: Property[] = [];
-  const normalizedRequiredLocation = normalize(requiredLocation ?? "");
 
   for (const filters of attempts) {
     const result = await fetchProperties(12, {
