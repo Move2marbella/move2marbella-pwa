@@ -1,9 +1,8 @@
 import {
   PropertyDetailContent,
-  generateStaticParams as generateBaseStaticParams,
   getPropertyMetadata,
 } from "../../../properties/[ref]/page";
-import { getLocale, locales } from "../../../i18n/translations";
+import { getLocale } from "../../../i18n/translations";
 
 type LocalizedPropertyPageProps = {
   params: Promise<{
@@ -14,23 +13,6 @@ type LocalizedPropertyPageProps = {
     wp_id?: string;
   }>;
 };
-
-export function generateStaticParams() {
-  const baseParams = generateBaseStaticParams();
-
-  if ("then" in baseParams) {
-    return baseParams.then((properties) =>
-      locales.flatMap((locale) =>
-        properties.map((property) => ({
-          locale,
-          ref: property.ref,
-        })),
-      ),
-    );
-  }
-
-  return [];
-}
 
 export async function generateMetadata({
   params,
@@ -57,4 +39,5 @@ export default async function LocalizedPropertyPage({
   );
 }
 
-export const revalidate = 3600;
+// Property pages depend on the wp_id query parameter and live inventory data.
+export const dynamic = "force-dynamic";
