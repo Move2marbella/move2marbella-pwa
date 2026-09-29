@@ -211,6 +211,7 @@ export async function PropertyDetailContent({
         location={context?.location ?? context?.city}
         originalProperty={context ? `${context.title} (${ref.toUpperCase()})` : ref.toUpperCase()}
         slug={suggestionSlug}
+        type={context?.type}
       />
     );
   }

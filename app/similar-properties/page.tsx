@@ -220,7 +220,11 @@ function propertyMatchesTokens(property: Property, tokens: string[]) {
   return tokens.some((token) => haystack.includes(token));
 }
 
-async function getSimilarProperties(slug?: string, requiredLocation?: string) {
+async function getSimilarProperties(
+  slug?: string,
+  requiredLocation?: string,
+  requiredType?: string,
+) {
   const [propertyTypes, propertyCities] = await Promise.all([
     fetchPropertyTypes(),
     fetchPropertyCities(),
@@ -235,6 +239,7 @@ async function getSimilarProperties(slug?: string, requiredLocation?: string) {
     ? getPropertyCityFilterIds(citySlug, propertyCities)
     : [];
   const normalizedRequiredLocation = normalize(requiredLocation ?? "");
+  const normalizedRequiredType = normalize(requiredType ?? "");
 
   if (normalizedRequiredLocation) {
     const result = await fetchProperties(100, {
@@ -245,11 +250,15 @@ async function getSimilarProperties(slug?: string, requiredLocation?: string) {
     });
 
     return result.properties
-      .filter((property) =>
-        normalize(`${property.city} ${property.location}`).includes(
-          normalizedRequiredLocation,
-        ),
-      )
+      .filter((property) => {
+        const matchesLocation = normalize(
+          `${property.city} ${property.location}`,
+        ).includes(normalizedRequiredLocation);
+        const matchesType =
+          !normalizedRequiredType || normalize(property.type) === normalizedRequiredType;
+
+        return matchesLocation && matchesType;
+      })
       .slice(0, 9);
   }
 
@@ -325,18 +334,20 @@ export async function SimilarPropertiesContent({
   location,
   originalProperty,
   slug,
+  type,
 }: {
   availability?: "under_offer" | "unavailable";
   locale?: Locale;
   location?: string;
   originalProperty?: string | null;
   slug?: string;
+  type?: string;
 }) {
   const t = getTranslations(locale);
   const labels = labelsByLocale[locale];
   const basePath = getLocaleBasePath(locale);
   const propertyLabel = originalProperty ?? getOriginalPropertyLabel(slug);
-  const properties = await getSimilarProperties(slug, location);
+  const properties = await getSimilarProperties(slug, location, type);
   const toggleLabels = {
     favourite: t.favourite,
     saved: t.saved,
