@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import {
   FavouritesPanel,
   FavouriteToggle,
@@ -13,12 +12,14 @@ import { TrackedWhatsAppLink } from "../../components/tracked-whatsapp-link";
 import {
   fetchProperties,
   formatPropertyDisplayPrice,
+  getUnavailablePropertyContext,
   getPropertyByRef,
   type Property,
 } from "../../data/properties";
 import { getWhatsAppUrl } from "../../data/property-links";
 import { fetchNearbyPlaces, groupNearbyPlaces } from "../../data/nearby-places";
 import { getDecisionGuideCopy } from "../../data/decision-guide";
+import { SimilarPropertiesContent } from "../../similar-properties/page";
 import {
   Locale,
   getLocaleBasePath,
@@ -70,8 +71,18 @@ export async function getPropertyMetadata(
   const property = await getPropertyByRef(ref, wordpressId);
 
   if (!property) {
+    const normalizedReference = ref.toUpperCase();
+    const isUnderOffer = normalizedReference === "R4455487";
+
     return {
-      title: "Property not found | Move2Marbella",
+      title: `${normalizedReference} ${isUnderOffer ? "is under offer" : "is no longer available"} | Move2Marbella`,
+      description: isUnderOffer
+        ? "This property is currently under offer. Explore similar active Costa del Sol properties."
+        : "This property is no longer available. Explore similar active Costa del Sol properties.",
+      robots: {
+        follow: true,
+        index: false,
+      },
     };
   }
 
@@ -184,7 +195,23 @@ export async function PropertyDetailContent({
   const property = await getPropertyByRef(ref, wordpressId);
 
   if (!property) {
-    notFound();
+    const context = await getUnavailablePropertyContext(ref);
+    const underOfferReferences = new Set(["R4455487"]);
+    const suggestionSlug = context
+      ? `${context.type}-${context.city}`
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "")
+      : ref;
+
+    return (
+      <SimilarPropertiesContent
+        availability={underOfferReferences.has(ref.toUpperCase()) ? "under_offer" : "unavailable"}
+        locale={locale}
+        originalProperty={context ? `${context.title} (${ref.toUpperCase()})` : ref.toUpperCase()}
+        slug={suggestionSlug}
+      />
+    );
   }
 
   const nearbyPlaces = await fetchNearbyPlaces(

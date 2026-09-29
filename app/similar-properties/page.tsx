@@ -30,6 +30,8 @@ type SimilarPropertiesLabels = {
   body: string;
   fallbackBody: string;
   heading: string;
+  underOffer: string;
+  underOfferBody: string;
   similarHeading: string;
   unavailable: string;
 };
@@ -41,6 +43,9 @@ const labelsByLocale: Record<Locale, SimilarPropertiesLabels> = {
     fallbackBody:
       "Durchstöbern Sie aktive Angebote an der Costa del Sol oder fragen Sie uns nach passenden Alternativen.",
     heading: "Ähnliche Immobilien",
+    underOffer: "Diese Immobilie ist derzeit reserviert",
+    underOfferBody:
+      "Für diese Immobilie wurde bereits ein Angebot angenommen. Entdecken Sie ähnliche aktive Immobilien oder fragen Sie uns nach dem aktuellen Stand.",
     similarHeading: "Aktive Alternativen",
     unavailable: "Diese Immobilie ist nicht mehr verfügbar",
   },
@@ -50,6 +55,9 @@ const labelsByLocale: Record<Locale, SimilarPropertiesLabels> = {
     fallbackBody:
       "Browse active Costa del Sol listings or ask us for matching alternatives.",
     heading: "Similar properties",
+    underOffer: "This property is currently under offer",
+    underOfferBody:
+      "An offer has already been accepted for this property. Explore similar active listings or ask us about its current status.",
     similarHeading: "Active alternatives",
     unavailable: "This property is no longer available",
   },
@@ -59,6 +67,9 @@ const labelsByLocale: Record<Locale, SimilarPropertiesLabels> = {
     fallbackBody:
       "Explora propiedades activas en la Costa del Sol o pídenos alternativas similares.",
     heading: "Propiedades similares",
+    underOffer: "Esta propiedad está actualmente bajo oferta",
+    underOfferBody:
+      "Ya se ha aceptado una oferta por esta propiedad. Consulta alternativas activas similares o pregúntanos por su estado actual.",
     similarHeading: "Alternativas activas",
     unavailable: "Esta propiedad ya no está disponible",
   },
@@ -68,6 +79,9 @@ const labelsByLocale: Record<Locale, SimilarPropertiesLabels> = {
     fallbackBody:
       "Parcourez les biens actifs sur la Costa del Sol ou demandez-nous des alternatives pertinentes.",
     heading: "Biens similaires",
+    underOffer: "Ce bien est actuellement sous offre",
+    underOfferBody:
+      "Une offre a déjà été acceptée pour ce bien. Découvrez des alternatives actives similaires ou contactez-nous pour connaître sa situation actuelle.",
     similarHeading: "Alternatives actives",
     unavailable: "Ce bien n'est plus disponible",
   },
@@ -77,6 +91,9 @@ const labelsByLocale: Record<Locale, SimilarPropertiesLabels> = {
     fallbackBody:
       "Nézd meg az aktív Costa del Sol ingatlanokat, vagy kérj tőlünk hasonló ajánlatokat.",
     heading: "Hasonló ingatlanok",
+    underOffer: "Ez az ingatlan jelenleg eladás alatt van",
+    underOfferBody:
+      "Erre az ingatlanra már elfogadtak egy ajánlatot. Nézd meg a hasonló aktív ingatlanokat, vagy kérdezz minket az aktuális helyzetéről.",
     similarHeading: "Aktív alternatívák",
     unavailable: "Ez az ingatlan már nem elérhető",
   },
@@ -86,6 +103,9 @@ const labelsByLocale: Record<Locale, SimilarPropertiesLabels> = {
     fallbackBody:
       "Przeglądaj aktywne oferty na Costa del Sol albo poproś nas o podobne propozycje.",
     heading: "Podobne nieruchomości",
+    underOffer: "Ta nieruchomość jest obecnie objęta ofertą",
+    underOfferBody:
+      "Oferta na tę nieruchomość została już zaakceptowana. Zobacz podobne aktywne oferty lub zapytaj nas o jej aktualny status.",
     similarHeading: "Aktywne alternatywy",
     unavailable: "Ta nieruchomość nie jest już dostępna",
   },
@@ -95,6 +115,9 @@ const labelsByLocale: Record<Locale, SimilarPropertiesLabels> = {
     fallbackBody:
       "Посмотрите активные объекты на Costa del Sol или запросите похожие варианты.",
     heading: "Похожие объекты",
+    underOffer: "По этому объекту уже принято предложение",
+    underOfferBody:
+      "Продавец уже принял предложение по этому объекту. Посмотрите похожие активные варианты или уточните у нас его текущий статус.",
     similarHeading: "Активные альтернативы",
     unavailable: "Этот объект больше недоступен",
   },
@@ -266,16 +289,20 @@ export default async function SimilarPropertiesPage({
 }
 
 export async function SimilarPropertiesContent({
+  availability = "unavailable",
   locale = "en",
+  originalProperty,
   slug,
 }: {
+  availability?: "under_offer" | "unavailable";
   locale?: Locale;
+  originalProperty?: string | null;
   slug?: string;
 }) {
   const t = getTranslations(locale);
   const labels = labelsByLocale[locale];
   const basePath = getLocaleBasePath(locale);
-  const originalProperty = getOriginalPropertyLabel(slug);
+  const propertyLabel = originalProperty ?? getOriginalPropertyLabel(slug);
   const properties = await getSimilarProperties(slug);
   const toggleLabels = {
     favourite: t.favourite,
@@ -302,15 +329,19 @@ export async function SimilarPropertiesContent({
             {labels.heading}
           </p>
           <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
-            {labels.unavailable}
+            {availability === "under_offer" ? labels.underOffer : labels.unavailable}
           </h1>
-          {originalProperty ? (
+          {propertyLabel ? (
             <p className="mt-4 max-w-2xl text-lg font-semibold text-white/86">
-              {originalProperty}
+              {propertyLabel}
             </p>
           ) : null}
           <p className="mt-4 max-w-2xl text-base leading-7 text-white/76">
-            {slug ? labels.body : labels.fallbackBody}
+            {availability === "under_offer"
+              ? labels.underOfferBody
+              : slug
+                ? labels.body
+                : labels.fallbackBody}
           </p>
         </div>
       </section>
@@ -324,7 +355,7 @@ export async function SimilarPropertiesContent({
             <h2 className="mt-1 text-2xl font-semibold">{t.featuredProperties}</h2>
           </div>
           <TrackedWhatsAppLink
-            href={getWhatsAppUrl(originalProperty ?? "similar properties")}
+            href={getWhatsAppUrl(propertyLabel ?? "similar properties")}
             source="similar_properties_unavailable"
             className="rounded-full bg-[#0f253d] px-5 py-3 text-sm font-semibold uppercase tracking-wide text-white"
           >

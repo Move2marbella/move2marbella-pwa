@@ -285,6 +285,7 @@ const WORDPRESS_PROPERTY_FIELDS =
   "id,link,slug,title,property_city,property_status,property_type,property_meta";
 const RESALES_BRIDGE_URL = process.env.RESALES_BRIDGE_URL?.replace(/\/$/, "");
 const RESALES_BRIDGE_SECRET = process.env.RESALES_BRIDGE_SECRET;
+const INACTIVE_PROPERTY_REFERENCES = new Set(["R4455487", "R5049322"]);
 
 function isResalesBridgeEnabled() {
   return Boolean(RESALES_BRIDGE_URL && RESALES_BRIDGE_SECRET);
@@ -862,6 +863,10 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         ),
       );
       const filteredEntries = index.filter((property) => {
+        if (INACTIVE_PROPERTY_REFERENCES.has(property.ref.trim().toUpperCase())) {
+          return false;
+        }
+
         if (
           referenceFilters.size > 0 &&
           !referenceFilters.has(property.ref.trim().toUpperCase())
@@ -1192,6 +1197,24 @@ function getPropertySearchSnapshot() {
   }
 
   return propertySearchSnapshotCache;
+}
+
+export async function getUnavailablePropertyContext(ref: string) {
+  const normalizedReference = ref.trim().toUpperCase();
+  const entry = getPropertySearchSnapshot().find(
+    (property) => property.ref.trim().toUpperCase() === normalizedReference,
+  );
+
+  if (!entry) {
+    return null;
+  }
+
+  return {
+    city: entry.city,
+    location: entry.location,
+    title: entry.title,
+    type: entry.type,
+  };
 }
 
 function isPropertySearchSnapshotEntry(
