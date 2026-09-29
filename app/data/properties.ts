@@ -813,10 +813,28 @@ function propertyMatchesBridgeFilters(
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   try {
+    const requiresSearchIndex = Boolean(
+      filters.beachFront ||
+        filters.heatedPool ||
+        filters.keywords?.length ||
+        filters.newDevelopment ||
+        filters.propertyCities?.length ||
+        filters.propertyStatuses?.length ||
+        filters.propertyTypes?.length ||
+        filters.reference ||
+        filters.seaView,
+    );
+
     // The Resales featured filter is intentionally small and can run out after
     // the first page. Build the featured rotation from the complete snapshot so
     // pagination continues with own listings, premium stock and then all homes.
-    if (isResalesBridgeEnabled() && filters.sort !== "featured") {
+    // Compound filters must stay on the complete search index when sorting;
+    // otherwise switching the order can change (or empty) the result set.
+    if (
+      isResalesBridgeEnabled() &&
+      filters.sort !== "featured" &&
+      !requiresSearchIndex
+    ) {
       return await fetchPropertiesFromResalesBridge(limit, filters);
     }
 
