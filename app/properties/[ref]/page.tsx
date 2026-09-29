@@ -208,6 +208,7 @@ export async function PropertyDetailContent({
       <SimilarPropertiesContent
         availability={underOfferReferences.has(ref.toUpperCase()) ? "under_offer" : "unavailable"}
         locale={locale}
+        location={context?.location ?? context?.city}
         originalProperty={context ? `${context.title} (${ref.toUpperCase()})` : ref.toUpperCase()}
         slug={suggestionSlug}
       />

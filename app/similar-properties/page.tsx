@@ -220,7 +220,7 @@ function propertyMatchesTokens(property: Property, tokens: string[]) {
   return tokens.some((token) => haystack.includes(token));
 }
 
-async function getSimilarProperties(slug?: string) {
+async function getSimilarProperties(slug?: string, requiredLocation?: string) {
   const [propertyTypes, propertyCities] = await Promise.all([
     fetchPropertyTypes(),
     fetchPropertyCities(),
@@ -234,14 +234,20 @@ async function getSimilarProperties(slug?: string) {
   const propertyCitiesFilter = citySlug
     ? getPropertyCityFilterIds(citySlug, propertyCities)
     : [];
-  const attempts = [
-    { propertyCities: propertyCitiesFilter, propertyTypes: propertyTypesFilter },
-    { propertyCities: propertyCitiesFilter },
-    { propertyTypes: propertyTypesFilter },
-    {},
-  ];
+  const attempts = requiredLocation
+    ? [
+        { propertyCities: propertyCitiesFilter, propertyTypes: propertyTypesFilter },
+        { propertyCities: propertyCitiesFilter },
+      ]
+    : [
+        { propertyCities: propertyCitiesFilter, propertyTypes: propertyTypesFilter },
+        { propertyCities: propertyCitiesFilter },
+        { propertyTypes: propertyTypesFilter },
+        {},
+      ];
   const seenRefs = new Set<string>();
   const matches: Property[] = [];
+  const normalizedRequiredLocation = normalize(requiredLocation ?? "");
 
   for (const filters of attempts) {
     const result = await fetchProperties(12, {
@@ -251,7 +257,14 @@ async function getSimilarProperties(slug?: string) {
     });
 
     for (const property of result.properties) {
-      if (seenRefs.has(property.ref) || !propertyMatchesTokens(property, tokens)) {
+      const propertyLocation = normalize(`${property.city} ${property.location}`);
+
+      if (
+        seenRefs.has(property.ref) ||
+        !propertyMatchesTokens(property, tokens) ||
+        (normalizedRequiredLocation &&
+          !propertyLocation.includes(normalizedRequiredLocation))
+      ) {
         continue;
       }
 
@@ -264,7 +277,7 @@ async function getSimilarProperties(slug?: string) {
     }
   }
 
-  if (matches.length >= 6 || !tokens.length) {
+  if (matches.length >= 6 || !tokens.length || normalizedRequiredLocation) {
     return matches.slice(0, 9);
   }
 
@@ -291,11 +304,13 @@ export default async function SimilarPropertiesPage({
 export async function SimilarPropertiesContent({
   availability = "unavailable",
   locale = "en",
+  location,
   originalProperty,
   slug,
 }: {
   availability?: "under_offer" | "unavailable";
   locale?: Locale;
+  location?: string;
   originalProperty?: string | null;
   slug?: string;
 }) {
@@ -303,7 +318,7 @@ export async function SimilarPropertiesContent({
   const labels = labelsByLocale[locale];
   const basePath = getLocaleBasePath(locale);
   const propertyLabel = originalProperty ?? getOriginalPropertyLabel(slug);
-  const properties = await getSimilarProperties(slug);
+  const properties = await getSimilarProperties(slug, location);
   const toggleLabels = {
     favourite: t.favourite,
     saved: t.saved,
