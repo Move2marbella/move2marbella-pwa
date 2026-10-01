@@ -138,7 +138,7 @@ export function MobileActionBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  if (pathname.startsWith("/admin")) {
+  if (pathname.startsWith("/admin") || pathname.startsWith("/share/")) {
     return null;
   }
 
