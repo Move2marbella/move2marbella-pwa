@@ -1120,7 +1120,7 @@ function buildFeaturedRotation(
   premium.sort((left, right) => rotationScore(right, 0.8) - rotationScore(left, 0.8));
   general.sort((left, right) => rotationScore(right, 0.65) - rotationScore(left, 0.65));
 
-  const rotated: PropertySearchIndexEntry[] = [...featured, ...own];
+  const rotated: PropertySearchIndexEntry[] = [...featured];
   let ownIndex = 0;
   let premiumIndex = 0;
   let generalIndex = 0;
@@ -1155,7 +1155,18 @@ function buildFeaturedRotation(
     }
   }
 
-  return rotated;
+  const seenReferences = new Set<string>();
+
+  return rotated.filter((property) => {
+    const reference = property.ref.trim().toUpperCase();
+
+    if (seenReferences.has(reference)) {
+      return false;
+    }
+
+    seenReferences.add(reference);
+    return true;
+  });
 }
 
 function sortProperties(properties: Property[], sort: PropertySortOrder) {
