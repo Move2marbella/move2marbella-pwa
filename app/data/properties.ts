@@ -814,6 +814,15 @@ function propertyMatchesBridgeFilters(
 
 export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) {
   try {
+    const referenceFilters = getReferenceFilters(filters.reference);
+
+    // Reference searches must always use the live Resales feed. The local
+    // snapshot can still contain properties that have since sold or gone
+    // under offer, while the live detail endpoint reflects availability.
+    if (isResalesBridgeEnabled() && referenceFilters.size > 0) {
+      return await fetchPropertiesFromResalesBridge(limit, filters);
+    }
+
     const requiresSearchIndex = Boolean(
       filters.beachFront ||
         filters.heatedPool ||
@@ -839,7 +848,6 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
       return await fetchPropertiesFromResalesBridge(limit, filters);
     }
 
-    const referenceFilters = getReferenceFilters(filters.reference);
     const usesClientSideFilters = Boolean(
         filters.maxPrice ||
         filters.beachFront ||
