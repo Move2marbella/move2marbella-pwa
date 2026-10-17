@@ -664,6 +664,75 @@ async function fetchPropertyByResalesReference(ref: string) {
   return data.Property ? normalizeResalesProperty(data.Property) : null;
 }
 
+async function getActivePropertiesForSearchPage(
+  entries: PropertySearchIndexEntry[],
+  startIndex: number,
+  limit: number,
+) {
+  const properties: Property[] = [];
+  const seenReferences = new Set<string>();
+  let cursor = startIndex;
+  let inactiveCount = 0;
+
+  // Most pages need one batch. Two additional batches let sold/withdrawn
+  // listings be replaced without turning a search request into a full crawl.
+  for (let batch = 0; batch < 3 && properties.length < limit; batch += 1) {
+    const candidates = entries.slice(cursor, cursor + limit);
+
+    if (candidates.length === 0) {
+      break;
+    }
+
+    cursor += candidates.length;
+    const availability = await Promise.allSettled(
+      candidates.map((candidate) => fetchPropertyByResalesReference(candidate.ref)),
+    );
+
+    for (let index = 0; index < candidates.length; index += 1) {
+      const candidate = candidates[index];
+      const result = availability[index];
+      let property: Property | null = null;
+
+      if (result.status === "fulfilled") {
+        property = result.value;
+
+        if (!property) {
+          inactiveCount += 1;
+          continue;
+        }
+      } else {
+        // Keep the site usable during a temporary bridge outage. A successful
+        // empty response is authoritative and removes the inactive property.
+        property = isPropertySearchSnapshotEntry(candidate)
+          ? propertyFromSearchSnapshotEntry(candidate)
+          : await fetchPropertyByWordPressId(String(candidate.id));
+      }
+
+      if (!property) {
+        continue;
+      }
+
+      const reference = property.ref.trim().toUpperCase();
+
+      if (seenReferences.has(reference)) {
+        continue;
+      }
+
+      seenReferences.add(reference);
+      properties.push(property);
+
+      if (properties.length === limit) {
+        break;
+      }
+    }
+  }
+
+  return {
+    inactiveCount,
+    properties,
+  };
+}
+
 async function fetchPropertiesFromResalesBridge(
   limit: number,
   filters: PropertyFilters,
@@ -946,15 +1015,24 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
         filters,
       );
       const page = filters.page ?? 1;
-      const entries = sortedEntries.slice((page - 1) * limit, page * limit);
-      const properties = entries.every(isPropertySearchSnapshotEntry)
-        ? entries.map(propertyFromSearchSnapshotEntry)
-        : (
-            await Promise.all(
-              entries.map((property) => fetchPropertyByWordPressId(String(property.id))),
-            )
-          ).filter((property): property is Property => Boolean(property));
-      const total = sortedEntries.length;
+      const startIndex = (page - 1) * limit;
+      const liveResult = isResalesBridgeEnabled()
+        ? await getActivePropertiesForSearchPage(sortedEntries, startIndex, limit)
+        : null;
+      const entries = sortedEntries.slice(startIndex, startIndex + limit);
+      const properties = liveResult
+        ? liveResult.properties
+        : entries.every(isPropertySearchSnapshotEntry)
+          ? entries.map(propertyFromSearchSnapshotEntry)
+          : (
+              await Promise.all(
+                entries.map((property) => fetchPropertyByWordPressId(String(property.id))),
+              )
+            ).filter((property): property is Property => Boolean(property));
+      const total = Math.max(
+        properties.length,
+        sortedEntries.length - (liveResult?.inactiveCount ?? 0),
+      );
 
       return {
         page,
