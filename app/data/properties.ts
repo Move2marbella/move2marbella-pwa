@@ -285,7 +285,11 @@ const WORDPRESS_PROPERTY_FIELDS =
   "id,link,slug,title,property_city,property_status,property_type,property_meta";
 const RESALES_BRIDGE_URL = process.env.RESALES_BRIDGE_URL?.replace(/\/$/, "");
 const RESALES_BRIDGE_SECRET = process.env.RESALES_BRIDGE_SECRET;
-const INACTIVE_PROPERTY_REFERENCES = new Set(["R4455487", "R5049322"]);
+const INACTIVE_PROPERTY_REFERENCES = new Set([
+  "R4455487",
+  "R5049322",
+  "R5314471",
+]);
 
 function isResalesBridgeEnabled() {
   return Boolean(RESALES_BRIDGE_URL && RESALES_BRIDGE_SECRET);
