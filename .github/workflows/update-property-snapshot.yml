@@ -2,8 +2,8 @@ name: Update property snapshot
 
 on:
   schedule:
-    # Every Monday morning. GitHub Actions schedules use UTC.
-    - cron: "17 3 * * 1"
+    # Refresh every morning. GitHub Actions schedules use UTC.
+    - cron: "17 3 * * *"
   workflow_dispatch:
 
 permissions:
@@ -40,5 +40,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/property-search-index.json
-          git commit -m "Refresh weekly property snapshot"
+          git commit -m "Refresh daily property snapshot"
           git push

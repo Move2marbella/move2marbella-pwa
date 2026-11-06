@@ -659,9 +659,80 @@ async function fetchPropertyByResalesReference(ref: string) {
   const data = await fetchResalesBridgeJson<ResalesDetailResponse>(
     `property/${encodeURIComponent(normalizedReference)}`,
     new URLSearchParams(),
+    true,
   );
 
   return data.Property ? normalizeResalesProperty(data.Property) : null;
+}
+
+async function fetchLiveFeaturedSearchEntries(): Promise<PropertySearchIndexEntry[]> {
+  const data = await fetchResalesBridgeJson<ResalesSearchResponse>(
+    "search",
+    new URLSearchParams({
+      mode: "featured",
+      page: "1",
+      pageSize: "100",
+    }),
+  );
+
+  return getResalesProperties(data.Property).map((resalesProperty) => {
+    const property = normalizeResalesProperty(resalesProperty);
+    const normalizedGroups = property.featureGroups.map((group) => ({
+      type: normalizeSearchText(group.Type),
+      values: group.Value.map(normalizeSearchText),
+    }));
+
+    return {
+      bedrooms: Number(property.beds),
+      cityIds: [],
+      hasBeachfront: normalizedGroups.some(
+        (group) =>
+          group.type === "setting" &&
+          group.values.some(
+            (value) =>
+              value === "beachfront" || value === "front line beach complex",
+          ),
+      ),
+      hasHeatedPool: normalizedGroups.some((group) =>
+        group.values.includes("heated pool"),
+      ),
+      hasSeaViews: normalizedGroups.some(
+        (group) =>
+          group.type === "views" &&
+          group.values.some((value) => value.includes("sea")),
+      ),
+      id: property.id,
+      isFeatured: true,
+      isNewDevelopment: property.isNewDevelopment,
+      isOwnProperty: true,
+      price: property.rawPrice,
+      ref: property.ref,
+      statusIds: [],
+      typeIds: [],
+    } satisfies PropertySearchIndexEntry;
+  });
+}
+
+async function mergeLiveFeaturedEntries(
+  index: PropertySearchIndexEntry[],
+) {
+  try {
+    const liveEntries = await fetchLiveFeaturedSearchEntries();
+    const entriesByReference = new Map<string, PropertySearchIndexEntry>();
+
+    for (const entry of [...liveEntries, ...index]) {
+      const reference = entry.ref.trim().toUpperCase();
+
+      if (reference && !entriesByReference.has(reference)) {
+        entriesByReference.set(reference, entry);
+      }
+    }
+
+    return Array.from(entriesByReference.values());
+  } catch (error) {
+    console.error("Move2Marbella live featured index fetch failed", error);
+    return index;
+  }
 }
 
 async function getActivePropertiesForSearchPage(
@@ -935,7 +1006,7 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
     );
 
     if (usesClientSideFilters) {
-      const index = await fetchPropertySearchIndex(
+      let index = await fetchPropertySearchIndex(
         Boolean(
           filters.seaView ||
             filters.beachFront ||
@@ -943,6 +1014,10 @@ export async function fetchProperties(limit = 9, filters: PropertyFilters = {}) 
             filters.newDevelopment,
         ),
       );
+
+      if (isResalesBridgeEnabled() && filters.sort === "featured") {
+        index = await mergeLiveFeaturedEntries(index);
+      }
       const filteredEntries = index.filter((property) => {
         if (INACTIVE_PROPERTY_REFERENCES.has(property.ref.trim().toUpperCase())) {
           return false;
@@ -1481,12 +1556,6 @@ function getIndexedPropertyIsNewDevelopment(post: WordPressProperty) {
 
 async function fetchPropertySearchIndex(includeFeatureData = false) {
   try {
-    const snapshot = getPropertySearchSnapshot();
-
-    if (snapshot.length > 0) {
-      return snapshot;
-    }
-
     const propertyMetaFields = [
       "property_meta._imported_ref",
       "property_meta.fave_property_id",
@@ -1556,8 +1625,9 @@ async function fetchPropertySearchIndex(includeFeatureData = false) {
     }
 
     console.error("Move2Marbella property search index fetch failed", error);
-
-    return [];
+    // Keep the generated snapshot only as an outage fallback. Using it as the
+    // primary index leaves sold and unpublished listings in result counts.
+    return getPropertySearchSnapshot();
   }
 }
 
